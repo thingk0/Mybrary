@@ -30,7 +30,7 @@ public class ChatMessage extends BaseEntity{
   private ChatRoom chatRoom;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "member_id")
+  @JoinColumn(name = "receiver_id")
   private Member receiver;
 
   private String message;
