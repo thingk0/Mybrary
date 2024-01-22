@@ -1,0 +1,77 @@
+.nav_container {
+  position: fixed;
+  background-color: var(--main2);
+  box-shadow: 0 0 15px 0 var(--main2);
+  border-radius: 0 0 10px 0;
+  width: 80px;
+  height: 500px;
+  top: 0;
+  left: -50px;
+  transition: 0.3s;
+}
+.nav_container_active {
+  left: 0px;
+  transition: 0.3s;
+}
+.nav_container:hover {
+  left: 0px;
+}
+
+.nav_paper {
+  background-color: var(--main4);
+  box-shadow: 0 0 5px 0 var(--main2);
+  border-radius: 0 0 10px 0;
+  height: 485px;
+}
+
+.nav_paper0 {
+  width: 65px;
+}
+.nav_paper1 {
+  width: 63px;
+}
+.nav_paper2 {
+  width: 61px;
+}
+.nav_paper3 {
+  height: 455px;
+  width: 59px;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 30px;
+}
+
+/* --- */
+.nav_section_container {
+  position: absolute;
+  top: 50px;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  gap: 20px;
+}
+
+.nav_section {
+  height: 40px;
+  border-radius: 0 5px 5px 0;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+}
+
+.nav_not_active {
+  width: 40px;
+  background-color: var(--main3);
+  box-shadow: inset 3px 0 1px 0 var(--main2);
+  /* transition: 0.3s; */
+  overflow: hidden;
+}
+
+.nav_active {
+  width: 100px;
+  background-color: var(--main1);
+}
