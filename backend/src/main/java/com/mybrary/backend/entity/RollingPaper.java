@@ -30,7 +30,7 @@ public class RollingPaper extends BaseEntity{
 //  private Mybrary mybrary;
 
   @OneToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "imgae_id")
+  @JoinColumn(name = "image_id")
   private Image rollingpaperImage;
 
 }
