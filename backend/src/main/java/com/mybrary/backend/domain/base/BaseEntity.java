@@ -3,24 +3,23 @@ package com.mybrary.backend.domain.base;
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-@EntityListeners(AuditingEntityListener.class)
-@MappedSuperclass
 @Getter
+@MappedSuperclass
+@EntityListeners(AuditingEntityListener.class)
 public class BaseEntity {
 
-  @CreatedDate
-  @Column(updatable = false)
-  private LocalDateTime createdDate;
+    @CreatedDate
+    @Column(updatable = false)
+    private LocalDateTime createdAt;
 
-  @LastModifiedDate
-  private LocalDate lastModifiedDate;
+    @LastModifiedDate
+    private LocalDateTime modifiedAt;
 
 //  @CreatedBy
 //  @Column(updatable = false))
@@ -29,6 +28,6 @@ public class BaseEntity {
 //  @LastModifiedBy
 //  private User lastModifiedUser;
 
-  private boolean isDeleted;
+    private boolean isDeleted;
 
 }
