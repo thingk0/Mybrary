@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberControllerV1 {
 
     @Operation(summary = "일반 회원가입", description = "일반 회원가입")
-    @PostMapping("/member")
+    @PostMapping
     public ResponseEntity<?> singup(@RequestBody Member member) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
