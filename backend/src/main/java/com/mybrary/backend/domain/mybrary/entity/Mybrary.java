@@ -11,32 +11,29 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @Builder
-@AllArgsConstructor //모든 필드 대상 생성자
-@NoArgsConstructor  //기본 생성자
+@AllArgsConstructor
+@NoArgsConstructor
 public class Mybrary {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private long id;
+    @Column(name = "mybrary_id")
+    private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "memberId")
+    @JoinColumn(name = "member_id")
     private Member member;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "photo_frame_image_id")
     private Image photoFrameImage;
 
-
-    private int backgoundColor;
+    private int backgroundColor;
 
     private int deskColor;
 
-    private int booshelfColor;
+    private int bookshelfColor;
 
     private int easelColor;
-
-
 
 }

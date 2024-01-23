@@ -15,11 +15,11 @@ public class Bookshelf {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private long Id;
+    @Column(name = "book_shelf_id")
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "mybrary_id")
     private Mybrary mybrary;
 
 }

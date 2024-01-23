@@ -6,11 +6,10 @@ import org.springframework.context.annotation.Configuration;
 
 @OpenAPIDefinition(
     info = @Info(title = "MyBrary API 명세서",
-        description = "MyBrary 서비스 API 명세서",
-        version = "v1"))
+                 description = "MyBrary 서비스 API 명세서",
+                 version = "v1"))
 @Configuration
 public class SwaggerConfig {
-
 
 
 }

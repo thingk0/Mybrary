@@ -2,6 +2,7 @@ package com.mybrary.backend.domain.rollingpaper.entity;
 
 import com.mybrary.backend.domain.base.BaseEntity;
 import com.mybrary.backend.domain.image.entity.Image;
+import com.mybrary.backend.domain.mybrary.entity.Mybrary;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -22,17 +23,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class RollingPaper extends BaseEntity {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "rollingpaper_id")
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "rolling_paper_id")
+    private Long id;
 
-//  @OneToOne(fetch = FetchType.LAZY)
-//  @JoinColumn(name = "mybrary_id")
-//  private Mybrary mybrary;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "mybrary_id")
+    private Mybrary mybrary;
 
-  @OneToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "image_id")
-  private Image rollingpaperImage;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "image_id")
+    private Image rollingPaperImage;
 
 }

@@ -22,17 +22,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Follow extends BaseEntity {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "follow_id")
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "follow_id")
+    private Long id;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "following_id")
-  private Member following;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "following_id")
+    private Member following;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "follower_id")
-  private Member follower;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "follower_id")
+    private Member follower;
 
 }
