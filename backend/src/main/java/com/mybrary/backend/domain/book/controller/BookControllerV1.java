@@ -1,0 +1,62 @@
+package com.mybrary.backend.domain.book.controller;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@Tag(name = "Book 컨트롤러", description = "Book Controller API")
+@RestController
+@RequestMapping("/api/v1/book")
+public class BookControllerV1 {
+
+    @Operation(summary = "나의 책 목록 조회", description = "나의 책 목록 조회")
+    @GetMapping
+    public ResponseEntity<?> getBooks() {
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Operation(summary = "책 생성", description = "책 생성")
+    @PostMapping
+    public ResponseEntity<?> createBook() {
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Operation(summary = "책 정보 조회", description = "책 아이디를 통한 책 정보 조회")
+    @GetMapping("/{bookId}")
+    public ResponseEntity<?> getBook(@PathVariable Long bookId) {
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    @Operation(summary = "책 수정", description = "책 아이디를 통한 책 정보 수정")
+    @PutMapping("/{bookId}")
+    public ResponseEntity<?> updateBook(@PathVariable Long bookId) {
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Operation(summary = "책 삭제", description = "책 아이디를 통한 책 삭제")
+    @DeleteMapping("/{bookId}")
+    public ResponseEntity<?> deleteBook(@PathVariable Long bookId) {
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Operation(summary = "책 구독", description = "책 아이디, 카테고리 아이디를 통한 책 구독")
+    @PostMapping("/{bookId}/subscription")
+    public ResponseEntity<?> subscribeBook(@PathVariable Long bookId) {
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Operation(summary = "책 구독 삭제", description = "책 아이디를 통한 책 구독 취소")
+    @DeleteMapping("/{bookId}/unsubscription")
+    public ResponseEntity<?> unsubscribeBook(@PathVariable Long bookId) {
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+}
