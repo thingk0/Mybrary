@@ -7,7 +7,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -35,6 +37,31 @@ public class Member extends BaseEntity {
   private String password;
   private String intro;
   private boolean isProfilePublic;
-  private boolean isNotifyEnable;
+  private boolean isNotifyEnabled;
+
+  // Follow
+  @OneToMany(mappedBy = "following")
+  private List<Follow> followingList;
+  @OneToMany(mappedBy = "follower")
+  private List<Follow> followerList;
+
+  // Notification
+  @OneToMany(mappedBy = "sender")
+  private List<Notification> sendList;
+  @OneToMany(mappedBy = "receiver")
+  private List<Notification> receiveList;
+
+  // ChatJoin
+  @OneToMany(mappedBy = "joinMember")
+  private List<ChatJoin> chatJoinList;
+
+  // ChatMessage
+  @OneToMany(mappedBy = "receiver")
+  private List<ChatMessage> messageList;
+
+  // Like
+  @OneToMany(mappedBy = "member")
+  private List<Like> likeList;
+
 
 }
