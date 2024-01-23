@@ -1,10 +1,16 @@
 package com.mybrary.backend.domain.member.controller;
 
+import com.mybrary.backend.domain.member.dto.SignupRequestDto;
 import com.mybrary.backend.domain.member.entity.Member;
+import com.mybrary.backend.global.format.ApiResponse;
+import com.mybrary.backend.global.format.ResponseCode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,14 +23,22 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "Member 컨트롤러", description = "Member Controller API")
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/v1/member")
 public class MemberControllerV1 {
 
+    private final ApiResponse apiResponse;
 
     @Operation(summary = "일반 회원가입", description = "일반 회원가입")
     @PostMapping
-    public ResponseEntity<?> signup(@RequestBody Member member) {
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<?> signup(@Valid @RequestBody SignupRequestDto requestDto,
+                                    BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            return apiResponse.fail(bindingResult.getAllErrors());
+        }
+
+        return apiResponse.success(ResponseCode.MEMBER_SIGNUP_SUCCESS.getMessage(), requestDto);
     }
 
     @Operation(summary = "소셜 회원가입", description = "소셜 회원가입")
