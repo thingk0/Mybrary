@@ -21,26 +21,31 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Notification extends BaseEntity {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "notification_id")
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "notification_id")
+    private Long id;
 
-  @ManyToOne
-  @JoinColumn(name = "sender_id")
-  private Member sender;
+    @ManyToOne
+    @JoinColumn(name = "sender_id")
+    private Member sender;
 
-  @ManyToOne
-  @JoinColumn(name = "receiver_id")
-  private Member receiver;
+    @ManyToOne
+    @JoinColumn(name = "receiver_id")
+    private Member receiver;
 
-  private int targetType;
-  private boolean isRead;
+    private int targetType;
 
-  private Long bookId;
-  private Long threadId;
-  private Long paperId;
-  private Long commentId;
-  private Long recommentId;
+    private boolean isRead;
+
+    private Long bookId;
+
+    private Long threadId;
+
+    private Long paperId;
+
+    private Long commentId;
+
+    private Long replyCommentId;
 
 }
