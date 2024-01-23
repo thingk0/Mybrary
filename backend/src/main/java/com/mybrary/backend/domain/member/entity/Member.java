@@ -47,9 +47,11 @@ public class Member extends BaseEntity {
 
     private String intro;
 
-    private boolean isProfilePublic;
+    @Builder.Default()
+    private boolean isProfilePublic = true;
 
-    private boolean isNotifyEnabled;
+    @Builder.Default()
+    private boolean isNotifyEnabled = true;
 
     // Follow
     @OneToMany(mappedBy = "following")
