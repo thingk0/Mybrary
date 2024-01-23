@@ -1,30 +1,38 @@
 package com.mybrary.backend.domain.contents.paper.entity;
 
-import com.mybrary.backend.domain.contents.thread.entity.Thread;
+import com.mybrary.backend.domain.contents.thread.entity.Threads;
 import com.mybrary.backend.domain.member.entity.Member;
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
 @Builder
-@AllArgsConstructor //모든 필드 대상 생성자
-@NoArgsConstructor  //기본 생성자
-//@ToString(of = {"id", "username", "age"})
+@AllArgsConstructor
+@NoArgsConstructor
 public class Paper {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "paper_id")
-    private long paperId;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member memberId;
 
     @ManyToOne
-    @JoinColumn(name = "id")
-    private Thread threadId;
+    @JoinColumn(name = "thread_id")
+    private Threads threadId;
 
     private String content1;
 
@@ -44,12 +52,5 @@ public class Paper {
 
     @Builder.Default()
     private boolean isPaperPublic = true;
-
-
-
-
-
-
-
 
 }
