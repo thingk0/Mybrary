@@ -2,6 +2,7 @@ package com.mybrary.backend.domain.chat.controller;
 
 import com.mybrary.backend.domain.chat.chat_message.entity.ChatMessage;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "Chat 컨트롤러", description = "Chat Controller API")
 @RestController
 @RequestMapping("/api/v1/chat")
 public class ChatControllerV1 {
