@@ -22,17 +22,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ChatRoom extends BaseEntity {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "chat_room_id")
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "chat_room_id")
+    private Long id;
 
-  // ChatJoin
-  @OneToMany(mappedBy = "chatRoom")
-  private List<ChatJoin> chatJoinList;
+    // ChatJoin
+    @OneToMany(mappedBy = "chatRoom")
+    private List<ChatJoin> chatJoinList;
 
-  // ChatMessage
-  @OneToMany(mappedBy = "chatRoom")
-  private List<ChatMessage> chatMessageList;
+    // ChatMessage
+    @OneToMany(mappedBy = "chatRoom")
+    private List<ChatMessage> chatMessageList;
 
 }

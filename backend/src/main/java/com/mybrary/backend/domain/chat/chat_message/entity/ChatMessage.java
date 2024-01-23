@@ -23,22 +23,25 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ChatMessage extends BaseEntity {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "chat_message_id")
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "chat_message_id")
+    private Long id;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "chat_room_id")
-  private ChatRoom chatRoom;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "chat_room_id")
+    private ChatRoom chatRoom;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "receiver_id")
-  private Member receiver;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "receiver_id")
+    private Member receiver;
 
-  private String message;
-  private Long threadId;
-  private Long paperId;
-  private boolean isRead;
+    private String message;
+
+    private Long threadId;
+
+    private Long paperId;
+
+    private boolean isRead;
 
 }
