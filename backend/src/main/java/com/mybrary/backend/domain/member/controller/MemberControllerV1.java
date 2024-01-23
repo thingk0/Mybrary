@@ -20,15 +20,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/member")
 public class MemberControllerV1 {
 
+
     @Operation(summary = "일반 회원가입", description = "일반 회원가입")
     @PostMapping
-    public ResponseEntity<?> singup(@RequestBody Member member) {
+    public ResponseEntity<?> signup(@RequestBody Member member) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Operation(summary = "소셜 회원가입", description = "소셜 회원가입")
     @PostMapping("/social")
-    public ResponseEntity<?> singupBySocial(@RequestBody Member member) {
+    public ResponseEntity<?> signupBySocial(@RequestBody Member member) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -99,32 +100,32 @@ public class MemberControllerV1 {
     }
 
     @Operation(summary = "특정회원의 팔로잉 리스트", description = "특정회원의 팔로잉 리스트")
-    @GetMapping("/{memberId}/followings")
-    public ResponseEntity<?> getAllFollowing(@PathVariable Long memberId) {
+    @GetMapping("/{id}/followings")
+    public ResponseEntity<?> getAllFollowing(@PathVariable Long id) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Operation(summary = "특정회원의 팔로워 리스트", description = "특정회원의 팔로워 리스트")
-    @GetMapping("/{memberId}/followers")
-    public ResponseEntity<?> getAllFollower(@PathVariable Long memberId) {
+    @GetMapping("/{id}/followers")
+    public ResponseEntity<?> getAllFollower(@PathVariable Long id) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Operation(summary = "팔로우하기", description = "특정회원을 팔로우하기")
-    @PostMapping("/{memberId}/follow")
-    public ResponseEntity<?> follow(@PathVariable Long memberId) {
+    @PostMapping("/{id}/follow")
+    public ResponseEntity<?> follow(@PathVariable Long id) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Operation(summary = "언팔로우하기", description = "특정회원을 언팔로우하기")
-    @DeleteMapping("/{memberId}/unfollow")
-    public ResponseEntity<?> unfollow(@PathVariable Long memberId) {
+    @DeleteMapping("/{id}/unfollow")
+    public ResponseEntity<?> unfollow(@PathVariable Long id) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Operation(summary = "팔로워끊기", description = "특정회원이 나를 팔로우한 것을 끊기")
-    @DeleteMapping("/{memberId}/follower")
-    public ResponseEntity<?> deleteFollower(@PathVariable Long memberId) {
+    @DeleteMapping("/{id}/follower")
+    public ResponseEntity<?> deleteFollower(@PathVariable Long id) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

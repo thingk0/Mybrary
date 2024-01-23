@@ -19,9 +19,9 @@ public class MybraryController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/{memberid}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> getOtherMybrary(
-        @PathVariable(name = "memberid") long memberId) {
+        @PathVariable(name = "id") Long memberId) {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
