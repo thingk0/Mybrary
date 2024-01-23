@@ -1,4 +1,4 @@
-package com.mybrary.backend.entity;
+package com.mybrary.backend.domain.contents.thread.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
