@@ -1,5 +1,7 @@
-package com.mybrary.backend.entity;
+package com.mybrary.backend.domain.contents.paper.entity;
 
+import com.mybrary.backend.domain.contents.thread.entity.Thread;
+import com.mybrary.backend.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
 

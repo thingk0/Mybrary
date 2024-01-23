@@ -1,4 +1,4 @@
-package com.mybrary.backend.entity;
+package com.mybrary.backend.domain.base;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

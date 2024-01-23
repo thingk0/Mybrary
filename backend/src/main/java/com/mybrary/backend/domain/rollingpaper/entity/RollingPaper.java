@@ -1,5 +1,7 @@
-package com.mybrary.backend.entity;
+package com.mybrary.backend.domain.rollingpaper.entity;
 
+import com.mybrary.backend.domain.base.BaseEntity;
+import com.mybrary.backend.domain.image.entity.Image;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -7,7 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,21 +20,19 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Like extends BaseEntity {
+public class RollingPaper extends BaseEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "like_id")
+  @Column(name = "rollingpaper_id")
   private Long id;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "member_id")
-  private Member member;
+//  @OneToOne(fetch = FetchType.LAZY)
+//  @JoinColumn(name = "mybrary_id")
+//  private Mybrary mybrary;
 
-//  @ManyToOne(fetch = FetchType.LAZY)
-//  @JoinColumn(name = "paper_id")
-//  private Paper paper;
-
-
+  @OneToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "image_id")
+  private Image rollingpaperImage;
 
 }

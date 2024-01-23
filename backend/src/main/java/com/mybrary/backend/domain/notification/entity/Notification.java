@@ -1,5 +1,7 @@
-package com.mybrary.backend.entity;
+package com.mybrary.backend.domain.notification.entity;
 
+import com.mybrary.backend.domain.base.BaseEntity;
+import com.mybrary.backend.domain.member.entity.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Notification extends BaseEntity{
+public class Notification extends BaseEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

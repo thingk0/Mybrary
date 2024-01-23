@@ -1,5 +1,8 @@
-package com.mybrary.backend.entity;
+package com.mybrary.backend.domain.chat.chat_message.entity;
 
+import com.mybrary.backend.domain.base.BaseEntity;
+import com.mybrary.backend.domain.chat.chat_room.entity.ChatRoom;
+import com.mybrary.backend.domain.member.entity.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -18,22 +21,24 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PaperImage extends BaseEntity {
+public class ChatMessage extends BaseEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "paper_image_id")
+  @Column(name = "chat_message_id")
   private Long id;
 
-//  @ManyToOne(fetch = FetchType.LAZY)
-//  @JoinColumn(name = "papre_id")
-//  private Paper paper;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "chat_room_id")
+  private ChatRoom chatRoom;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "image_id")
-  private Image image;
+  @JoinColumn(name = "receiver_id")
+  private Member receiver;
 
-  private int imageSeq;
-
+  private String message;
+  private Long threadId;
+  private Long paperId;
+  private boolean isRead;
 
 }

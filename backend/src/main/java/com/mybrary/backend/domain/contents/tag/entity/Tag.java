@@ -1,13 +1,11 @@
-package com.mybrary.backend.entity;
+package com.mybrary.backend.domain.contents.tag.entity;
 
+import com.mybrary.backend.domain.base.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,19 +16,17 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Follow extends BaseEntity{
+public class Tag extends BaseEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "follow_id")
+  @Column(name = "tag_id")
   private Long id;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "following_id")
-  private Member following;
+//  @ManyToOne(fetch = FetchType.LAZY)
+//  @JoinColumn(name = "paper_id")
+//  private Paper paper;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "follower_id")
-  private Member follower;
+  private String tagName;
 
 }
