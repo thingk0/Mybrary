@@ -1,6 +1,8 @@
 package com.mybrary.backend.domain.contents.thread.controller;
 
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,9 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/thread")
 public class ThreadController {
 
-    @GetMapping("/{threadid}")
+
+    @GetMapping("/{id}")
     public ResponseEntity<?> getThread(
-        @PathVariable(name = "threadid") long threadId) {
+        @PathVariable(name = "id") Long threadId) {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -30,38 +33,36 @@ public class ThreadController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     public ResponseEntity<?> updateThread(@RequestBody String test,
-                                          @PathVariable(name = "paperid") String paperId) {
+                                          @PathVariable(name = "id") String paperId) {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping("/{threadid}")
-    public ResponseEntity<?> deleteThread(
-        @PathVariable(name = "threadid") long threadId) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteThread(@PathVariable(name = "id") Long threadId) {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/home")
     public ResponseEntity<?> getThreadList(
-        @RequestParam(name = "page") int pageNum) {
+        @RequestParam @PageableDefault(page = 0, size = 10) Pageable page) {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/desk")
     public ResponseEntity<?> getMyThreadList(
-        @RequestParam(name = "page") int pageNum) {
+        @RequestParam @PageableDefault(page = 0, size = 10) Pageable page) {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/desk")
-    public ResponseEntity<?> getOtherThreadList(
-        @RequestParam(name = "page") int pageNum,
-        @RequestParam(name = "mybraryid") Long mybraryId) {
+    @GetMapping("/{id}/desk")
+    public ResponseEntity<?> getOtherThreadList(@PathVariable(name = "id") Long mybraryId,
+                                                @RequestParam @PageableDefault(page = 0, size = 10) Pageable page) {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
