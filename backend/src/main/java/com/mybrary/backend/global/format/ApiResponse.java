@@ -12,10 +12,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
 
+@Component
 public class ApiResponse {
 
     private static final String STATUS_SUCCESS = "SUCCESS";
