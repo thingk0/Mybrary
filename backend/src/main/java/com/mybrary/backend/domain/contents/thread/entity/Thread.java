@@ -10,14 +10,15 @@ import lombok.Setter;
 @Setter
 @Getter
 @NoArgsConstructor
+@Table(name = "threads")
 public class Thread {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id")
+  private long id;
 
-    private long mybraryId; //임시로 이렇게 만들어놓음
+  private long mybraryId; //임시로 이렇게 만들어놓음
 
 
 }
