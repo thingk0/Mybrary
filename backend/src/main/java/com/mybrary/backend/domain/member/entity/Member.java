@@ -27,48 +27,53 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Member extends BaseEntity {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "member_id")
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "member_id")
+    private Long id;
 
-  @Column(unique = true)
-  private String email;
+    @Column(unique = true)
+    private String email;
 
-  @OneToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "image_id")
-  private Image profileImage;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "image_id")
+    private Image profileImage;
 
-  private String name;
-  private String nickname;
-  private String password;
-  private String intro;
-  private boolean isProfilePublic;
-  private boolean isNotifyEnabled;
+    private String name;
 
-  // Follow
-  @OneToMany(mappedBy = "following")
-  private List<Follow> followingList;
-  @OneToMany(mappedBy = "follower")
-  private List<Follow> followerList;
+    private String nickname;
 
-  // Notification
-  @OneToMany(mappedBy = "sender")
-  private List<Notification> sendList;
-  @OneToMany(mappedBy = "receiver")
-  private List<Notification> receiveList;
+    private String password;
 
-  // ChatJoin
-  @OneToMany(mappedBy = "joinMember")
-  private List<ChatJoin> chatJoinList;
+    private String intro;
 
-  // ChatMessage
-  @OneToMany(mappedBy = "receiver")
-  private List<ChatMessage> messageList;
+    private boolean isProfilePublic;
 
-  // Like
-  @OneToMany(mappedBy = "member")
-  private List<Like> likeList;
+    private boolean isNotifyEnabled;
+
+    // Follow
+    @OneToMany(mappedBy = "following")
+    private List<Follow> followingList;
+    @OneToMany(mappedBy = "follower")
+    private List<Follow> followerList;
+
+    // Notification
+    @OneToMany(mappedBy = "sender")
+    private List<Notification> sendList;
+    @OneToMany(mappedBy = "receiver")
+    private List<Notification> receiveList;
+
+    // ChatJoin
+    @OneToMany(mappedBy = "joinMember")
+    private List<ChatJoin> chatJoinList;
+
+    // ChatMessage
+    @OneToMany(mappedBy = "receiver")
+    private List<ChatMessage> messageList;
+
+    // Like
+    @OneToMany(mappedBy = "member")
+    private List<Like> likeList;
 
 
 }

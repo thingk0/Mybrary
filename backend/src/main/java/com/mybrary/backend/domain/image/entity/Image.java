@@ -19,16 +19,21 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Image extends BaseEntity {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "image_id")
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "image_id")
+    private Long id;
 
-  private String originUrl;
-  private String thumbnailUrl;
-  private String name;
-  private String originName;
-  private String format;
-  private double size;
+    private String originUrl;
+
+    private String thumbnailUrl;
+
+    private String name;
+
+    private String originName;
+
+    private String format;
+
+    private double size;
 
 }
