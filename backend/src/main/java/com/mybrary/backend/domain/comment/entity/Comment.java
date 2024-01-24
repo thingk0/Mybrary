@@ -38,7 +38,7 @@ public class Comment {
     private Member member;
 
     @ManyToOne
-    @JoinColumn(name = "comment_id")
+    @JoinColumn(name = "parent_comment_id")
     private Comment parentComment;
 
     /*
@@ -46,7 +46,6 @@ public class Comment {
     * */
 
     @OneToMany
-    @JoinColumn(name = "comment_id")
     private List<Comment> childComments = new ArrayList<Comment>();
 
     private String content;

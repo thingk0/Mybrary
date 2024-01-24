@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "Category 컨트롤러", description = "Category Controller API")
 @RestController
-@RequestMapping("/api/v1/category")
+@RequestMapping("/api/v1/comment")
 public class CommentControllerV1 {
 
     @Operation(summary = "댓글 생성", description = "페이퍼에 대한 댓글 생성")
