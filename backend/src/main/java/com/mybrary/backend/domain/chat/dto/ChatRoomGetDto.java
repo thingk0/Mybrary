@@ -1,6 +1,6 @@
 package com.mybrary.backend.domain.chat.dto;
 
-import com.mybrary.backend.domain.member.dto.MemberGetDto;
+import com.mybrary.backend.domain.member.dto.MemberResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +15,7 @@ import lombok.Setter;
 public class ChatRoomGetDto {
 
     private Long chatRoomId;
-    private MemberGetDto joinMember;
+    private MemberResponseDto joinMember;
     private String recentMessage;
     private int newMessageCount;
 
