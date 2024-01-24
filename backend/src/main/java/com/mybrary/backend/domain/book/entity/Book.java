@@ -32,7 +32,7 @@ public class Book {
 
     private String coverFont;
 
-    private String coverTile;
+    private String coverTitle;
 
 }
 
