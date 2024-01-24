@@ -31,13 +31,4 @@ public class PaperControllerV1{
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @Operation(summary = "페이퍼 댓글 조회", description = "페이퍼 아이디를 통한 페이퍼의 댓글 조회")
-    @GetMapping("/{paperid}/comments")
-    public ResponseEntity<?> getPaperComments(
-        @PathVariable(name = "paperid") String paperId) {
-
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-
 }

@@ -41,7 +41,7 @@ public class ThreadControllerV1 {
     @Operation(summary = "쓰레드 수정", description = "쓰레드 수정")
     @PutMapping("/{id}")
     public ResponseEntity<?> updateThread(@RequestBody String test,
-                                          @PathVariable(name = "id") String paperId) {
+                                          @PathVariable(name = "id") String threadId) {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

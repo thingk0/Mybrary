@@ -96,8 +96,9 @@ public class MemberControllerV1 {
     }
 
     @Operation(summary = "프로필 수정", description = "닉네임, 프로필이미지, 소개 수정")
-    @PutMapping("/profile")
-    public ResponseEntity<?> updateProfile(@RequestBody Member member) {
+    @PutMapping("{id}/profile")
+    public ResponseEntity<?> updateProfile(@PathVariable(name = "id") Long memberId,
+                                           @RequestBody Member member) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
