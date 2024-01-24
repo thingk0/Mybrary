@@ -22,7 +22,7 @@ public class PaperControllerV1{
     private PaperServiceImpl paperService;
 
     @Operation(summary = "페이퍼 스크랩", description = "페이퍼 스크랩")
-    @GetMapping("/{paperid}/scrap")
+    @PostMapping("/{paperid}/scrap")
     public ResponseEntity<?> scrapPaper(
         @PathVariable(name = "paperid") String paperId) {
 
