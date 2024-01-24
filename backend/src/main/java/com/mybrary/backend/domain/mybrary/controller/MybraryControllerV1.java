@@ -24,9 +24,9 @@ public class MybraryControllerV1 {
     }
 
     @Operation(summary = "타인의 마이브러리 조회", description = "회원 아이디를 통한 회원의 마이브러리 정보 조회")
-    @GetMapping("/{memberid}")
-    public ResponseEntity<?> getMybraryById(
-        @PathVariable(name = "memberid") long memberId) {
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getOtherMybrary(
+        @PathVariable(name = "id") Long memberId) {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

@@ -3,6 +3,8 @@ package com.mybrary.backend.domain.contents.thread.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,10 +22,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/thread")
 public class ThreadControllerV1 {
 
+
     @Operation(summary = "쓰레드 조회", description = "쓰레드 아이디를 통한 쓰레드 조회")
-    @GetMapping("/{threadid}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> getThread(
-        @PathVariable(name = "threadid") long threadId) {
+        @PathVariable(name = "id") Long threadId) {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -36,16 +39,16 @@ public class ThreadControllerV1 {
     }
 
     @Operation(summary = "쓰레드 수정", description = "쓰레드 수정")
-    @PutMapping
-    public ResponseEntity<?> updateThread(@RequestBody String test) {
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateThread(@RequestBody String test,
+                                          @PathVariable(name = "id") String paperId) {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Operation(summary = "쓰레드 삭제", description = "쓰레드 아이디를 통한 쓰레드 삭제")
-    @DeleteMapping("/{threadid}")
-    public ResponseEntity<?> deleteThread(
-        @PathVariable(name = "threadid") long threadId) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteThread(@PathVariable(name = "id") Long threadId) {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -53,7 +56,7 @@ public class ThreadControllerV1 {
     @Operation(summary = "메인홈 쓰레드 조회", description = "메인홈에서의 쓰레드 목록 조회")
     @GetMapping("/home")
     public ResponseEntity<?> getMainThreadList(
-        @RequestParam(name = "page") int pageNum) {
+        @RequestParam @PageableDefault(page = 0, size = 10) Pageable page) {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -67,10 +70,9 @@ public class ThreadControllerV1 {
     }
 
     @Operation(summary = "특정 회원의 쓰레드 조회", description = "회원 아이디를 통한 특정 회원의 마이브러리 책상에서의 쓰레드 목록 조회")
-    @GetMapping("/desk")
-    public ResponseEntity<?> getThreadListById(
-        @RequestParam(name = "page") int pageNum,
-        @RequestParam(name = "mybraryid") Long mybraryId) {
+    @GetMapping("/{id}/desk")
+    public ResponseEntity<?> getOtherThreadList(@PathVariable(name = "id") Long mybraryId,
+                                                @RequestParam @PageableDefault(page = 0, size = 10) Pageable page) {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

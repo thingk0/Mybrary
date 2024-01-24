@@ -13,12 +13,13 @@ public class CategoryControllerV1 {
 
     @Operation(summary = "카테고리 조회", description = "책장 아이디를 통한 카테고리 목록 조회")
     @GetMapping
-    public ResponseEntity<?> getCategoriesById(@RequestParam(name = "bookshelf-id") Long bookshelfId) {
+    public ResponseEntity<?> getCategoriesById(
+        @RequestParam(name = "bookshelf-id") Long bookshelfId) {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-//    이건 Book 도메인 내에 들어가야 하는게 더 어룰리는것 같긴 함
+    //    이건 Book 도메인 내에 들어가야 하는게 더 어룰리는것 같긴 함
     @Operation(summary = "책 조회", description = "카테고리 아이디를 통한 책 목록 조회")
     @GetMapping("/category/{categoryId}")
     public ResponseEntity<?> getBooksByCategoryId(@PathVariable Long categoryId) {
