@@ -110,7 +110,7 @@ public class MemberControllerV1 {
     }
 
     @Operation(summary = "프로필 수정", description = "닉네임, 프로필이미지, 소개 수정")
-    @PutMapping("{id}/profile")
+    @PutMapping("/profile")
     public ResponseEntity<?> updateProfile(@RequestBody MemberUpdateDto member) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -129,31 +129,31 @@ public class MemberControllerV1 {
 
     @Operation(summary = "특정회원의 팔로잉 리스트", description = "특정회원의 팔로잉 리스트")
     @GetMapping("/{id}/followings")
-    public ResponseEntity<?> getAllFollowing(@PathVariable Long id) {
+    public ResponseEntity<?> getAllFollowing(@PathVariable(name = "id") Long memberId) {
         return new ResponseEntity<List<FollowingDto>>(HttpStatus.OK);
     }
 
     @Operation(summary = "특정회원의 팔로워 리스트", description = "특정회원의 팔로워 리스트")
     @GetMapping("/{id}/followers")
-    public ResponseEntity<?> getAllFollower(@PathVariable Long id) {
+    public ResponseEntity<?> getAllFollower(@PathVariable(name = "id") Long memberId) {
         return new ResponseEntity<List<FollowerDto>>(HttpStatus.OK);
     }
 
     @Operation(summary = "팔로우하기", description = "특정회원을 팔로우하기")
     @PostMapping("/{id}/follow")
-    public ResponseEntity<?> follow(@PathVariable Long id) {
+    public ResponseEntity<?> follow(@PathVariable(name = "id") Long memberId) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Operation(summary = "언팔로우하기", description = "특정회원을 언팔로우하기")
     @DeleteMapping("/{id}/unfollow")
-    public ResponseEntity<?> unfollow(@PathVariable Long id) {
+    public ResponseEntity<?> unfollow(@PathVariable(name = "id") Long memberId) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Operation(summary = "팔로워끊기", description = "특정회원이 나를 팔로우한 것을 끊기")
     @DeleteMapping("/{id}/follower")
-    public ResponseEntity<?> deleteFollower(@PathVariable Long id) {
+    public ResponseEntity<?> deleteFollower(@PathVariable(name = "id") Long memberId) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

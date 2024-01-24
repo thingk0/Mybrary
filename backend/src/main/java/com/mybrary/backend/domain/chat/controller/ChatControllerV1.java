@@ -34,14 +34,14 @@ public class ChatControllerV1 {
     }
 
     @Operation(summary = "채팅방 나가기", description = "채팅방 나가기 (채팅참여 삭제처리)")
-    @DeleteMapping
-    public ResponseEntity<?> deleteChatRoom() {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteChatRoom(@PathVariable(name = "id") Long chatRoomId) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Operation(summary = "채팅방의 메세지 리스트 조회", description = "채팅방의 메세지 리스트 조회")
-    @GetMapping("/{chatRoomId}/message")
-    public ResponseEntity<?> getAllChatList(@PathVariable Long chatRoomId) {
+    @GetMapping("/{id}/message")
+    public ResponseEntity<?> getAllChatList(@PathVariable(name = "id") Long chatRoomId) {
         return new ResponseEntity<List<ChatMessageGetDto>>(HttpStatus.OK);
     }
 
@@ -52,8 +52,8 @@ public class ChatControllerV1 {
     }
 
     @Operation(summary = "채팅 메세지 보내기", description = "채팅 메세지 보내기")
-    @PostMapping("/{chatRoomId}/message")
-    public ResponseEntity<?> createChat(@PathVariable Long chatRoomId, @RequestBody ChatMessage message) {
+    @PostMapping("/{id}/message")
+    public ResponseEntity<?> createChat(@PathVariable(name = "id") Long chatRoomId, @RequestBody ChatMessage message) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
