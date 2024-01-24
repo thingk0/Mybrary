@@ -6,18 +6,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MemberGetDto {
+public class MemberUpdateDto {
 
     private Long memberId;
-    private String name;
     private String nickname;
     private String intro;
     private String profileImageUrl;
-    private boolean isProfilePublic;
-    private boolean isNotifyEnabled;
 
 }

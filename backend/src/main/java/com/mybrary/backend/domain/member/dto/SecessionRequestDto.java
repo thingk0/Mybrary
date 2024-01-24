@@ -11,14 +11,12 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MemberPutDto {
+public class SecessionRequestDto {
 
-    private Long memberId;
-    private String name;
-    private String nickname;
-    private String intro;
-    private String profileImageUrl;
-    private boolean isProfilePublic;
-    private boolean isNotifyEnabled;
+    private String email;
+    private String password;
+    private String passwordConfirm;
+    private boolean confirmation;
+    private String feedback;
 
 }

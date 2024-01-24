@@ -6,16 +6,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MemberPostDto {
+public class FollowingDto {
 
-    private String email;
-    private String password;
-    private String passwordConfirm;
+    private String memberId;
     private String name;
     private String nickname;
+    private String profileImageUrl;
+    private boolean isFollowed;
 
 }
