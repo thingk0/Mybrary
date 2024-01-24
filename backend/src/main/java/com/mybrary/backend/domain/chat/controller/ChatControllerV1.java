@@ -1,8 +1,11 @@
 package com.mybrary.backend.domain.chat.controller;
 
 import com.mybrary.backend.domain.chat.chat_message.entity.ChatMessage;
+import com.mybrary.backend.domain.chat.dto.ChatMessageGetDto;
+import com.mybrary.backend.domain.chat.dto.ChatRoomGetDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,7 +24,7 @@ public class ChatControllerV1 {
 
     @Operation(summary = "채팅방 리스트 조회", description = "자신의 채팅방 리스트 조회")
     @GetMapping
-    public ResponseEntity<?> getAllChatRoomList() {
+    public ResponseEntity<List<ChatRoomGetDto>> getAllChatRoomList() {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -34,13 +37,13 @@ public class ChatControllerV1 {
     @Operation(summary = "채팅방의 메세지 리스트 조회", description = "채팅방의 메세지 리스트 조회")
     @GetMapping("/{chatRoomId}/message")
     public ResponseEntity<?> getAllChatList(@PathVariable Long chatRoomId) {
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<List<ChatMessageGetDto>>(HttpStatus.OK);
     }
 
     @Operation(summary = "채팅방이 없는 사람과의 메세지 리스트 조회", description = "한번도 안했으면 리스트가 비어있고, 채팅방을 나간거면 리스트가 있음")
     @GetMapping("/message")
     public ResponseEntity<?> enterChatRoom(@RequestParam Long memberId) {
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<List<ChatMessageGetDto>>(HttpStatus.OK);
     }
 
     @Operation(summary = "채팅 메세지 보내기", description = "채팅 메세지 보내기")

@@ -34,7 +34,7 @@ public class Notification extends BaseEntity {
     @JoinColumn(name = "receiver_id")
     private Member receiver;
 
-    private int targetType;
+    private int notifyType;
 
     private boolean isRead;
 
