@@ -1,10 +1,12 @@
 package com.mybrary.backend.domain.image.controller;
 
 import com.mybrary.backend.domain.image.entity.Image;
+import com.mybrary.backend.domain.image.service.ImageServiceImpl;
 import com.mybrary.backend.domain.member.entity.Member;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +20,9 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/api/v1/image")
 public class ImageControllerV1 {
+
+    @Autowired
+    private ImageServiceImpl imageService;
 
     @Operation(summary = "이미지 업로드", description = "이미지 업로드")
     @PostMapping
