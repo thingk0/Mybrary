@@ -1,7 +1,9 @@
 package com.mybrary.backend.domain.book.controller;
 
+import com.mybrary.backend.domain.book.service.BookServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +12,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/v1/book")
 public class BookControllerV1 {
+
+    @Autowired
+    private BookServiceImpl bookService;
 
     @Operation(summary = "나의 책 목록 조회", description = "나의 책 목록 조회")
     @GetMapping

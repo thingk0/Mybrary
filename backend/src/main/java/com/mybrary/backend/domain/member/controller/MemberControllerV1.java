@@ -9,7 +9,11 @@ import com.mybrary.backend.domain.member.dto.MyFollowingDto;
 import com.mybrary.backend.domain.member.dto.PasswordUpdateDto;
 import com.mybrary.backend.domain.member.dto.SecessionRequestDto;
 import com.mybrary.backend.domain.member.dto.SignupRequestDto;
+<<<<<<< Updated upstream
 import com.mybrary.backend.domain.member.entity.Member;
+=======
+import com.mybrary.backend.domain.member.service.MemberServiceImpl;
+>>>>>>> Stashed changes
 import com.mybrary.backend.global.format.ApiResponse;
 import com.mybrary.backend.global.format.ResponseCode;
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,6 +21,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -37,6 +42,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberControllerV1 {
 
     private final ApiResponse apiResponse;
+
+    @Autowired
+    private MemberServiceImpl memberService;
 
     @Operation(summary = "일반 회원가입", description = "일반 회원가입")
     @PostMapping

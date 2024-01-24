@@ -1,7 +1,9 @@
 package com.mybrary.backend.domain.notification.controller;
 
+import com.mybrary.backend.domain.notification.service.NotificationServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,6 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/notification")
 public class NotificationControllerV1 {
+
+    @Autowired
+    private NotificationServiceImpl notificationService;
 
     @Operation(summary = "나의 알림 조회", description = "알림 조회")
     @GetMapping

@@ -1,8 +1,10 @@
 package com.mybrary.backend.domain.contents.thread.controller;
 
 
+import com.mybrary.backend.domain.contents.thread.service.ThreadServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -22,6 +24,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/thread")
 public class ThreadControllerV1 {
 
+    @Autowired
+    private ThreadServiceImpl threadService;
 
     @Operation(summary = "쓰레드 조회", description = "쓰레드 아이디를 통한 쓰레드 조회")
     @GetMapping("/{id}")

@@ -1,7 +1,9 @@
 package com.mybrary.backend.domain.category.controller;
 
+import com.mybrary.backend.domain.category.service.CategoryServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +12,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/v1/category")
 public class CategoryControllerV1 {
+
+    @Autowired
+    private CategoryServiceImpl categoryService;
 
     @Operation(summary = "카테고리 조회", description = "책장 아이디를 통한 카테고리 목록 조회")
     @GetMapping
