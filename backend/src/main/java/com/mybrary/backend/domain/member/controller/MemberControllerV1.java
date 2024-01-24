@@ -9,11 +9,7 @@ import com.mybrary.backend.domain.member.dto.MyFollowingDto;
 import com.mybrary.backend.domain.member.dto.PasswordUpdateDto;
 import com.mybrary.backend.domain.member.dto.SecessionRequestDto;
 import com.mybrary.backend.domain.member.dto.SignupRequestDto;
-<<<<<<< Updated upstream
-import com.mybrary.backend.domain.member.entity.Member;
-=======
 import com.mybrary.backend.domain.member.service.MemberServiceImpl;
->>>>>>> Stashed changes
 import com.mybrary.backend.global.format.ApiResponse;
 import com.mybrary.backend.global.format.ResponseCode;
 import io.swagger.v3.oas.annotations.Operation;
