@@ -9,6 +9,7 @@ import com.mybrary.backend.domain.member.dto.MyFollowingDto;
 import com.mybrary.backend.domain.member.dto.PasswordUpdateDto;
 import com.mybrary.backend.domain.member.dto.SecessionRequestDto;
 import com.mybrary.backend.domain.member.dto.SignupRequestDto;
+import com.mybrary.backend.domain.member.entity.Member;
 import com.mybrary.backend.global.format.ApiResponse;
 import com.mybrary.backend.global.format.ResponseCode;
 import io.swagger.v3.oas.annotations.Operation;
@@ -105,7 +106,7 @@ public class MemberControllerV1 {
     }
 
     @Operation(summary = "프로필 수정", description = "닉네임, 프로필이미지, 소개 수정")
-    @PutMapping("/profile")
+    @PutMapping("{id}/profile")
     public ResponseEntity<?> updateProfile(@RequestBody MemberUpdateDto member) {
         return new ResponseEntity<>(HttpStatus.OK);
     }

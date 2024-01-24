@@ -39,8 +39,8 @@ public class MybraryControllerV1 {
     }
 
     @Operation(summary = "마이브러리 수정", description = "마이브러리 정보 수정")
-    @PutMapping
-    public ResponseEntity<?> updateMybrary() {
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateMybrary(@PathVariable(name = "id") Long mybraryId) {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

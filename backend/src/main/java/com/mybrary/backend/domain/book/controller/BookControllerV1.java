@@ -25,36 +25,43 @@ public class BookControllerV1 {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @Operation(summary = "북마크 생성", description = "책에 대한 북마크 정보 생성")
+    @PostMapping("{id}/bookmark")
+    public ResponseEntity<?> createBookmarker(@PathVariable(name = "id") Long bookId) {
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @Operation(summary = "책 정보 조회", description = "책 아이디를 통한 책 정보 조회")
-    @GetMapping("/{bookId}")
-    public ResponseEntity<?> getBook(@PathVariable Long bookId) {
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getBook(@PathVariable(name = "id") Long bookId) {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
     @Operation(summary = "책 수정", description = "책 아이디를 통한 책 정보 수정")
-    @PutMapping("/{bookId}")
-    public ResponseEntity<?> updateBook(@PathVariable Long bookId) {
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateBook(@PathVariable(name = "id") Long bookId) {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Operation(summary = "책 삭제", description = "책 아이디를 통한 책 삭제")
-    @DeleteMapping("/{bookId}")
-    public ResponseEntity<?> deleteBook(@PathVariable Long bookId) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteBook(@PathVariable(name = "id") Long bookId) {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Operation(summary = "책 구독", description = "책 아이디, 카테고리 아이디를 통한 책 구독")
-    @PostMapping("/{bookId}/subscription")
-    public ResponseEntity<?> subscribeBook(@PathVariable Long bookId) {
+    @PostMapping("/{id}/subscription")
+    public ResponseEntity<?> subscribeBook(@PathVariable(name = "id") Long bookId) {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Operation(summary = "책 구독 삭제", description = "책 아이디를 통한 책 구독 취소")
-    @DeleteMapping("/{bookId}/unsubscription")
-    public ResponseEntity<?> unsubscribeBook(@PathVariable Long bookId) {
+    @DeleteMapping("/{id}/unsubscription")
+    public ResponseEntity<?> unsubscribeBook(@PathVariable(name = "id") Long bookId) {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
