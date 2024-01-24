@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,8 +27,8 @@ public class NotificationControllerV1 {
     }
 
     @Operation(summary = "알림 삭제", description = "알림 삭제")
-    @DeleteMapping
-    public ResponseEntity<?> deleteNotification() {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteNotification(@PathVariable(name = "id") Long notifyId) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
