@@ -40,13 +40,13 @@ public class CategoryControllerV1 {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
     @Operation(summary = "카테고리 삭제", description = "카테고리 아이디를 통한 카테고리 삭제")
-    @Dele                                                                                                                                                                                                      teMapping("/{categoryId}")
-    public ResponseEntity<?> deleteCategory(@PathVariable Long categoryId) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteCategory(@PathVariable(name = "id") Long categoryId) {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
 
 
 }
