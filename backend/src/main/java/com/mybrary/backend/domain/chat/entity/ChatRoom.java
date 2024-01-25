@@ -1,8 +1,6 @@
-package com.mybrary.backend.domain.chat.chat_room.entity;
+package com.mybrary.backend.domain.chat.entity;
 
 import com.mybrary.backend.domain.base.BaseEntity;
-import com.mybrary.backend.domain.chat.chat_join.entity.ChatJoin;
-import com.mybrary.backend.domain.chat.chat_message.entity.ChatMessage;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

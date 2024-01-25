@@ -1,8 +1,8 @@
 package com.mybrary.backend.domain.member.entity;
 
 import com.mybrary.backend.domain.base.BaseEntity;
-import com.mybrary.backend.domain.chat.chat_join.entity.ChatJoin;
-import com.mybrary.backend.domain.chat.chat_message.entity.ChatMessage;
+import com.mybrary.backend.domain.chat.entity.ChatJoin;
+import com.mybrary.backend.domain.chat.entity.ChatMessage;
 import com.mybrary.backend.domain.follow.entity.Follow;
 import com.mybrary.backend.domain.image.entity.Image;
 import com.mybrary.backend.domain.contents.like.entity.Like;
