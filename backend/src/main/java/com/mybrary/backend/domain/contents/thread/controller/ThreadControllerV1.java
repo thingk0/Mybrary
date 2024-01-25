@@ -1,16 +1,16 @@
 package com.mybrary.backend.domain.contents.thread.controller;
 
 
-import com.mybrary.backend.domain.contents.paper.dto.HomePaperGetDto;
 import com.mybrary.backend.domain.contents.thread.dto.HomeThreadGetDto;
 import com.mybrary.backend.domain.contents.thread.dto.ThreadGetDto;
 import com.mybrary.backend.domain.contents.thread.dto.ThreadPostDto;
 import com.mybrary.backend.domain.contents.thread.dto.ThreadUpdateDto;
-import com.mybrary.backend.domain.contents.thread.service.ThreadServiceImpl;
+import com.mybrary.backend.domain.contents.thread.service.ThreadService;
+import com.mybrary.backend.domain.contents.thread.service.impl.ThreadServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -22,16 +22,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "Thread 컨트롤러", description = "Thread Controller API")
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/v1/thread")
 public class ThreadControllerV1 {
 
-    @Autowired
-    private ThreadServiceImpl threadService;
+    private final ThreadService threadService;
 
     @Operation(summary = "쓰레드 단건 조회", description = "쓰레드 아이디를 통한 쓰레드 조회")
     @GetMapping("/{id}")

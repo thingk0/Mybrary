@@ -1,7 +1,6 @@
 package com.mybrary.backend.domain.search.controller;
 
 import com.mybrary.backend.domain.book.dto.BookGetDto;
-import com.mybrary.backend.domain.contents.thread.dto.HomeThreadGetDto;
 import com.mybrary.backend.domain.contents.thread.dto.ThreadSimpleGetDto;
 import com.mybrary.backend.domain.member.dto.MemberGetDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -62,6 +61,5 @@ public class SearchControllerV1 {
 
         return new ResponseEntity<List<MemberGetDto>>(HttpStatus.OK);
     }
-
 
 }

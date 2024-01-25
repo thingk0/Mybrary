@@ -9,7 +9,7 @@ import com.mybrary.backend.domain.member.dto.MyFollowingDto;
 import com.mybrary.backend.domain.member.dto.PasswordUpdateDto;
 import com.mybrary.backend.domain.member.dto.SecessionRequestDto;
 import com.mybrary.backend.domain.member.dto.SignupRequestDto;
-import com.mybrary.backend.domain.member.service.MemberServiceImpl;
+import com.mybrary.backend.domain.member.service.MemberService;
 import com.mybrary.backend.global.format.ApiResponse;
 import com.mybrary.backend.global.format.ResponseCode;
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,7 +17,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -37,10 +36,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/member")
 public class MemberControllerV1 {
 
-    private final ApiResponse apiResponse;
-
-    @Autowired
-    private MemberServiceImpl memberService;
+    private final ApiResponse response;
+    private final MemberService memberService;
 
     @Operation(summary = "일반 회원가입", description = "일반 회원가입")
     @PostMapping
@@ -48,17 +45,17 @@ public class MemberControllerV1 {
                                     BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
-            return apiResponse.fail(bindingResult.getAllErrors());
+            return response.fail(bindingResult);
         }
 
-        return apiResponse.success(ResponseCode.MEMBER_SIGNUP_SUCCESS.getMessage(), requestDto);
+        return response.success(ResponseCode.MEMBER_SIGNUP_SUCCESS.getMessage(), requestDto);
     }
 
     @Operation(summary = "소셜 회원가입", description = "소셜 회원가입")
     @PostMapping("/social")
     public ResponseEntity<?> signupBySocial(@Valid @RequestBody SignupRequestDto requestDto,
                                             BindingResult bindingResult) {
-        return new ResponseEntity<>(HttpStatus.OK);
+        return response.success(ResponseCode.MEMBER_SIGNUP_SUCCESS.getMessage());
     }
 
     @Operation(summary = "이메일 인증 요청", description = "이메일 주소 보내고 인증코드를 메일로 보내는 요청")
