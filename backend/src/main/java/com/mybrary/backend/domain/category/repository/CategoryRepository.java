@@ -1,8 +1,7 @@
 package com.mybrary.backend.domain.category.repository;
 
-import com.mybrary.backend.domain.member.entity.Member;
+import com.mybrary.backend.domain.category.entity.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface CategoryRepository extends JpaRepository<Member, Long> {
-
+public interface CategoryRepository extends JpaRepository<Category, Long> {
 }
