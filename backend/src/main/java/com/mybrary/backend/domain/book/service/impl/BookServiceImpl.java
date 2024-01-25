@@ -1,9 +1,9 @@
-package com.mybrary.backend.domain.category.service;
+package com.mybrary.backend.domain.book.service.impl;
 
 import com.mybrary.backend.domain.book.service.BookService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CategoryServiceImpl implements BookService {
+public class BookServiceImpl implements BookService {
 
 }
