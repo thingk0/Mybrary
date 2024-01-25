@@ -3,11 +3,8 @@ package com.mybrary.backend.domain.book.controller;
 import com.mybrary.backend.domain.book.dto.BookPostDto;
 import com.mybrary.backend.domain.book.dto.BookSubscribeDto;
 import com.mybrary.backend.domain.book.dto.BookUpdateDto;
-<<<<<<< Updated upstream
 import com.mybrary.backend.domain.book.service.BookService;
-=======
 import com.mybrary.backend.domain.book.dto.MyBookGetDto;
->>>>>>> Stashed changes
 import com.mybrary.backend.domain.bookmarker.dto.BookMarkerPostDto;
 import com.mybrary.backend.domain.category.dto.MyCategoryGetDto;
 import com.mybrary.backend.domain.contents.paper.dto.PaperInBookGetDto;

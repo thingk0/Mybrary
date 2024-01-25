@@ -4,12 +4,7 @@ import com.mybrary.backend.domain.book.dto.BookGetDto;
 import com.mybrary.backend.domain.category.dto.CategoryGetDto;
 import com.mybrary.backend.domain.category.dto.CategoryPostDto;
 import com.mybrary.backend.domain.category.dto.CategoryUpdateDto;
-<<<<<<< Updated upstream
 import com.mybrary.backend.domain.category.service.CategoryService;
-=======
-import com.mybrary.backend.domain.category.service.CategoryServiceImpl;
-import com.mybrary.backend.domain.member.dto.MemberInfoDto;
->>>>>>> Stashed changes
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.ArrayList;
