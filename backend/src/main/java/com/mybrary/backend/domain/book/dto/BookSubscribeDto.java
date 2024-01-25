@@ -1,4 +1,4 @@
-package com.mybrary.backend.domain.member.dto;
+package com.mybrary.backend.domain.book.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,13 +11,14 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class LoginRequestDto {
+public class BookSubscribeDto {
 
     /**
-     *  로그인 요청
+     *  책 구독 요청 request
+     *
      */
 
-    private String email;
-    private String password;
+    private Long bookId;
+    private Long categoryId;
 
 }

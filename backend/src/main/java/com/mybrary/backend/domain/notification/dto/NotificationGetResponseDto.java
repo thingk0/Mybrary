@@ -1,6 +1,6 @@
 package com.mybrary.backend.domain.notification.dto;
 
-import com.mybrary.backend.domain.member.dto.MemberResponseDto;
+import com.mybrary.backend.domain.member.dto.MemberInfoDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,8 +14,13 @@ import lombok.Setter;
 @Builder
 public class NotificationGetResponseDto {
 
+    /**
+     *  알림 조회
+     *  List로 반환
+     */
+
     private Long notifyId;
-    private MemberResponseDto receiver;
+    private MemberInfoDto receiver;
     private int notifyType;
     private Long bookId;
     private String bookName;

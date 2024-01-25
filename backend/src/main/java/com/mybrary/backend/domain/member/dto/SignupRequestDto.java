@@ -14,6 +14,10 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class SignupRequestDto {
 
+    /**
+     *  회원가입 요청
+     */
+
     @Email(message = "유효한 이메일 주소를 입력해야 합니다.")
     @NotEmpty(message = "이메일은 비워둘 수 없습니다.")
     private String email;

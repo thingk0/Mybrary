@@ -6,20 +6,24 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
-@Setter
+@Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MyFollowingDto {
+public class MemberGetDto {
 
     /**
-     *  나의 팔로잉 목록 조회
+     *  회원 정보 조회
+     *  MemberInfoDto와 이메일, 이름, 설졍 정보까지 들어있음
      */
 
-    private String memberId;
+    private Long memberId;
+    private String email;
     private String name;
     private String nickname;
+    private String intro;
     private String profileImageUrl;
+    private boolean isProfilePublic;
+    private boolean isNotifyEnabled;
 
 }

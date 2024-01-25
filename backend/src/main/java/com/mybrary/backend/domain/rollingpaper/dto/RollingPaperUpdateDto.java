@@ -12,9 +12,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class RollingpaperDto {
+public class RollingPaperUpdateDto {
 
-    private Long rollingpaperId;
+    private Long rollingPaperId;
     private Long mybraryId;
     private ImagePostDto image;
 

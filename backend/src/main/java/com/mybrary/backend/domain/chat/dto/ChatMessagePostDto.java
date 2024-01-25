@@ -1,5 +1,6 @@
 package com.mybrary.backend.domain.chat.dto;
 
+import com.mybrary.backend.domain.contents.thread.dto.ThreadSimpleGetDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,8 +14,13 @@ import lombok.Setter;
 @Builder
 public class ChatMessagePostDto {
 
+    /**
+     *  채팅 보낼 때 요청
+     *  message or threadId 둘 중 하나만 데이터 있고 나머지는 null
+     */
+
     private Long chatRoomId;
     private String message;
-//    private Thread thread; // Thread의 Dto로 바꿔야함
+    private Long threadId;
 
 }

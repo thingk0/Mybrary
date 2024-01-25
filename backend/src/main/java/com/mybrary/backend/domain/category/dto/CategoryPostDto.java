@@ -1,4 +1,4 @@
-package com.mybrary.backend.domain.member.dto;
+package com.mybrary.backend.domain.category.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,15 +11,14 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MyFollowingDto {
+public class CategoryPostDto {
 
     /**
-     *  나의 팔로잉 목록 조회
+     *  새 카테고리를 추가할 때 요청
+     *
      */
 
-    private String memberId;
+    private Long bookShelfId;
     private String name;
-    private String nickname;
-    private String profileImageUrl;
 
 }

@@ -1,5 +1,8 @@
 package com.mybrary.backend.domain.mybrary.controller;
 
+import com.mybrary.backend.domain.mybrary.dto.MybraryGetDto;
+import com.mybrary.backend.domain.mybrary.dto.MybraryOtherGetDto;
+import com.mybrary.backend.domain.mybrary.dto.MybraryUpdateDto;
 import com.mybrary.backend.domain.mybrary.service.MybraryServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -10,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,7 +29,7 @@ public class MybraryControllerV1 {
     @GetMapping
     public ResponseEntity<?> getMybrary() {
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<MybraryGetDto>(HttpStatus.OK);
     }
 
     @Operation(summary = "타인의 마이브러리 조회", description = "회원 아이디를 통한 회원의 마이브러리 정보 조회")
@@ -33,21 +37,14 @@ public class MybraryControllerV1 {
     public ResponseEntity<?> getOtherMybrary(
         @PathVariable(name = "id") Long memberId) {
 
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @Operation(summary = "마이브러리 생성", description = "마이브러리 생성")
-    @PostMapping
-    public ResponseEntity<?> createMybrary() {
-
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<MybraryOtherGetDto>(HttpStatus.OK);
     }
 
     @Operation(summary = "마이브러리 수정", description = "마이브러리 정보 수정")
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateMybrary(@PathVariable(name = "id") Long mybraryId) {
+    @PutMapping
+    public ResponseEntity<?> updateMybrary(@RequestBody MybraryUpdateDto mybrary) {
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<Long>(HttpStatus.OK);
     }
 
 

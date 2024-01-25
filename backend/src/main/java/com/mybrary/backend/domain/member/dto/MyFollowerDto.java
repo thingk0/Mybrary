@@ -13,6 +13,11 @@ import lombok.Setter;
 @Builder
 public class MyFollowerDto {
 
+    /**
+     *  나의 팔로워 목록 조회
+     *  isFollowed - 내가 팔로우 했는지 여부 포함
+     */
+
     private String memberId;
     private String name;
     private String nickname;

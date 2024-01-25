@@ -11,12 +11,13 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ImagePostDto {
+public class ImageUpdateDto {
 
     /**
-     *  이미지 업로드 요청
+     *  이미지 수정 요청
      */
 
+    private Long imageId;
     private String name;
     private String originName;
     private String url;

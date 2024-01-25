@@ -13,6 +13,10 @@ import lombok.Setter;
 @Builder
 public class MemberUpdateDto {
 
+    /**
+     *  회원정보 수정 요청
+     */
+
     private Long memberId;
     private String nickname;
     private String intro;
