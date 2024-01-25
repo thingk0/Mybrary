@@ -3,25 +3,25 @@ package com.mybrary.backend.domain.book.controller;
 import com.mybrary.backend.domain.book.dto.BookPostDto;
 import com.mybrary.backend.domain.book.dto.BookSubscribeDto;
 import com.mybrary.backend.domain.book.dto.BookUpdateDto;
+import com.mybrary.backend.domain.book.service.BookService;
 import com.mybrary.backend.domain.bookmarker.dto.BookMarkerPostDto;
-import com.mybrary.backend.domain.book.service.BookServiceImpl;
 import com.mybrary.backend.domain.category.dto.MyCategoryGetDto;
 import com.mybrary.backend.domain.contents.paper.dto.PaperInBookGetDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Book 컨트롤러", description = "Book Controller API")
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/v1/book")
 public class BookControllerV1 {
 
-    @Autowired
-    private BookServiceImpl bookService;
+    private final BookService bookService;
 
     @Operation(summary = "나의 책 목록 조회", description = "나의 책 목록 조회")
     @GetMapping("/my")
@@ -50,6 +50,7 @@ public class BookControllerV1 {
 
         return new ResponseEntity<List<PaperInBookGetDto>>(HttpStatus.OK);
     }
+
     @Operation(summary = "책 수정", description = "책 아이디를 통한 책 정보 수정")
     @PutMapping
     public ResponseEntity<?> updateBook(@RequestBody BookUpdateDto book) {
