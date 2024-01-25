@@ -15,6 +15,10 @@ import lombok.Setter;
 @Builder
 public class PasswordUpdateDto {
 
+    /**
+     *  비밀번호 수정 요청
+     */
+
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$])(?=.*\\d).{3,20}$",
              message = "비밀번호는 영문 대소문자, 숫자, 특수문자(!, @, #, $)를 조합하여 3~20자 이내여야 합니다.")
     private String password;

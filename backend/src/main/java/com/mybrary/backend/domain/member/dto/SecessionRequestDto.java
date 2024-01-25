@@ -13,6 +13,10 @@ import lombok.Setter;
 @Builder
 public class SecessionRequestDto {
 
+    /**
+     *  탈퇴 요청
+     */
+
     private String email;
     private String password;
     private String passwordConfirm;

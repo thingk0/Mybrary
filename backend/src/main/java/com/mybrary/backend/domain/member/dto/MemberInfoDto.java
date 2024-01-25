@@ -10,15 +10,17 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MemberResponseDto {
+public class MemberInfoDto {
+
+    /**
+     *  회원 정보 간단 조회
+     *  프로필이미지, 닉네임, 간단소개만 들어있음
+     *  (이메일, 이름 등은 목업을 보니 표시할 일이 없어서 따로 만들었음)
+     */
 
     private Long memberId;
-    private String email;
-    private String name;
     private String nickname;
     private String intro;
     private String profileImageUrl;
-    private boolean isProfilePublic;
-    private boolean isNotifyEnabled;
 
 }

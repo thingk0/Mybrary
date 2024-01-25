@@ -8,6 +8,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -41,19 +43,22 @@ public class ChatControllerV1 {
 
     @Operation(summary = "채팅방의 메세지 리스트 조회", description = "채팅방의 메세지 리스트 조회")
     @GetMapping("/{id}/message")
-    public ResponseEntity<?> getAllChatList(@PathVariable(name = "id") Long chatRoomId) {
+    public ResponseEntity<?> getAllChatList(@PathVariable(name = "id") Long chatRoomId,
+                                            @PageableDefault(page = 0, size = 10) Pageable page) {
         return new ResponseEntity<List<ChatMessageGetDto>>(HttpStatus.OK);
     }
 
-    @Operation(summary = "채팅방이 없는 사람과의 메세지 리스트 조회", description = "한번도 안했으면 리스트가 비어있고, 채팅방을 나간거면 리스트가 있음")
+    @Operation(summary = "회원정보에서 채팅 시작", description = "한번도 안했으면 리스트가 비어있고, 아니면 리스트가 있음")
     @GetMapping("/message")
-    public ResponseEntity<?> enterChatRoom(@RequestParam Long memberId) {
+    public ResponseEntity<?> enterChatRoom(@RequestParam Long memberId,
+                                           @PageableDefault(page = 0, size = 10) Pageable page) {
         return new ResponseEntity<List<ChatMessageGetDto>>(HttpStatus.OK);
     }
 
     @Operation(summary = "채팅 메세지 보내기", description = "채팅 메세지 보내기")
     @PostMapping("/{id}/message")
-    public ResponseEntity<?> createChat(@PathVariable(name = "id") Long chatRoomId, @RequestBody ChatMessage message) {
+    public ResponseEntity<?> createChat(@PathVariable(name = "id") Long chatRoomId,
+                                        @RequestBody ChatMessage message) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

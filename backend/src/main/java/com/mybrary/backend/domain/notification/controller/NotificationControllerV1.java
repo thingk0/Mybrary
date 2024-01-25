@@ -4,6 +4,8 @@ import com.mybrary.backend.domain.notification.service.NotificationServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,7 +24,8 @@ public class NotificationControllerV1 {
 
     @Operation(summary = "나의 알림 조회", description = "알림 조회")
     @GetMapping
-    public ResponseEntity<?> getAllNotification() {
+    public ResponseEntity<?> getAllNotification(
+        @PageableDefault(page = 0, size = 10) Pageable page) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

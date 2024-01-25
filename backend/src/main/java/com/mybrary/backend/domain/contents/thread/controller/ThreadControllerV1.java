@@ -1,9 +1,15 @@
 package com.mybrary.backend.domain.contents.thread.controller;
 
 
+import com.mybrary.backend.domain.contents.paper.dto.HomePaperGetDto;
+import com.mybrary.backend.domain.contents.thread.dto.HomeThreadGetDto;
+import com.mybrary.backend.domain.contents.thread.dto.ThreadGetDto;
+import com.mybrary.backend.domain.contents.thread.dto.ThreadPostDto;
+import com.mybrary.backend.domain.contents.thread.dto.ThreadUpdateDto;
 import com.mybrary.backend.domain.contents.thread.service.ThreadServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -27,25 +33,24 @@ public class ThreadControllerV1 {
     @Autowired
     private ThreadServiceImpl threadService;
 
-    @Operation(summary = "쓰레드 조회", description = "쓰레드 아이디를 통한 쓰레드 조회")
+    @Operation(summary = "쓰레드 단건 조회", description = "쓰레드 아이디를 통한 쓰레드 조회")
     @GetMapping("/{id}")
     public ResponseEntity<?> getThread(
         @PathVariable(name = "id") Long threadId) {
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<HomeThreadGetDto>(HttpStatus.OK);
     }
 
     @Operation(summary = "쓰레드 생성", description = "쓰레드 생성")
     @PostMapping
-    public ResponseEntity<?> createThread(@RequestBody String test) {
+    public ResponseEntity<?> createThread(@RequestBody ThreadPostDto threads) {
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<Long>(HttpStatus.OK);
     }
 
     @Operation(summary = "쓰레드 수정", description = "쓰레드 수정")
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateThread(@RequestBody String test,
-                                          @PathVariable(name = "id") String threadId) {
+    @PutMapping
+    public ResponseEntity<?> updateThread(@RequestBody ThreadUpdateDto threads) {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -60,25 +65,24 @@ public class ThreadControllerV1 {
     @Operation(summary = "메인홈 쓰레드 조회", description = "메인홈에서의 쓰레드 목록 조회")
     @GetMapping("/home")
     public ResponseEntity<?> getMainThreadList(
-        @RequestParam @PageableDefault(page = 0, size = 10) Pageable page) {
+        @PageableDefault(page = 0, size = 10) Pageable page) {
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<List<HomeThreadGetDto>>(HttpStatus.OK);
     }
 
     @Operation(summary = "나의 쓰레드 조회", description = "나의 마이브러리 책상에서의 쓰레드 목록 조회")
     @GetMapping("/desk")
-    public ResponseEntity<?> getMyThreadList(
-        @RequestParam(name = "page") int pageNum) {
+    public ResponseEntity<?> getMyThreadList(@PageableDefault(page = 0, size = 10) Pageable page) {
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<List<ThreadGetDto>>(HttpStatus.OK);
     }
 
     @Operation(summary = "특정 회원의 쓰레드 조회", description = "회원 아이디를 통한 특정 회원의 마이브러리 책상에서의 쓰레드 목록 조회")
     @GetMapping("/{id}/desk")
     public ResponseEntity<?> getOtherThreadList(@PathVariable(name = "id") Long mybraryId,
-                                                @RequestParam @PageableDefault(page = 0, size = 10) Pageable page) {
+                                                @PageableDefault(page = 0, size = 10) Pageable page) {
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<List<HomeThreadGetDto>>(HttpStatus.OK);
     }
 
 
