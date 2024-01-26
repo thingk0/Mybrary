@@ -36,7 +36,7 @@ public class PaperInBookGetDto {
     private String thumbnailImage3Url;
     private String thumbnailImage4Url;
     private List<String> tagList;
-    private List<MemberGetDto> mentionList;
+    private List<MemberInfoDto> mentionList;
     private int likeCount;
     private int commentCount;
     private int scrapCount;
