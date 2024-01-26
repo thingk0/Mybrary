@@ -1,10 +1,6 @@
 package com.mybrary.backend.domain.book.dto;
 
-import com.mybrary.backend.domain.contents.paper.dto.PaperInBookGetDto;
-import com.mybrary.backend.domain.image.dto.ImagePostDto;
-import com.mybrary.backend.domain.member.dto.MemberGetDto;
 import com.mybrary.backend.domain.member.dto.MemberInfoDto;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,7 +23,7 @@ public class BookGetDto {
     private MemberInfoDto writer;
     private String title;
     private String titleFont;
-    private ImagePostDto coverImage;
+    private String coverImageUrl;
     private int coverLayout;
     private int coverColorCode;
     private int bookMarkerIndex;

@@ -37,7 +37,7 @@ public class CommentControllerV1 {
 
     @Operation(summary = "페이퍼 댓글 조회", description = "페이퍼 아이디를 통한 페이퍼의 댓글 조회")
     @GetMapping
-    public ResponseEntity<?> getComments(@RequestParam String paperId) {
+    public ResponseEntity<?> getAllComment(@RequestParam String paperId) {
 
         return new ResponseEntity<List<CommentGetDto>>(HttpStatus.OK);
     }

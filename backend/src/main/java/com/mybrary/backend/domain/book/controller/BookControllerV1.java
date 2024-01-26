@@ -28,7 +28,7 @@ public class BookControllerV1 {
 
     @Operation(summary = "나의 책 목록 조회", description = "나의 책 목록 조회")
     @GetMapping("/my")
-    public ResponseEntity<?> getBooks() {
+    public ResponseEntity<?> getAllBook() {
 
         MyBookGetDto myBook1 = new MyBookGetDto(1L, "부산여행", 17);
         MyBookGetDto myBook2 = new MyBookGetDto(2L, "일본여행", 2);
