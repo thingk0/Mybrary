@@ -48,7 +48,7 @@ public class MemberControllerV1 {
             return response.fail(bindingResult);
         }
 
-        return response.success(ResponseCode.MEMBER_SIGNUP_SUCCESS.getMessage(), requestDto);
+        return response.success(ResponseCode.MEMBER_SIGNUP_SUCCESS.getMessage());
     }
 
     @Operation(summary = "소셜 회원가입", description = "소셜 회원가입")

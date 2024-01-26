@@ -63,7 +63,7 @@ public class ThreadControllerV1 {
 
     @Operation(summary = "메인홈 쓰레드 조회", description = "메인홈에서의 쓰레드 목록 조회")
     @GetMapping("/home")
-    public ResponseEntity<?> getMainThreadList(
+    public ResponseEntity<?> getMainAllThread(
         @PageableDefault(page = 0, size = 10) Pageable page) {
 
         return new ResponseEntity<List<HomeThreadGetDto>>(HttpStatus.OK);
@@ -71,14 +71,14 @@ public class ThreadControllerV1 {
 
     @Operation(summary = "나의 쓰레드 조회", description = "나의 마이브러리 책상에서의 쓰레드 목록 조회")
     @GetMapping("/desk")
-    public ResponseEntity<?> getMyThreadList(@PageableDefault(page = 0, size = 10) Pageable page) {
+    public ResponseEntity<?> getMyAllThread(@PageableDefault(page = 0, size = 10) Pageable page) {
 
         return new ResponseEntity<List<ThreadGetDto>>(HttpStatus.OK);
     }
 
     @Operation(summary = "특정 회원의 쓰레드 조회", description = "회원 아이디를 통한 특정 회원의 마이브러리 책상에서의 쓰레드 목록 조회")
     @GetMapping("/{id}/desk")
-    public ResponseEntity<?> getOtherThreadList(@PathVariable(name = "id") Long mybraryId,
+    public ResponseEntity<?> getOtherAllThread(@PathVariable(name = "id") Long mybraryId,
                                                 @PageableDefault(page = 0, size = 10) Pageable page) {
 
         return new ResponseEntity<List<HomeThreadGetDto>>(HttpStatus.OK);

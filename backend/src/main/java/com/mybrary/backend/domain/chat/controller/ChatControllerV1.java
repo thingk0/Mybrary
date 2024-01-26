@@ -31,7 +31,7 @@ public class ChatControllerV1 {
 
     @Operation(summary = "채팅방 리스트 조회", description = "자신의 채팅방 리스트 조회")
     @GetMapping
-    public ResponseEntity<List<ChatRoomGetDto>> getAllChatRoomList() {
+    public ResponseEntity<List<ChatRoomGetDto>> getAllChatRoom() {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -43,14 +43,14 @@ public class ChatControllerV1 {
 
     @Operation(summary = "채팅방의 메세지 리스트 조회", description = "채팅방의 메세지 리스트 조회")
     @GetMapping("/{id}/message")
-    public ResponseEntity<?> getAllChatList(@PathVariable(name = "id") Long chatRoomId,
+    public ResponseEntity<?> getAllChatByChatRoomId(@PathVariable(name = "id") Long chatRoomId,
                                             @PageableDefault(page = 0, size = 10) Pageable page) {
         return new ResponseEntity<List<ChatMessageGetDto>>(HttpStatus.OK);
     }
 
     @Operation(summary = "회원정보에서 채팅 시작", description = "한번도 안했으면 리스트가 비어있고, 아니면 리스트가 있음")
     @GetMapping("/message")
-    public ResponseEntity<?> enterChatRoom(@RequestParam Long memberId,
+    public ResponseEntity<?> getAllChatByMemberId(@RequestParam Long memberId,
                                            @PageableDefault(page = 0, size = 10) Pageable page) {
         return new ResponseEntity<List<ChatMessageGetDto>>(HttpStatus.OK);
     }
