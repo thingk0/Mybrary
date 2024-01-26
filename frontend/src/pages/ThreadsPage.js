@@ -10,7 +10,6 @@ import 오른쪽 from "../assets/오른쪽.png";
 import 왼쪽 from "../assets/왼쪽.png";
 export default function ThreadsPage() {
   const [groupedData, setGroupedData] = useState(new Map());
-  const [hoverStyle, setHoverStyle] = useState({});
 
   useEffect(() => {
     // 목데이터 생성
@@ -151,11 +150,14 @@ export default function ThreadsPage() {
   }, []);
 
   function Thread({ thread, user }) {
+    const [hoverStyle, setHoverStyle] = useState({});
     // 마우스 위치에 따라 카드가 움직이는 함수
-    const handleMouseMove = (event, threadId) => {
-      const x = event.nativeEvent.offsetX;
-      const y = event.nativeEvent.offsetY;
-      const rotateY = ((-1 / 5) * x + 20) / 3;
+    const handleMouseMove = (e, threadId) => {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      const rotateY = ((-1 / 5) * x + 25) / 3;
       const rotateX = ((4 / 30) * y - 20) / 5;
 
       setHoverStyle({
@@ -163,6 +165,7 @@ export default function ThreadsPage() {
         [threadId]: {
           overlay: {
             backgroundPosition: `${x / 5 + y / 5 + 5}%`,
+            filter: "opacity(0.5)",
           },
           thread: {
             transform: `perspective(350px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`,
@@ -178,11 +181,11 @@ export default function ThreadsPage() {
         ...hoverStyle,
         [threadId]: {
           overlay: {
-            filter: "opacity(1)",
+            filter: "opacity(0)",
           },
           thread: {
             transform: "perspective(350px) rotateY(0deg) rotateX(0deg)",
-            transition: "transform 0.3s",
+            transition: "transform 1s",
           },
         },
       });
@@ -251,9 +254,9 @@ export default function ThreadsPage() {
             {[...groupedData.keys()].map((yearMonth) => (
               <div key={yearMonth} className={styles.년도별}>
                 <div className={styles.책}>
-                  <img className={styles.날짜막대기} src={왼쪽} />
+                  <img className={styles.날짜막대기} src={왼쪽} alt="" />
                   <span className={styles.fontsize2}>{yearMonth}</span>
-                  <img className={styles.날짜막대기} src={오른쪽} />
+                  <img className={styles.날짜막대기} src={오른쪽} alt="" />
                 </div>{" "}
                 {/* 년-월 표시 */}
                 <div className={styles.년도별스레드}>
