@@ -10,47 +10,21 @@ import 오른쪽 from "../assets/오른쪽.png";
 import 왼쪽 from "../assets/왼쪽.png";
 export default function ThreadsPage() {
   const [groupedData, setGroupedData] = useState(new Map());
-
   const [hoverStyle, setHoverStyle] = useState({});
-
-  // 마우스 위치에 따라 카드가 움직이는 함수
-  const handleMouseMove = (event, threadId) => {
-    const x = event.nativeEvent.offsetX;
-    const y = event.nativeEvent.offsetY;
-    const rotateY = ((-1 / 5) * x + 20) / 3;
-    const rotateX = ((4 / 30) * y - 20) / 5;
-
-    setHoverStyle({
-      ...hoverStyle,
-      [threadId]: {
-        overlay: {
-          backgroundPosition: `${x / 5 + y / 5 + 5}%`,
-        },
-        thread: {
-          transform: `perspective(350px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`,
-        },
-      },
-    });
-  };
-
-  // onMouseOut 이벤트 핸들러
-  // 마우스가 요소를 벗어날 때 스타일을 초기화.
-  const handleMouseOut = (threadId) => {
-    setHoverStyle({
-      ...hoverStyle,
-      [threadId]: {
-        overlay: {
-          filter: "opacity(1)",
-        },
-        thread: {
-          transform: "perspective(350px) rotateY(0deg) rotateX(0deg)",
-        },
-      },
-    });
-  };
 
   useEffect(() => {
     // 목데이터 생성
+    /* 
+  - 스레드 리스트(threadList)
+  [
+  - 스레드ID(threadId)
+  - 스레드대표이미지주소(imageUrl)         
+  - 좋아요수(likeCount)
+  - 댓글수(commentCount)
+  - 스크랩수(scrapCount)
+  - 생성날짜(createdDate)
+  ] 
+  */
     const threadList = [
       {
         threadId: 1,
@@ -175,17 +149,89 @@ export default function ThreadsPage() {
 
     setGroupedData(grouped);
   }, []);
+
+  function Thread({ thread, user }) {
+    // 마우스 위치에 따라 카드가 움직이는 함수
+    const handleMouseMove = (event, threadId) => {
+      const x = event.nativeEvent.offsetX;
+      const y = event.nativeEvent.offsetY;
+      const rotateY = ((-1 / 5) * x + 20) / 3;
+      const rotateX = ((4 / 30) * y - 20) / 5;
+
+      setHoverStyle({
+        ...hoverStyle,
+        [threadId]: {
+          overlay: {
+            backgroundPosition: `${x / 5 + y / 5 + 5}%`,
+          },
+          thread: {
+            transform: `perspective(350px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`,
+          },
+        },
+      });
+    };
+
+    // onMouseOut 이벤트 핸들러
+    // 마우스가 요소를 벗어날 때 스타일을 초기화.
+    const handleMouseOut = (threadId) => {
+      setHoverStyle({
+        ...hoverStyle,
+        [threadId]: {
+          overlay: {
+            filter: "opacity(1)",
+          },
+          thread: {
+            transform: "perspective(350px) rotateY(0deg) rotateX(0deg)",
+            transition: "transform 0.3s",
+          },
+        },
+      });
+    };
+    return (
+      <div
+        key={thread.threadId}
+        className={styles.thread}
+        onMouseMove={(e) => handleMouseMove(e, thread.threadId)}
+        onMouseOut={() => handleMouseOut(thread.threadId)}
+        style={hoverStyle[thread.threadId]?.thread}
+      >
+        <div
+          className={styles.overlay}
+          style={hoverStyle[thread.threadId]?.overlay}
+        ></div>
+        <div className={styles.좋댓스}>
+          <div className={styles.작성자}>
+            <img className={styles.userimage} src={human} alt="" />
+            <span className={styles.작성자폰트}>{user} </span>
+          </div>
+          <div className={styles.나머지좋댓스}>
+            <Infobox icon={heart} count={thread.likeCount} />
+            <Infobox icon={msg} count={thread.commentCount} />
+            <Infobox icon={clip} count={thread.scrapCount} />
+          </div>
+        </div>
+        <div className={styles.main이미지}>
+          <img
+            className={styles.스레드이미지}
+            src={thread.imageUrl}
+            alt={`스레드 ${thread.threadId}`}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  function Infobox({ icon, count }) {
+    return (
+      <div className={styles.infobox}>
+        <img className={styles.userimage} src={icon} alt="" />
+        <div className={styles.fontsize1}>{count}</div>
+      </div>
+    );
+  }
+
   return (
     <>
-      {/* - 스레드 리스트(threadList)
-[
-  - 스레드ID(threadId)
-  - 스레드대표이미지주소(imageUrl)         
-  - 좋아요수(likeCount)
-  - 댓글수(commentCount)
-  - 스크랩수(scrapCount)
-  - 생성날짜(createdDate)
-] */}
       <Container>
         <div>
           <div className={styles.뒤로가기}>&lt; 뒤로가기</div>
@@ -212,66 +258,7 @@ export default function ThreadsPage() {
                 {/* 년-월 표시 */}
                 <div className={styles.년도별스레드}>
                   {groupedData.get(yearMonth).map((thread) => (
-                    <div
-                      key={thread.threadId}
-                      className={styles.thread}
-                      onMouseMove={(e) => handleMouseMove(e, thread.threadId)}
-                      onMouseOut={() => handleMouseOut(thread.threadId)}
-                      style={hoverStyle[thread.threadId]?.thread}
-                    >
-                      <div
-                        className={styles.overlay}
-                        style={hoverStyle[thread.threadId]?.overlay}
-                      ></div>
-                      <div className={styles.좋댓스}>
-                        <div className={styles.작성자}>
-                          <img className={styles.userimage} src={human} />
-                          <span className={styles.작성자폰트}>cwnsgh </span>
-                        </div>
-                        <div className={styles.나머지좋댓스}>
-                          <div className={styles.infobox}>
-                            <img
-                              className={styles.userimage}
-                              src={heart}
-                              alt=""
-                            />
-                            <div className={styles.fontsize1}>
-                              {" "}
-                              {thread.likeCount}
-                            </div>
-                          </div>
-                          <div className={styles.infobox}>
-                            <img
-                              className={styles.userimage}
-                              src={msg}
-                              alt=""
-                            />
-                            <div className={styles.fontsize1}>
-                              {" "}
-                              {thread.commentCount}
-                            </div>
-                          </div>
-                          <div className={styles.infobox}>
-                            <img
-                              className={styles.userimage}
-                              src={clip}
-                              alt=""
-                            />
-                            <div className={styles.fontsize1}>
-                              {" "}
-                              {thread.scrapCount}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className={styles.main이미지}>
-                        <img
-                          className={styles.스레드이미지}
-                          src={thread.imageUrl}
-                          alt={`스레드 ${thread.threadId}`}
-                        />
-                      </div>
-                    </div>
+                    <Thread thread={thread} user="cwnsgh" />
                   ))}
                 </div>
               </div>
