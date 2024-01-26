@@ -6,11 +6,12 @@
   align-items: center;
 }
 .bookpage {
-  width: 70%;
+  width: 85%;
+  height: 90%;
+  background-color: #d85858;
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow-y: auto;
   background-color: var(--main4);
 }
 .body {
@@ -34,13 +35,64 @@
   top: 0px;
   right: 0px;
 }
-.캐러셀 {
-  height: 24vh;
-  background-color: aquamarine;
-}
+
 .mainbook {
   position: relative;
   width: 100%;
-  height: 63vh;
+  height: 60vh;
   background-color: rgba(175, 25, 25, 0);
+}
+.캐러셀 {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  height: 26vh;
+  background-color: aquamarine;
+  padding: 10px 0;
+  /* 추가: 마우스가 캐러셀 위에 있을 때만 스크롤바를 표시 */
+  overflow-y: hidden;
+  scrollbar-width: none; /* Firefox */
+}
+
+.캐러셀::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
+}
+
+.캐러셀아이템 {
+  flex: 0 0 auto;
+  width: 150px; /* 가로 크기 */
+  height: 200px; /* 세로 크기 */
+  margin-right: 10px;
+  scroll-snap-align: start;
+  transition: transform 0.3s ease-in-out;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* 추가: 마우스를 올렸을 때 크기 확대 */
+  transition: flex-grow 0.3s ease, margin 0.3s ease, width 0.3s ease;
+}
+
+.캐러셀아이템:hover {
+  flex-grow: 2;
+  margin: 0 30px;
+}
+.notselected {
+  width: 10%;
+  margin-right: 10px;
+}
+
+.캐러셀아이템.selected {
+  transform: scale(1.1); /* 선택 시 확대 효과 */
+  width: 30%; /* 선택된 아이템이 더 크게 보이도록 조정할 수 있습니다. */
+}
+
+.bookCoverImage {
+  width: 60%;
+  height: auto;
+  border-radius: 5px;
+}
+
+.bookTitle {
+  margin-top: 5px;
 }
