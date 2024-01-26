@@ -1,0 +1,153 @@
+.wordcloud {
+  position: relative;
+}
+.fadeIn {
+  animation: fadeInAnimation 0.5s ease-in-out forwards;
+}
+
+.fadeOut {
+  animation: fadeOutAnimation 0.5s ease-in-out forwards;
+}
+
+@keyframes fadeInAnimation {
+  0% {
+    transform: scale(0);
+  }
+  70% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeOutAnimation {
+  0% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(0);
+  }
+}
+.검색글자 {
+  font-size: 30px;
+}
+.header {
+  margin-top: 55px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 90%;
+  height: 15%;
+}
+.searchicon {
+  width: 20px;
+  height: 20px;
+}
+.searchInput {
+  padding: 10px; /* 내부 여백 설정 */
+  border: 1px solid #ccc; /* 테두리 스타일과 색상 설정 */
+  border-radius: 20px; /* 둥근 테두리 설정 */
+  font-size: 16px; /* 글꼴 크기 설정 */
+  width: 200px; /* 원하는 너비 설정 */
+}
+
+.searchContainer {
+  display: flex;
+}
+.searchButton {
+  padding: 8px 16px;
+  background-color: var(--primary-color);
+  color: #57423f;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.최근검색어 {
+  display: flex;
+  align-items: center;
+  font-size: 19px;
+}
+.box {
+  text-align: center;
+  padding: 10px 15px 5px 15px;
+  background-color: #bfa6a2;
+  border-radius: 20px;
+}
+.최근검색어박스 {
+  margin-left: 30px;
+  display: flex;
+  gap: 20px;
+}
+.앱솔루트 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-size: 18px;
+  color: rgb(0, 0, 148);
+  padding: 7px 12px 5px 12px;
+  border-radius: 20px;
+  border: 4px solid black;
+  background-color: antiquewhite;
+  z-index: 10;
+}
+.main {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 50px;
+}
+
+.middle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 67%;
+}
+
+.middlemain {
+  background-color: #ffe9e6;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.mid검색결과 {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  background-color: rgb(255, 216, 216);
+  height: 40px;
+  font-size: 25px;
+}
+.mid버튼 {
+  display: flex;
+  width: 35%;
+  height: 70px;
+  justify-content: space-around;
+  background-color: #bfa6a2;
+}
+.mid버튼 button {
+  width: 20%;
+  height: 70px;
+  background-color: antiquewhite;
+  color: #57423f;
+  border: none;
+  border-radius: 4px;
+}
+.오버플로우확인 {
+  overflow: auto;
+}
+.게시글들어갈공간 {
+}

@@ -1,0 +1,23 @@
+.category {
+  width: 110px;
+  height: 44px;
+  background-color: var(--blur2);
+  box-shadow: 0 0 10px 0 var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+  align-items: center;
+}
+.categoryItim {
+}
+
+.categoryList {
+  padding: 10px;
+  flex-wrap: wrap;
+  display: flex;
+  font-size: 16px;
+  gap: 13px;
+  /* height: 500px; */
+  overflow-y: auto;
+}

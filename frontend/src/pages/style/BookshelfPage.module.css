@@ -1,0 +1,129 @@
+/* 전체 */
+.body {
+  width: 100%;
+  background-color: var(--main4);
+}
+
+/* 상단 */
+.head {
+  height: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.title {
+  font-size: 30px;
+}
+.middleTitle {
+  font-size: 25px;
+}
+.middle {
+  font-size: 20px;
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* 책장 */
+.bookshelf_container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  background-color: #75605d;
+  border-radius: 10px;
+}
+.bookshelf_line {
+  display: flex;
+  gap: 20px;
+}
+
+/* 책장 한칸한칸 */
+.boxs {
+  height: 200px;
+  background-color: #efe4e0;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.box {
+  position: relative;
+  width: 100%;
+  height: 190px;
+  background-color: #efe4e0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 5px;
+  margin: 5px;
+}
+
+/* 카테고리 이름 */
+.categoryName {
+  position: absolute;
+  top: -15px;
+  height: 30px;
+  background-color: #f5998f;
+  border-radius: 0 0 5px 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+  padding: 0 10px;
+}
+
+.leftCategoryName {
+  right: 10px;
+}
+
+.rightCategoryName {
+  left: 10px;
+}
+
+/* 책들이 정렬되는 부분 */
+.books {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  gap: 5px;
+  align-items: flex-end;
+}
+.leftBooks {
+  justify-content: flex-start;
+}
+.rightBooks {
+  justify-content: flex-end;
+}
+
+/* 호버했을때 보이는 부분 */
+.categoryNameOnHover {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  background-color: #ddccc3b7;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.books:hover .categoryNameOnHover {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* 책 하나하나 */
+.album {
+  width: 30px;
+  height: 80%;
+  background-color: #eec59e;
+  border-radius: 5px;
+}

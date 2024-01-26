@@ -1,20 +1,13 @@
-import classNames from "classnames";
+import s from "classnames";
 import styles from "./framestyle/Container.module.css";
 
-function Container({
-  className,
-  children,
-  width = "1440px",
-  height = "1200px",
-  backgroundColor = "aliceblue",
-}) {
+function Container({ children, width, height = "100vh" }) {
   return (
     <div
-      className={classNames(styles.container, className)}
+      className={s(styles.container)}
       style={{
         width,
         height,
-        backgroundColor, // camelCase를 사용하고 있습니다.
       }}
     >
       {children}

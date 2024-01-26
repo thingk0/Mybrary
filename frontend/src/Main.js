@@ -9,10 +9,13 @@ import MybraryPage from "./pages/MybraryPage";
 import PaperplanePage from "./pages/PaperplanePage";
 import RollingpaperPage from "./pages/RollingpaperPage";
 import SearchPage from "./pages/SearchPage";
+import SearchResultPage from "./pages/SearchResultPage";
 import SettingPage from "./pages/SettingPage";
 import ThreadCreatePage from "./pages/ThreadCreatePage";
 import ThreadsPage from "./pages/ThreadsPage";
 import WelcomePage from "./pages/WelcomePage";
+import SearchResultPage1 from "./pages/SearchResultPage1";
+import SearchResultPage2 from "./pages/SearchResultPage2";
 
 function Main() {
   return (
@@ -36,7 +39,14 @@ function Main() {
           <Route path="paperplane" element={<PaperplanePage />} />
           <Route path="feed" element={<FeedPage />} />
           <Route path="join" element={<JoinPage />} />
-          <Route path="search" element={<SearchPage />} />
+          <Route path="search">
+            <Route index element={<SearchPage />} />
+            <Route path=":word">
+              <Route index element={<SearchResultPage />} />
+              <Route path="1" element={<SearchResultPage1 />} />
+              <Route path="2" element={<SearchResultPage2 />} />
+            </Route>
+          </Route>
           <Route path="threadCreate" element={<ThreadCreatePage />} />
           <Route path="account" element={<SettingPage />} />
         </Route>
