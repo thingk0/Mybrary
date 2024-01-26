@@ -4,9 +4,10 @@
   box-shadow: 0 0 15px 0 var(--main2);
   border-radius: 0 0 10px 0;
   width: 80px;
-  height: 500px;
+  height: 700px;
   top: 0;
   left: -50px;
+  z-index: 10;
   transition: 0.3s;
 }
 .nav_container_active {
@@ -21,7 +22,7 @@
   background-color: var(--main4);
   box-shadow: 0 0 5px 0 var(--main2);
   border-radius: 0 0 10px 0;
-  height: 485px;
+  height: 685px;
 }
 
 .nav_paper0 {
@@ -34,24 +35,23 @@
   width: 61px;
 }
 .nav_paper3 {
-  height: 455px;
+  height: 655px;
   width: 59px;
   display: flex;
   flex-direction: column;
-  justify-content: end;
+  justify-content: flex-end;
   align-items: center;
   gap: 10px;
   padding-bottom: 30px;
 }
 
-/* --- */
 .nav_section_container {
   position: absolute;
   top: 50px;
   left: 0;
   display: flex;
   flex-direction: column;
-  align-items: end;
+  align-items: flex-end;
   gap: 20px;
 }
 
@@ -67,8 +67,8 @@
   width: 40px;
   background-color: var(--main3);
   box-shadow: inset 3px 0 1px 0 var(--main2);
-  /* transition: 0.3s; */
   overflow: hidden;
+  transition: 0.3s;
 }
 
 .nav_active {
