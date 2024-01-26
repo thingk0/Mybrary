@@ -3,7 +3,7 @@ package com.mybrary.backend.domain.member.controller;
 import com.mybrary.backend.domain.member.dto.FollowerDto;
 import com.mybrary.backend.domain.member.dto.FollowingDto;
 import com.mybrary.backend.domain.member.dto.LoginRequestDto;
-import com.mybrary.backend.domain.member.dto.MemberUpdateDto;
+    import com.mybrary.backend.domain.member.dto.ProfileUpdateDto;
 import com.mybrary.backend.domain.member.dto.MyFollowerDto;
 import com.mybrary.backend.domain.member.dto.MyFollowingDto;
 import com.mybrary.backend.domain.member.dto.PasswordUpdateDto;
@@ -44,11 +44,13 @@ public class MemberControllerV1 {
     public ResponseEntity<?> signup(@Valid @RequestBody SignupRequestDto requestDto,
                                     BindingResult bindingResult) {
 
+        /* 회원가입 요청 데이터 - 모든 필드 검증 */
         if (bindingResult.hasErrors()) {
             return response.fail(bindingResult);
         }
 
-        return response.success(ResponseCode.MEMBER_SIGNUP_SUCCESS.getMessage());
+        Long savedId = memberService.create(requestDto);
+        return response.success(ResponseCode.MEMBER_SIGNUP_SUCCESS.getMessage(), savedId);
     }
 
     @Operation(summary = "소셜 회원가입", description = "소셜 회원가입")
@@ -108,7 +110,7 @@ public class MemberControllerV1 {
 
     @Operation(summary = "프로필 수정", description = "닉네임, 프로필이미지, 소개 수정")
     @PutMapping("/profile")
-    public ResponseEntity<?> updateProfile(@RequestBody MemberUpdateDto member) {
+    public ResponseEntity<?> updateProfile(@RequestBody ProfileUpdateDto member) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
