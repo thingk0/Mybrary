@@ -43,7 +43,7 @@ public class Comment {
     private Comment parentComment;
 
     @OneToMany(mappedBy = "parentComment")
-    private List<Comment> childComments = new ArrayList<Comment>();
+    private List<Comment> childComments = new ArrayList<>();
 
     private String content;
     
