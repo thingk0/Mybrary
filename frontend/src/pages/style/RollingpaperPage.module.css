@@ -12,7 +12,7 @@
 }
 .초기화 {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
 }
 .main {
   display: flex;

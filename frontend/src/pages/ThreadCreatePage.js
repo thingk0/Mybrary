@@ -1,8 +1,9 @@
 import React, { useState, useMemo, useRef, useEffect } from "react";
-import ReactQuill, { Quill } from "react-quill";
+import ReactQuill from "react-quill";
+// import ReactQuill, { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import ImageResize from "@looop/quill-image-resize-module-react";
-import styled from "styled-components";
+//아직 안쓰는 거 일단 주석처리
+// import ImageResize from "@looop/quill-image-resize-module-react";
 import Container from "../components/frame/Container";
 
 export default function ThreadCreatePage() {

@@ -1,5 +1,4 @@
 import Container from "../components/frame/Container";
-import Nav from "../components/atom/Nav";
 import styles from "./style/WelcomePage.module.css";
 
 export default function WelcomePage() {

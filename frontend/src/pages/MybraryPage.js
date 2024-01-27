@@ -68,12 +68,12 @@ export default function MybraryPage() {
     <>
       <div className={`${styles.bg} ${styles[`bg${bgColor}`]}`}>
         <div className={styles.center}>
-          <img src={bsColor} className={styles.bookshelf} />
-          <img src={tbColor} className={styles.table} />
-          <img src={esColor} className={styles.easel} />
-          <img src={frame} className={styles.frame} />
-          <img src={door} className={styles.door} />
-          <img src={postbox} className={styles.postbox} />
+          <img src={bsColor} className={styles.bookshelf} alt="" />
+          <img src={tbColor} className={styles.table} alt="" />
+          <img src={esColor} className={styles.easel} alt="" />
+          <img src={frame} className={styles.frame} alt="" />
+          <img src={door} className={styles.door} alt="" />
+          <img src={postbox} className={styles.postbox} alt="" />
           {edit && (
             <div>
               <div className={s(styles.edit, styles.easelColor)}>

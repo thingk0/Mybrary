@@ -104,7 +104,11 @@ export default function SearchResultPage() {
                   <label htmlFor="search"></label>
                   <div className={styles.searchContainer}>
                     <button type="submit" className={styles.searchButton}>
-                      <img className={styles.searchicon} src={searchicon} />
+                      <img
+                        className={styles.searchicon}
+                        src={searchicon}
+                        alt=""
+                      />
                     </button>
                     <input
                       type="text"

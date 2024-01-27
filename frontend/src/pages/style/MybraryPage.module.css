@@ -175,7 +175,7 @@
   flex-direction: column;
   align-items: flex-end;
   justify-content: flex-start;
-  transition: transform 1s;
+  transition: transform 0.3s;
   transform: translateX(140%);
 }
 
