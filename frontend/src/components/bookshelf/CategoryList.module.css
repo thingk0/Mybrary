@@ -12,9 +12,4 @@
 
 .categoryList {
   padding: 10px;
-  flex-wrap: wrap;
-  display: flex;
-  font-size: 16px;
-  gap: 13px;
-  overflow-y: auto;
 }
