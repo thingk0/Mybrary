@@ -1,6 +1,4 @@
 //모달창을 당담합니다.
-
-import s from "classnames";
 import styles from "./Modal.module.css";
 import { useRef, useState } from "react";
 import useOnClickOutside from "./useOnClickOutside";

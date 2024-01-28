@@ -212,6 +212,7 @@ export default function PaperplanePage() {
                                 <img
                                   className={styles.유저이미지2}
                                   src={이미지예시}
+                                  alt=""
                                 />
                                 <div>
                                   {message.thread.nickname} 님이 작성한 페이퍼
@@ -220,6 +221,7 @@ export default function PaperplanePage() {
                               <img
                                 className={styles.예시이미지2}
                                 src={예시이미지2}
+                                alt=""
                               />
                             </div>
                           )}
@@ -236,7 +238,11 @@ export default function PaperplanePage() {
               ) : (
                 <div className={styles.채팅방이없어요}>
                   <div>Paper Plane</div>
-                  <img className={styles.종이비행기이미지} src={종이비행기} />
+                  <img
+                    className={styles.종이비행기이미지}
+                    src={종이비행기}
+                    alt=""
+                  />
                   <div>팔로우하고있는 사람에게 종이비행기를 날려보세요.</div>
                 </div>
               )}

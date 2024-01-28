@@ -31,7 +31,7 @@ export default function CategoryList({ categoryList, setCategoryList }) {
     return () => {
       categorySortable.destroy();
     };
-  }, [categoryList]);
+  }, [setCategoryList, categoryList]);
 
   const [editingCategoryId, setEditingCategoryId] = useState(null);
   const [updatedCategoryName, setUpdatedCategoryName] = useState("");
