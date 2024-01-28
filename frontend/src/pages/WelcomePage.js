@@ -10,7 +10,7 @@ export default function WelcomePage() {
 
   return (
     <>
-      <div className={styles.div1}>
+      <div className={styles.container}>
         <div>
           <div onClick={() => handleStart()}>입장하기</div>
         </div>
