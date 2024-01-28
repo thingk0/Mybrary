@@ -1,36 +1,3 @@
-:root {
-  --main1: #f5998f;
-  --main2: #57423f;
-  --main3: #bfa6a2;
-  --main4: #fff9f6;
-  --main5: #9b8683;
-  --main6: #f5998f;
-  --gomin1: #2f4858;
-  --gomin2: #455371;
-  --gomin3: #6a5b82;
-  --gomin4: #946087;
-  --gomin5: #ba667e;
-  --blur1: #fff9f680;
-  /* 1번이 모달컬러 */
-  --blur2: #ddccc380;
-  /* 책장뒷편 쓰는색 */
-  --deletecolor: linear-gradient(
-    135deg,
-    rgba(116, 91, 127, 1) 0%,
-    rgba(245, 153, 143, 1) 100%
-  );
-  --followcolor: linear-gradient(
-    135deg,
-    rgba(148, 96, 135, 1) 0%,
-    rgba(69, 83, 113, 1) 100%
-  );
-  --papercolor: linear-gradient(
-    150deg,
-    rgba(255, 250, 247, 1) 0%,
-    rgba(239, 239, 239, 1) 100%
-  );
-}
-
 .bg {
   background-color: #4c2b4a;
   width: 100vi;
@@ -94,8 +61,6 @@
   bottom: -8.4vi;
   left: 7vi;
   width: 14vw;
-  transition: transform 0.3s ease;
-  cursor: pointer;
 }
 .bookshelfColor {
   bottom: 4vi;
@@ -107,8 +72,6 @@
   bottom: -22.4vi;
   left: -13.2vi;
   width: 20vw;
-  transition: transform 0.3s ease;
-  cursor: pointer;
 }
 .tableColor {
   bottom: -20vi;
@@ -120,8 +83,6 @@
   bottom: -19.4vi;
   left: -40.2vi;
   width: 12vw;
-  transition: transform 0.3s ease;
-  cursor: pointer;
 }
 .easelColor {
   bottom: 2vi;
@@ -133,32 +94,24 @@
   bottom: 0vi;
   left: -30.2vi;
   width: 12vw;
-  transition: transform 0.3s ease;
-  cursor: pointer;
 }
 .door {
   position: absolute;
   bottom: 0vi;
   left: -10.2vi;
   width: 8vw;
-  transition: transform 0.3s ease;
-  cursor: pointer;
 }
 .postbox {
   position: absolute;
   bottom: -20.4vi;
   left: 22.2vi;
   width: 10vw;
+}
+.img {
   transition: transform 0.3s ease;
   cursor: pointer;
 }
-
-.door:hover,
-.easel:hover,
-.frame:hover,
-.postbox:hover,
-.table:hover,
-.bookshelf:hover {
+.img:hover {
   animation: fadeIn 0.5s ease-in-out; /* 애니메이션 적용 */
 }
 
@@ -291,6 +244,23 @@
   gap: 10px;
   align-items: center;
 }
+.editbg {
+  position: absolute;
+  padding: 15px 30px;
+  border-radius: 10px;
+  background-color: var(--blur1);
+  backdrop-filter: blur(12.5px);
+  box-shadow: 0 0 25px 0 #00000036;
+  animation: fadeIn2 0.7s ease-in-out;
+  padding-top: 25px;
+}
+
+.bgcont {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
 
 .backGroundColor {
   top: 70px;
@@ -310,37 +280,24 @@
   border-radius: 3vi;
 }
 
-.table1,
-.bookshelf1,
-.easel1 {
+.color1 {
   background-color: #e9e9e9;
 }
-.table2,
-.bookshelf2,
-.easel2 {
+.color2 {
   background-color: #6f6f6f;
 }
-.table3,
-.bookshelf3,
-.easel3 {
+.color3 {
   background-color: #343434;
 }
-.table4,
-.bookshelf4,
-.easel4 {
-  background-color: #d9a368;
-}
-.table5,
-.bookshelf5,
-.easel5 {
+.color4 {
   background-color: #816850;
 }
-.table6,
-.bookshelf6,
-.easel6 {
+.color5 {
+  background-color: #d9a368;
+}
+.color6 {
   background-color: #4f566a;
 }
-
 .select {
   margin: 0.45vi;
   width: 1vi;
@@ -350,6 +307,48 @@
   background-color: #343434;
 }
 
-.toast {
-  z-index: 100;
+.bgColor1 {
+  background: linear-gradient(135deg, #ba667e 0%, #946087 50%, #6a5b82 100%);
+}
+.bgColor2 {
+  background: linear-gradient(135deg, #f7a4a4 0%, #b6e2a1 50%, #fffbc1 100%);
+}
+.bgColor3 {
+  background: linear-gradient(135deg, #594545 0%, #9e7676 50%, #e4d0d0 100%);
+}
+.bgColor4 {
+  background: linear-gradient(135deg, #8785a2 0%, #ffc7c7 50%, #fff8ea 100%);
+}
+.bgColor5 {
+  background: linear-gradient(135deg, #402b3a 0%, #d63484 50%, #ff9bd2 100%);
+}
+
+.bgColor6 {
+  background: linear-gradient(135deg, #454380 0%, #a991a9 50%, #ffd6cd 100%);
+}
+
+.bgColor7 {
+  background: linear-gradient(135deg, #503435 0%, #ba6d54 50%, #ffbe6d 100%);
+}
+.bgColor8 {
+  background: linear-gradient(135deg, #ba3127 0%, #fe8053 50%, #ffbe6d 100%);
+}
+.bgColor9 {
+  background: linear-gradient(135deg, #2d3250 0%, #7077a1 50%, #f6b17a 100%);
+}
+
+.bgColor10 {
+  background: linear-gradient(135deg, #4a4b4f 0%, #888b99 50%, #d4d6dd 100%);
+}
+
+.bgColor11 {
+  background: linear-gradient(135deg, #8987dd 0%, #83c0c1 50%, #96e9c6 100%);
+}
+
+.bgColor12 {
+  background: linear-gradient(135deg, #445d48 0%, #d6cc99 50%, #fde5d4 100%);
+}
+
+.bgColor13 {
+  background: linear-gradient(135deg, #474747 0%, #7cc5e5 50%, #e5e5e5 100%);
 }

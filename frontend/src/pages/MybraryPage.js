@@ -1,16 +1,16 @@
 import styles from "./style/MybraryPage.module.css";
-import bookshelf1 from "../assets/bookshelf_01.png";
-import bookshelf2 from "../assets/bookshelf_02.png";
-import bookshelf3 from "../assets/bookshelf_03.png";
-import bookshelf4 from "../assets/bookshelf_04.png";
-import bookshelf5 from "../assets/bookshelf_05.png";
-import bookshelf6 from "../assets/bookshelf_06.png";
 import table1 from "../assets/table_01.png";
 import table2 from "../assets/table_02.png";
 import table3 from "../assets/table_03.png";
 import table4 from "../assets/table_04.png";
 import table5 from "../assets/table_05.png";
 import table6 from "../assets/table_06.png";
+import shelf1 from "../assets/bookshelf_01.png";
+import shelf2 from "../assets/bookshelf_02.png";
+import shelf3 from "../assets/bookshelf_03.png";
+import shelf4 from "../assets/bookshelf_04.png";
+import shelf5 from "../assets/bookshelf_05.png";
+import shelf6 from "../assets/bookshelf_06.png";
 import easel1 from "../assets/easel_01.png";
 import easel2 from "../assets/easel_02.png";
 import easel3 from "../assets/easel_03.png";
@@ -23,13 +23,15 @@ import postbox from "../assets/postbox.png";
 import s from "classnames";
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 export default function MybraryPage() {
+  const navigate = useNavigate();
   const [edit, setEdit] = useState(false);
   const [bgColor, setBgColor] = useState("01");
   const [esColor, setEsColor] = useState(easel1);
   const [tbColor, setTbColor] = useState(table1);
-  const [bsColor, setBsColor] = useState(bookshelf1);
+  const [bsColor, setBsColor] = useState(shelf1);
 
   const color = [
     "01",
@@ -46,6 +48,9 @@ export default function MybraryPage() {
     "12",
     "13",
   ];
+  const easelImgs = [easel1, easel2, easel3, easel4, easel5, easel6];
+  const tableImgs = [table1, table2, table3, table4, table5, table6];
+  const bookshelfImgs = [shelf1, shelf2, shelf3, shelf4, shelf5, shelf6];
 
   //완료버튼을 눌렀을때 실행하는 함수
   const handleSelect = () => {
@@ -64,122 +69,103 @@ export default function MybraryPage() {
     });
   };
 
+  //색을 고르는 컴포넌트
+  function ColorSelector({ color, setColor, Colors }) {
+    return (
+      <>
+        {Colors.map((colornum, index) => (
+          <div
+            key={index}
+            className={s(styles.color, styles[`color${index + 1}`])}
+            onClick={() => setColor(colornum)}
+          >
+            {color === colornum && <div className={styles.select}></div>}
+          </div>
+        ))}
+      </>
+    );
+  }
+  //배경색을 고르는 컴포넌트
+  function BgColorSelector({ color, setColor, Colors }) {
+    return (
+      <>
+        {Colors.map((colornum, index) => (
+          <div
+            key={index}
+            className={s(styles.color, styles[`bgColor${index + 1}`])}
+            onClick={() => setColor(colornum)}
+          >
+            {color === colornum && <div className={styles.select}></div>}
+          </div>
+        ))}
+      </>
+    );
+  }
+
   return (
     <>
       <div className={`${styles.bg} ${styles[`bg${bgColor}`]}`}>
         <div className={styles.center}>
-          <img src={bsColor} className={styles.bookshelf} alt="" />
-          <img src={tbColor} className={styles.table} alt="" />
-          <img src={esColor} className={styles.easel} alt="" />
-          <img src={frame} className={styles.frame} alt="" />
-          <img src={door} className={styles.door} alt="" />
-          <img src={postbox} className={styles.postbox} alt="" />
+          <img
+            src={bsColor}
+            alt=""
+            className={s(styles.bookshelf, !edit && styles.img)}
+            onClick={() => !edit && navigate("bookshelf")}
+          />
+          <img
+            src={tbColor}
+            alt=""
+            className={s(styles.table, !edit && styles.img)}
+            onClick={() => !edit && navigate("threads")}
+          />
+          <img
+            src={esColor}
+            alt=""
+            className={s(styles.easel, !edit && styles.img)}
+            onClick={() => !edit && navigate("rollingpaper")}
+          />
+          <img
+            src={frame}
+            alt=""
+            className={s(styles.frame, !edit && styles.img)}
+          />
+          <img
+            src={door}
+            alt=""
+            className={s(styles.door, !edit && styles.img)}
+            onClick={() => !edit && navigate("/feed")}
+          />
+          <img
+            src={postbox}
+            alt=""
+            className={s(styles.postbox, !edit && styles.img)}
+            onClick={() => !edit && navigate("/paperplane")}
+          />
           {edit && (
             <div>
               <div className={s(styles.edit, styles.easelColor)}>
                 <div className={styles.colorTitle}>이젤색</div>
-                <div
-                  className={s(styles.color, styles.easel1)}
-                  onClick={() => setEsColor(easel1)}
-                ></div>
-                <div
-                  className={s(styles.color, styles.easel2)}
-                  onClick={() => setEsColor(easel2)}
-                ></div>
-                <div
-                  className={s(styles.color, styles.easel3)}
-                  onClick={() => setEsColor(easel3)}
-                ></div>
-                <div
-                  className={s(styles.color, styles.easel4)}
-                  onClick={() => setEsColor(easel4)}
-                ></div>
-                <div
-                  className={s(styles.color, styles.easel5)}
-                  onClick={() => setEsColor(easel5)}
-                ></div>
-                <div
-                  className={s(styles.color, styles.easel6)}
-                  onClick={() => setEsColor(easel6)}
-                ></div>
+                <ColorSelector
+                  color={esColor}
+                  setColor={setEsColor}
+                  Colors={easelImgs}
+                />
               </div>
               <div className={s(styles.edit, styles.tableColor)}>
                 <div className={styles.colorTitle}>테이블색</div>
-                <div
-                  className={s(styles.color, styles.table1)}
-                  onClick={() => setTbColor(table1)}
-                ></div>
-                <div
-                  className={s(styles.color, styles.table2)}
-                  onClick={() => setTbColor(table2)}
-                ></div>
-                <div
-                  className={s(styles.color, styles.table3)}
-                  onClick={() => setTbColor(table3)}
-                ></div>
-                <div
-                  className={s(styles.color, styles.table4)}
-                  onClick={() => setTbColor(table4)}
-                ></div>
-                <div
-                  className={s(styles.color, styles.table5)}
-                  onClick={() => setTbColor(table5)}
-                ></div>
-                <div
-                  className={s(styles.color, styles.table6)}
-                  onClick={() => setTbColor(table6)}
-                ></div>
+                <ColorSelector
+                  color={tbColor}
+                  setColor={setTbColor}
+                  Colors={tableImgs}
+                />
               </div>
               <div className={s(styles.edit, styles.bookshelfColor)}>
                 <div className={styles.colorTitle}>책장색</div>
-                <div
-                  className={s(styles.color, styles.bookshelf1)}
-                  onClick={() => setBsColor(bookshelf1)}
-                >
-                  {bsColor === bookshelf1 && (
-                    <div className={styles.select}></div>
-                  )}
-                </div>
-                <div
-                  className={s(styles.color, styles.bookshelf2)}
-                  onClick={() => setBsColor(bookshelf2)}
-                >
-                  {bsColor === bookshelf2 && (
-                    <div className={styles.select}></div>
-                  )}
-                </div>
-                <div
-                  className={s(styles.color, styles.bookshelf3)}
-                  onClick={() => setBsColor(bookshelf3)}
-                >
-                  {bsColor === bookshelf3 && (
-                    <div className={styles.select}></div>
-                  )}
-                </div>
-                <div
-                  className={s(styles.color, styles.bookshelf4)}
-                  onClick={() => setBsColor(bookshelf4)}
-                >
-                  {bsColor === bookshelf4 && (
-                    <div className={styles.select}></div>
-                  )}
-                </div>
-                <div
-                  className={s(styles.color, styles.bookshelf5)}
-                  onClick={() => setBsColor(bookshelf5)}
-                >
-                  {bsColor === bookshelf5 && (
-                    <div className={styles.select}></div>
-                  )}
-                </div>
-                <div
-                  className={s(styles.color, styles.bookshelf6)}
-                  onClick={() => setBsColor(bookshelf6)}
-                >
-                  {bsColor === bookshelf6 && (
-                    <div className={styles.select}></div>
-                  )}
-                </div>
+                <ColorSelector
+                  color={bsColor}
+                  setColor={setBsColor}
+                  Colors={bookshelfImgs}
+                />
               </div>
             </div>
           )}
@@ -220,61 +206,16 @@ export default function MybraryPage() {
         </div>
         {edit && (
           <div>
-            <div className={s(styles.edit, styles.backGroundColor)}>
-              <div>마이브러리 홈 꾸미기</div>
-
-              <div
-                className={s(styles.color, styles.easel1)}
-                onClick={() => setBgColor(color[0])}
-              ></div>
-              <div
-                className={s(styles.color, styles.easel1)}
-                onClick={() => setBgColor(color[1])}
-              ></div>
-              <div
-                className={s(styles.color, styles.easel1)}
-                onClick={() => setBgColor(color[2])}
-              ></div>
-              <div
-                className={s(styles.color, styles.easel1)}
-                onClick={() => setBgColor(color[3])}
-              ></div>
-              <div
-                className={s(styles.color, styles.easel1)}
-                onClick={() => setBgColor(color[4])}
-              ></div>
-              <div
-                className={s(styles.color, styles.easel1)}
-                onClick={() => setBgColor(color[5])}
-              ></div>
-              <div
-                className={s(styles.color, styles.easel1)}
-                onClick={() => setBgColor(color[6])}
-              ></div>
-              <div
-                className={s(styles.color, styles.easel1)}
-                onClick={() => setBgColor(color[7])}
-              ></div>
-              <div
-                className={s(styles.color, styles.easel1)}
-                onClick={() => setBgColor(color[8])}
-              ></div>
-              <div
-                className={s(styles.color, styles.easel1)}
-                onClick={() => setBgColor(color[9])}
-              ></div>
-              <div
-                className={s(styles.color, styles.easel1)}
-                onClick={() => setBgColor(color[10])}
-              ></div>
-              <div
-                className={s(styles.color, styles.easel1)}
-                onClick={() => setBgColor(color[11])}
-              ></div>
-              <div
-                className={s(styles.color, styles.easel1)}
-                onClick={() => setBgColor(color[12])}
-              ></div>
+            <div className={s(styles.editbg, styles.backGroundColor)}>
+              <div>마이브러리 방 꾸미기</div>
+              <div className={styles.bgcont}>
+                <div>배경색</div>
+                <BgColorSelector
+                  color={bgColor}
+                  setColor={setBgColor}
+                  Colors={color}
+                />
+              </div>
             </div>
             <div
               className={s(styles.edit, styles.ok)}
