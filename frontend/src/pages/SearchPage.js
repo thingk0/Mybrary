@@ -84,6 +84,8 @@ export default function SearchPage() {
       .fontSize(function (d) {
         return d.size;
       })
+      .rotate(30)
+
       .spiral(customSpiral) // 이 부분을 추가하세요
       .on("end", draw)
       .start();
@@ -131,7 +133,7 @@ export default function SearchPage() {
         });
 
       // 트랜지션 설정
-      textElements.style("transition", "transform 0.2s");
+      // textElements.style("transition", "transform 0.2s");
 
       // 마우스 호버 시 scale을 1.2로 증가, 단 'translate'와 'rotate'는 그대로 유지합니다.
       textElements.on("mouseover", function (event, d) {
@@ -141,7 +143,7 @@ export default function SearchPage() {
             "transform",
             `translate(${d.x}px, ${d.y}px) rotate(${d.rotate}deg) scale(1.3)`
           )
-          .style("z-index", "3")
+          // .style("z-index", "1")
           .style("cursor", "pointer");
       });
 
@@ -152,8 +154,8 @@ export default function SearchPage() {
           .style(
             "transform",
             `translate(${d.x}px, ${d.y}px) rotate(${d.rotate}deg) scale(1)`
-          )
-          .style("z-index", "1");
+          );
+        // .style("z-index", "1");
       });
       textElements.on("click", function (event, d) {
         setAnimateOut(true); // fadeOut 애니메이션 시작

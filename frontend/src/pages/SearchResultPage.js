@@ -3,9 +3,7 @@ import styles from "./style/SearchResultPage.module.css";
 import { useNavigate, useParams } from "react-router-dom";
 import searchicon from "../assets/searchicon.png";
 import React, { useState } from "react";
-import heart from "../assets/heart.png";
-import msg from "../assets/msg.png";
-import clip from "../assets/clip.png";
+import Thread from "../components/common/Thread";
 
 export default function SearchResultPage() {
   const navigate = useNavigate();
@@ -152,66 +150,7 @@ export default function SearchResultPage() {
               <div className={styles.오버플로우확인}>
                 <div className={styles.게시글들어갈공간}>
                   {threadList.map((thread) => (
-                    <div
-                      key={thread.threadId}
-                      className={styles.thread}
-                      //    onMouseMove={(e) => handleMouseMove(e, thread.threadId)}
-                      //    onMouseOut={() => handleMouseOut(thread.threadId)}
-                      //    style={hoverStyle[thread.threadId]?.thread}
-                    >
-                      {/* <div
-                     className={styles.overlay}
-                     style={hoverStyle[thread.threadId]?.overlay}
-                   ></div> */}
-                      <div className={styles.좋댓스}>
-                        <div className={styles.작성자}>
-                          {/* <img className={styles.userimage} src={human} /> */}
-                          <span className={styles.작성자폰트}>cwnsgh </span>
-                        </div>
-                        <div className={styles.나머지좋댓스}>
-                          <div className={styles.infobox}>
-                            <img
-                              className={styles.userimage}
-                              src={heart}
-                              alt=""
-                            />
-                            <div className={styles.fontsize1}>
-                              {" "}
-                              {thread.likeCount}
-                            </div>
-                          </div>
-                          <div className={styles.infobox}>
-                            <img
-                              className={styles.userimage}
-                              src={msg}
-                              alt=""
-                            />
-                            <div className={styles.fontsize1}>
-                              {" "}
-                              {thread.commentCount}
-                            </div>
-                          </div>
-                          <div className={styles.infobox}>
-                            <img
-                              className={styles.userimage}
-                              src={clip}
-                              alt=""
-                            />
-                            <div className={styles.fontsize1}>
-                              {" "}
-                              {thread.scrapCount}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className={styles.main이미지}>
-                        <img
-                          className={styles.스레드이미지}
-                          src={thread.imageUrl}
-                          alt={`스레드 ${thread.threadId}`}
-                        />
-                      </div>
-                    </div>
+                    <Thread thread={thread} user={searchtext} />
                   ))}
                 </div>
               </div>
