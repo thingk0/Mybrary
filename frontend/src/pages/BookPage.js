@@ -2,7 +2,8 @@ import Container from "../components/frame/Container";
 import styles from "./style/BookPage.module.css";
 import React, { useState } from "react";
 export default function BookPage() {
-  const [bookList, setBookList] = useState([
+  const [bookList, setBookList] = useState([]);
+  setBookList([
     {
       bookId: "1",
       bookCoverImageUrl: "https://via.placeholder.com/150",
@@ -39,11 +40,11 @@ export default function BookPage() {
     setSelectedBookIndex(index);
   };
 
-  const handleWheel = (event) => {
-    const container = event.currentTarget;
-    const scrollAmount = event.deltaY; // deltaY는 수직 스크롤 양을 나타냅니다. 이 값을 수평 스크롤에 적용합니다.
-    container.scrollLeft += scrollAmount; // 수평 스크롤 조정
-  };
+  // const handleWheel = (event) => {
+  //   const container = event.currentTarget;
+  //   const scrollAmount = event.deltaY; // deltaY는 수직 스크롤 양을 나타냅니다. 이 값을 수평 스크롤에 적용합니다.
+  //   container.scrollLeft += scrollAmount; // 수평 스크롤 조정
+  // };
   return (
     <>
       <Container backgroundColor="#fff9f6">
