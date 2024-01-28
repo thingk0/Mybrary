@@ -1,5 +1,5 @@
 .div1 {
-  width: 200px;
-  height: 200px;
-  background-color: var(--accent-100);
+  width: 100vi;
+  margin: 20px auto;
+  text-align: center;
 }
