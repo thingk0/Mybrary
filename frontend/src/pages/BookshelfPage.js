@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
 import Container from "../components/frame/Container";
 import styles from "./style/BookshelfPage.module.css";
+import title from "../components/atom/atomstyle/Title.module.css";
 import s from "classnames";
 import CategoryEditModal from "../components/bookshelf/CategoryEditModal";
+import { useNavigate } from "react-router-dom";
 
 export default function BookshelfPage() {
+  const navigate = useNavigate();
   const [categoryList, setCategoryList] = useState([]);
   // 책장 ID 상태 (필요한 경우에 사용)
   // const [bookShelfId, setBookShelfId] = useState(null);
@@ -141,47 +144,57 @@ export default function BookshelfPage() {
     <>
       <Container>
         <div>
-          <div className={styles.body}>
-            <div>
-              <div>뒤로가기</div>
-              <div className={styles.head}>
-                <div className={styles.middleTitle}>게시물</div>
-                <div className={styles.title}>나의책장</div>
-                <div className={styles.middleTitle}>롤링페이퍼</div>
-              </div>
-              <div className={styles.middle}>
-                <div>책갈피목록</div>
-
-                <CategoryEditModal
-                  categoryList={categoryList}
-                  setCategoryList={setCategoryList}
-                  content="카테고리수정"
-                />
-              </div>
-            </div>
-            <div className={styles.bookshelf_container}>
-              {Array.from({ length: Math.ceil(categoryList.length / 2) }).map(
-                (_, rowIndex) => {
-                  const index = rowIndex * 2; // 0, 2, 4, 6, ...
-
-                  return (
-                    <div key={rowIndex} className={styles.bookshelf_line}>
-                      <Bookshelf
-                        category={categoryList[index]}
-                        categoryName={styles.leftCategoryName}
-                        sort={styles.leftBooks}
-                      />
-                      <Bookshelf
-                        category={categoryList[index + 1]}
-                        categoryName={styles.rightCategoryName}
-                        sort={styles.rightBooks}
-                      />
-                    </div>
-                  );
-                }
-              )}
-            </div>
+          <div className={title.back} onClick={() => navigate("../")}>
+            &lt; 뒤로가기
           </div>
+        </div>
+        <div className={title.title}>
+          <div
+            className={title.left_title}
+            onClick={() => navigate("../threads")}
+          >
+            &lt; 게시물
+          </div>
+          <div className={title.main_title}>cwnsgh's bookshelf</div>
+          <div
+            className={title.right_title}
+            onClick={() => navigate("../rollingpaper")}
+          >
+            {" "}
+            롤링페이퍼 &gt;
+          </div>
+        </div>
+        <div>
+          <div className={styles.middle}>
+            <div>책갈피목록</div>
+            <CategoryEditModal
+              categoryList={categoryList}
+              setCategoryList={setCategoryList}
+              content="카테고리수정"
+            />
+          </div>
+        </div>
+        <div className={styles.bookshelf_container}>
+          {Array.from({ length: Math.ceil(categoryList.length / 2) }).map(
+            (_, rowIndex) => {
+              const index = rowIndex * 2; // 0, 2, 4, 6, ...
+
+              return (
+                <div key={rowIndex} className={styles.bookshelf_line}>
+                  <Bookshelf
+                    category={categoryList[index]}
+                    categoryName={styles.leftCategoryName}
+                    sort={styles.leftBooks}
+                  />
+                  <Bookshelf
+                    category={categoryList[index + 1]}
+                    categoryName={styles.rightCategoryName}
+                    sort={styles.rightBooks}
+                  />
+                </div>
+              );
+            }
+          )}
         </div>
       </Container>
     </>

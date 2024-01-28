@@ -1,23 +1,6 @@
-/* 전체 */
-.body {
-  width: 100%;
-  background-color: var(--main4);
-}
-
-/* 상단 */
-.head {
-  height: 80px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.title {
-  font-size: 30px;
-}
-.middleTitle {
-  font-size: 25px;
-}
 .middle {
+  width: 90%;
+  margin: 0 auto;
   font-size: 20px;
   height: 60px;
   display: flex;
@@ -27,6 +10,8 @@
 
 /* 책장 */
 .bookshelf_container {
+  margin: 0 auto;
+  width: 90%;
   display: flex;
   flex-direction: column;
   gap: 20px;
