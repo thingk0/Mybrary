@@ -1,47 +1,10 @@
-.bodyhead {
-  width: 100%;
-  height: 80px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.threadpage {
-  width: 84%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  overflow-y: auto;
-  background-color: var(--main4);
-}
-.뒤로가기 {
-  padding-top: 50px;
-  font-size: 19px;
-}
-.body {
-  display: flex;
-  justify-content: center;
-  margin: 10px 0px 40px 0px;
-}
-.main이미지 {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding-bottom: 18px;
-}
-.center {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 .mainbook {
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   width: 90%;
-  background-color: rgba(175, 25, 25, 0);
 }
 .년도별 {
   display: flex;
@@ -55,58 +18,11 @@
   gap: 0px 5%;
   flex-wrap: wrap;
 }
-.infobox {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-.userimage {
-  width: 23px;
-  height: 23px;
-}
-.작성자 {
-  flex: 3;
-  display: flex;
-  /* justify-content: center; */
-  padding-left: 20px;
-  align-items: center;
-  gap: 0px 10px;
-}
-.fontsize1 {
-  margin-top: 5px;
-  font-size: 13px;
-}
+
 .fontsize2 {
   font-size: 20px;
 }
-.작성자폰트 {
-  height: 100%;
-  display: flex;
-  align-items: center;
-  text-align: center;
-  font-size: 16px;
-}
-.롤링페이퍼,
-.책장 {
-  width: 180px;
-  font-size: 23px;
-  background: linear-gradient(106deg, #745b7f 39.8%, #f5998f 100%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-.책장 {
-  display: flex;
-  justify-content: flex-end;
-}
-.나머지좋댓스 {
-  flex: 2.5;
-  display: flex;
-  align-items: center;
-  gap: 0px 20px;
-}
+
 .책 {
   display: flex;
   justify-content: center;
@@ -120,52 +36,10 @@
 .날짜막대기 {
   height: 17px;
 }
-.모든게시물 {
-  font-size: 33px;
-}
-.overlay {
-  position: absolute;
-  top: 73px;
-  width: 250px;
-  height: 250px;
-  background: linear-gradient(
-    110deg,
-    transparent 40%,
-    rgba(255, 236, 194, 0.6) 20%,
-    rgba(221, 209, 255, 0.6) 20%,
-    transparent 54%
-  );
-  filter: brightness(1.2) opacity(0.8);
-  mix-blend-mode: color-dodge;
-  background-size: 130% 130%;
-  background-position: 100%;
-  filter: opacity(0);
-}
-.thread {
-  position: relative;
-  transition: all 0.2s;
-  border-radius: 10px;
-  width: 30%;
-  background-color: #fdf8f6;
-  margin: 20px 0px;
-  box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.25);
-  cursor: pointer;
-}
+
 .cont {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
-.좋댓스 {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  padding: 23px 0 16px;
-}
-.스레드이미지 {
-  width: 85%;
-  height: 93%;
-  padding-bottom: 20px;
 }
