@@ -3,7 +3,7 @@ package com.mybrary.backend.domain.member.controller;
 import com.mybrary.backend.domain.member.dto.FollowerDto;
 import com.mybrary.backend.domain.member.dto.FollowingDto;
 import com.mybrary.backend.domain.member.dto.LoginRequestDto;
-    import com.mybrary.backend.domain.member.dto.ProfileUpdateDto;
+import com.mybrary.backend.domain.member.dto.ProfileUpdateDto;
 import com.mybrary.backend.domain.member.dto.MyFollowerDto;
 import com.mybrary.backend.domain.member.dto.MyFollowingDto;
 import com.mybrary.backend.domain.member.dto.PasswordUpdateDto;
@@ -14,6 +14,7 @@ import com.mybrary.backend.global.format.ApiResponse;
 import com.mybrary.backend.global.format.ResponseCode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -44,7 +45,6 @@ public class MemberControllerV1 {
     public ResponseEntity<?> signup(@Valid @RequestBody SignupRequestDto requestDto,
                                     BindingResult bindingResult) {
 
-        /* 회원가입 요청 데이터 - 모든 필드 검증 */
         if (bindingResult.hasErrors()) {
             return response.fail(bindingResult);
         }
@@ -80,8 +80,16 @@ public class MemberControllerV1 {
 
     @Operation(summary = "일반 로그인", description = "일반 로그인")
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequestDto member) {
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequestDto requestDto,
+                                   BindingResult bindingResult,
+                                   HttpServletResponse httpServletResponse) {
+
+        if (bindingResult.hasErrors()) {
+            return response.fail(bindingResult);
+        }
+
+        memberService.login(requestDto, httpServletResponse);
+        return response.success(ResponseCode.LOGIN_SUCCESS.getMessage());
     }
 
     @Operation(summary = "소셜 로그인", description = "소셜 로그인")
