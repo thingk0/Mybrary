@@ -6,7 +6,6 @@ import com.mybrary.backend.domain.chat.entity.ChatMessage;
 import com.mybrary.backend.domain.follow.entity.Follow;
 import com.mybrary.backend.domain.image.entity.Image;
 import com.mybrary.backend.domain.contents.like.entity.Like;
-import com.mybrary.backend.domain.member.dto.ProfileUpdateDto;
 import com.mybrary.backend.domain.member.dto.SignupRequestDto;
 import com.mybrary.backend.domain.notification.entity.Notification;
 import jakarta.persistence.Column;
@@ -72,10 +71,10 @@ public class Member extends BaseEntity {
     @Builder.Default()
     private boolean isNotifyEnabled = true;
 
-    public static Member from(SignupRequestDto requestDto) {
+    public static Member of(SignupRequestDto requestDto, String encodedPassword) {
         return Member.builder()
                      .email(requestDto.getEmail())
-                     .password(requestDto.getPassword())
+                     .password(encodedPassword)
                      .name(requestDto.getName())
                      .nickname(requestDto.getNickname())
                      .intro(requestDto.getIntro())
