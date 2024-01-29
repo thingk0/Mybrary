@@ -1,5 +1,9 @@
 HELP.md
 .gradle
+*:Zone.Identifier
+*:*.Identifier
+*:Zone.*
+
 build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
