@@ -1,7 +1,7 @@
 package com.mybrary.backend.global.handler;
 
-import com.mybrary.backend.global.exception.DuplicateEmailException;
-import com.mybrary.backend.global.exception.PasswordMismatchException;
+import com.mybrary.backend.global.exception.member.DuplicateEmailException;
+import com.mybrary.backend.global.exception.member.PasswordMismatchException;
 import com.mybrary.backend.global.format.ApiResponse;
 import com.mybrary.backend.global.format.ErrorCode;
 import lombok.RequiredArgsConstructor;
