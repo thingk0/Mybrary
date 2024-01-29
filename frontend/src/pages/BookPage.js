@@ -1,4 +1,3 @@
-//머지용2
 import Container from "../components/frame/Container";
 import styles from "./style/BookPage.module.css";
 import React, { useState } from "react";
