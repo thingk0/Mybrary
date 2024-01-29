@@ -39,7 +39,7 @@ export default function BookPage() {
   const handleSelectBook = (index) => {
     setSelectedBookIndex(index);
   };
-
+  // df
   // const handleWheel = (event) => {
   //   const container = event.currentTarget;
   //   const scrollAmount = event.deltaY; // deltaY는 수직 스크롤 양을 나타냅니다. 이 값을 수평 스크롤에 적용합니다.
