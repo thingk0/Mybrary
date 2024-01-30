@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ProfileUpdateDto {
+public class MemberUpdateDto {
 
     /**
      *  회원정보 수정 요청

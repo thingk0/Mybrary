@@ -40,6 +40,7 @@ public enum ErrorCode {
     MEMBER_EMAIL_NOT_FOUND(HttpStatus.BAD_REQUEST, "존재하지 않는 이메일입니다."),
     ;
 
+
     private final HttpStatus status;
     private final String message;
 

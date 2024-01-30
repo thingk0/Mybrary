@@ -17,7 +17,7 @@ public class MyFollowingDto {
      *  나의 팔로잉 목록 조회
      */
 
-    private String memberId;
+    private Long memberId;
     private String name;
     private String nickname;
     private String profileImageUrl;

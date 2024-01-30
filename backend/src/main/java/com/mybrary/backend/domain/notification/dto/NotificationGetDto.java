@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class NotificationGetResponseDto {
+public class NotificationGetDto {
 
     /**
      *  알림 조회
@@ -27,6 +27,6 @@ public class NotificationGetResponseDto {
     private Long threadId;
     private Long paperId;
     private Long commentId;
-    private Long recommentId;
+    private Long replyCommentId;
 
 }
