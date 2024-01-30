@@ -24,9 +24,9 @@ public class SignupRequestDto {
     @Schema(description = "이메일", example = "user1@ssafy.com")
     private String email;
 
-
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*\\d).{8,20}$",
-             message = "비밀번호는 영문 대소문자, 숫자, 특수문자(!, @, #, $, %, ^, &, *)를 조합하여 8~20자 이내여야 합니다.")
+             message = "비밀번호는 영문 대소문자, 숫자, 특수문자(!, @, #, $, %, ^, &, *)를 조합하여 3~20자 이내여야 합니다.")
+    @Schema(description = "비밀번호", example = "Ssafy123!@")
     private String password;
 
 
@@ -43,10 +43,5 @@ public class SignupRequestDto {
     @Pattern(regexp = "^[a-zA-Z0-9_]{3,15}$",
              message = "닉네임은 영문자, 숫자 및 언더바(_)를 포함할 수 있으며 3~15자 이내여야 합니다.")
     private String nickname;
-
-
-    @Size(max = 50, message = "입력하신 내용이 허용된 길이를 초과합니다. 최대 50자 이내로 작성해주세요.")
-    @Schema(description = "소개", example = "안녕하세요! B207 7팀 oo개발자 입니다.")
-    private String intro;
 
 }

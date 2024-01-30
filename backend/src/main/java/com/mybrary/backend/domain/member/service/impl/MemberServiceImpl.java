@@ -7,6 +7,7 @@ import com.mybrary.backend.domain.member.repository.MemberRepository;
 import com.mybrary.backend.domain.member.service.MemberService;
 import com.mybrary.backend.global.cookie.CookieUtil;
 import com.mybrary.backend.global.exception.member.DuplicateEmailException;
+import com.mybrary.backend.global.exception.member.EmailNotFoundException;
 import com.mybrary.backend.global.exception.member.InvalidLoginAttemptException;
 import com.mybrary.backend.global.exception.member.PasswordMismatchException;
 import com.mybrary.backend.global.format.ErrorCode;
@@ -76,6 +77,13 @@ public class MemberServiceImpl implements MemberService {
         cookieUtil.addCookie("Access-Token", tokenInfo.getAccessToken(),
                              jwtProvider.getACCESS_TOKEN_TIME() + 60,
                              response);
+    }
+
+    @Override
+    public Member findMember(String email) {
+        return memberRepository.findByEmail(email).orElseThrow(
+            () -> new EmailNotFoundException(ErrorCode.MEMBER_EMAIL_NOT_FOUND)
+        );
     }
 
     private boolean validatePassword(String input, String encoded) {
