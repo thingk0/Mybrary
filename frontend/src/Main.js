@@ -17,6 +17,7 @@ import WelcomePage from "./pages/WelcomePage";
 import SearchResultPage1 from "./pages/SearchResultPage1";
 import SearchResultPage2 from "./pages/SearchResultPage2";
 import BookDetailPage from "./pages/BookDetailPage";
+import ErrorPage from "./pages/ErrorPage";
 
 function Main() {
   return (
@@ -26,6 +27,7 @@ function Main() {
         <Route path="/" element={<App />}>
           <Route index element={<WelcomePage />} />
           {/*이거 나중에 동적처리 :userid를 쓰는 이유는 오로지 구별용이다. url로 접근했을때 원하는 페이지로 가기 위함*/}
+          <Route path="error" element={<ErrorPage />}></Route>
           <Route path="mybrary/userid">
             <Route index element={<MybraryPage />} />
             <Route path="threads" element={<ThreadsPage />} />
