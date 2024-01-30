@@ -1,29 +1,56 @@
+import React, { useState } from "react";
 import Container from "../components/frame/Container";
 import styles from "./style/FeedPage.module.css";
+import s from "classnames";
+
 export default function FeedPage() {
+  const [activeIndex, setActiveIndex] = useState(1);
+  const [list, setList] = useState([10, 9, 8, 7, 6, 5, 4, 3, 2, 1]);
+
+  //버튼은 추후에 스크롤이벤트로 바꿔야함
+  //이전버튼임
+  const handleNextClick = () => {
+    if (activeIndex > 1) {
+      setActiveIndex(activeIndex - 1);
+    }
+  };
+
+  //다음버튼임
+  const handlePrevClick = () => {
+    setActiveIndex(activeIndex + 1);
+    if (activeIndex === list.length - 3 && list.length - 4 < activeIndex) {
+      const newList = Array.from(
+        { length: 10 },
+        (_, index) => list[0] + index + 1
+      ).reverse();
+      setList([...newList, ...list]);
+    }
+  };
+
   return (
     <>
       <Container>
-        <div className={styles.body}>
-          <div className={styles.feed}>
-            <div className={styles.feedmain}>
-              <div className={styles.userhead}>
-                <div className={styles.headimage}>이미지</div>
-                <div className={styles.headmid}>
-                  <div>이름</div>
-                  <div>작성날짜</div>
-                </div>
-                <div className={styles.팔로우}>팔로우</div>
-              </div>
-              <div className={styles.좋댓}></div>
-              <div className={styles.레이아웃}>
-                <div className={styles.태그}></div>
-              </div>
+        <div className={styles.StackCarousel_contents}>
+          {list.map((index) => (
+            <div
+              key={index}
+              className={s(
+                styles.StackCarousel_content,
+                {
+                  [styles.StackCarousel_above]: activeIndex > index,
+                  [styles.StackCarousel_active]: activeIndex === index,
+                  [styles.StackCarousel_second]: activeIndex === index - 1,
+                  [styles.StackCarousel_third]: activeIndex === index - 2,
+                },
+                activeIndex < index - 2 ? "" : null
+              )}
+            >
+              <div className={styles.cont}>{index}번 게시물이빈당</div>
             </div>
-            <div className={styles.back1}></div>
-            <div className={styles.back2}></div>
-          </div>
+          ))}
         </div>
+        <button onClick={handleNextClick}>이전</button>
+        <button onClick={handlePrevClick}>다음</button>
       </Container>
     </>
   );

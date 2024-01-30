@@ -31,22 +31,22 @@
   );
 }
 @font-face {
-  font-family: "BMDOHYEON";
-  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMDOHYEON.woff")
+  font-family: "SEBANG_Gothic_Bold";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2104@1.0/SEBANG_Gothic_Bold.woff")
     format("woff");
   font-weight: normal;
   font-style: normal;
 }
 
 :root {
-  --gmarket-sans: "BMDOHYEON";
+  --gmarket-sans: "SEBANG_Gothic_Bold";
   --noto-sans: -apple-system, "Noto Sans KR", sans-serif;
 }
 
 html {
   font-family: var(--noto-sans);
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 400;
 }
 
 textarea,
@@ -60,6 +60,6 @@ h3,
 h4,
 button {
   font-family: var(--gmarket-sans);
-  font-weight: 600;
+  font-weight: 400;
   color: var(--main2);
 }
