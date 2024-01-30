@@ -7,12 +7,15 @@ export default function FeedPage() {
   const [activeIndex, setActiveIndex] = useState(1);
   const [list, setList] = useState([10, 9, 8, 7, 6, 5, 4, 3, 2, 1]);
 
+  //버튼은 추후에 스크롤이벤트로 바꿔야함
+  //이전버튼임
   const handleNextClick = () => {
     if (activeIndex > 1) {
       setActiveIndex(activeIndex - 1);
     }
   };
 
+  //다음버튼임
   const handlePrevClick = () => {
     setActiveIndex(activeIndex + 1);
     if (activeIndex === list.length - 3 && list.length - 4 < activeIndex) {
