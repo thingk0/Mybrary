@@ -15,6 +15,7 @@ function SignUpForm() {
     nickname: /^[a-zA-Z0-9_]{3,15}$/,
   };
 
+  //아무거나 신나는걸로
   /* useState 상태 */
   const [formData, setFormData] = useState({
     email: "",
