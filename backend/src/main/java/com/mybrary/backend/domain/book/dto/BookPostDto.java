@@ -22,7 +22,6 @@ public class BookPostDto {
      */
 
     private String title;
-    private String titleFont;
     private ImagePostDto coverImage;
     private int coverLayout;
     private int coverColorCode;

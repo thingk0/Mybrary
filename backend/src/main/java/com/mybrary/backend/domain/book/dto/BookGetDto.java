@@ -22,7 +22,6 @@ public class BookGetDto {
     private Long bookId;
     private MemberInfoDto writer;
     private String title;
-    private String titleFont;
     private String coverImageUrl;
     private int coverLayout;
     private int coverColorCode;

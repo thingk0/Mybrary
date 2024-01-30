@@ -1,5 +1,9 @@
 HELP.md
 .gradle
+*:Zone.Identifier
+*:*.Identifier
+*:Zone.*
+
 build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
@@ -212,3 +216,5 @@ $RECYCLE.BIN/
 
 /src/main/resources/application-*.yml
 /src/main/generated/
+/src/main/resources/log4j2.xml
+/logs/
