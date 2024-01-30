@@ -1,5 +1,6 @@
 package com.mybrary.backend.domain.member.dto;
 
+import com.mybrary.backend.domain.image.dto.ImagePostDto;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,5 +20,7 @@ public class MemberUpdateDto {
     private Long memberId;
     private String intro;
     private String nickname;
+    private boolean isProfilePublic;
+    private boolean isNotifyEnable;
 
 }

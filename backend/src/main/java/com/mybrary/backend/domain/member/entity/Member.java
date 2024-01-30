@@ -77,7 +77,6 @@ public class Member extends BaseEntity {
                      .password(encodedPassword)
                      .name(requestDto.getName())
                      .nickname(requestDto.getNickname())
-                     .intro(requestDto.getIntro())
                      .build();
     }
 
