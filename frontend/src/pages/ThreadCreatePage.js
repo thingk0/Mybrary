@@ -4,7 +4,6 @@ import "react-quill/dist/quill.snow.css";
 import ImageResize from "@looop/quill-image-resize-module-react";
 import styles from "./style/ThreadCreatePage.module.css";
 import Container from "../components/frame/Container";
-import searchicon from "../assets/searchicon.png";
 
 export default function ThreadCreatePage() {
   const [addtext, setAddtext] = useState("");
