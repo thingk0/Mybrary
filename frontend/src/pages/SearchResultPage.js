@@ -3,6 +3,7 @@ import styles from "./style/SearchResultPage.module.css";
 import { useNavigate, useParams } from "react-router-dom";
 import searchicon from "../assets/searchicon.png";
 import React, { useState } from "react";
+import 예시이미지2 from "../assets/예시이미지2.png";
 import Thread from "../components/common/Thread";
 
 export default function SearchResultPage() {
@@ -13,28 +14,86 @@ export default function SearchResultPage() {
   const threadList = [
     {
       threadId: 1,
-      imageUrl: "https://example.com/image1.jpg",
+      imageUrl: 예시이미지2,
       likeCount: 50,
       commentCount: 20,
       scrapCount: 10,
     },
     {
       threadId: 2,
-      imageUrl: "https://example.com/image2.jpg",
+      imageUrl: 예시이미지2,
       likeCount: 30,
       commentCount: 15,
       scrapCount: 5,
     },
     {
       threadId: 3,
-      imageUrl: "https://example.com/image3.jpg",
+      imageUrl: 예시이미지2,
       likeCount: 70,
       commentCount: 40,
       scrapCount: 25,
     },
     {
       threadId: 4,
-      imageUrl: "https://example.com/image4.jpg",
+      imageUrl: 예시이미지2,
+      likeCount: 45,
+      commentCount: 18,
+      scrapCount: 8,
+    },
+
+    {
+      threadId: 5,
+      imageUrl: 예시이미지2,
+      likeCount: 45,
+      commentCount: 18,
+      scrapCount: 8,
+    },
+
+    {
+      threadId: 5,
+      imageUrl: 예시이미지2,
+      likeCount: 45,
+      commentCount: 18,
+      scrapCount: 8,
+    },
+    {
+      threadId: 5,
+      imageUrl: 예시이미지2,
+      likeCount: 45,
+      commentCount: 18,
+      scrapCount: 8,
+    },
+    {
+      threadId: 5,
+      imageUrl: 예시이미지2,
+      likeCount: 45,
+      commentCount: 18,
+      scrapCount: 8,
+    },
+    {
+      threadId: 5,
+      imageUrl: 예시이미지2,
+      likeCount: 45,
+      commentCount: 18,
+      scrapCount: 8,
+    },
+    {
+      threadId: 5,
+      imageUrl: 예시이미지2,
+      likeCount: 45,
+      commentCount: 18,
+      scrapCount: 8,
+    },
+    {
+      threadId: 5,
+      imageUrl: 예시이미지2,
+      likeCount: 45,
+      commentCount: 18,
+      scrapCount: 8,
+    },
+    {
+      threadId: 5,
+      imageUrl: 예시이미지2,
       likeCount: 45,
       commentCount: 18,
       scrapCount: 8,
@@ -150,7 +209,7 @@ export default function SearchResultPage() {
               <div className={styles.오버플로우확인}>
                 <div className={styles.게시글들어갈공간}>
                   {threadList.map((thread) => (
-                    <Thread thread={thread} user={searchtext} />
+                    <Thread thread={thread} user="cwnsgh" />
                   ))}
                 </div>
               </div>
