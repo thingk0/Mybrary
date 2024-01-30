@@ -16,6 +16,7 @@ import ThreadsPage from "./pages/ThreadsPage";
 import WelcomePage from "./pages/WelcomePage";
 import SearchResultPage1 from "./pages/SearchResultPage1";
 import SearchResultPage2 from "./pages/SearchResultPage2";
+import BookDetailPage from "./pages/BookDetailPage";
 
 function Main() {
   return (
@@ -32,7 +33,10 @@ function Main() {
             <Route path="bookshelf">
               <Route index element={<BookshelfPage />} />
               {/*이거 나중에 동적처리 */}
-              <Route path="categoryid" element={<BookPage />} />
+              <Route path="categoryid">
+                <Route index element={<BookPage />} />
+                <Route path=":bookId" element={<BookDetailPage />} />
+              </Route>
             </Route>
           </Route>
           {/* 아래는 사람마다 보여지는 페이지가 같기 때문에 동적처리를 할 필요가 없다. */}
