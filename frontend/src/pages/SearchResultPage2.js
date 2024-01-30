@@ -1,14 +1,64 @@
 import Container from "../components/frame/Container";
-import styles from "./style/SearchResultPage.module.css";
+import styles from "./style/SearchResultPage2.module.css";
 import { useNavigate, useParams } from "react-router-dom";
 import searchicon from "../assets/searchicon.png";
 import React, { useState } from "react";
 
-export default function SearchResultPage() {
+export default function SearchResultPage2() {
   const navigate = useNavigate();
   const Params = useParams();
   const [searchtext, setSearchtext] = useState(Params.word);
   const [animateOut, setAnimateOut] = useState(false);
+  const userList = [
+    {
+      memberId: "1",
+      memberName: "최준호",
+      memberNickname: "cwnsgh",
+      memberImageUrl: "https://via.placeholder.com/150",
+      isFollowing: 0,
+      intro: "반갑습니다 최준호입니당",
+    },
+    {
+      memberId: "2",
+      memberName: "박혜선",
+      memberNickname: "qgptjs",
+      memberImageUrl: "https://via.placeholder.com/150",
+      isFollowing: 1,
+      intro: "반갑습니다 박혜선입니당~~~~~",
+    },
+    {
+      memberId: "3",
+      memberName: "여진구",
+      memberNickname: "dwlsrn",
+      memberImageUrl: "https://via.placeholder.com/150",
+      isFollowing: 1,
+      intro: "반갑습니다 여진구입니당 ~~~~ 러닝을 좋아해영",
+    },
+    {
+      memberId: "4",
+      memberName: "최소영",
+      memberNickname: "cthdud",
+      memberImageUrl: "https://via.placeholder.com/150",
+      isFollowing: 0,
+      intro: "쏘영이예용",
+    },
+    {
+      memberId: "5",
+      memberName: "서만기",
+      memberNickname: "taksrl",
+      memberImageUrl: "https://via.placeholder.com/150",
+      isFollowing: 0,
+      intro: "만기입니다 만기만기만만기",
+    },
+    {
+      memberId: "6",
+      memberName: "고명성",
+      memberNickname: "raudtjd",
+      memberImageUrl: "https://via.placeholder.com/150",
+      isFollowing: 0,
+      intro: "딩성입니당",
+    },
+  ];
 
   console.log(animateOut);
   const handleSubmit = (e) => {
@@ -117,18 +167,32 @@ export default function SearchResultPage() {
                 <button onClick={handle2}>계정</button>
               </div>
               <div className={styles.오버플로우확인}>
-                <div className={styles.게시글들어갈공간}>
-                  {/* {threadList.map((thread) => (
-                    <div key={thread.threadId}> */}
-                  {/* <img
-                        src={thread.imageUrl}
-                        alt={`Thread ${thread.threadId}`}
-                      /> */}
-                  {/* <p>Like Count: {thread.likeCount}</p>
-                      <p>Comment Count: {thread.commentCount}</p>
-                      <p>Scrap Count: {thread.scrapCount}</p>
+                <div className={styles.유저들이들어갈공간}>
+                  {userList.map((user) => (
+                    <div key={user.memberName} className={styles.유저박스}>
+                      <img
+                        src={user.memberImageUrl}
+                        alt={`Thread ${user.memberId}`}
+                      />
+                      <div className={styles.유저이름들}>
+                        <span className={styles.유저닉네임}>
+                          {user.memberNickname}
+                        </span>
+                        <span className={styles.유저이름}>
+                          {user.memberName}
+                        </span>
+                      </div>
+                      <div className={styles.유저인트로와팔로우}>
+                        <span className={styles.유저인트로}>{user.intro}</span>
+                        {user.isFollowing === 1 && (
+                          <div className={styles.팔로우}>팔로우</div>
+                        )}
+                        {user.isFollowing === 0 && (
+                          <div className={styles.노노팔로우}>팔로우</div>
+                        )}
+                      </div>
                     </div>
-                  ))} */}
+                  ))}
                 </div>
               </div>
             </div>

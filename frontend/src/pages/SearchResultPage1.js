@@ -1,10 +1,10 @@
 import Container from "../components/frame/Container";
-import styles from "./style/SearchResultPage.module.css";
+import styles from "./style/SearchResultPage1.module.css";
 import { useNavigate, useParams } from "react-router-dom";
 import searchicon from "../assets/searchicon.png";
 import React, { useState } from "react";
 
-export default function SearchResultPage() {
+export default function SearchResultPage1() {
   const navigate = useNavigate();
   const Params = useParams();
   const [searchtext, setSearchtext] = useState(Params.word);
