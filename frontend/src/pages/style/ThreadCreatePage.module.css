@@ -1,0 +1,125 @@
+.메인 {
+  width: 95%;
+  height: 100%;
+  background-color: aquamarine;
+}
+.페이지만들기 {
+  width: 100%;
+  height: 80%;
+  background-color: chartreuse;
+  display: flex;
+  flex-direction: column;
+}
+.페이지만들기헤더 {
+  display: flex;
+  width: 100%;
+  height: 10%;
+  background-color: darkcyan;
+}
+.페이지만들기미드 {
+  display: flex;
+  overflow: hidden;
+  width: 100%;
+  max-width: 100%;
+  height: 80%;
+  background-color: rgb(255, 244, 230);
+  justify-content: center;
+}
+.미드왼쪽 {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  background-color: rgb(227, 197, 255);
+}
+.왼쪽헤더 {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+.왼쪽미드 {
+  display: flex;
+  flex-direction: column;
+}
+.미드중앙 {
+  width: 50%;
+  background-color: darkkhaki;
+}
+.미드오른쪽 {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgb(245, 198, 170);
+}
+.추가된태그들 {
+  display: flex;
+  flex-wrap: nowrap;
+}
+.태그추가부분,
+.친구태그부분,
+.레아수정 {
+  width: 100%;
+}
+
+.미드왼쪽,
+.미드중앙,
+.미드오른쪽 {
+  flex-shrink: 0;
+  /* ... 기존 스타일 ... */
+  /* position: absolute; 부모 요소에 대해 절대적 위치 설정 */
+  /* width: 100%; */
+  transition: transform 0.5s ease; /* 부드러운 전환 효과 */
+}
+.showLeftCenter .미드왼쪽 {
+  transform: translateX(50%); /* 원래 위치로 */
+}
+.showLeftCenter .미드중앙 {
+  transform: translateX(50%);
+}
+.showLeftCenter .미드오른쪽 {
+  transform: translateX(150%); /* 더 오른쪽으로 이동 */
+}
+/* 중앙과 오른쪽 섹션을 보여주는 스타일 */
+.showCenterRight .미드왼쪽 {
+  transform: translateX(-200%); /* 왼쪽으로 이동 */
+}
+.showCenterRight .미드중앙 {
+  transform: translateX(-50%);
+}
+.showCenterRight .미드오른쪽 {
+  transform: translateX(-50%); /* 오른쪽으로 이동 */
+}
+
+.태그추가부분,
+.친구태그부분 {
+  height: 43%;
+}
+.레아수정 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.페이지만들기푸터 {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 30px;
+}
+.푸터 {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+.푸터인포 {
+  display: flex;
+  flex-direction: column;
+}
+.게시 {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+.버튼게시 {
+  width: 30%;
+}
