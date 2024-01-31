@@ -17,6 +17,7 @@ public class SecessionRequestDto {
      *  탈퇴 요청
      */
 
+    private Long memberId;
     private String email;
     private String password;
     private String passwordConfirm;

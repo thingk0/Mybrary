@@ -1,8 +1,16 @@
 package com.mybrary.backend.domain.notification.controller;
 
+import com.mybrary.backend.domain.member.dto.MemberInfoDto;
+import com.mybrary.backend.domain.notification.dto.NotificationGetDto;
 import com.mybrary.backend.domain.notification.service.NotificationService;
+import com.mybrary.backend.global.format.ApiResponse;
+import com.mybrary.backend.global.format.ResponseCode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -20,19 +28,43 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/notification")
 public class NotificationControllerV1 {
 
+    private final ApiResponse response;
     private final NotificationService notificationService;
 
     @Operation(summary = "나의 알림 조회", description = "알림 조회")
     @GetMapping
     public ResponseEntity<?> getAllNotification(
         @PageableDefault(page = 0, size = 10) Pageable page) {
-        return new ResponseEntity<>(HttpStatus.OK);
+
+        MemberInfoDto member1 = new MemberInfoDto(1L, "wnsgh", "안녕하세요 최준호입니다", "123123");
+        MemberInfoDto member2 = new MemberInfoDto(2L, "aksrl", "안녕하세요 서만기입니다", "666666");
+        MemberInfoDto member3 = new MemberInfoDto(3L, "gPtjs", "안녕하세요 박혜선입니다", "145643");
+        MemberInfoDto member4 = new MemberInfoDto(4L, "thdud", "안녕하세요 최소영입니다", "000000");
+
+        NotificationGetDto notify1 = new NotificationGetDto(1L, member1, 3, null, null, 3L, 4L, 5L, null);
+        NotificationGetDto notify2 = new NotificationGetDto(2L, member2, 9, null, null, 3L, 4L, null, null);
+        NotificationGetDto notify3 = new NotificationGetDto(3L, member3, 12, null, null, null, null, null, null);
+        NotificationGetDto notify4 = new NotificationGetDto(4L, member4, 9, 1L, "여행책", null, null, null, null);
+
+
+        List<NotificationGetDto> list = new ArrayList<>();
+        list.add(notify1);
+        list.add(notify2);
+        list.add(notify3);
+        list.add(notify4);
+
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("notificationList", list);
+        map.put("page", page);
+
+        return response.success(ResponseCode.NOTIFICATION_FETCHED.getMessage(), map);
     }
 
     @Operation(summary = "알림 삭제", description = "알림 삭제")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteNotification(@PathVariable(name = "id") Long notifyId) {
-        return new ResponseEntity<>(HttpStatus.OK);
+
+        return response.success(ResponseCode.NOTIFICATION_DELETED.getMessage(), notifyId);
     }
 
 }

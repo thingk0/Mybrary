@@ -19,6 +19,7 @@ public class ThreadUpdateDto {
      *
      */
 
+    private Long threadId;
     private Long bookId;
     private List<PaperPostDto> paperList;
     private boolean isPaperPublic;

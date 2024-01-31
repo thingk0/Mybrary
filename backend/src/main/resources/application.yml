@@ -3,6 +3,8 @@ spring:
     active: dev
     include:
       - db
+      - redis
+      - jwt
 
   jpa:
     open-in-view: false

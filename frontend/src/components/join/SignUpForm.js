@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import {
   checkNickName,
   signup,
@@ -7,6 +9,12 @@ import {
 } from "../../api/member/SignUp";
 
 function SignUpForm() {
+  /* 에러페이지 이동 */
+  const navigate = useNavigate();
+  const navigateToErrorPage = () => {
+    navigate("/error");
+  };
+
   /* 유효성검사 정규표현식 */
   const regex = {
     email: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
@@ -50,7 +58,7 @@ function SignUpForm() {
   };
 
   /* 이메일 인증 버튼 클릭 */
-  const handleVerifyEmail = (e, mail) => {
+  const handleVerifyEmail = async (e, mail) => {
     e.preventDefault();
 
     // 일단 유효성에 대한 검증을 먼저 한 후에, 유효성을 만족하면 검증 요청을 보냄. 응답에 따라 상태를 바꾼다.
@@ -68,46 +76,55 @@ function SignUpForm() {
       // 유효성은 검증 됐으므로, 메일 전송.
       // 이메일 전송 코드
       try {
-        verifyEmail(formData.email);
-        setIsEmailVerifying(true);
-        setFormErrors((prevFormErrors) => {
-          const { email, ...rest } = prevFormErrors;
-          return rest;
-        });
+        const data = await verifyEmail(formData.email);
+        // 데이터는 에러객체이거나, response.data의 값임
+        if (data.status === "SUCCESS") {
+          setIsEmailVerifying(true);
+          setFormErrors((prevFormErrors) => {
+            const { email, ...rest } = prevFormErrors;
+            return rest;
+          });
+        } else {
+          // 백엔드에서의 유효성 검사에서 막힘.
+          setFormErrors((prevFormErrors) => ({
+            ...prevFormErrors,
+            email: "유효한 이메일을 입력해주세요",
+          }));
+        }
       } catch (e) {
-        setFormErrors((prevFormErrors) => ({
-          ...prevFormErrors,
-          email: "유효한 이메일을 입력해주세요",
-        }));
+        console.log(e);
+        navigateToErrorPage();
+        // 서버에러. 에러페이지로 이동
       }
-      //(verifyEmail의 응답이 성공일 경우, 전송이 잘 된 것이므로 아래 코드 수행)
     }
   };
 
-  const handleVerifyCode = (e) => {
+  const handleVerifyCode = async (e) => {
     e.preventDefault();
 
     try {
-      verifyCode(code);
+      const data = await verifyCode(code);
       // 일치하면
-      setFormErrors((prevFormErrors) => {
-        const { code, email, ...rest } = prevFormErrors;
-        return rest;
-      });
-
-      setIsEmailVerifying(false);
-      setIsEmailVerified(true);
+      if (data.status === "SUCCESS") {
+        setFormErrors((prevFormErrors) => ({
+          ...prevFormErrors,
+          code: "인증번호가 일치하지 않습니다.",
+        }));
+        setIsEmailVerifying(false);
+        setIsEmailVerified(true);
+      } else {
+        setFormErrors((prevFormErrors) => {
+          const { code, email, ...rest } = prevFormErrors;
+          return rest;
+        });
+      }
     } catch (e) {
-      // 만약 일치하지 않으면
-
-      setFormErrors((prevFormErrors) => ({
-        ...prevFormErrors,
-        code: "인증번호가 일치하지 않습니다.",
-      }));
+      console.log(e);
+      navigateToErrorPage();
     }
   };
 
-  const handleCheckNickName = (e, nname) => {
+  const handleCheckNickName = async (e, nname) => {
     e.preventDefault();
     //닉네임 중복검사는 몇번이든 할 수 있다. 유효성 검증을 하고, 응답에 따라 상태를 바꾼다.
     if (!nname) {
@@ -122,19 +139,25 @@ function SignUpForm() {
       }));
     } else {
       try {
-        checkNickName(nname);
+        const data = await checkNickName(nname);
         /* 중복이 아닐 경우 */
-        setFormErrors((prevFormErrors) => {
-          const { nickname, ...rest } = prevFormErrors;
-          return rest;
-        });
-        setIsNickNameChecked(true);
+
+        if (data.status === "SUCCESS") {
+          setFormErrors((prevFormErrors) => {
+            const { nickname, ...rest } = prevFormErrors;
+            return rest;
+          });
+          setIsNickNameChecked(true);
+        } else {
+          /* 중복 닉네임인 경우 */
+          setFormErrors((prevFormErrors) => ({
+            ...prevFormErrors,
+            nickname: "중복된 닉네임입니다.",
+          }));
+        }
       } catch (e) {
-        /* 중복 닉네임인 경우 */
-        setFormErrors((prevFormErrors) => ({
-          ...prevFormErrors,
-          nickname: "중복된 닉네임입니다.",
-        }));
+        console.log(e);
+        navigateToErrorPage();
       }
     }
   };
@@ -152,6 +175,7 @@ function SignUpForm() {
         setIsSuccess(true);
       } catch (e) {
         // 에러 페이지로 이동 또는 signup 메서드 반환값의 message 를 출력 (백엔드에서 보내주는 에러 미시지)
+        //signup 에서 에러 처리 돼있으므로 생략함.
       }
     } else {
       setFormErrors(errors);
