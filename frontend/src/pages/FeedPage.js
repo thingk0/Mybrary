@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Container from "../components/frame/Container";
 import styles from "./style/FeedPage.module.css";
 import s from "classnames";
@@ -6,18 +6,23 @@ import s from "classnames";
 export default function FeedPage() {
   const [activeIndex, setActiveIndex] = useState(1);
   const [list, setList] = useState([10, 9, 8, 7, 6, 5, 4, 3, 2, 1]);
+  const [comment, setComment] = useState(false);
 
-  //버튼은 추후에 스크롤이벤트로 바꿔야함
-  //이전버튼임
-  const handleNextClick = () => {
+  // 스로틀링을 위한 상태
+  const [isThrottled, setIsThrottled] = useState(false);
+
+  // useCallback 내에서 함수 정의
+  const handlePrevClick = useCallback(() => {
+    setComment(false);
     if (activeIndex > 1) {
       setActiveIndex(activeIndex - 1);
     }
-  };
+  }, [activeIndex]);
 
-  //다음버튼임
-  const handlePrevClick = () => {
+  // useCallback 내에서 함수 정의
+  const handleNextClick = useCallback(() => {
     setActiveIndex(activeIndex + 1);
+    setComment(false);
     if (activeIndex === list.length - 3 && list.length - 4 < activeIndex) {
       const newList = Array.from(
         { length: 10 },
@@ -25,32 +30,83 @@ export default function FeedPage() {
       ).reverse();
       setList([...newList, ...list]);
     }
+  }, [activeIndex, list]);
+
+  // useCallback으로 함수 래핑
+  const handleWheelThrottled = useCallback(
+    (event) => {
+      if (!isThrottled) {
+        if (event.deltaY < 0) {
+          handlePrevClick();
+        } else if (event.deltaY > 0) {
+          handleNextClick();
+        }
+        setIsThrottled(true);
+        setTimeout(() => setIsThrottled(false), 500); // 0.5초 동안 다음 이벤트 차단
+      }
+    },
+    [isThrottled, handlePrevClick, handleNextClick]
+  );
+
+  useEffect(() => {
+    window.addEventListener("wheel", handleWheelThrottled);
+    return () => {
+      window.removeEventListener("wheel", handleWheelThrottled);
+    };
+  }, [activeIndex, list, handleWheelThrottled]); // 의존성 배열 업데이트
+
+  const openComment = () => {
+    setComment(true);
   };
+
+  function FeedContent({ index, content }) {
+    return (
+      <div className={styles.cont}>
+        <div>{index}번 게시물이빈당</div>
+        <div onClick={() => openComment()}>댓글나오는 버튼임ㅋㅋ</div>
+      </div>
+    );
+  }
 
   return (
     <>
       <Container>
-        <div className={styles.StackCarousel_contents}>
-          {list.map((index) => (
+        <div className={styles.feedContainer}>
+          <div>
             <div
-              key={index}
               className={s(
-                styles.StackCarousel_content,
-                {
-                  [styles.StackCarousel_above]: activeIndex > index,
-                  [styles.StackCarousel_active]: activeIndex === index,
-                  [styles.StackCarousel_second]: activeIndex === index - 1,
-                  [styles.StackCarousel_third]: activeIndex === index - 2,
-                },
-                activeIndex < index - 2 ? "" : null
+                styles.StackCarousel_contents,
+                comment && styles.active
               )}
             >
-              <div className={styles.cont}>{index}번 게시물이빈당</div>
+              {list.map((index, content) => (
+                <div
+                  key={index}
+                  className={s(
+                    styles.StackCarousel_content,
+                    {
+                      [styles.StackCarousel_above]: activeIndex > index,
+                      [styles.StackCarousel_active]: activeIndex === index,
+                      [styles.StackCarousel_second]: activeIndex === index - 1,
+                      [styles.StackCarousel_third]: activeIndex === index - 2,
+                    },
+                    activeIndex < index - 2 ? "" : null
+                  )}
+                >
+                  <FeedContent index={index} content={content} />
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
+          <div
+            className={s(
+              styles.ll,
+              comment ? styles.commentContainer : styles.hide
+            )}
+          >
+            댓글공간ㅋㅋsdfadgdfgdfsdgdsgh
+          </div>
         </div>
-        <button onClick={handleNextClick}>이전</button>
-        <button onClick={handlePrevClick}>다음</button>
       </Container>
     </>
   );
