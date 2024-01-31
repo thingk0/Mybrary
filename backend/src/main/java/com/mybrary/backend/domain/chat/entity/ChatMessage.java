@@ -44,8 +44,6 @@ public class ChatMessage extends BaseEntity {
 
     private Long threadId;
 
-    private Long paperId;
-
     private boolean isRead;
 
 }

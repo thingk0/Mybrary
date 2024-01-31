@@ -3,7 +3,7 @@ package com.mybrary.backend.domain.chat.service;
 import com.mybrary.backend.domain.chat.dto.ChatMessageGetDto;
 import com.mybrary.backend.domain.chat.dto.ChatMessagePostDto;
 import com.mybrary.backend.domain.chat.dto.ChatRoomGetDto;
-import java.awt.print.Pageable;
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 import org.springframework.security.core.Authentication;
 
