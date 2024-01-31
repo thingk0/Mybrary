@@ -104,7 +104,9 @@ export default function MybraryPage() {
 
   return (
     <>
-      <div className={`${styles.bg} ${styles[`bg${bgColor}`]}`}>
+      <div
+        className={s(`${styles.bg} ${styles[`bg${bgColor}`]}`, styles.fadeIn)}
+      >
         <div className={styles.center}>
           <img
             src={bsColor}
