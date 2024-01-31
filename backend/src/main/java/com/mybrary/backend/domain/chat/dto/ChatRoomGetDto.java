@@ -1,6 +1,7 @@
 package com.mybrary.backend.domain.chat.dto;
 
 import com.mybrary.backend.domain.member.dto.MemberInfoDto;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,7 +23,7 @@ public class ChatRoomGetDto {
     private Long chatRoomId;
     private MemberInfoDto joinMember;
     private String recentMessage;
-    private String recentMessageTime;
+    private LocalDateTime recentMessageTime;
     private int newMessageCount;
 
 }

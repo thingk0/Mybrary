@@ -145,7 +145,6 @@ public class MemberControllerV1 {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-
     /* 설정페이지에 필요한 API */
 
     @Operation(summary = "회원 정보 수정", description = "닉네임, 프로필이미지, 소개,  수정")

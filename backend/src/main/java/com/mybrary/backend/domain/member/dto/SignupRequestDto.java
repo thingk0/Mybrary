@@ -37,6 +37,7 @@ public class SignupRequestDto {
 
     @Pattern(regexp = "^([가-힇]){2,5}$",
              message = "이름은 한글(자음 또는 모음만 존재하는 것 제외)을 조합하여 2~5자 이내여야 합니다.")
+    @Schema(description = "이름", example = "김싸피")
     private String name;
 
 

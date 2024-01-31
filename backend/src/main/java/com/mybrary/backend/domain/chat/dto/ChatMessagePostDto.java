@@ -16,11 +16,13 @@ public class ChatMessagePostDto {
 
     /**
      *  채팅 보낼 때 요청
-     *  message or threadId 둘 중 하나만 데이터 있고 나머지는 null
+     *  message or threadId(paperId) 둘 중 하나만 데이터 있고 나머지는 null
      */
 
     private Long chatRoomId;
+    private Long receiverId;
     private String message;
     private Long threadId;
+    private Long paperId;
 
 }

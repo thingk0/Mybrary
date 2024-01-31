@@ -1,5 +1,6 @@
 package com.mybrary.backend.domain.chat.controller;
 
+import com.mybrary.backend.domain.chat.dto.ChatMessagePostDto;
 import com.mybrary.backend.domain.chat.entity.ChatMessage;
 import com.mybrary.backend.domain.chat.dto.ChatMessageGetDto;
 import com.mybrary.backend.domain.chat.dto.ChatRoomGetDto;
@@ -9,7 +10,9 @@ import com.mybrary.backend.domain.member.dto.MemberInfoDto;
 import com.mybrary.backend.global.format.ApiResponse;
 import com.mybrary.backend.global.format.ResponseCode;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.net.Authenticator;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,17 +42,17 @@ public class ChatControllerV1 {
 
     @Operation(summary = "채팅방 리스트 조회", description = "자신의 채팅방 리스트 조회")
     @GetMapping
-    public ResponseEntity<?> getAllChatRoom() {
+    public ResponseEntity<?> getAllChatRoom(@Parameter(hidden = true) Authentication authentication) {
 
         MemberInfoDto joinMember1 = new MemberInfoDto(1L, "wnsgh", "안녕하세요 최준호입니다", "123123");
         MemberInfoDto joinMember2 = new MemberInfoDto(2L, "aksrl", "안녕하세요 서만기입니다", "666666");
         MemberInfoDto joinMember3 = new MemberInfoDto(3L, "gPtjs", "안녕하세요 박혜선입니다", "145643");
         MemberInfoDto joinMember4 = new MemberInfoDto(4L, "thdud", "안녕하세요 최소영입니다", "000000");
 
-        ChatRoomGetDto chatRoom1 = new ChatRoomGetDto(1L, joinMember1, "명성아 넌 천재야", "2024-01-11", 2);
-        ChatRoomGetDto chatRoom2 = new ChatRoomGetDto(2L, joinMember2, "내가 한 거 볼래?", "2024-01-20", 0);
-        ChatRoomGetDto chatRoom3 = new ChatRoomGetDto(3L, joinMember3, "명성아 나 이것 좀 알려줘", "2023-12-25", 6);
-        ChatRoomGetDto chatRoom4 = new ChatRoomGetDto(4L, joinMember4, "게릿힘들어...", "2022-10-13", 3);
+        ChatRoomGetDto chatRoom1 = new ChatRoomGetDto(1L, joinMember1, "명성아 넌 천재야", null, 2);
+        ChatRoomGetDto chatRoom2 = new ChatRoomGetDto(2L, joinMember2, "내가 한 거 볼래?", null, 0);
+        ChatRoomGetDto chatRoom3 = new ChatRoomGetDto(3L, joinMember3, "명성아 나 이것 좀 알려줘", null, 6);
+        ChatRoomGetDto chatRoom4 = new ChatRoomGetDto(4L, joinMember4, "게릿힘들어...", null, 3);
 
 
         List<ChatRoomGetDto> list = new ArrayList<>();
@@ -58,12 +62,14 @@ public class ChatControllerV1 {
         list.add(chatRoom4);
 
 
-        return response.success(ResponseCode.CHATROOM_LIST_FETCHED.getMessage(), list);
+        List<ChatRoomGetDto> result = chatService.getAllChatRoom(authentication);
+
+        return response.success(ResponseCode.CHATROOM_LIST_FETCHED.getMessage(), result);
     }
 
     @Operation(summary = "채팅방 나가기", description = "채팅방 나가기 (채팅참여 삭제처리)")
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteChatRoom(@PathVariable(name = "id") Long chatRoomId) {
+    public ResponseEntity<?> deleteChatRoom(Authenticator authenticator, @PathVariable(name = "id") Long chatRoomId) {
 
         return response.success(ResponseCode.CHATROOM_EXITED.getMessage(), chatRoomId);
     }
@@ -127,9 +133,8 @@ public class ChatControllerV1 {
 
     @Operation(summary = "채팅 메세지 보내기", description = "채팅 메세지 보내기")
     @PostMapping("/{id}/message")
-    public ResponseEntity<?> createChat(@PathVariable(name = "id") Long chatRoomId,
-                                        @RequestBody ChatMessage message) {
-        return response.success(ResponseCode.CHAT_MESSAGE_SENT.getMessage(), chatRoomId);
+    public ResponseEntity<?> createChat(@RequestBody ChatMessagePostDto message) {
+        return response.success(ResponseCode.CHAT_MESSAGE_SENT.getMessage(), message);
     }
 
 }
