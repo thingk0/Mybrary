@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ConnectWebSocket, login } from "../../api/member/Login";
+import { login } from "../../api/member/Login";
+import useUserStore from "../../store/useUserStore";
 
 function LoginForm() {
   /* 오류페이지 이동 */
@@ -8,6 +9,8 @@ function LoginForm() {
   const navigateToErrorPage = () => {
     navigate("/error");
   };
+  // 유저상태 전역 관리를 위한 코드
+  const setUser = useUserStore((state) => state.setUser);
 
   /* 상태 */
   const [formData, setFormData] = useState({
@@ -39,10 +42,14 @@ function LoginForm() {
       // 로그인 요청 보내기
       const data = await login(formData);
       if (data.status === "SUCCESS") {
-        console.log("로그인성공");
-        // 로그인 성공시 해야 할 것
-        // 채팅, 알람 웹소켓 연결하기 (알람 비허용 여부는 백엔드에서 처리)
-        // ConnectWebSocket(formData.email);
+        setUser({
+          email: data.email,
+          memberId: data.memberId,
+          nickname: data.nickname,
+        });
+
+        navigate(`/mybrary/${data.memberId}`);
+        // useStore에 data안에 들어있는 기본 정보들을 저장해라
       } else {
         // 이메일, 비밀번호 불일치
         setIsLoginFail(true);
