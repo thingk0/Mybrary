@@ -139,8 +139,10 @@ public class ChatControllerV1 {
 
         List<ChatMessageGetDto> emptyList = new ArrayList<>();
 
+        List<ChatMessageGetDto> result = chatService.getAllChatByMemberId(authentication, memberId, page);
+
         HashMap<String, Object> map = new HashMap<>();
-        map.put("chatMessageList", emptyList);
+        map.put("chatMessageList", result);
         map.put("page", page);
 
         return response.success(ResponseCode.CHATROOM_ENTERED.getMessage(), map);
