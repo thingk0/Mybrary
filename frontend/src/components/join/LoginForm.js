@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ConnectWebSocket, login } from "../../api/member/Login";
+// import { ConnectWebSocket, login } from "../../api/member/Login";
+import { login } from "../../api/member/Login";
 
 function LoginForm() {
   /* 오류페이지 이동 */
