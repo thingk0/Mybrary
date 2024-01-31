@@ -1,17 +1,28 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import Container from "../components/frame/Container";
 import styles from "./style/BookDetailPage.module.css";
 
 export default function BookDetailPage() {
   const [animate, setAnimate] = useState(false);
+  const totalPages = 10;
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const nextPage = () => {
+    if (currentPage < totalPages - 1) {
+      setCurrentPage(currentPage + 2);
+    }
+  };
+
+  const prevPage = () => {
+    if (currentPage > 0) {
+      setCurrentPage(currentPage - 2);
+    }
+  };
 
   useEffect(() => {
-    // 마운트 후 약간의 지연을 두고 애니메이션 상태를 변경
     const timer = setTimeout(() => {
       setAnimate(true);
-    }, 100); // 100ms 지연
-
-    // 컴포넌트가 언마운트될 때 타이머 정리
+    }, 100);
     return () => clearTimeout(timer);
   }, []);
 
@@ -23,11 +34,18 @@ export default function BookDetailPage() {
         </div>
         <div className={styles.body}>
           <div className={styles.middle}>
-            <div
-              className={`${styles.book} ${
-                animate ? styles["book-animate"] : ""
-              }`}
-            ></div>
+            <div className={`${styles.book} ${animate ? styles.animate : ""}`}>
+              {currentPage > 0 && (
+                <div className={styles.leftpage} onClick={prevPage}>
+                  머임? {currentPage}
+                </div>
+              )}
+              {currentPage < totalPages - 1 && (
+                <div className={styles.rightpage} onClick={nextPage}>
+                  Page {currentPage + 1}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </Container>
