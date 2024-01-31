@@ -1,11 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { login } from "../../api/member/Login";
-import { useQueryClient } from "react-query";
+import { ConnectWebSocket, login } from "../../api/member/Login";
 
 function LoginForm() {
-  const queryClient = useQueryClient();
-
   /* 오류페이지 이동 */
   const navigate = useNavigate();
   const navigateToErrorPage = () => {
@@ -42,13 +39,10 @@ function LoginForm() {
       // 로그인 요청 보내기
       const data = await login(formData);
       if (data.status === "SUCCESS") {
+        console.log("로그인성공");
         // 로그인 성공시 해야 할 것
-        const token = data.token;
-        queryClient.setQueryData("token", token); // JWT 저장
-        // 채팅, 알람 웹소켓 연결하기
-        // 해당 유저가 알림을 허용했는지 요청을 통해 혹인하고 알람 웹소켓 연결
-
-        // 채팅 웹소켓 연결하기
+        // 채팅, 알람 웹소켓 연결하기 (알람 비허용 여부는 백엔드에서 처리)
+        // ConnectWebSocket(formData.email);
       } else {
         // 이메일, 비밀번호 불일치
         setIsLoginFail(true);
