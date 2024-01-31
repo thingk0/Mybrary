@@ -26,6 +26,7 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public List<ChatRoomGetDto> getAllChatRoom(Authentication authentication) {
+        // 로그인한 회원 정보
         Member me = memberService.findMember(authentication.getName());
         Long myId = me.getId();
         List<ChatRoomGetDto> list = new ArrayList<>();
