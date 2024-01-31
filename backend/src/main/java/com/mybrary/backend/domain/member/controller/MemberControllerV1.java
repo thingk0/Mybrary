@@ -55,7 +55,7 @@ public class MemberControllerV1 {
 
     @Operation(summary = "이메일 인증 요청", description = "이메일 주소 보내고 인증코드를 메일로 보내는 요청")
     @PostMapping("/email/verification")
-    public ResponseEntity<?> emailVerification(@RequestParam String email) {
+    public ResponseEntity<?> emailVerification(@RequestParam("email") String email) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
