@@ -48,7 +48,8 @@ function LoginForm() {
           nickname: data.nickname,
         });
 
-        navigate(`/mybrary/${data.memberId}`);
+        //navigate(`/mybrary/${data.memberId}`);
+        navigate(`/mybrary/userid`);
         // useStore에 data안에 들어있는 기본 정보들을 저장해라
       } else {
         // 이메일, 비밀번호 불일치

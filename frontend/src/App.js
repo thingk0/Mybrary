@@ -7,9 +7,12 @@ import useStompStore from "./store/useStompStore";
 import { checkLogin } from "./api/member/CheckLogin";
 import { useNavigate } from "react-router-dom";
 import useUserStore from "./store/useUserStore";
+import useNotificationStore from "./store/useNotificationStore";
+import { Toaster } from "react-hot-toast";
 
 export default function App() {
   const { connect, disconnect } = useStompStore();
+  const { setNewNotification } = useNotificationStore();
   const navigate = useNavigate();
   const email = useUserStore((state) => state.user.email);
 
@@ -19,7 +22,7 @@ export default function App() {
       const data = checkLogin();
       if (data.status === "SUCCESS") {
         // 컴포넌트 마운트 시 연결
-        connect(email);
+        connect(email, setNewNotification);
       } else return;
     } catch (e) {
       console.log(e);
@@ -31,7 +34,7 @@ export default function App() {
     return () => {
       disconnect();
     };
-  }, [connect, disconnect, navigate, email]);
+  }, [connect, disconnect, navigate, email, setNewNotification]);
 
   return (
     <>
@@ -39,6 +42,7 @@ export default function App() {
       <div>
         <Outlet />
       </div>
+      <Toaster position="bottom-right" reverseOrder={false} />
     </>
   );
 }

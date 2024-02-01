@@ -21,9 +21,11 @@ import frame from "../assets/frame.png";
 import door from "../assets/door.png";
 import postbox from "../assets/postbox.png";
 import s from "classnames";
-import { useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import { useState, useEffect } from "react";
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import useUserStore from "../store/useUserStore";
+import useStompStore from "../store/useStompStore";
 
 export default function MybraryPage() {
   const navigate = useNavigate();
@@ -32,6 +34,12 @@ export default function MybraryPage() {
   const [esColor, setEsColor] = useState(easel1);
   const [tbColor, setTbColor] = useState(table1);
   const [bsColor, setBsColor] = useState(shelf1);
+  const user = useUserStore((state) => state.user);
+  const client = useStompStore((state) => state.stompClient);
+
+  useEffect(() => {
+    console.log(user);
+  }, []);
 
   const color = [
     "01",
@@ -66,6 +74,7 @@ export default function MybraryPage() {
         primary: "#713200",
         secondary: "#FFFAEE",
       },
+      position: "top-center",
     });
   };
 
@@ -102,11 +111,37 @@ export default function MybraryPage() {
     );
   }
 
+  const sendAlarm = async (e) => {
+    if (e.key === "Enter") {
+      console.log(e.target.value);
+      console.log(client);
+      // 여기에 알람 전송 요청 코드 작성
+      try {
+        const msg = {
+          sender: user.email,
+          receiver: e.target.value,
+        };
+
+        await fetch("/api/v1/member/alarm", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(msg),
+        });
+      } catch (error) {
+        console.log(error);
+        throw error;
+      }
+    }
+  };
+
   return (
     <>
       <div
         className={s(`${styles.bg} ${styles[`bg${bgColor}`]}`, styles.fadeIn)}
       >
+        <input onKeyDown={sendAlarm}></input>
         <div className={styles.center}>
           <img
             src={bsColor}
@@ -228,7 +263,6 @@ export default function MybraryPage() {
           </div>
         )}
       </div>
-      <Toaster position="top-center" reverseOrder={false} />
     </>
   );
 }

@@ -1,9 +1,17 @@
 import s from "classnames";
 import styles from "./atomstyle/Nav.module.css";
 import { useState } from "react";
+import useNotificationStore from "../../store/useNotificationStore";
 
 export default function Nav() {
   const [active, setActive] = useState([false, true, false, false]);
+  const hasNewNotification = useNotificationStore(
+    (state) => state.hasNewNotification
+  );
+  const { setNewNotification } = useNotificationStore();
+  const handleOffAlarm = () => {
+    setNewNotification(false, "");
+  };
 
   return (
     <div className={s(styles.nav_container)}>
@@ -11,7 +19,12 @@ export default function Nav() {
         <div className={s(styles.nav_paper1, styles.nav_paper)}>
           <div className={s(styles.nav_paper2, styles.nav_paper)}>
             <div className={s(styles.nav_paper3, styles.nav_paper)}>
-              <div className={s(styles.nav_icon)}>알림</div>
+              <div
+                className={s(styles.nav_icon)}
+                onClick={() => handleOffAlarm()}
+              >
+                {hasNewNotification ? "알림옴" : "알림"}
+              </div>
               <div className={s(styles.nav_icon)}>설정</div>
               <div className={s(styles.nav_icon)}>로아</div>
             </div>
