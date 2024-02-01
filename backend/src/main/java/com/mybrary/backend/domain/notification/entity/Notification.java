@@ -19,12 +19,16 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 @Entity
 @Builder
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Where(clause = "is_deleted <> true")
+@SQLDelete(sql = "UPDATE member SET is_deleted = TRUE WHERE member_id = ?")
 public class Notification extends BaseEntity {
 
     @Id
@@ -44,24 +48,10 @@ public class Notification extends BaseEntity {
 
     private boolean isRead;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "book_id")
-    private Book book;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "thread_id")
-    private Threads thread;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "paper_id")
-    private Paper paper;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "comment_id")
-    private Comment comment;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "reply_comment_id")
-    private Comment replyComment;
+    private Long bookId;
+    private Long threadId;
+    private Long paperId;
+    private Long commentId;
+    private Long replyCommentId;
 
 }
