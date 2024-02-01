@@ -2,10 +2,13 @@ package com.mybrary.backend.domain.member.service.impl;
 
 import com.mybrary.backend.domain.member.service.MailService;
 import com.mybrary.backend.global.exception.email.FailedMessageTransmissionException;
+import com.mybrary.backend.global.exception.email.InvalidAuthCodeException;
 import com.mybrary.backend.global.format.ErrorCode;
+import com.mybrary.backend.global.util.CookieUtil;
 import com.mybrary.backend.global.util.RedisUtil;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import jakarta.servlet.http.HttpServletResponse;
 import java.util.concurrent.ThreadLocalRandom;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -31,6 +34,7 @@ public class MailServiceImpl implements MailService {
 
     private final JavaMailSender mailSender;
     private final RedisUtil redisUtil;
+    private final CookieUtil cookieUtil;
 
     /**
      * 사용자에게 이메일 인증을 보냅니다.
@@ -55,8 +59,13 @@ public class MailServiceImpl implements MailService {
      * @return : 인증 번호가 일치하면 true, 그렇지 않으면 false 를 반환
      */
     @Override
-    public boolean confirmAuthCode(String email, String authNum) {
-        return email.equals(redisUtil.getData(authNum));
+    public boolean confirmAuthCode(String email, String authNum, HttpServletResponse servletResponse) {
+        if (!email.equals(redisUtil.getData(authNum))) {
+            throw new InvalidAuthCodeException(ErrorCode.AUTH_CODE_INVALID);
+        }
+        redisUtil.deleteData(authNum);
+        cookieUtil.addCookie("confirmedEmail", email, 300, servletResponse);
+        return true;
     }
 
 
@@ -99,20 +108,22 @@ public class MailServiceImpl implements MailService {
         return "<html>" +
             "<body>" +
             "<div style='font-family: Arial, sans-serif; text-align: center; color: #333;'>" +
-            "<h2>MyBrary 에 오신 것을 환영합니다!</h2>" +
-            "<p>회원가입해 주셔서 감사합니다. 여러분의 참여를 진심으로 환영합니다.</p>" +
-            "<p>인증 번호는 다음과 같습니다:</p>" +
+            "<h2>MyBrary: 마이브러리에 오신 것을 진심으로 환영합니다!</h2>" +
+            "<p>저희 마이브러리에 가입해 주셔서 감사드립니다. 여러분의 참여가 저희 서비스를 더욱 풍부하게 만들어 줄 것입니다:) </p>" +
+            "<br>" +
+            "<p>이메일 인증을 위해 아래 인증 번호를 사용해 주세요. <strong style='color: red;'>인증 번호의 유효 시간은 5분입니다.</strong> 5분 이내에 회원가입을 완료해 주십시오:</p>" +
             "<div style='font-size: 18px; margin: 20px; padding: 10px; background-color: #f2f2f2; border: 1px solid #e0e0e0; display: inline-block;'>"
             +
             authCode +
             "</div>" +
-            "<p>회원가입을 완료하기 위해 이 인증번호를 가입 페이지에 입력해 주세요.</p>" +
+            "<p>이 인증 번호로 회원가입 절차를 완료하시면 모든 서비스를 이용하실 수 있습니다.</p>" +
             "<br>" +
-            "<p>본 이메일을 요청하지 않으셨다면, 무시해 주세요.</p>" +
+            "<p>이 이메일이 본인과 관련 없는 경우, 어떠한 조치도 취하실 필요 없으며, 해당 메일을 무시하셔도 됩니다.</p>" +
             "</div>" +
             "</body>" +
             "</html>";
     }
+
 
 }
 
