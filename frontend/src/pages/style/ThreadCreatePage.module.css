@@ -1,55 +1,216 @@
 .메인 {
+  width: 100%;
+}
+.페이지 {
+  padding-top: 30px;
+  width: 100%;
+  height: 3%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.페이지사이즈조정 {
   width: 95%;
   height: 100%;
-  background-color: aquamarine;
+  display: flex;
+  align-items: center;
+}
+.페이지작성 {
+  font-size: 24px;
 }
 .페이지만들기 {
   width: 100%;
-  height: 80%;
-  background-color: chartreuse;
+  height: 100%;
   display: flex;
   flex-direction: column;
 }
 .페이지만들기헤더 {
   display: flex;
+  align-items: center;
   width: 100%;
-  height: 10%;
-  background-color: darkcyan;
+  height: 7%;
+  justify-content: center;
 }
+.헤더사이즈조정 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 80%;
+  width: 98%;
+}
+.버튼들 {
+  display: flex;
+  gap: 12px;
+}
+.버튼들 button {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.페이지제거버튼 {
+  width: 100px;
+  height: 30px;
+}
+
 .페이지만들기미드 {
   display: flex;
   overflow: hidden;
   width: 100%;
   max-width: 100%;
-  height: 80%;
+  height: 85vh;
   background-color: rgb(255, 244, 230);
   justify-content: center;
+  box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.25);
+  border-radius: 5px;
 }
 .미드왼쪽 {
   display: flex;
   flex-direction: column;
-  width: 50%;
-  background-color: rgb(227, 197, 255);
+  justify-content: center;
+  align-items: center;
+  width: 43%;
+  background-color: #fff9f6;
 }
+.미드왼쪽사이즈조정 {
+  width: 95%;
+  height: 100%;
+  /* background-color: rgb(201, 255, 255); */
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  display: flex;
+}
+
 .왼쪽헤더 {
+  position: relative;
   display: flex;
   width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+.왼쪽헤더사이즈조정 {
+  position: absolute;
+  top: 0px;
+  left: 10px;
+  width: 94%;
+  display: flex;
   justify-content: space-between;
+  /* background-color: brown; */
 }
 .왼쪽미드 {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* background-color: blue; */
+  height: 80%;
+}
+.다음버튼 {
+  width: 85%;
+  height: 40px;
+  background-color: #57423f;
+  color: rgb(255, 255, 255);
+  font-size: 16px;
+  border-radius: 5px;
+}
+.레이아웃글자 {
+  font-size: 26px;
+}
+.레이아웃버튼 {
+  display: flex;
+  gap: 13px;
+}
+.레이아웃버튼 button {
+  padding: 12px;
+  width: 10px;
+  height: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.왼쪽미드레이아웃 {
+  width: 85%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6%;
+}
+.레이아웃이미지 {
+  height: 130px;
+  width: 110px;
+  margin-top: 14px;
 }
 .미드중앙 {
-  width: 50%;
-  background-color: darkkhaki;
-}
-.미드오른쪽 {
-  width: 50%;
+  width: 57%;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
-  background-color: rgb(245, 198, 170);
+  /* background-color: darkkhaki; */
+}
+/* 
+
+
+
+
+
+
+
+*/
+.미드중앙사이즈조정 {
+  position: relative;
+  width: 95%;
+  height: 100%;
+  background-color: #fffafa;
+}
+.이미지업로드부분 {
+  position: absolute;
+  top: 95px;
+  left: 5px;
+  width: 48%;
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.이미지업로드버튼 {
+}
+.업로드이미지 {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+}
+
+/* 
+
+
+
+
+
+
+
+
+
+
+*/
+
+.미드오른쪽 {
+  width: 43%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(255, 201, 170);
+}
+.오른쪽크기조정 {
+  width: 90%;
+  height: 90%;
+  background-color: beige;
 }
 .추가된태그들 {
   display: flex;
@@ -74,17 +235,17 @@
   transform: translateX(50%); /* 원래 위치로 */
 }
 .showLeftCenter .미드중앙 {
-  transform: translateX(50%);
+  transform: translateX(38%);
 }
 .showLeftCenter .미드오른쪽 {
   transform: translateX(150%); /* 더 오른쪽으로 이동 */
 }
 /* 중앙과 오른쪽 섹션을 보여주는 스타일 */
 .showCenterRight .미드왼쪽 {
-  transform: translateX(-200%); /* 왼쪽으로 이동 */
+  transform: translateX(-150%); /* 왼쪽으로 이동 */
 }
 .showCenterRight .미드중앙 {
-  transform: translateX(-50%);
+  transform: translateX(-38%);
 }
 .showCenterRight .미드오른쪽 {
   transform: translateX(-50%); /* 오른쪽으로 이동 */
@@ -93,6 +254,10 @@
 .태그추가부분,
 .친구태그부분 {
   height: 43%;
+}
+
+.태그span {
+  font-size: 21px;
 }
 .레아수정 {
   display: flex;
@@ -122,4 +287,60 @@
 }
 .버튼게시 {
   width: 30%;
+}
+/* 
+
+
+ */
+
+/* 
+ 
+ 
+
+ /* 
+ 
+ */
+
+/*  */
+.wrapperClass {
+  width: 50%;
+  margin: 0 auto;
+}
+.wrapperClass2 {
+  width: 100%;
+  margin: 0 auto;
+}
+.editorClass {
+  border: solid 1px black;
+  border-radius: 2px;
+  position: absolute;
+  top: 100px;
+  right: 0px;
+  width: 50%;
+  height: auto; /* 높이 자동 조절 */
+  min-height: 400px; /* 최소 높이 설정 */
+  max-height: 400px; /* 최대 높이 설정, 이를 초과하면 스크롤바 표시 */
+  overflow: auto; /* 내용이 넘칠 때만 스크롤바 표시 */
+}
+.editorClass2 {
+  border: solid 1px black;
+  border-radius: 2px;
+  position: absolute;
+  top: 510px;
+  right: 0px;
+  width: 99%;
+  height: auto; /* 높이 자동 조절 */
+  min-height: 300px; /* 최소 높이 설정 */
+  max-height: 300px; /* 최대 높이 설정, 이를 초과하면 스크롤바 표시 */
+  overflow: auto; /* 내용이 넘칠 때만 스크롤바 표시 */
+}
+/* 이거는 공용임둘다 이클레스이름임 */
+.toolbarClass {
+  position: absolute;
+  height: 90px;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  z-index: 4;
+  background-color: #fffafa;
 }

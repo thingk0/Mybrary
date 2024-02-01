@@ -18,7 +18,7 @@ export default function SettingPage() {
           <div className={styles.미드첫째}>
             <div className={styles.설정과이미지}>
               <span>계정설정</span>
-              <img className={styles.설정옆이미지} src={설정옆이미지} />
+              <img className={styles.설정옆이미지} src={설정옆이미지} alt="" />
             </div>
             <div className={styles.설정친구들}>
               <div className={styles.설정한줄크기}>
@@ -90,7 +90,7 @@ export default function SettingPage() {
             </div>
             <div className={styles.설정과이미지}>
               <span>알림설정</span>
-              <img className={styles.설정옆이미지} src={설정옆이미지} />
+              <img className={styles.설정옆이미지} src={설정옆이미지} alt="" />
             </div>
             <div className={styles.설정친구들}>
               <div className={styles.설정한줄크기}>
@@ -105,6 +105,7 @@ export default function SettingPage() {
             </div>
           </div>
           <button>회원탈퇴</button>
+          <button>완료</button>
         </div>
       </Container>
     </>
