@@ -32,26 +32,11 @@ export default function ThreadCreatePage() {
 
     // 예: axios.post('/api/saveContent', { content: htmlContent });
   };
-  const htmlContent = `<p></p>
-  <img src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzA5MTJfNDgg%2FMDAxNjk0NDg2OTUzMTUx.C-qTANszcS7JMhPhAKw8AObpciMkphr_qBDq3tcgM4Eg.SnSjMpF7PpK9_jhoCdo9i0DcVwZtc1biuFdI0guzYgwg.JPEG.my_ebbuny%2F6.4_%25281_-_14%2529.jpg&type=a340" alt="undefined" style="height: 150px;width: 150px"/>
-  <p>오늘 저녁은 뭐먹을까 너무 고민이되네요~</p>
-  <p></p>`;
+  const htmlContent = `<p>ㅁ<span style="color: rgb(84,172,210);font-size: 48px;">ㄴㅇ</span>ㅁ</p>
+  <p><a href="http://www.instagram.com/mangmangi_98" target="_blank"><span style="color: rgb(26,188,156);font-size: 30px;">서만기인스타</span></a><span style="color: rgb(26,188,156);font-size: 30px;"> </span></p>
+  <p></p>
+  <p style="text-align:center;"><span style="color: rgb(26,188,156);background-color: rgb(44,130,201);font-size: 72px;">🏈</span></p>`;
   // <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
-
-  const [showColorPicker, setShowColorPicker] = useState(false);
-  const [currentColor, setCurrentColor] = useState("#000000");
-  const toggleColorPicker = () => {
-    setShowColorPicker(!showColorPicker);
-  };
-
-  const changeColor = (color) => {
-    setCurrentColor(color.hex);
-    const newEditorState = RichUtils.toggleInlineStyle(
-      editorState,
-      "COLOR-" + color.hex
-    );
-    setEditorState(newEditorState);
-  };
 
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [toolbarZIndex, setToolbarZIndex] = useState(1); // 초기 z-index 값 설정
@@ -323,8 +308,8 @@ export default function ThreadCreatePage() {
             <div className={styles.페이지만들기푸터}>
               <div className={styles.푸터}>
                 <div className={styles.푸터인포}>
-                  {/* <span>책선택</span>
-                  <span>쓰레드를 끼워넣을 책을 선택하세요</span> */}
+                  <span>책선택</span>
+                  <span>쓰레드를 끼워넣을 책을 선택하세요</span>
                 </div>
                 <button onClick={() => saveContent()}>선택되지않음</button>
               </div>
