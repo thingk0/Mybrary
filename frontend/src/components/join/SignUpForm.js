@@ -7,8 +7,10 @@ import {
   verifyCode,
   verifyEmail,
 } from "../../api/member/SignUp";
+//import useStompStore from "../../store/useStompStore";
 
 function SignUpForm() {
+  // const client = useStompStore((state) => state.stompClient);
   /* 에러페이지 이동 */
   const navigate = useNavigate();
   const navigateToErrorPage = () => {
@@ -60,6 +62,7 @@ function SignUpForm() {
   /* 이메일 인증 버튼 클릭 */
   const handleVerifyEmail = async (e, mail) => {
     e.preventDefault();
+    //console.log(client);
 
     // 일단 유효성에 대한 검증을 먼저 한 후에, 유효성을 만족하면 검증 요청을 보냄. 응답에 따라 상태를 바꾼다.
     if (!mail) {
