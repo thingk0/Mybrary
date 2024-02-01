@@ -1,5 +1,6 @@
 package com.mybrary.backend.global.config;
 
+import com.mybrary.backend.global.filter.EmailVerificationFilter;
 import com.mybrary.backend.global.util.CookieUtil;
 import com.mybrary.backend.global.handler.TokenExceptionFilterHandler;
 import com.mybrary.backend.global.jwt.JwtFilter;
@@ -25,6 +26,7 @@ public class SecurityConfig {
     private final CookieUtil cookieUtil;
     private final RefreshTokenRepository refreshTokenRepository;
     private final TokenExceptionFilterHandler tokenExceptionFilterHandler;
+    private final EmailVerificationFilter emailVerificationFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -61,13 +63,14 @@ public class SecurityConfig {
                 authorize.anyRequest().authenticated();
             }));
 
-
         security
             .sessionManagement(sessionManager -> {
                 sessionManager.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
             });
 
         security
+            .addFilterBefore(emailVerificationFilter,
+                             UsernamePasswordAuthenticationFilter.class)
             .addFilterBefore(tokenExceptionFilterHandler,
                              UsernamePasswordAuthenticationFilter.class)
             .addFilterBefore(new JwtFilter(jwtProvider, cookieUtil, refreshTokenRepository),
