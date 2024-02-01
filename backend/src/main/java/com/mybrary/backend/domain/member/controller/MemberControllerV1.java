@@ -1,6 +1,9 @@
 package com.mybrary.backend.domain.member.controller;
 
 import com.mybrary.backend.domain.member.dto.*;
+import com.mybrary.backend.domain.member.dto.email.EmailCheckRequestDto;
+import com.mybrary.backend.domain.member.dto.email.EmailValidationRequestDto;
+import com.mybrary.backend.domain.member.service.MailService;
 import com.mybrary.backend.domain.member.service.MemberService;
 import com.mybrary.backend.global.format.ApiResponse;
 import com.mybrary.backend.global.format.ResponseCode;
@@ -32,6 +35,7 @@ public class MemberControllerV1 {
 
     private final ApiResponse response;
     private final MemberService memberService;
+    private final MailService mailService;
 
     @Operation(summary = "일반 회원가입", description = "일반 회원가입")
     @PostMapping
@@ -55,14 +59,28 @@ public class MemberControllerV1 {
 
     @Operation(summary = "이메일 인증 요청", description = "이메일 주소 보내고 인증코드를 메일로 보내는 요청")
     @PostMapping("/email/verification")
-    public ResponseEntity<?> emailVerification(@RequestParam String email) {
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<?> emailVerification(@Valid @RequestBody EmailValidationRequestDto requestDto,
+                                               BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            return response.fail(bindingResult);
+        }
+
+        mailService.sendEmailVerification(requestDto.getEmail());
+        return response.success(ResponseCode.EMAIL_VERIFICATION_SENT.getMessage());
     }
 
     @Operation(summary = "인증코드 인증 요청", description = "메일로 받은 인증코드를 입력해서 인증 요청")
     @PostMapping("/email/verify")
-    public ResponseEntity<?> emailVerify(@RequestParam String verificationCode) {
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<?> emailVerify(@Valid @RequestBody EmailCheckRequestDto requestDto,
+                                         BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            return response.fail(bindingResult);
+        }
+
+        boolean result = mailService.confirmAuthCode(requestDto.getEmail(), requestDto.getAuthNum());
+        return response.success(result);
     }
 
     @Operation(summary = "닉네임 검사", description = "닉네임 유효성 및 중복 검사")
@@ -150,7 +168,7 @@ public class MemberControllerV1 {
     @Operation(summary = "회원 정보 수정", description = "닉네임, 프로필이미지, 소개,  수정")
     @PutMapping("/profile")
     public ResponseEntity<?> updateProfile(@RequestBody MemberUpdateDto member, @RequestParam
-                                           MultipartFile multipartFile) {
+    MultipartFile multipartFile) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
