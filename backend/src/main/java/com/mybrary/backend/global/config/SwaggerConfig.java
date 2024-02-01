@@ -14,6 +14,8 @@ import org.springframework.context.annotation.Configuration;
 public class SwaggerConfig {
 
     // swagger 그룹 추가
+
+    // 전체보기
     @Bean
     public GroupedOpenApi all() {
         return GroupedOpenApi.builder()
