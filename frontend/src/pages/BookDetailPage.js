@@ -1,74 +1,47 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import HTMLFlipBook from "react-pageflip";
 import Container from "../components/frame/Container";
 import styles from "./style/BookDetailPage.module.css";
+import s from "classnames";
 
 export default function BookDetailPage() {
-  const [animate, setAnimate] = useState(false);
-  const totalPages = 10;
-  const [currentPage, setCurrentPage] = useState(0);
-
-  const [flipping, setFlipping] = useState(false); // 페이지가 접히는 상태 관리
-
-  const nextPage = () => {
-    if (!flipping && currentPage < totalPages - 1) {
-      setFlipping(true);
-      setTimeout(() => {
-        setCurrentPage(currentPage + 2);
-        setFlipping(false);
-      }, 600); // 전체 애니메이션 시간에 맞춰서 페이지 변경
-    }
-  };
-
-  const prevPage = () => {
-    if (!flipping && currentPage > 0) {
-      setFlipping(true);
-      setTimeout(() => {
-        setCurrentPage(currentPage - 2);
-        setFlipping(false);
-      }, 600); // 전체 애니메이션 시간에 맞춰서 페이지 변경
-    }
-  };
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setAnimate(true);
-    }, 100);
-    return () => clearTimeout(timer);
-  }, []);
+  // 페이지를 구성하는 컨텐츠를 생성합니다. 여기서는 예시로 간단한 텍스트를 사용합니다.
+  const pages = [
+    <div className={styles.demoPage}>Page 1</div>,
+    <div className={styles.demoPage}>Page 2</div>,
+    <div className={styles.demoPage}>Page 3</div>,
+    <div className={styles.demoPage}>Page 4</div>,
+    <div className={styles.demoPage}>Page 3</div>,
+    <div className={styles.demoPage}>Page 4</div>,
+    <div className={styles.demoPage}>Page 3</div>,
+    <div className={styles.demoPage}>Page 4</div>,
+    <div className={styles.demoPage}>Page 3</div>,
+    <div className={styles.demoPage}>Page 4</div>,
+    <div className={styles.demoPage}>Page 3</div>,
+    <div className={styles.demoPage}>Page 4</div>,
+    <div className={styles.demoPage}>Page 3</div>,
+    <div className={styles.demoPage}>Page 4</div>,
+    <div className={styles.demoPage}>Page 3</div>,
+    <div className={styles.demoPage}>Page 4</div>,
+    // 추가 페이지를 여기에 삽입
+  ];
 
   return (
-    <>
-      <Container>
-        <div>
-          <div>뒤로가기</div>
-        </div>
-        <div className={styles.body}>
-          <div className={styles.middle}>
-            <div className={`${styles.book} ${animate ? styles.animate : ""}`}>
-              {currentPage > 0 && (
-                <div
-                  className={`${styles.leftpage} ${
-                    flipping ? styles.flipLeft : ""
-                  }`}
-                  onClick={prevPage}
-                >
-                  머임? {currentPage}
-                </div>
-              )}
-              {currentPage < totalPages - 1 && (
-                <div
-                  className={`${styles.rightpage} ${
-                    flipping ? styles.flipRight : ""
-                  }`}
-                  onClick={nextPage}
-                >
-                  Page {currentPage + 1}
-                </div>
-              )}
+    <Container>
+      <div className={s(styles.bookContainer)}>
+        <HTMLFlipBook
+          width={400}
+          height={500}
+          showCover={true}
+          maxShadowOpacity={0.2}
+        >
+          {pages.map((page, index) => (
+            <div className={styles.page} key={index}>
+              {page}
             </div>
-          </div>
-        </div>
-      </Container>
-    </>
+          ))}
+        </HTMLFlipBook>
+      </div>
+    </Container>
   );
 }

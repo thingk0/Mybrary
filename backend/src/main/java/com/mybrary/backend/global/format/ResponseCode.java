@@ -10,21 +10,15 @@ public enum ResponseCode {
 
     /* 회원(Member) */
     MEMBER_SIGNUP_SUCCESS(HttpStatus.CREATED, "회원가입이 정상적으로 완료되었습니다."),
-    MEMBER_LOGIN_SUCCESS(HttpStatus.OK, "로그인에 성공하였습니다."),
-    MEMBER_LOGOUT_SUCCESS(HttpStatus.OK, "로그아웃이 정상적으로 이루어졌습니다."),
-    MEMBER_ACCESS_DENIED(HttpStatus.FORBIDDEN, "접근 권한이 없습니다."),
-    MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "회원 정보를 찾을 수 없습니다."),
-    MEMBER_INFO_UPDATE_SUCCESS(HttpStatus.OK, "회원 정보가 성공적으로 업데이트되었습니다."),
-    MEMBER_DELETED(HttpStatus.OK, "회원 정보가 성공적으로 삭제되었습니다."),
     EMAIL_VERIFICATION_SENT(HttpStatus.OK, "이메일 인증코드가 성공적으로 발송되었습니다."),
-    EMAIL_VERIFIED(HttpStatus.OK, "이메일이 성공적으로 인증되었습니다."),
+    EMAIL_VERIFIED_SUCCESS(HttpStatus.OK, "이메일이 성공적으로 인증되었습니다."),
     NICKNAME_CHECK_SUCCESS(HttpStatus.OK, "닉네임 검사가 성공적으로 이루어졌습니다."),
     LOGIN_SUCCESS(HttpStatus.OK, "로그인이 성공적으로 이루어졌습니다."),
     SOCIAL_LOGIN_SUCCESS(HttpStatus.OK, "소셜 로그인이 성공적으로 이루어졌습니다."),
+    LOGOUT_SUCCESS(HttpStatus.OK, "로그아웃이 성공적으로 이루어졌습니다."),
     PASSWORD_RESET_SUCCESS(HttpStatus.OK, "비밀번호 재설정이 성공적으로 이루어졌습니다."),
     PASSWORD_UPDATE_SUCCESS(HttpStatus.OK, "비밀번호 업데이트가 성공적으로 이루어졌습니다."),
-    LOGOUT_SUCCESS(HttpStatus.OK, "로그아웃이 성공적으로 이루어졌습니다."),
-    PROFILE_UPDATE_SUCCESS(HttpStatus.OK, "프로필이 성공적으로 업데이트되었습니다."),
+    MEMBER_INFO_UPDATE_SUCCESS(HttpStatus.OK, "회원 정보가 성공적으로 업데이트되었습니다."),
     FOLLOWINGS_FETCH_SUCCESS(HttpStatus.OK, "팔로잉 리스트를 성공적으로 불러왔습니다."),
     FOLLOWERS_FETCH_SUCCESS(HttpStatus.OK, "팔로워 리스트를 성공적으로 불러왔습니다."),
     FOLLOW_SUCCESS(HttpStatus.OK, "팔로우가 성공적으로 이루어졌습니다."),
@@ -33,6 +27,7 @@ public enum ResponseCode {
     ACCOUNT_SECESSION_SUCCESS(HttpStatus.OK, "계정 탈퇴가 성공적으로 이루어졌습니다."),
     PRIVACY_SETTING_UPDATED(HttpStatus.OK, "계정 공개여부가 성공적으로 설정되었습니다."),
     NOTIFICATION_SETTING_UPDATED(HttpStatus.OK, "알림 설정이 성공적으로 업데이트되었습니다."),
+
 
     /* 책(Book) */
     BOOK_LIST_FETCHED(HttpStatus.OK, "나의 책 목록이 성공적으로 조회되었습니다."),
@@ -80,6 +75,10 @@ public enum ResponseCode {
     MYBRARY_FETCHED(HttpStatus.OK, "나의 마이브러리 정보가 성공적으로 조회되었습니다."),
     OTHER_MYBRARY_FETCHED(HttpStatus.OK, "다른 회원의 마이브러리 정보가 성공적으로 조회되었습니다."),
     MYBRARY_UPDATED(HttpStatus.OK, "마이브러리 정보가 성공적으로 업데이트되었습니다."),
+
+    /* 알림(Notification) */
+    NOTIFICATION_FETCHED(HttpStatus.OK, "알림 목록이 성공적으로 조회되었습니다."),
+    NOTIFICATION_DELETED(HttpStatus.OK, "알림이 성공적으로 삭제되었습니다."),
 
     /* 검색(Search) */
     POPULAR_KEYWORDS_FETCHED(HttpStatus.OK, "인기 검색어가 성공적으로 조회되었습니다."),

@@ -1,6 +1,7 @@
 package com.mybrary.backend.domain.book.dto;
 
 import com.mybrary.backend.domain.image.dto.ImagePostDto;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,10 +22,10 @@ public class BookUpdateDto {
 
     private Long bookId;
     private String title;
-    private String titleFont;
     private ImagePostDto coverImage;
     private int coverLayout;
     private int coverColorCode;
     private Long categoryId;
+    private List<Long> paperIdList;
 
 }

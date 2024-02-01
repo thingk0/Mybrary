@@ -1,9 +1,26 @@
+import home from "../../assets/icon/icon_home.png";
+import pp from "../../assets/icon/icon_pp.png";
+import feed from "../../assets/icon/icon_feed.png";
+import search from "../../assets/icon/icon_search.png";
+import bell from "../../assets/icon/icon_bell.png";
+import setting from "../../assets/icon/icon_setting.png";
+import logout from "../../assets/icon/icon_logout.png";
 import s from "classnames";
 import styles from "./atomstyle/Nav.module.css";
 import { useState } from "react";
+import useNotificationStore from "../../store/useNotificationStore";
+import { useNavigate } from "react-router-dom";
 
 export default function Nav() {
   const [active, setActive] = useState([false, true, false, false]);
+  const hasNewNotification = useNotificationStore(
+    (state) => state.hasNewNotification
+  );
+  const navigate = useNavigate();
+  const { setNewNotification } = useNotificationStore();
+  const handleOffAlarm = () => {
+    setNewNotification(false, "");
+  };
 
   return (
     <div className={s(styles.nav_container)}>
@@ -11,9 +28,21 @@ export default function Nav() {
         <div className={s(styles.nav_paper1, styles.nav_paper)}>
           <div className={s(styles.nav_paper2, styles.nav_paper)}>
             <div className={s(styles.nav_paper3, styles.nav_paper)}>
-              <div className={s(styles.nav_icon)}>알림</div>
-              <div className={s(styles.nav_icon)}>설정</div>
-              <div className={s(styles.nav_icon)}>로아</div>
+              <div
+                className={s(styles.nav_icon)}
+                onClick={() => handleOffAlarm()}
+              >
+                <img src={hasNewNotification ? bell : setting} alt="" />
+              </div>
+              <div
+                className={s(styles.nav_icon)}
+                onClick={() => navigate("account")}
+              >
+                <img src={setting} alt="" />
+              </div>
+              <div className={s(styles.nav_icon)}>
+                <img src={logout} alt="" />
+              </div>
             </div>
           </div>
         </div>
@@ -24,36 +53,60 @@ export default function Nav() {
             styles.nav_section,
             active[0] ? styles.nav_active : styles.nav_not_active
           )}
-          onClick={() => setActive([true, false, false, false])}
+          onClick={() => {
+            setActive([true, false, false, false]);
+            navigate("mybrary/userid");
+          }}
         >
-          {active[0] ? "마이" : ""}
+          {active[0] ? <div>마이</div> : <div></div>}
+          <div>
+            <img src={home} alt="" />
+          </div>
         </div>
         <div
           className={s(
             styles.nav_section,
             active[1] ? styles.nav_active : styles.nav_not_active
           )}
-          onClick={() => setActive([false, true, false, false])}
+          onClick={() => {
+            setActive([false, true, false, false]);
+            navigate("feed");
+          }}
         >
-          {active[1] ? "피드" : ""}
+          {active[1] ? <div>피드</div> : <div></div>}
+          <div>
+            <img src={feed} alt="" />
+          </div>
         </div>
         <div
           className={s(
             styles.nav_section,
             active[2] ? styles.nav_active : styles.nav_not_active
           )}
-          onClick={() => setActive([false, false, true, false])}
+          onClick={() => {
+            setActive([false, false, true, false]);
+            navigate("paperplane");
+          }}
         >
-          {active[2] ? "피피" : ""}
+          {active[2] ? <div>피피</div> : <div></div>}
+          <div>
+            <img src={pp} alt="" />
+          </div>
         </div>
         <div
           className={s(
             styles.nav_section,
             active[3] ? styles.nav_active : styles.nav_not_active
           )}
-          onClick={() => setActive([false, false, false, true])}
+          onClick={() => {
+            setActive([false, false, false, true]);
+            navigate("search");
+          }}
         >
-          {active[3] ? "검색" : ""}
+          {active[3] ? <div>검색</div> : <div></div>}
+          <div>
+            <img src={search} alt="" />
+          </div>
         </div>
       </div>
     </div>

@@ -1,122 +1,22 @@
-.body {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-}
-
-.middle {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 86vh;
-  padding: 50px;
-}
-
-.book {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 80%; /* 책의 전체 너비 */
-  height: 100%; /* 책의 전체 높이 */
-  background-color: #f3f3f3;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  overflow: hidden;
-  position: relative;
-  perspective: 1000px;
-  transform-style: preserve-3d;
-}
-
-.leftpage,
-.rightpage {
-  width: 50%; /* 페이지 너비 */
-  height: 90%; /* 페이지 높이 */
-  background-color: white;
-  border: 1px solid #ccc;
-  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+.demoPage {
+  height: 92%;
   text-align: center;
-  line-height: 240px;
-  font-size: 24px;
-  font-weight: bold;
-  position: absolute;
-  backface-visibility: hidden;
-  transition: transform 0.6s;
-  transform-style: preserve-3d; /* 3D 변환을 위한 설정 */
+  padding: 20px;
+  background-color: white;
+  border: 1px solid black;
 }
 
-.leftpage:hover,
-.rightpage:hover {
-  cursor: pointer;
-  background-color: #f9f9f9;
+.page {
+  height: 92%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-/* .book .leftpage:active {
-  transform: rotateY(180deg);
-}
-
-.book .rightpage:active {
-  transform: rotateY(-180deg);
-} */
-
-.leftpage {
-  left: 0;
-  transform-origin: 100% center;
-}
-
-.rightpage {
-  right: 0;
-  transform-origin: 0% center;
-}
-.animate {
-  transform: scale(1.1); /* 애니메이션 효과 */
-  transition: transform 0.6s ease-out;
-}
-
-.leftpage.flipLeft {
-  animation: flipLeftPage 1.2s forwards;
-}
-
-.rightpage.flipRight {
-  animation: flipRightPage 1.2s forwards;
-}
-
-@keyframes flipLeftPage {
-  0%,
-  100% {
-    z-index: 1;
-  }
-  50% {
-    z-index: 2;
-  }
-  0% {
-    transform: translateY(0) rotateY(0);
-  }
-  50% {
-    transform: translateY(-100%) rotateY(180deg);
-  }
-  100% {
-    transform: translateY(0) translateX(100%) rotateY(180deg);
-  }
-}
-
-@keyframes flipRightPage {
-  0%,
-  100% {
-    z-index: 1;
-  }
-  50% {
-    z-index: 2;
-  }
-  0% {
-    transform: translateY(0) rotateY(0);
-  }
-  50% {
-    transform: translateY(-100%) rotateY(-180deg);
-  }
-  100% {
-    transform: translateY(0) translateX(-100%) rotateY(-180deg);
-  }
+/* BookDetailPage.module.css 내에 추가될 스타일 */
+.bookContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
 }

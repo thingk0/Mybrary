@@ -1,19 +1,12 @@
 package com.mybrary.backend.domain.member.controller;
 
-import com.mybrary.backend.domain.member.dto.FollowerDto;
-import com.mybrary.backend.domain.member.dto.FollowingDto;
-import com.mybrary.backend.domain.member.dto.LoginRequestDto;
-import com.mybrary.backend.domain.member.dto.MemberUpdateDto;
-import com.mybrary.backend.domain.member.dto.MyFollowerDto;
-import com.mybrary.backend.domain.member.dto.MyFollowingDto;
-import com.mybrary.backend.domain.member.dto.PasswordUpdateDto;
-import com.mybrary.backend.domain.member.dto.SecessionRequestDto;
-import com.mybrary.backend.domain.member.dto.SignupRequestDto;
+import com.mybrary.backend.domain.member.dto.*;
 import com.mybrary.backend.domain.member.service.MemberService;
 import com.mybrary.backend.global.format.ApiResponse;
 import com.mybrary.backend.global.format.ResponseCode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @Tag(name = "Member 컨트롤러", description = "Member Controller API")
 @RestController
@@ -48,7 +42,8 @@ public class MemberControllerV1 {
             return response.fail(bindingResult);
         }
 
-        return response.success(ResponseCode.MEMBER_SIGNUP_SUCCESS.getMessage());
+        Long savedId = memberService.create(requestDto);
+        return response.success(ResponseCode.MEMBER_SIGNUP_SUCCESS.getMessage(), savedId);
     }
 
     @Operation(summary = "소셜 회원가입", description = "소셜 회원가입")
@@ -60,7 +55,7 @@ public class MemberControllerV1 {
 
     @Operation(summary = "이메일 인증 요청", description = "이메일 주소 보내고 인증코드를 메일로 보내는 요청")
     @PostMapping("/email/verification")
-    public ResponseEntity<?> emailVerification(@RequestParam String email) {
+    public ResponseEntity<?> emailVerification(@RequestParam("email") String email) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -78,8 +73,16 @@ public class MemberControllerV1 {
 
     @Operation(summary = "일반 로그인", description = "일반 로그인")
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequestDto member) {
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequestDto requestDto,
+                                   BindingResult bindingResult,
+                                   HttpServletResponse httpServletResponse) {
+
+        if (bindingResult.hasErrors()) {
+            return response.fail(bindingResult);
+        }
+
+        memberService.login(requestDto, httpServletResponse);
+        return response.success(ResponseCode.LOGIN_SUCCESS.getMessage());
     }
 
     @Operation(summary = "소셜 로그인", description = "소셜 로그인")
@@ -94,21 +97,9 @@ public class MemberControllerV1 {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @Operation(summary = "비밀번호 재설정(로그인후)", description = "로그인 후 비밀번호 재설정")
-    @PutMapping("/password-update")
-    public ResponseEntity<?> updatePassword(@RequestBody PasswordUpdateDto password) {
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
     @Operation(summary = "로그아웃", description = "로그아웃")
     @PostMapping("/logout")
     public ResponseEntity<?> logout() {
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @Operation(summary = "프로필 수정", description = "닉네임, 프로필이미지, 소개 수정")
-    @PutMapping("/profile")
-    public ResponseEntity<?> updateProfile(@RequestBody MemberUpdateDto member) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -154,21 +145,25 @@ public class MemberControllerV1 {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+
+    /* 설정페이지에 필요한 API */
+
+    @Operation(summary = "회원 정보 수정", description = "닉네임, 프로필이미지, 소개,  수정")
+    @PutMapping("/profile")
+    public ResponseEntity<?> updateProfile(@RequestBody MemberUpdateDto member, @RequestParam
+                                           MultipartFile multipartFile) {
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Operation(summary = "비밀번호 재설정(로그인후)", description = "로그인 후 비밀번호 재설정")
+    @PutMapping("/password-update")
+    public ResponseEntity<?> updatePassword(@RequestBody PasswordUpdateDto password) {
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @Operation(summary = "계정 탈퇴", description = "계정 탈퇴 (삭제처리)")
     @DeleteMapping("/secession")
     public ResponseEntity<?> secession(@RequestBody SecessionRequestDto secession) {
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @Operation(summary = "계정 공개여부 설정", description = "계정 공개/비공개")
-    @PutMapping("/privacy")
-    public ResponseEntity<?> accountPrivacy() {
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @Operation(summary = "계정 알림 설정", description = "계정 알림 설정")
-    @PutMapping("/notify")
-    public ResponseEntity<?> accountNotify() {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

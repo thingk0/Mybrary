@@ -1,5 +1,6 @@
 package com.mybrary.backend.domain.comment.dto;
 
+import com.mybrary.backend.domain.member.dto.MemberInfoDto;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,12 +22,11 @@ public class CommentGetDto {
 
     private Long commentId;
     private String time;
-    private Long memberId;
-    private String nickname;
+    private MemberInfoDto writer;
     private boolean isOwner;
     private String content;
     private int colorCode;
-    private List<Long> mentionIdList;
+    private List<MemberInfoDto> mentionList;
     private List<CommentGetDto> reCommentList;
 
 }

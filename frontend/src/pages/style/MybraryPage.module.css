@@ -1,3 +1,18 @@
+@keyframes fadeInAnimation {
+  0% {
+    transform: scale(1.5);
+  }
+  50% {
+    transform: scale(1);
+  }
+  75% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 .bg {
   background-color: #4c2b4a;
   width: 100vi;
@@ -9,6 +24,7 @@
   justify-content: flex-end;
   align-items: flex-start;
   overflow: hidden;
+  animation: fadeInAnimation 0.4s ease-in-out;
 }
 .bg01 {
   background-image: url("../../assets/mybrary_01.png");

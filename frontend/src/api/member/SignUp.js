@@ -14,10 +14,9 @@ export async function signup(user) {
     }
 
     const data = await response.json();
-    console.log(data);
     return data;
   } catch (error) {
-    console.error("Error fetching data:", error);
+    console.log(error);
     throw error;
   }
 }
@@ -38,10 +37,9 @@ export async function verifyEmail(email) {
     }
 
     const data = await response.json();
-    console.log(data);
     return data;
   } catch (error) {
-    console.error("Error fetching data:", error);
+    console.log(error);
     throw error;
   }
 }
@@ -62,10 +60,9 @@ export async function verifyCode(code) {
     }
 
     const data = await response.json();
-    console.log(data);
     return data;
   } catch (error) {
-    console.error("Error fetching data:", error);
+    console.log(error);
     throw error;
   }
 }
@@ -80,13 +77,9 @@ export async function checkNickName(nickname) {
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
-    let data;
-    if (response.status === 204) {
-      data = [];
-    } else {
-      data = await response.json();
-    }
-    console.log(data);
+
+    const data = await response.json();
+
     return data;
   } catch (error) {
     console.error("Error fetching data:", error);

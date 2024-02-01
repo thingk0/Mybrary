@@ -41,5 +41,6 @@ public class PaperInBookGetDto {
     private int commentCount;
     private int scrapCount;
     private boolean isLiked;
+    private boolean isOwner;
 
 }
