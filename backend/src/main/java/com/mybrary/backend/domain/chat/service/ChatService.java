@@ -17,6 +17,6 @@ public interface ChatService {
 
     List<ChatMessageGetDto> getAllChatByMemberId(Authentication authentication, Long memberId, Pageable page);
 
-    int createChat(Authentication authentication, ChatMessagePostDto message, Pageable page);
+    void createChat(Authentication authentication, ChatMessagePostDto message);
 
 }

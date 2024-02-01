@@ -152,7 +152,9 @@ public class ChatControllerV1 {
     @PostMapping("/{id}/message")
     public ResponseEntity<?> createChat(@Parameter(hidden = true) Authentication authentication,
                                         @RequestBody ChatMessagePostDto message) {
-        return response.success(ResponseCode.CHAT_MESSAGE_SENT.getMessage(), message);
+        chatService.createChat(authentication, message);
+
+        return response.success(ResponseCode.CHAT_MESSAGE_SENT.getMessage());
     }
 
 }

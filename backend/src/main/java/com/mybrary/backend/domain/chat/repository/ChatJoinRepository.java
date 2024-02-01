@@ -12,5 +12,6 @@ import org.springframework.data.repository.query.Param;
 public interface ChatJoinRepository extends JpaRepository<ChatJoin, Long>,
     ChatRepositoryCustom {
 
-
+    @Query("select cj from ChatJoin cj where cj.joinMember.id = :myId and cj.chatRoom.id = :chatRoomId")
+    ChatJoin findByChatJoin(@Param("myId") Long myId, @Param("chatRoomId") Long chatRoomId);
 }

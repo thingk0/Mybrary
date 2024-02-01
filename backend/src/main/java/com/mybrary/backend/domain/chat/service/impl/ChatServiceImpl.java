@@ -1,18 +1,13 @@
 package com.mybrary.backend.domain.chat.service.impl;
 
-import com.mybrary.backend.domain.chat.dto.ChatMessageGetDto;
-import com.mybrary.backend.domain.chat.dto.ChatMessagePostDto;
-import com.mybrary.backend.domain.chat.dto.ChatRoomGetDto;
-import com.mybrary.backend.domain.chat.entity.ChatJoin;
-import com.mybrary.backend.domain.chat.entity.ChatMessage;
-import com.mybrary.backend.domain.chat.entity.ChatRoom;
-import com.mybrary.backend.domain.chat.repository.ChatJoinRepository;
-import com.mybrary.backend.domain.chat.repository.ChatMessageRepository;
-import com.mybrary.backend.domain.chat.repository.ChatRoomRepository;
+import com.mybrary.backend.domain.chat.dto.*;
+import com.mybrary.backend.domain.chat.entity.*;
+import com.mybrary.backend.domain.chat.repository.*;
 import com.mybrary.backend.domain.chat.service.ChatService;
 import com.mybrary.backend.domain.contents.thread.dto.ThreadSimpleGetDto;
 import com.mybrary.backend.domain.member.dto.MemberInfoDto;
 import com.mybrary.backend.domain.member.entity.Member;
+import com.mybrary.backend.domain.member.repository.MemberRepository;
 import com.mybrary.backend.domain.member.service.MemberService;
 import org.springframework.data.domain.Pageable;
 import java.util.ArrayList;
@@ -20,8 +15,9 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-
+@Transactional
 @Service
 @RequiredArgsConstructor
 public class ChatServiceImpl implements ChatService {
@@ -29,8 +25,11 @@ public class ChatServiceImpl implements ChatService {
     private final ChatJoinRepository chatJoinRepository;
     private final ChatRoomRepository chatRoomRepository;
     private final ChatMessageRepository chatMessageRepository;
+    private final MemberRepository memberRepository;
     private final MemberService memberService;
 
+
+    @Transactional(readOnly = true)
     @Override
     public List<ChatRoomGetDto> getAllChatRoom(Authentication authentication) {
         // 로그인한 회원 정보
@@ -40,7 +39,8 @@ public class ChatServiceImpl implements ChatService {
         // 채팅방 리스트 담을 변수
         List<ChatRoomGetDto> list = new ArrayList<>();
 
-        // 1. 채팅방 Id 리스트
+        // 1. 채팅방 Id 리스트 (채팅방 나가기 했거나 채팅메세지가 하나도 없는 채팅방은 가져오지 X)
+        //                                     => 마이브러리에서 pipi 누른다음에 메세지 안보내고 그냥 채팅방을 나온 경우
         List<Long> chatRoomIdList = chatRoomRepository.chatRoomIdList(me.getId());
 
         // 채팅방 리스트만큼 반복
@@ -74,7 +74,14 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public void deleteChatRoom(Authentication authentication, Long chatRoomId) {
-        Member member = memberService.findMember(authentication.getName());
+        // 로그인한 회원 정보
+        Member me = memberService.findMember(authentication.getName());
+        Long myId = me.getId();
+
+        // 회원Id와 채팅방Id로 채팅참여 조회
+        ChatJoin chatJoin = chatJoinRepository.findByChatJoin(myId, chatRoomId);
+        // 나감여부 수정
+        chatJoin.setExited(true);
 
     }
 
@@ -92,8 +99,6 @@ public class ChatServiceImpl implements ChatService {
         System.out.println("채팅리스트");
         List<ChatMessage> chatMessages = chatMessageRepository.getAllChatMessageByChatRoomId(chatRoomId);
         for (ChatMessage chatMessage : chatMessages) {
-            System.out.println(
-                "message : " + chatMessage.getMessage() + " / " + chatMessage.getCreatedAt());
 
             // 2. 상대방 정보
             Member member = chatMessageRepository.getJoinMemberByMemberId(chatMessage.getSender().getId());
@@ -105,6 +110,12 @@ public class ChatServiceImpl implements ChatService {
             if (chatMessage.getThreadId() != null) {
                 /* 스레드 간단 조회하는 거 추가해야함 */
             }
+
+            // 4. sender가 상대방이고 읽음 여부가 false라면 true로 바꾸고 보내기
+            if(chatMessage.getSender().getId().equals(member.getId()) && !chatMessage.isRead()){
+                chatMessage.setRead(true);
+            }
+
             chatMessageList
                 .add(
                     new ChatMessageGetDto(chatMessage.getId(), joinMember, chatMessage.getMessage(),
@@ -127,7 +138,10 @@ public class ChatServiceImpl implements ChatService {
         if(chatJoin != null){
             System.out.println("존재함");
 
-            // 2. 존재하는 채팅방 Id
+            // 2. 해당 chatJoin 나감여부를 해제하기
+            chatJoin.setExited(false);
+
+            // 3. 존재하는 채팅방 Id
             Long chatRoomId = chatJoin.getChatRoom().getId();
 
             // 위의 메서드를 사용해서 채팅 리스트 구하기
@@ -142,6 +156,15 @@ public class ChatServiceImpl implements ChatService {
             // 3. 새로 생성한 채팅방 Id
             Long chatRoomId = chatRoom.getId();
 
+            // 4. 채팅참여 테이블에 나랑 상대방을 참여자로 하는 데이터 2개 생성하기
+            // 4-1. 참여자 = 나
+            ChatJoin chatJoin1 = new ChatJoin(1L, me, chatRoom, false);
+            // 4-2. 참여자 = 상대방
+            Member other = memberRepository.findById(memberId).get();
+            ChatJoin chatJoin2 = new ChatJoin(1L, other, chatRoom, false);
+            chatJoinRepository.save(chatJoin1);
+            chatJoinRepository.save(chatJoin2);
+
             // 위의 메서드를 사용해서 채팅 리스트 구하기 (= 사실상 메세지는 없는 채팅 리스트)
             return getAllChatByChatRoomId(authentication, chatRoomId, page);
         }
@@ -149,10 +172,18 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
-    public int createChat(Authentication authentication, ChatMessagePostDto message,
-                          Pageable page) {
-        Member member = memberService.findMember(authentication.getName());
-        return 1;
+    public void createChat(Authentication authentication, ChatMessagePostDto message) {
+        // 로그인한 회원 정보
+        Member me = memberService.findMember(authentication.getName());
+        Long myId = me.getId();
+
+        ChatRoom chatRoom = chatRoomRepository.findById(message.getChatRoomId()).get();
+        Member receiver = memberRepository.findById(message.getReceiverId()).get();
+
+        ChatMessage newMessage = ChatMessage.builder()
+            .sender(me).receiver(receiver).message(message.getMessage()).threadId(message.getThreadId()).isRead(false).build();
+
+        ChatMessage savedMessage = chatMessageRepository.save(newMessage);
     }
 
 }
