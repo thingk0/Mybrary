@@ -166,7 +166,7 @@ export default function RollingpaperPage() {
 
     if (canvas) {
       canvas.addEventListener("mousedown", startPaint);
-      canvas.addEventListener("mousemove", paint);
+      // canvas.addEventListener("mousemove", paint);
       canvas.addEventListener("mouseup", exitPaint);
       canvas.addEventListener("mouseleave", exitPaint);
       initCanvas();
@@ -176,11 +176,11 @@ export default function RollingpaperPage() {
 
     return () => {
       canvas.removeEventListener("mousedown", startPaint);
-      canvas.removeEventListener("mousemove", paint);
+      // canvas.removeEventListener("mousemove", paint);
       canvas.removeEventListener("mouseup", exitPaint);
       canvas.removeEventListener("mouseleave", exitPaint);
     };
-  }, []);
+  }, [startPaint, exitPaint]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -197,7 +197,7 @@ export default function RollingpaperPage() {
       canvas.removeEventListener("mouseup", exitPaint);
       canvas.removeEventListener("mouseleave", exitPaint);
     };
-  }, [lineColor]);
+  }, [lineColor, startPaint, exitPaint, paint]);
 
   useEffect(() => {
     // imageData 상태가 변경될 때 실행되는 useEffect
