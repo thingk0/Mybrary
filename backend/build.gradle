@@ -76,6 +76,8 @@ dependencies {
     }
     // WebSocket
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
+    // Email
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
 }
 
 def generated = 'src/main/generated'
