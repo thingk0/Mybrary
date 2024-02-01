@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useRef, useEffect } from "react";
+import React, { useState } from "react";
 import "react-quill/dist/quill.snow.css";
 // import React, { useState, useEffect } from "react";
 import { Editor } from "react-draft-wysiwyg";
@@ -16,54 +16,118 @@ import 레이아웃4 from "../assets/레이아웃4.png";
 import 레이아웃5 from "../assets/진구형.jpg";
 import 레이아웃6 from "../assets/혜선누나.jpg";
 
+const initialPaper = () => ({
+  editorState: EditorState.createEmpty(),
+  editorState2: EditorState.createEmpty(),
+  imageData: null,
+});
 export default function ThreadCreatePage() {
-  const saveContent = () => {
-    // EditorState에서 RawDraftContentState를 추출
-    const rawContentState = convertToRaw(editorState.getCurrentContent());
-    const rawContentState2 = convertToRaw(editorState2.getCurrentContent());
+  //
+  //
+  // const initialPaper = {
+  //   layoutType: 0,
+  //   content1: "",
+  //   content2: "",
+  //   image1: { name: "", originName: "", url: "", thumbnailUrl: "", format: "", size: "" },
+  //   image2: { name: "", originName: "", url: "", thumbnailUrl: "", format: "", size: "" },
+  //   tagList: [],
+  //   mentionIdList: []
+  // };
 
-    // RawDraftContentState를 HTML로 변환
-    const htmlContent = draftToHtml(rawContentState);
-    const htmlContent2 = draftToHtml(rawContentState2);
+  //
+  //
+  const [papers, setPapers] = useState([initialPaper()]);
+  const [currentPage, setCurrentPage] = useState(0);
 
-    console.log(htmlContent);
-    console.log(htmlContent2);
-    // 이제 htmlContent를 백엔드 API에 전송하여 저장
-
-    // 예: axios.post('/api/saveContent', { content: htmlContent });
+  const addPaper = () => {
+    setPapers([...papers, initialPaper()]);
   };
-  const htmlContent = `<p>ㅁ<span style="color: rgb(84,172,210);font-size: 48px;">ㄴㅇ</span>ㅁ</p>
-  <p><a href="http://www.instagram.com/mangmangi_98" target="_blank"><span style="color: rgb(26,188,156);font-size: 30px;">서만기인스타</span></a><span style="color: rgb(26,188,156);font-size: 30px;"> </span></p>
-  <p></p>
-  <p style="text-align:center;"><span style="color: rgb(26,188,156);background-color: rgb(44,130,201);font-size: 72px;">🏈</span></p>`;
+
+  const removePaper = (pageIndex) => {
+    const updatedPapers = papers.filter((_, index) => index !== pageIndex);
+    setPapers(updatedPapers);
+
+    // 페이지 삭제 후 현재 페이지 인덱스 업데이트
+    if (currentPage === pageIndex || currentPage >= updatedPapers.length) {
+      setCurrentPage(Math.max(0, currentPage));
+    }
+  };
+
+  const changePage = (pageIndex) => {
+    setCurrentPage(pageIndex);
+  };
+
+  const onEditorStateChange = (editorState) => {
+    const updatedPapers = [...papers];
+    updatedPapers[currentPage].editorState = editorState;
+    setPapers(updatedPapers);
+  };
+  const onEditorStateChange2 = (editorState2) => {
+    const updatedPapers = [...papers];
+    updatedPapers[currentPage].editorState2 = editorState2;
+    setPapers(updatedPapers);
+  };
+  //
+  //
+
+  // const saveContent = () => {
+  //   // EditorState에서 RawDraftContentState를 추출
+  //   const rawContentState = convertToRaw(editorState.getCurrentContent());
+  //   const rawContentState2 = convertToRaw(editorState2.getCurrentContent());
+
+  //   // RawDraftContentState를 HTML로 변환
+  //   const htmlContent = draftToHtml(rawContentState);
+  //   const htmlContent2 = draftToHtml(rawContentState2);
+
+  //   console.log(htmlContent);
+  //   console.log(htmlContent2);
+  //   // 이제 htmlContent를 백엔드 API에 전송하여 저장
+  //   // 예: axios.post('/api/saveContent', { content: htmlContent });
+  // };
+
+  const saveContent = () => {
+    const contentData = papers.map((paper) =>
+      draftToHtml(convertToRaw(paper.editorState.getCurrentContent()))
+    );
+    const contentData2 = papers.map((paper) =>
+      draftToHtml(convertToRaw(paper.editorState2.getCurrentContent()))
+    );
+    console.log(contentData);
+    console.log(contentData2);
+    // 백엔드에 contentData 전송 로직
+  };
+
+  const htmlContent = `<p style="text-align:center;">안녕하세요 반갑습니다<br>저는<span style="font-size: 24px;"> 서만</span>기입니다</p>
+   <p>👻    <span style="color: rgb(26,188,156);background-color: rgb(84,172,210);font-size: 24px;">😛</span></p>
+  <p><a href="http://www.instagram.com/mangmangi_98" target="_blank"><span style="color: rgb(235,107,86);font-size: 24px;">서만</span><span style="font-size: 24px;">기인</span><span style="background-color: rgb(147,101,184);font-size: 24px;">스타</span></a><span style="font-size: 24px;"> </span></p>
+   <p style="text-align:center;"></p>
+   <p style="text-align:right;">우아하하하하</p>`;
+
   // <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
 
-  const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [toolbarZIndex, setToolbarZIndex] = useState(1); // 초기 z-index 값 설정
-
-  const [editorState2, setEditorState2] = useState(EditorState.createEmpty());
   const [toolbarZIndex2, setToolbarZIndex2] = useState(1); // 초기 z-index 값 설정
 
   const [imageSrc, setImageSrc] = useState(null);
   const [imageStyle, setImageStyle] = useState({});
   const [editorStyle, setEditorStyle] = useState({});
 
-  const onEditorStateChange = (newEditorState) => {
-    setEditorState(newEditorState);
-  };
-  const onEditorStateChange2 = (newEditorState) => {
-    setEditorState2(newEditorState);
-  };
+  // const onEditorStateChange = (newEditorState) => {
+  //   setEditorState(newEditorState);
+  // };
+  // const onEditorStateChange2 = (newEditorState) => {
+  //   setEditorState2(newEditorState);
+  // };
   const handleFocus1 = () => {
-    setToolbarZIndex(4); // 에디터가 포커스되면 z-index를 4로 설정
+    setToolbarZIndex(4);
   };
   const handleFocus2 = () => {
-    setToolbarZIndex2(4); // 에디터가 포커스되면 z-index를 4로 설정
+    setToolbarZIndex2(4);
   };
 
   const handleBlur = () => {
-    setToolbarZIndex(1); // 에디터 포커스 해제 시 z-index를 원래 값으로 복원
-    setToolbarZIndex2(1); // 에디터 포커스 해제 시 z-index를 원래 값으로 복원
+    setToolbarZIndex(1);
+    setToolbarZIndex2(1);
   };
 
   const handleImageChange = (e) => {
@@ -131,12 +195,26 @@ export default function ThreadCreatePage() {
           <div className={styles.페이지만들기}>
             <div className={styles.페이지만들기헤더}>
               <div className={styles.헤더사이즈조정}>
-                <div className={styles.버튼들}>
+                {/* <div className={styles.버튼들}>
                   <button>1</button>
                   <button>+</button>
                 </div>
                 <div>
                   <button className={styles.페이지제거버튼}>페이지제거</button>
+                </div> */}
+
+                <div>
+                  {papers.map((_, index) => (
+                    <button key={index} onClick={() => changePage(index)}>
+                      페이지 {index + 1}
+                    </button>
+                  ))}
+                  <button onClick={addPaper}>+</button>
+                  {papers.length > 1 && (
+                    <button onClick={() => removePaper(currentPage)}>
+                      현재 페이지 삭제
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
@@ -208,7 +286,7 @@ export default function ThreadCreatePage() {
                           locale: "ko",
                         }}
                         editorStyle={editorStyle} // 에디터 스타일 적용
-                        editorState={editorState}
+                        editorState={papers[currentPage].editorState}
                         onEditorStateChange={onEditorStateChange}
                         onFocus={handleFocus1} // 에디터 포커스 이벤트 핸들러
                         onBlur={handleBlur}
@@ -229,7 +307,7 @@ export default function ThreadCreatePage() {
                           locale: "ko",
                         }}
                         editorStyle={editorStyle} // 에디터 스타일 적용
-                        editorState={editorState2}
+                        editorState={papers[currentPage].editorState2}
                         onEditorStateChange={onEditorStateChange2}
                         onFocus={handleFocus2} // 에디터 포커스 이벤트 핸들러
                         onBlur={handleBlur}

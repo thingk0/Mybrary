@@ -88,17 +88,17 @@ export default function RollingpaperPage() {
 
   const colors = {
     1: "#fffafa", // color1
-    2: "#ffb8b8", // color2
-    3: "#ffe3b8", // color3
-    4: "#feffb8", // color4
-    5: "#c6ffb8", // color5
-    6: "#b8ffee", // color6
-    7: "#b8e1ff", // color7
-    8: "#b8bbff", // color8
-    9: "#f1b8ff", // color9
+    2: "#FF2525", // color2
+    3: "#FF7E07", // color3
+    4: "#FFE70B", // color4
+    5: "#2FDB35", // color5
+    6: "#41EDC4", // color6
+    7: "#41CEED", // color7
+    8: "#356CD6", // color8
+    9: "#E543FF", // color9
     10: "#909090", // color10
     11: "#616161", // color11
-    12: "#4b4b4b", // color12
+    12: "#242424", // color12
   };
 
   const handleChangeLineColor = (num) => {

@@ -1,5 +1,8 @@
 .메인 {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 }
 .페이지 {
   padding-top: 30px;
@@ -10,19 +13,20 @@
   align-items: center;
 }
 .페이지사이즈조정 {
-  width: 95%;
+  width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
 }
 .페이지작성 {
-  font-size: 24px;
+  font-size: 26px;
 }
 .페이지만들기 {
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
+  gap: 25px;
 }
 .페이지만들기헤더 {
   display: flex;
@@ -35,12 +39,15 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 80%;
-  width: 98%;
+  width: 93%;
 }
 .버튼들 {
   display: flex;
-  gap: 12px;
+  gap: 15px;
+  align-items: center;
+}
+.버튼들 span {
+  font-size: 20px;
 }
 .버튼들 button {
   width: 30px;
@@ -48,10 +55,15 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: #fff9f6;
+  border: solid 1px rgb(180, 180, 180);
 }
 .페이지제거버튼 {
   width: 100px;
   height: 30px;
+  border: 0px;
+  color: rgb(255, 115, 115);
+  background-color: rgb(255, 255, 255);
 }
 
 .페이지만들기미드 {
@@ -81,19 +93,22 @@
   align-items: center;
   flex-direction: column;
   display: flex;
+  gap: 10%;
+}
+.선택된페이지 {
+  background-color: rgb(224, 150, 52);
 }
 
 .왼쪽헤더 {
   position: relative;
   display: flex;
+  flex-direction: column;
   width: 100%;
   justify-content: center;
   align-items: center;
+  height: 10%;
 }
 .왼쪽헤더사이즈조정 {
-  position: absolute;
-  top: 0px;
-  left: 10px;
   width: 94%;
   display: flex;
   justify-content: space-between;
@@ -102,10 +117,10 @@
 .왼쪽미드 {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   /* background-color: blue; */
-  height: 80%;
+  height: 50%;
 }
 .다음버튼 {
   width: 85%;
@@ -114,9 +129,10 @@
   color: rgb(255, 255, 255);
   font-size: 16px;
   border-radius: 5px;
+  border: 0px;
 }
 .레이아웃글자 {
-  font-size: 26px;
+  font-size: 19px;
 }
 .레이아웃버튼 {
   display: flex;
@@ -124,11 +140,13 @@
 }
 .레이아웃버튼 button {
   padding: 12px;
-  width: 10px;
-  height: 10px;
+  width: 67px;
+  height: 12px;
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: #ffeee6;
+  border: solid 1px rgb(255, 255, 255);
 }
 .왼쪽미드레이아웃 {
   width: 85%;
@@ -149,19 +167,10 @@
   align-items: center;
   /* background-color: darkkhaki; */
 }
-/* 
-
-
-
-
-
-
-
-*/
 .미드중앙사이즈조정 {
   position: relative;
   width: 95%;
-  height: 100%;
+  height: 99%;
   background-color: #fffafa;
 }
 .이미지업로드부분 {
@@ -185,32 +194,18 @@
   height: 100%;
   border-radius: 10px;
 }
-
-/* 
-
-
-
-
-
-
-
-
-
-
-*/
-
 .미드오른쪽 {
   width: 43%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: rgb(255, 201, 170);
+  /* background-color: rgb(255, 201, 170); */
 }
 .오른쪽크기조정 {
-  width: 90%;
-  height: 90%;
-  background-color: beige;
+  width: 95%;
+  height: 95%;
+  /* background-color: rgb(255, 233, 211); */
 }
 .추가된태그들 {
   display: flex;
