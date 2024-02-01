@@ -56,17 +56,19 @@
 }
 
 .nav_section {
-  height: 40px;
+  height: 50px;
   border-radius: 0 5px 5px 0;
   display: flex;
   align-items: center;
   padding-left: 10px;
+  justify-content: space-between;
+  padding: 5px 15px;
 }
 
 .nav_not_active {
   width: 40px;
   background-color: var(--main3);
-  box-shadow: inset 3px 0 1px 0 var(--main2);
+  box-shadow: inset 7px 0 10px -5px var(--main2);
   overflow: hidden;
   transition: 0.3s;
 }
@@ -74,4 +76,5 @@
 .nav_active {
   width: 100px;
   background-color: var(--main1);
+  box-shadow: 0 0 5px 1px var(--main2);
 }
