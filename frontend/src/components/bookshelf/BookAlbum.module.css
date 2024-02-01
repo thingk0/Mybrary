@@ -1,0 +1,7 @@
+/* 책 하나하나 */
+.album {
+  width: 30px;
+  height: 80%;
+  background-color: #eec59e;
+  border-radius: 5px;
+}
