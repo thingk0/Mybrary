@@ -1,4 +1,4 @@
-package com.mybrary.backend.global.cookie;
+package com.mybrary.backend.global.util;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;

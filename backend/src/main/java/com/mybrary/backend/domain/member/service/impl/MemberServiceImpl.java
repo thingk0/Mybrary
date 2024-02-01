@@ -5,7 +5,7 @@ import com.mybrary.backend.domain.member.dto.SignupRequestDto;
 import com.mybrary.backend.domain.member.entity.Member;
 import com.mybrary.backend.domain.member.repository.MemberRepository;
 import com.mybrary.backend.domain.member.service.MemberService;
-import com.mybrary.backend.global.cookie.CookieUtil;
+import com.mybrary.backend.global.util.CookieUtil;
 import com.mybrary.backend.global.exception.member.DuplicateEmailException;
 import com.mybrary.backend.global.exception.member.EmailNotFoundException;
 import com.mybrary.backend.global.exception.member.InvalidLoginAttemptException;

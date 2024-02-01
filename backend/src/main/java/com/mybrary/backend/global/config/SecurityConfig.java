@@ -1,6 +1,6 @@
 package com.mybrary.backend.global.config;
 
-import com.mybrary.backend.global.cookie.CookieUtil;
+import com.mybrary.backend.global.util.CookieUtil;
 import com.mybrary.backend.global.handler.TokenExceptionFilterHandler;
 import com.mybrary.backend.global.jwt.JwtFilter;
 import com.mybrary.backend.global.jwt.JwtProvider;
