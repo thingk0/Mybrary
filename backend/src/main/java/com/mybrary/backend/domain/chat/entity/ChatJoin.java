@@ -36,4 +36,9 @@ public class ChatJoin extends BaseEntity {
     @JoinColumn(name = "chat_room_id")
     private ChatRoom chatRoom;
 
+    private boolean isExited;
+
+    public void setExited(boolean exited) {
+        isExited = exited;
+    }
 }

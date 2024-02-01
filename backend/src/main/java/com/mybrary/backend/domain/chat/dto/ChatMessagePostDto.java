@@ -23,6 +23,5 @@ public class ChatMessagePostDto {
     private Long receiverId;
     private String message;
     private Long threadId;
-    private Long paperId;
 
 }

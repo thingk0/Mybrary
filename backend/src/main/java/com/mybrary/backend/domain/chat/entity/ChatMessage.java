@@ -46,4 +46,7 @@ public class ChatMessage extends BaseEntity {
 
     private boolean isRead;
 
+    public void setRead(boolean read) {
+        isRead = read;
+    }
 }
