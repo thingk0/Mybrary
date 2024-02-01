@@ -39,7 +39,7 @@ export default function MybraryPage() {
 
   useEffect(() => {
     console.log(user);
-  }, []);
+  }, [user]);
 
   const color = [
     "01",
