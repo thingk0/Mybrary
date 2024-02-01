@@ -1,5 +1,6 @@
 package com.mybrary.backend.global.handler;
 
+import com.mybrary.backend.global.exception.email.FailedMessageTransmissionException;
 import com.mybrary.backend.global.exception.member.DuplicateEmailException;
 import com.mybrary.backend.global.exception.member.PasswordMismatchException;
 import com.mybrary.backend.global.format.ApiResponse;
@@ -34,6 +35,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<?> handleDuplicateEmailException(DuplicateEmailException e) {
         log.error("DuplicateEmailException = {}", e.getMessage());
         return response.error(ErrorCode.MEMBER_EMAIL_DUPLICATED.getMessage());
+    }
+
+    @ExceptionHandler(FailedMessageTransmissionException.class)
+    protected ResponseEntity<?> handleFailedMessageTransmissionException(FailedMessageTransmissionException e) {
+        log.error("FailedMessageTransmissionException = {}", e.getMessage());
+        return response.error(ErrorCode.EMAIL_SEND_FAILED.getMessage());
     }
 
 }
