@@ -1,9 +1,11 @@
 package com.mybrary.backend.domain.notification.controller;
 
+import com.mybrary.backend.domain.chat.dto.ChatMessagePostDto;
 import com.mybrary.backend.domain.member.dto.MemberInfoDto;
 import com.mybrary.backend.domain.member.entity.Member;
 import com.mybrary.backend.domain.member.service.MemberService;
 import com.mybrary.backend.domain.notification.dto.NotificationGetDto;
+import com.mybrary.backend.domain.notification.dto.TestAlarmDto;
 import com.mybrary.backend.domain.notification.service.NotificationService;
 import com.mybrary.backend.global.format.ApiResponse;
 import com.mybrary.backend.global.format.ResponseCode;
@@ -15,22 +17,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Notification 컨트롤러", description = "Notification Controller API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/notification")
 public class NotificationControllerV1 {
+
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
 
     private final ApiResponse response;
     private final NotificationService notificationService;
@@ -88,5 +91,26 @@ public class NotificationControllerV1 {
         notificationService.deleteAllNotification(myId);
         return response.success(ResponseCode.NOTIFICATION_DELETED.getMessage());
     }
+
+
+    @PostMapping("/test")
+    public ResponseEntity<?> testNotification(
+                                        @RequestBody TestAlarmDto notification) {
+
+
+        handleNotification(notification);
+        return response.success("test");
+    }
+
+
+    public void handleNotification(@RequestBody TestAlarmDto notification) {
+
+
+
+        String destination = "/sub/notification/" + notification.getReceiver();
+        messagingTemplate.convertAndSend(destination, notification); // 구독한 주소로 보내는 메서드임
+
+    }
+
 
 }
