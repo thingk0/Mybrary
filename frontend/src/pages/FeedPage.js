@@ -4,7 +4,7 @@ import styles from "./style/FeedPage.module.css";
 import s from "classnames";
 import { useNavigate } from "react-router-dom";
 import Comment from "../components/feed/Comment";
-import icon_comment from "../assets/icon/icon_comment.png";
+import FeedContent from "../components/feed/FeedContent";
 
 export default function FeedPage() {
   const [activeIndex, setActiveIndex] = useState(1);
@@ -60,54 +60,44 @@ export default function FeedPage() {
     };
   }, [activeIndex, list, handleWheelThrottled]); // 의존성 배열 업데이트
 
-  const openComment = (index) => {
-    setComment(true);
-    setCommentId(index);
-  };
-
-  function FeedContent({ index, content }) {
-    return (
-      <div className={styles.cont}>
-        <div>{index}번 게시물이빈당</div>
-        <img src={icon_comment} alt="" onClick={() => openComment(index)} />
-      </div>
-    );
-  }
-
   return (
     <>
       <Container>
         <div className={styles.feedContainer}>
-          <div>
-            <div
-              className={s(
-                styles.StackCarousel_contents,
-                comment && styles.active
-              )}
-            >
-              {list.map((index, content) => (
-                <div
-                  key={index}
-                  className={s(
-                    styles.StackCarousel_content,
-                    {
-                      [styles.StackCarousel_above]: activeIndex > index,
-                      [styles.StackCarousel_active]: activeIndex === index,
-                      [styles.StackCarousel_second]: activeIndex === index - 1,
-                      [styles.StackCarousel_third]: activeIndex === index - 2,
-                    },
-                    activeIndex < index - 2 ? "" : null
-                  )}
-                >
-                  <FeedContent index={index} content={content} />
-                </div>
-              ))}
-            </div>
-          </div>
           <div
             className={s(
-              styles.ll,
-              comment ? styles.commentContainer : styles.hide
+              styles.StackCarousel_contents,
+              comment && styles.StackCarousel_translate
+            )}
+          >
+            {list.map((index, content) => (
+              <div
+                key={index}
+                className={s(
+                  styles.StackCarousel_content,
+                  {
+                    [styles.StackCarousel_above]: activeIndex > index,
+                    [styles.StackCarousel_active]: activeIndex === index,
+                    [styles.StackCarousel_second]: activeIndex === index - 1,
+                    [styles.StackCarousel_third]: activeIndex === index - 2,
+                  },
+                  activeIndex < index - 2 ? "" : null
+                )}
+              >
+                <FeedContent
+                  index={index}
+                  content={content}
+                  setCommentId={setCommentId}
+                  setComment={setComment}
+                />
+              </div>
+            ))}
+          </div>
+
+          <div
+            className={s(
+              styles.commentContainer,
+              comment ? styles.commentActive : styles.commentHide
             )}
           >
             <Comment commentId={commentId} />
@@ -117,7 +107,7 @@ export default function FeedPage() {
           className={styles.create}
           onClick={() => navigate("/threadCreate")}
         >
-          플러스버턴
+          +
         </div>
       </Container>
     </>
