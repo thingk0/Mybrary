@@ -1,5 +1,7 @@
 package com.mybrary.backend.domain.notification.service.impl;
 
+import com.mybrary.backend.domain.book.entity.Book;
+import com.mybrary.backend.domain.book.repository.BookRepository;
 import com.mybrary.backend.domain.member.dto.MemberInfoDto;
 import com.mybrary.backend.domain.member.entity.Member;
 import com.mybrary.backend.domain.member.repository.MemberRepository;
@@ -12,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +25,8 @@ public class NotificationServiceImpl implements NotificationService {
 
     private final NotificationRepository notificationRepository;
     private final MemberRepository memberRepository;
+    private final BookRepository bookRepository;
+    private final SimpMessagingTemplate messagingTemplate;
 
     @Transactional(readOnly = true)
     @Override
@@ -86,5 +91,19 @@ public class NotificationServiceImpl implements NotificationService {
         // 알림 저장
         Notification savedNotification = notificationRepository.save(newNotification);
 
+        // 알림 수신자의 알림구독주소에 저장된 알림 객체 반환하기
+        MemberInfoDto senderDto = new MemberInfoDto(sender.getId(), sender.getNickname(), sender.getIntro(), null);
+        String bookTitle = null;
+        if(savedNotification.getBookId() != null){
+            Book book = bookRepository.findById(savedNotification.getBookId()).get();
+            bookTitle = book.getCoverTitle();
+        }
+        NotificationGetDto sendNotification = new NotificationGetDto(savedNotification.getId(), senderDto, savedNotification.getNotifyType(), savedNotification.getBookId(), bookTitle, savedNotification.getThreadId(), savedNotification.getPaperId(), savedNotification.getCommentId(), savedNotification.getReplyCommentId());
+
+        // 웹소켓메서드
+        String destination = "/sub/notification/" + receiver.getEmail(); // 구독 주소 + 받을 사람 이메일
+        messagingTemplate.convertAndSend(destination, sendNotification); // destination으로 sendNotification을 보냄
+
     }
+
 }
