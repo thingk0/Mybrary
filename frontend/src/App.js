@@ -14,15 +14,16 @@ export default function App() {
   const { connect, disconnect } = useStompStore();
   const { setNewNotification } = useNotificationStore();
   const navigate = useNavigate();
-  const email = useUserStore((state) => state.user.email);
+  const email = useUserStore((state) => state.user?.email);
 
   useEffect(() => {
     async function socketConnect() {
       try {
-        await connect(email, setNewNotification);
+        if (!email) {
+          await connect(email, setNewNotification);
+        }
       } catch (e) {
-        console.log("?");
-        navigate("/join");
+        console.log(e);
         // 통신장애
         navigate("/error");
       }
