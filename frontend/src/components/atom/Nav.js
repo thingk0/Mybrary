@@ -10,6 +10,7 @@ import styles from "./atomstyle/Nav.module.css";
 import { useState } from "react";
 import useNotificationStore from "../../store/useNotificationStore";
 import { useNavigate } from "react-router-dom";
+import { doLogout } from "../../api/member/Logout";
 
 export default function Nav() {
   const [active, setActive] = useState([false, true, false, false]);
@@ -20,6 +21,9 @@ export default function Nav() {
   const { setNewNotification } = useNotificationStore();
   const handleOffAlarm = () => {
     setNewNotification(false, "");
+  };
+  const handleLogOut = () => {
+    doLogout();
   };
 
   return (
@@ -40,7 +44,10 @@ export default function Nav() {
               >
                 <img src={setting} alt="" />
               </div>
-              <div className={s(styles.nav_icon)}>
+              <div
+                className={s(styles.nav_icon)}
+                onClick={() => handleLogOut()}
+              >
                 <img src={logout} alt="" />
               </div>
             </div>

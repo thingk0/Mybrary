@@ -2,8 +2,13 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../api/member/Login";
 import useUserStore from "../../store/useUserStore";
+import useStompStore from "../../store/useStompStore";
+import useNotificationStore from "../../store/useNotificationStore";
 
 function LoginForm() {
+  const { connect } = useStompStore();
+  const { setNewNotification } = useNotificationStore();
+
   /* 오류페이지 이동 */
   const navigate = useNavigate();
   const navigateToErrorPage = () => {
@@ -38,19 +43,22 @@ function LoginForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(formData);
     try {
       // 로그인 요청 보내기
       const data = await login(formData);
       if (data.status === "SUCCESS") {
-        setUser({
-          email: data.email,
+        // useStore에 data안에 들어있는 기본 정보들을 저장해라
+
+        await setUser({
+          email: "user1@ssafy.com",
           memberId: data.memberId,
           nickname: data.nickname,
         });
+        setIsLoginFail(false);
 
         //navigate(`/mybrary/${data.memberId}`);
         navigate(`/mybrary/userid`);
-        // useStore에 data안에 들어있는 기본 정보들을 저장해라
       } else {
         // 이메일, 비밀번호 불일치
         setIsLoginFail(true);

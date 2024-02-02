@@ -122,13 +122,14 @@ export default function MybraryPage() {
           receiver: e.target.value,
         };
 
-        await fetch("/api/v1/member/alarm", {
+        const data = await fetch("/api/v1/notification/test", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(msg),
         });
+        console.log(data);
       } catch (error) {
         console.log(error);
         throw error;

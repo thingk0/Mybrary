@@ -1,20 +1,17 @@
-//로그인요청
-export async function login(user) {
+//로그아웃요청
+export async function doLogout() {
   try {
-    const response = await fetch("/api/v1/member/login", {
+    const response = await fetch("/api/v1/member/logout", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(user),
     });
 
+    console.log(response.ok);
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
-
-    const data = await response.json();
-    return data;
   } catch (error) {
     console.log(error);
     throw error;
