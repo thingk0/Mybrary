@@ -66,14 +66,15 @@ public class MemberControllerV1 {
     @Operation(summary = "인증코드 인증 요청", description = "메일로 받은 인증코드를 입력해서 인증 요청")
     @PostMapping("/email/verify")
     public ResponseEntity<?> emailVerify(@Valid @RequestBody EmailCheckRequestDto requestDto,
-                                         BindingResult bindingResult) {
+                                         BindingResult bindingResult,
+                                         HttpServletResponse servletResponse) {
 
         if (bindingResult.hasErrors()) {
             return response.fail(bindingResult);
         }
 
-        boolean result = mailService.confirmAuthCode(requestDto.getEmail(), requestDto.getAuthNum());
-        return response.success(result);
+        return response.success(ResponseCode.EMAIL_VERIFIED_SUCCESS.getMessage(),
+                                mailService.confirmAuthCode(requestDto.getEmail(), requestDto.getAuthNum(), servletResponse));
     }
 
     @Operation(summary = "닉네임 검사", description = "닉네임 유효성 및 중복 검사")
