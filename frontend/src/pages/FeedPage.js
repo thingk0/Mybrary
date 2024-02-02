@@ -2,11 +2,16 @@ import React, { useState, useEffect, useCallback } from "react";
 import Container from "../components/frame/Container";
 import styles from "./style/FeedPage.module.css";
 import s from "classnames";
+import { useNavigate } from "react-router-dom";
+import Comment from "../components/feed/Comment";
+import icon_comment from "../assets/icon/icon_comment.png";
 
 export default function FeedPage() {
   const [activeIndex, setActiveIndex] = useState(1);
   const [list, setList] = useState([10, 9, 8, 7, 6, 5, 4, 3, 2, 1]);
   const [comment, setComment] = useState(false);
+  const [commentId, setCommentId] = useState(0);
+  const navigate = useNavigate();
 
   // 스로틀링을 위한 상태
   const [isThrottled, setIsThrottled] = useState(false);
@@ -55,15 +60,16 @@ export default function FeedPage() {
     };
   }, [activeIndex, list, handleWheelThrottled]); // 의존성 배열 업데이트
 
-  const openComment = () => {
+  const openComment = (index) => {
     setComment(true);
+    setCommentId(index);
   };
 
   function FeedContent({ index, content }) {
     return (
       <div className={styles.cont}>
         <div>{index}번 게시물이빈당</div>
-        <div onClick={() => openComment()}>댓글나오는 버튼임ㅋㅋ</div>
+        <img src={icon_comment} alt="" onClick={() => openComment(index)} />
       </div>
     );
   }
@@ -104,8 +110,14 @@ export default function FeedPage() {
               comment ? styles.commentContainer : styles.hide
             )}
           >
-            댓글공간ㅋㅋsdfadgdfgdfsdgdsgh
+            <Comment commentId={commentId} />
           </div>
+        </div>
+        <div
+          className={styles.create}
+          onClick={() => navigate("/threadCreate")}
+        >
+          플러스버턴
         </div>
       </Container>
     </>
