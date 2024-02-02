@@ -1,21 +1,23 @@
 package com.mybrary.backend.global.config;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.messaging.simp.config.MessageBrokerRegistry;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.socket.config.annotation.*;
 import org.springframework.web.socket.server.standard.ServletServerContainerFactoryBean;
 
-@CrossOrigin("*")
+
+
+
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        //stomp의 접속 주소 (엔드포인트)
+        //stomp의 접속 주소
         registry.addEndpoint("/ws").setAllowedOriginPatterns("*").withSockJS();
     }
+
 
 
     @Override
@@ -26,7 +28,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     }
 
 
-    // 해당 설정 필수! (톰캣 사용 시)
+
     @Bean
     public ServletServerContainerFactoryBean createServletServerContainerFactoryBean() {
         ServletServerContainerFactoryBean container = new ServletServerContainerFactoryBean();
