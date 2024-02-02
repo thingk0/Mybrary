@@ -2,6 +2,7 @@ package com.mybrary.backend.domain.chat.dto;
 
 import com.mybrary.backend.domain.contents.thread.dto.ThreadSimpleGetDto;
 import com.mybrary.backend.domain.member.dto.MemberInfoDto;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,6 +27,6 @@ public class ChatMessageGetDto {
     private String message;
     private ThreadSimpleGetDto thread;
     private boolean isRead;
-    private String createdAt;
+    private LocalDateTime createdAt;
 
 }

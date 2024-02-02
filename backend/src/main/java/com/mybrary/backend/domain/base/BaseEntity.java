@@ -24,12 +24,6 @@ public class BaseEntity {
     @LastModifiedDate
     private LocalDateTime modifiedAt;
 
-    @CreatedBy
-    private User createdBy;
-
-    @LastModifiedBy
-    private User modifiedBy;
-
     private boolean isDeleted;
 
 }
