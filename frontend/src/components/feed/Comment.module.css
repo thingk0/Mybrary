@@ -1,0 +1,32 @@
+:root {
+  --main1: #f5998f;
+  --main2: #57423f;
+  --main3: #bfa6a2;
+  --main4: #fff9f6;
+  --main5: #9b8683;
+  --main6: #f5998f;
+  --gomin1: #2f4858;
+  --gomin2: #455371;
+  --gomin3: #6a5b82;
+  --gomin4: #946087;
+  --gomin5: #ba667e;
+  --blur1: #fff9f680;
+  /* 1번이 모달컬러 */
+  --blur2: #ddccc380;
+  /* 책장뒷편 쓰는색 */
+  --deletecolor: linear-gradient(
+    135deg,
+    rgba(116, 91, 127, 1) 0%,
+    rgba(245, 153, 143, 1) 100%
+  );
+  --followcolor: linear-gradient(
+    135deg,
+    rgba(148, 96, 135, 1) 0%,
+    rgba(69, 83, 113, 1) 100%
+  );
+  --papercolor: linear-gradient(
+    150deg,
+    rgba(255, 250, 247, 1) 0%,
+    rgba(239, 239, 239, 1) 100%
+  );
+}
