@@ -31,12 +31,102 @@
   );
 }
 
-.cont {
+.content {
   background: var(--papercolor);
   border-radius: 5px;
-  padding: 1.6rem 2rem;
-  position: relative;
-  border: 0.1rem solid var(--main2);
-  transition: box-shadow 0.2s;
-  margin-top: 0;
+  padding: 1vi;
+}
+.user_info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.user_profile {
+  display: flex;
+  align-items: center;
+  gap: 0.6vi;
+}
+.user_img {
+  width: 2.5vi;
+  height: 2.5vi;
+  cursor: pointer;
+}
+.user_nickname {
+  font-size: 1vi;
+}
+.user_date {
+  font-size: 0.6vi;
+  color: var(--main3);
+  margin-top: 0.1vi;
+}
+
+.user_follow {
+  font-size: 1vi;
+  background: var(--followcolor);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  cursor: pointer;
+}
+
+/* ---- */
+.icon_container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0.4vi 0.3vi;
+}
+.icon_left {
+  display: flex;
+  align-items: center;
+}
+
+.icon_left > div {
+  margin-left: 0.2vi;
+  margin-right: 0.7vi;
+  color: var(--main5);
+  font-size: 0.8vi;
+}
+.icon_left > img {
+  width: 1.5vi;
+  height: 1.5vi;
+  cursor: pointer;
+}
+.icon_right {
+  width: 1.3vi;
+  height: 1.3vi;
+  cursor: pointer;
+}
+
+/* ----- */
+
+.main_content {
+  margin: 0 auto;
+  border: solid 1px var(--main2);
+  border-radius: 5px;
+  width: 29.7vi;
+  height: 35.1vi;
+}
+
+/* --- */
+
+.tag_container {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1vi;
+  margin-top: 0.6vi;
+}
+.tag_hash,
+.tag_user {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--blur2);
+  width: 2.7vi;
+  height: 2.5vi;
+  font-size: 1.7vi;
+  border-radius: 1vi;
+  color: var(--main5);
+  padding-top: 0.2vi;
+  cursor: pointer;
 }

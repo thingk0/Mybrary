@@ -1,8 +1,8 @@
 import { useState } from "react";
 import styles from "./Thread.module.css";
-import heart from "../../assets/heart.png";
-import msg from "../../assets/msg.png";
-import clip from "../../assets/clip.png";
+import heart from "../../assets/icon/icon_like.png";
+import msg from "../../assets/icon/icon_comment.png";
+import clip from "../../assets/icon/icon_scrap.png";
 import human from "../../assets/이미지예시.png";
 import bearImage from "../../assets/예시이미지2.png";
 

@@ -30,3 +30,45 @@
     rgba(239, 239, 239, 1) 100%
   );
 }
+.comment_container {
+  height: 80%;
+  overflow-y: auto;
+}
+/* 댓글목록공간 */
+.comment_item {
+  width: 89%;
+  border-radius: 5px;
+  background-color: #f8c3d2;
+  padding: 0.7vi;
+  box-shadow: 0 0 15px -5px var(--main2);
+  margin: 1vi;
+}
+.comment_nickname {
+  font-size: 1vi;
+  margin-bottom: 0.3vi;
+}
+.comment_text {
+  font-size: 0.8vi;
+  margin-bottom: 0.3vi;
+}
+
+.comment_left,
+.comment_right,
+.comment_info {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* 댓글작성공간 */
+.comment_create {
+  background-color: var(--main3);
+  border-radius: 5px;
+  width: 89%;
+  margin: 1vi;
+  padding: 0.7vi;
+}
+.user_img {
+  width: 2.5vi;
+  height: 2.5vi;
+  cursor: pointer;
+}

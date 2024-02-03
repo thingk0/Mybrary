@@ -11,6 +11,7 @@ export default function FeedPage() {
   const [list, setList] = useState([10, 9, 8, 7, 6, 5, 4, 3, 2, 1]);
   const [comment, setComment] = useState(false);
   const [commentId, setCommentId] = useState(0);
+  const [zIndex, setZIndex] = useState(-1);
   const navigate = useNavigate();
 
   // 스로틀링을 위한 상태
@@ -19,6 +20,7 @@ export default function FeedPage() {
   // useCallback 내에서 함수 정의
   const handlePrevClick = useCallback(() => {
     setComment(false);
+    setZIndex(-1);
     if (activeIndex > 1) {
       setActiveIndex(activeIndex - 1);
     }
@@ -28,6 +30,7 @@ export default function FeedPage() {
   const handleNextClick = useCallback(() => {
     setActiveIndex(activeIndex + 1);
     setComment(false);
+    setZIndex(-1);
     if (activeIndex === list.length - 3 && list.length - 4 < activeIndex) {
       const newList = Array.from(
         { length: 10 },
@@ -54,62 +57,71 @@ export default function FeedPage() {
   );
 
   useEffect(() => {
-    window.addEventListener("wheel", handleWheelThrottled);
+    const stackCarouselContents = document.querySelector(
+      `.${styles.StackCarousel_contents}`
+    );
+
+    if (stackCarouselContents) {
+      stackCarouselContents.addEventListener("wheel", handleWheelThrottled);
+    }
+
     return () => {
-      window.removeEventListener("wheel", handleWheelThrottled);
+      if (stackCarouselContents) {
+        stackCarouselContents.removeEventListener(
+          "wheel",
+          handleWheelThrottled
+        );
+      }
     };
-  }, [activeIndex, list, handleWheelThrottled]); // 의존성 배열 업데이트
+  }, [handleWheelThrottled]);
 
   return (
     <>
-      <Container>
-        <div className={styles.feedContainer}>
-          <div
-            className={s(
-              styles.StackCarousel_contents,
-              comment && styles.StackCarousel_translate
-            )}
-          >
-            {list.map((index, content) => (
-              <div
-                key={index}
-                className={s(
-                  styles.StackCarousel_content,
-                  {
-                    [styles.StackCarousel_above]: activeIndex > index,
-                    [styles.StackCarousel_active]: activeIndex === index,
-                    [styles.StackCarousel_second]: activeIndex === index - 1,
-                    [styles.StackCarousel_third]: activeIndex === index - 2,
-                  },
-                  activeIndex < index - 2 ? "" : null
-                )}
-              >
-                <FeedContent
-                  index={index}
-                  content={content}
-                  setCommentId={setCommentId}
-                  setComment={setComment}
-                />
-              </div>
-            ))}
-          </div>
-
-          <div
-            className={s(
-              styles.commentContainer,
-              comment ? styles.commentActive : styles.commentHide
-            )}
-          >
-            <Comment commentId={commentId} />
-          </div>
-        </div>
+      <div className={styles.feedContainer}>
         <div
-          className={styles.create}
-          onClick={() => navigate("/threadCreate")}
+          className={s(
+            styles.StackCarousel_contents,
+            comment && styles.StackCarousel_translate
+          )}
         >
-          +
+          {list.map((index, content) => (
+            <div
+              key={index}
+              className={s(
+                styles.StackCarousel_content,
+                {
+                  [styles.StackCarousel_above]: activeIndex > index,
+                  [styles.StackCarousel_active]: activeIndex === index,
+                  [styles.StackCarousel_second]: activeIndex === index - 1,
+                  [styles.StackCarousel_third]: activeIndex === index - 2,
+                },
+                activeIndex < index - 2 ? "" : null
+              )}
+            >
+              <FeedContent
+                index={index}
+                content={content}
+                setCommentId={setCommentId}
+                setComment={setComment}
+                setZIndex={setZIndex}
+              />
+            </div>
+          ))}
         </div>
-      </Container>
+
+        <div
+          className={s(
+            styles.commentContainer,
+            comment ? styles.commentActive : styles.commentHide
+          )}
+          style={{ zIndex: zIndex }}
+        >
+          <Comment commentId={commentId} />
+        </div>
+      </div>
+      <div className={styles.create} onClick={() => navigate("/threadCreate")}>
+        +
+      </div>
     </>
   );
 }
