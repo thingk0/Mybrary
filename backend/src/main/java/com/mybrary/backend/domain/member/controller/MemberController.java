@@ -11,11 +11,13 @@ import com.mybrary.backend.domain.member.dto.SecessionRequestDto;
 import com.mybrary.backend.domain.member.dto.SignupRequestDto;
 import com.mybrary.backend.domain.member.dto.email.EmailCheckRequestDto;
 import com.mybrary.backend.domain.member.dto.email.EmailValidationRequestDto;
+import com.mybrary.backend.domain.member.entity.Member;
 import com.mybrary.backend.domain.member.service.MailService;
 import com.mybrary.backend.domain.member.service.MemberService;
 import com.mybrary.backend.global.format.ApiResponse;
 import com.mybrary.backend.global.format.ResponseCode;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -23,6 +25,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -132,44 +135,67 @@ public class MemberController {
 
     @Operation(summary = "나의 팔로잉 리스트", description = "나의 팔로잉 리스트")
     @GetMapping("/me/followings")
-    public ResponseEntity<?> getAllMyFollowing() {
-        return new ResponseEntity<List<MyFollowingDto>>(HttpStatus.OK);
+    public ResponseEntity<?> getAllMyFollowing(@Parameter(hidden = true) Authentication authentication) {
+        Member me = memberService.findMember(authentication.getName());
+        Long myId = me.getId();
+        List<MyFollowingDto> result = memberService.getAllMyFollowing(myId);
+        return response.success(ResponseCode.FOLLOWINGS_FETCH_SUCCESS.getMessage(), result);
     }
 
     @Operation(summary = "나의 팔로워 리스트", description = "나의 팔로워 리스트")
     @GetMapping("/me/followers")
-    public ResponseEntity<?> getAllMyFollower() {
-        return new ResponseEntity<List<MyFollowerDto>>(HttpStatus.OK);
+    public ResponseEntity<?> getAllMyFollower(@Parameter(hidden = true) Authentication authentication) {
+        Member me = memberService.findMember(authentication.getName());
+        Long myId = me.getId();
+        List<MyFollowerDto> result = memberService.getAllMyFollower(myId);
+        return response.success(ResponseCode.FOLLOWERS_FETCH_SUCCESS.getMessage(), result);
     }
 
     @Operation(summary = "특정회원의 팔로잉 리스트", description = "특정회원의 팔로잉 리스트")
     @GetMapping("/{id}/followings")
-    public ResponseEntity<?> getAllFollowing(@PathVariable(name = "id") Long memberId) {
-        return new ResponseEntity<List<FollowingDto>>(HttpStatus.OK);
+    public ResponseEntity<?> getAllFollowing(@Parameter(hidden = true) Authentication authentication,
+                                             @PathVariable(name = "id") Long memberId) {
+        Member me = memberService.findMember(authentication.getName());
+        Long myId = me.getId();
+        List<FollowingDto> result = memberService.getAllFollowing(myId, memberId);
+        return response.success(ResponseCode.FOLLOWINGS_FETCH_SUCCESS.getMessage(), result);
     }
 
     @Operation(summary = "특정회원의 팔로워 리스트", description = "특정회원의 팔로워 리스트")
     @GetMapping("/{id}/followers")
-    public ResponseEntity<?> getAllFollower(@PathVariable(name = "id") Long memberId) {
-        return new ResponseEntity<List<FollowerDto>>(HttpStatus.OK);
+    public ResponseEntity<?> getAllFollower(@Parameter(hidden = true) Authentication authentication,
+                                            @PathVariable(name = "id") Long memberId) {
+        Member me = memberService.findMember(authentication.getName());
+        Long myId = me.getId();
+        List<FollowerDto> result = memberService.getAllFollower(myId, memberId);
+        return response.success(ResponseCode.FOLLOWERS_FETCH_SUCCESS.getMessage(), result);
     }
 
     @Operation(summary = "팔로우하기", description = "특정회원을 팔로우하기")
     @PostMapping("/{id}/follow")
-    public ResponseEntity<?> follow(@PathVariable(name = "id") Long memberId) {
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<?> follow(@Parameter(hidden = true) Authentication authentication, @PathVariable(name = "id") Long memberId) {
+        Member me = memberService.findMember(authentication.getName());
+        Long myId = me.getId();
+        memberService.follow(myId, memberId);
+        return response.success(ResponseCode.FOLLOW_SUCCESS.getMessage());
     }
 
     @Operation(summary = "언팔로우하기", description = "특정회원을 언팔로우하기")
     @DeleteMapping("/{id}/unfollow")
-    public ResponseEntity<?> unfollow(@PathVariable(name = "id") Long memberId) {
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<?> unfollow(@Parameter(hidden = true) Authentication authentication, @PathVariable(name = "id") Long memberId) {
+        Member me = memberService.findMember(authentication.getName());
+        Long myId = me.getId();
+        memberService.unfollow(myId, memberId);
+        return response.success(ResponseCode.UNFOLLOW_SUCCESS.getMessage());
     }
 
     @Operation(summary = "팔로워끊기", description = "특정회원이 나를 팔로우한 것을 끊기")
     @DeleteMapping("/{id}/follower")
-    public ResponseEntity<?> deleteFollower(@PathVariable(name = "id") Long memberId) {
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<?> deleteFollower(@Parameter(hidden = true) Authentication authentication, @PathVariable(name = "id") Long memberId) {
+        Member me = memberService.findMember(authentication.getName());
+        Long myId = me.getId();
+        memberService.deleteFollower(myId, memberId);
+        return response.success(ResponseCode.FOLLOWER_DELETE_SUCCESS.getMessage());
     }
 
     /* 설정페이지에 필요한 API */

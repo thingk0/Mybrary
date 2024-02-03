@@ -26,4 +26,7 @@ public class BaseEntity {
 
     private boolean isDeleted;
 
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
 }

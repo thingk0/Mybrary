@@ -1,6 +1,12 @@
 package com.mybrary.backend.domain.member.service.impl;
 
+import com.mybrary.backend.domain.follow.entity.Follow;
+import com.mybrary.backend.domain.follow.repository.FollowRepository;
+import com.mybrary.backend.domain.member.dto.FollowerDto;
+import com.mybrary.backend.domain.member.dto.FollowingDto;
 import com.mybrary.backend.domain.member.dto.LoginRequestDto;
+import com.mybrary.backend.domain.member.dto.MyFollowerDto;
+import com.mybrary.backend.domain.member.dto.MyFollowingDto;
 import com.mybrary.backend.domain.member.dto.SignupRequestDto;
 import com.mybrary.backend.domain.member.entity.Member;
 import com.mybrary.backend.domain.member.repository.MemberRepository;
@@ -16,6 +22,9 @@ import com.mybrary.backend.global.jwt.dto.TokenInfo;
 import com.mybrary.backend.global.jwt.repository.RefreshTokenRepository;
 import com.mybrary.backend.global.jwt.token.RefreshToken;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -29,6 +38,7 @@ public class MemberServiceImpl implements MemberService {
     private final CookieUtil cookieUtil;
     private final PasswordEncoder passwordEncoder;
     private final MemberRepository memberRepository;
+    private final FollowRepository followRepository;
     private final RefreshTokenRepository refreshTokenRepository;
 
     @Override
@@ -90,4 +100,97 @@ public class MemberServiceImpl implements MemberService {
         return passwordEncoder.matches(input, encoded);
     }
 
+
+    @Override
+    public List<MyFollowingDto> getAllMyFollowing(Long myId) {
+
+        List<Member> myFollowing = memberRepository.getAllFollowing(myId);
+
+        List<MyFollowingDto> list = new ArrayList<>();
+        for (Member member : myFollowing) {
+            list.add(new MyFollowingDto(member.getId(), member.getName(), member.getNickname(), null));
+        }
+
+        return list;
+    }
+
+    @Override
+    public List<MyFollowerDto> getAllMyFollower(Long myId) {
+
+        List<Member> myFollower = memberRepository.getAllFollower(myId);
+
+        List<MyFollowerDto> list = new ArrayList<>();
+        for (Member member : myFollower) {
+            Follow follow = memberRepository.isFollowed(myId, member.getId());
+            boolean isFollowed = false;
+            if (follow != null) {
+                isFollowed = true;
+            }
+            list.add(new MyFollowerDto(member.getId(), member.getName(), member.getNickname(), null, isFollowed));
+        }
+
+        return list;
+    }
+
+    @Override
+    public List<FollowingDto> getAllFollowing(Long myId, Long memberId) {
+
+        List<Member> Following = memberRepository.getAllFollowing(memberId);
+
+        List<FollowingDto> list = new ArrayList<>();
+        for (Member member : Following) {
+            Follow follow = memberRepository.isFollowed(myId, member.getId());
+            boolean isFollowed = false;
+            if (follow != null) {
+                isFollowed = true;
+            }
+            list.add(new FollowingDto(member.getId(), member.getName(), member.getNickname(), null, isFollowed));
+        }
+
+        return list;
+
+    }
+
+    @Override
+    public List<FollowerDto> getAllFollower(Long myId, Long memberId) {
+        List<Member> myFollower = memberRepository.getAllFollower(memberId);
+
+        List<FollowerDto> list = new ArrayList<>();
+        for (Member member : myFollower) {
+            Follow follow = memberRepository.isFollowed(myId, member.getId());
+            boolean isFollowed = false;
+            if (follow != null) {
+                isFollowed = true;
+            }
+            list.add(new FollowerDto(member.getId(), member.getName(), member.getNickname(), null, isFollowed));
+        }
+
+        return list;
+    }
+
+    @Override
+    public void follow(Long myId, Long memberId) {
+        Member me = memberRepository.findById(myId).get();
+        Member you = memberRepository.findById(memberId).get();
+        Follow follow = Follow.builder()
+                              .following(you)
+                              .follower(me)
+                              .build();
+        followRepository.save(follow);
+    }
+
+    @Transactional
+    @Override
+    public void unfollow(Long myId, Long memberId) {
+        Follow follow = followRepository.findFollow(myId, memberId);
+        follow.setDeleted(true);
+
+    }
+
+    @Transactional
+    @Override
+    public void deleteFollower(Long myId, Long memberId) {
+        Follow follow = followRepository.findFollow(memberId, myId);
+        follow.setDeleted(true);
+    }
 }
