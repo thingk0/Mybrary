@@ -16,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/image")
-public class ImageControllerV1 {
+public class ImageController {
 
     private final ImageService imageService;
 

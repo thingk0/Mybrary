@@ -1,6 +1,14 @@
 package com.mybrary.backend.domain.member.controller;
 
-import com.mybrary.backend.domain.member.dto.*;
+import com.mybrary.backend.domain.member.dto.FollowerDto;
+import com.mybrary.backend.domain.member.dto.FollowingDto;
+import com.mybrary.backend.domain.member.dto.LoginRequestDto;
+import com.mybrary.backend.domain.member.dto.MemberUpdateDto;
+import com.mybrary.backend.domain.member.dto.MyFollowerDto;
+import com.mybrary.backend.domain.member.dto.MyFollowingDto;
+import com.mybrary.backend.domain.member.dto.PasswordUpdateDto;
+import com.mybrary.backend.domain.member.dto.SecessionRequestDto;
+import com.mybrary.backend.domain.member.dto.SignupRequestDto;
 import com.mybrary.backend.domain.member.dto.email.EmailCheckRequestDto;
 import com.mybrary.backend.domain.member.dto.email.EmailValidationRequestDto;
 import com.mybrary.backend.domain.member.service.MailService;
@@ -31,7 +39,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/member")
-public class MemberControllerV1 {
+public class MemberController {
 
     private final ApiResponse response;
     private final MemberService memberService;
