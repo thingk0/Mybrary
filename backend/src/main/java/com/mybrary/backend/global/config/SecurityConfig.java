@@ -1,11 +1,9 @@
 package com.mybrary.backend.global.config;
 
 import com.mybrary.backend.global.filter.EmailVerificationFilter;
-import com.mybrary.backend.global.handler.TokenExceptionFilterHandler;
-import com.mybrary.backend.global.jwt.JwtFilter;
-import com.mybrary.backend.global.jwt.JwtProvider;
-import com.mybrary.backend.global.jwt.repository.RefreshTokenRepository;
-import com.mybrary.backend.global.util.CookieUtil;
+import com.mybrary.backend.global.filter.JwtAuthenticationFilter;
+import com.mybrary.backend.global.filter.TokenExceptionFilter;
+import com.mybrary.backend.global.filter.TokenRefreshRequestFilter;
 import java.util.Collections;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,11 +23,10 @@ import org.springframework.web.cors.CorsConfiguration;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JwtProvider jwtProvider;
-    private final CookieUtil cookieUtil;
-    private final RefreshTokenRepository refreshTokenRepository;
-    private final TokenExceptionFilterHandler tokenExceptionFilterHandler;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final TokenExceptionFilter tokenExceptionFilter;
     private final EmailVerificationFilter emailVerificationFilter;
+    private final TokenRefreshRequestFilter tokenRefreshRequestFilter;
 
     @Value("${cors.allowed.origin}")
     private String CORS_ALLOWED_URL;
@@ -45,19 +42,11 @@ public class SecurityConfig {
         security
             .httpBasic(basic -> basic.disable())
             .csrf(csrf -> csrf.disable())
-            .cors(cors -> cors.configurationSource(request -> {
-                CorsConfiguration config = new CorsConfiguration();
-                config.setAllowedOrigins(Collections.singletonList(CORS_ALLOWED_URL));
-                config.setAllowedMethods(Collections.singletonList("*"));
-                config.setAllowedHeaders(Collections.singletonList("*"));
-                config.setAllowCredentials(true);
-                config.setMaxAge(3600L);
-                return config;
-            }));
+            .cors(cors -> cors.configurationSource(request -> getCorsConfiguration()))
+        ;
 
         security
             .authorizeHttpRequests((authorize ->
-
             {
                 authorize.requestMatchers(
                     "/api-docs/**",
@@ -77,29 +66,38 @@ public class SecurityConfig {
                     "/api/v1/member/password-reset"
                 ).permitAll();
                 authorize.anyRequest().authenticated();
-            }));
+            }))
+        ;
 
         security
-            .sessionManagement(sessionManager ->
-
-                               {
-                                   sessionManager.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-                               });
+            .sessionManagement(sessionManager -> {
+                sessionManager.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+            })
+        ;
 
         security
             .addFilterBefore(emailVerificationFilter,
                              UsernamePasswordAuthenticationFilter.class)
-                .
-
-            addFilterBefore(tokenExceptionFilterHandler,
-                            UsernamePasswordAuthenticationFilter.class)
-                .
-
-            addFilterBefore(new JwtFilter(jwtProvider, cookieUtil, refreshTokenRepository),
-
-                            UsernamePasswordAuthenticationFilter.class);
+            .addFilterBefore(tokenRefreshRequestFilter,
+                             UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(jwtAuthenticationFilter,
+                             UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(tokenExceptionFilter,
+                             UsernamePasswordAuthenticationFilter.class)
+        ;
 
         return security.build();
+    }
+
+
+    private CorsConfiguration getCorsConfiguration() {
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowedOrigins(Collections.singletonList(CORS_ALLOWED_URL));
+        config.setAllowedMethods(Collections.singletonList("*"));
+        config.setAllowedHeaders(Collections.singletonList("*"));
+        config.setAllowCredentials(true);
+        config.setMaxAge(3600L);
+        return config;
     }
 
 }
