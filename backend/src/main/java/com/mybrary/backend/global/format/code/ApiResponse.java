@@ -1,5 +1,6 @@
-package com.mybrary.backend.global.format;
+package com.mybrary.backend.global.format.code;
 
+import com.mybrary.backend.global.format.response.ErrorCode;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -288,6 +289,19 @@ public class ApiResponse {
      */
     public <T> ResponseEntity<?> error(String message) {
         return get(STATUS_ERROR, message, null, null, null, null, null);
+    }
+
+    /**
+     * <p>예외 발생 시 에러 응답을 반환합니다.</p>
+     * <pre>
+     *     {
+     *         "status" : "error",
+     *         "message" : "Custom ErrorCode Message"
+     *     }
+     * </pre>
+     */
+    public <T> ResponseEntity<?> error(ErrorCode errorCode) {
+        return get(STATUS_ERROR, errorCode.getMessage(), null, null, null, null, null);
     }
 
     /**
