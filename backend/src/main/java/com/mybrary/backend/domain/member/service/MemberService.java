@@ -17,7 +17,7 @@ public interface MemberService {
 
     Long create(SignupRequestDto requestDto);
 
-    void login(LoginRequestDto requestDto, HttpServletResponse httpServletResponse);
+    String login(LoginRequestDto requestDto, HttpServletResponse httpServletResponse);
 
     Member findMember(String email);
 
