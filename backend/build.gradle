@@ -80,6 +80,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
     // Email
     implementation 'org.springframework.boot:spring-boot-starter-mail'
+    // Configuration-Processor
+    implementation 'org.springframework.boot:spring-boot-configuration-processor'
 }
 
 def generated = 'src/main/generated'
