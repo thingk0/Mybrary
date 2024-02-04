@@ -4,14 +4,13 @@ import "./App.css";
 
 import { useEffect } from "react";
 import useStompStore from "./store/useStompStore";
-//import { checkLogin } from "./api/member/CheckLogin";
 import { useNavigate } from "react-router-dom";
 import useUserStore from "./store/useUserStore";
 import useNotificationStore from "./store/useNotificationStore";
 import { Toaster } from "react-hot-toast";
 
 export default function App() {
-  const { connect, disconnect } = useStompStore();
+  const { connect, unscribe } = useStompStore();
   const { setNewNotification } = useNotificationStore();
   const navigate = useNavigate();
   const email = useUserStore((state) => state.user?.email);
@@ -19,7 +18,7 @@ export default function App() {
   useEffect(() => {
     async function socketConnect() {
       try {
-        if (!email) {
+        if (email) {
           await connect(email, setNewNotification);
         }
       } catch (e) {
@@ -28,9 +27,8 @@ export default function App() {
         navigate("/error");
       }
     }
-
     socketConnect();
-  }, [connect, disconnect, navigate, email, setNewNotification]);
+  }, [connect, navigate, email, setNewNotification, unscribe]);
 
   return (
     <>
