@@ -1,6 +1,6 @@
 package com.mybrary.backend.global.exception.email;
 
-import com.mybrary.backend.global.format.ErrorCode;
+import com.mybrary.backend.global.format.response.ErrorCode;
 import lombok.Getter;
 
 @Getter
@@ -8,8 +8,7 @@ public class InvalidAuthCodeException extends RuntimeException {
 
     private final ErrorCode errorCode;
 
-    public InvalidAuthCodeException(ErrorCode errorCode) {
-        super(errorCode.getMessage());
-        this.errorCode = errorCode;
+    public InvalidAuthCodeException() {
+        this.errorCode = ErrorCode.AUTH_CODE_INVALID;
     }
 }

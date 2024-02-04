@@ -1,6 +1,6 @@
 package com.mybrary.backend.global.exception.jwt;
 
-import com.mybrary.backend.global.format.ErrorCode;
+import com.mybrary.backend.global.format.response.ErrorCode;
 import lombok.Getter;
 
 @Getter
