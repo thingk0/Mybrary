@@ -202,21 +202,26 @@ public class MemberController {
 
     @Operation(summary = "회원 정보 수정", description = "닉네임, 프로필이미지, 소개,  수정")
     @PutMapping("/profile")
-    public ResponseEntity<?> updateProfile(@RequestBody MemberUpdateDto member, @RequestParam
+    public ResponseEntity<?> updateProfile(@Parameter(hidden = true) Authentication authentication, @RequestBody MemberUpdateDto member, @RequestParam
     MultipartFile multipartFile) {
-        return new ResponseEntity<>(HttpStatus.OK);
+        memberService.updateProfile(member);
+        return response.success(ResponseCode.MEMBER_INFO_UPDATE_SUCCESS.getMessage());
     }
 
     @Operation(summary = "비밀번호 재설정(로그인후)", description = "로그인 후 비밀번호 재설정")
     @PutMapping("/password-update")
-    public ResponseEntity<?> updatePassword(@RequestBody PasswordUpdateDto password) {
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<?> updatePassword(@Parameter(hidden = true) Authentication authentication, @RequestBody PasswordUpdateDto password) {
+        Member me = memberService.findMember(authentication.getName());
+        Long myId = me.getId();
+        memberService.updatePassword(myId, password);
+        return response.success(ResponseCode.PASSWORD_UPDATE_SUCCESS.getMessage());
     }
 
     @Operation(summary = "계정 탈퇴", description = "계정 탈퇴 (삭제처리)")
     @DeleteMapping("/secession")
-    public ResponseEntity<?> secession(@RequestBody SecessionRequestDto secession) {
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<?> secession(@Parameter(hidden = true) Authentication authentication, @RequestBody SecessionRequestDto secession) {
+        memberService.secession(secession);
+        return response.success(ResponseCode.ACCOUNT_SECESSION_SUCCESS.getMessage());
     }
 
 }

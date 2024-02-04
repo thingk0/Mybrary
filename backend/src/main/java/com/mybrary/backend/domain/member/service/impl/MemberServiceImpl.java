@@ -5,8 +5,11 @@ import com.mybrary.backend.domain.follow.repository.FollowRepository;
 import com.mybrary.backend.domain.member.dto.FollowerDto;
 import com.mybrary.backend.domain.member.dto.FollowingDto;
 import com.mybrary.backend.domain.member.dto.LoginRequestDto;
+import com.mybrary.backend.domain.member.dto.MemberUpdateDto;
 import com.mybrary.backend.domain.member.dto.MyFollowerDto;
 import com.mybrary.backend.domain.member.dto.MyFollowingDto;
+import com.mybrary.backend.domain.member.dto.PasswordUpdateDto;
+import com.mybrary.backend.domain.member.dto.SecessionRequestDto;
 import com.mybrary.backend.domain.member.dto.SignupRequestDto;
 import com.mybrary.backend.domain.member.entity.Member;
 import com.mybrary.backend.domain.member.repository.MemberRepository;
@@ -192,5 +195,47 @@ public class MemberServiceImpl implements MemberService {
     public void deleteFollower(Long myId, Long memberId) {
         Follow follow = followRepository.findFollow(memberId, myId);
         follow.setDeleted(true);
+    }
+
+    @Transactional
+    @Override
+    public void updateProfile(MemberUpdateDto member) {
+        Member me = memberRepository.findById(member.getMemberId()).get();
+        me.updateNickname(member.getNickname());
+        me.updateIntro(member.getIntro());
+        me.updateIsProfilePublic(member.isProfilePublic());
+        me.updateIsNotifyEnable(member.isNotifyEnable());
+        /* 프로필이미지 처리 작성해야함 */
+    }
+
+    @Transactional
+    @Override
+    public void updatePassword(Long myId, PasswordUpdateDto password) {
+
+        /* 비밀번호 불일치 */
+        if (!password.getPassword().equals(password.getPasswordConfirm())) {
+            throw new PasswordMismatchException(ErrorCode.MEMBER_PASSWORD_MISMATCH);
+        }
+
+        Member me = memberRepository.findById(myId).get();
+        me.updatePassword(passwordEncoder.encode(password.getPassword()));
+
+    }
+
+    @Transactional
+    @Override
+    public void secession(SecessionRequestDto secession) {
+
+        Member member = memberRepository.findByEmail(secession.getEmail())
+                                        .orElseThrow(
+                                            () -> new InvalidLoginAttemptException(
+                                                ErrorCode.MEMBER_LOGIN_FAILED));
+
+        if (!validatePassword(secession.getPassword(), member.getPassword())) {
+            throw new PasswordMismatchException(ErrorCode.MEMBER_LOGIN_FAILED);
+        }
+
+        memberRepository.delete(member);
+
     }
 }
