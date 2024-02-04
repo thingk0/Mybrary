@@ -5,8 +5,8 @@ import com.mybrary.backend.domain.chat.dto.ChatMessagePostDto;
 import com.mybrary.backend.domain.chat.dto.ChatRoomGetDto;
 import com.mybrary.backend.domain.chat.service.ChatService;
 import com.mybrary.backend.domain.member.dto.MemberInfoDto;
-import com.mybrary.backend.global.format.ApiResponse;
-import com.mybrary.backend.global.format.ResponseCode;
+import com.mybrary.backend.global.format.code.ApiResponse;
+import com.mybrary.backend.global.format.response.ResponseCode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -105,7 +105,6 @@ public class ChatController {
         map.put("chatMessageList", result);
         map.put("page", page);
 
-
         return response.success(ResponseCode.CHAT_MESSAGES_FETCHED.getMessage(), map);
     }
 
@@ -149,9 +148,11 @@ public class ChatController {
     @Operation(summary = "채팅 메세지 보내기", description = "채팅 메세지 보내기")
     @PostMapping("/{id}/message")
     public ResponseEntity<?> createChat(@Parameter(hidden = true) Authentication authentication,
+                                        @PathVariable("id") Long chatRoomId,
                                         @RequestBody ChatMessagePostDto message) {
-        chatService.createChat(authentication, message);
 
+        // TODO: 기존 코드에 @PathVariable("id") Long chatRoomId 이 빠져있었음. 해당 파라미터도 포함해서 로직 완성 !
+        chatService.createChat(authentication, message);
         return response.success(ResponseCode.CHAT_MESSAGE_SENT.getMessage());
     }
 

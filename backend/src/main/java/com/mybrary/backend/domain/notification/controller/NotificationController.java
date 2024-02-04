@@ -5,8 +5,8 @@ import com.mybrary.backend.domain.member.entity.Member;
 import com.mybrary.backend.domain.member.service.MemberService;
 import com.mybrary.backend.domain.notification.dto.NotificationGetDto;
 import com.mybrary.backend.domain.notification.service.NotificationService;
-import com.mybrary.backend.global.format.ApiResponse;
-import com.mybrary.backend.global.format.ResponseCode;
+import com.mybrary.backend.global.format.code.ApiResponse;
+import com.mybrary.backend.global.format.response.ResponseCode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -37,7 +37,7 @@ public class NotificationController {
     @Operation(summary = "나의 알림 조회", description = "알림 조회")
     @GetMapping
     public ResponseEntity<?> getAllNotification(@Parameter(hidden = true) Authentication authentication,
-        @PageableDefault(page = 0, size = 10) Pageable page) {
+                                                @PageableDefault(page = 0, size = 10) Pageable page) {
 
         Member member = memberService.findMember(authentication.getName());
         Long myId = member.getId();
@@ -51,7 +51,6 @@ public class NotificationController {
         NotificationGetDto notify2 = new NotificationGetDto(2L, member2, 9, null, null, 3L, 4L, null, null);
         NotificationGetDto notify3 = new NotificationGetDto(3L, member3, 12, null, null, null, null, null, null);
         NotificationGetDto notify4 = new NotificationGetDto(4L, member4, 9, 1L, "여행책", null, null, null, null);
-
 
         List<NotificationGetDto> list = new ArrayList<>();
         list.add(notify1);

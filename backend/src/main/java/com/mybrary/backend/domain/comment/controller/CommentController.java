@@ -3,8 +3,8 @@ package com.mybrary.backend.domain.comment.controller;
 import com.mybrary.backend.domain.comment.dto.CommentGetDto;
 import com.mybrary.backend.domain.comment.dto.CommentPostDto;
 import com.mybrary.backend.domain.member.dto.MemberInfoDto;
-import com.mybrary.backend.global.format.ApiResponse;
-import com.mybrary.backend.global.format.ResponseCode;
+import com.mybrary.backend.global.format.code.ApiResponse;
+import com.mybrary.backend.global.format.response.ResponseCode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.ArrayList;
@@ -37,8 +37,7 @@ public class CommentController {
 
     @Operation(summary = "댓글 삭제", description = "댓글 아이디를 통한 댓글 삭제")
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteComment(@PathVariable Long commentId) {
-
+    public ResponseEntity<?> deleteComment(@PathVariable("id") Long commentId) {
         return response.success(ResponseCode.COMMENT_DELETED.getMessage(), commentId);
     }
 
@@ -61,7 +60,7 @@ public class CommentController {
         List<MemberInfoDto> memberList2 = new ArrayList<>();
         memberList2.add(member3);
 
-        CommentGetDto recomment1 = new CommentGetDto(11L, "2024-01-29", member2, false, "대댓글이다", 0,memberList2, null);
+        CommentGetDto recomment1 = new CommentGetDto(11L, "2024-01-29", member2, false, "대댓글이다", 0, memberList2, null);
         List<CommentGetDto> recommentList = new ArrayList<>();
         recommentList.add(recomment1);
 
@@ -75,7 +74,6 @@ public class CommentController {
         list.add(comment2);
         list.add(comment3);
         list.add(comment4);
-
 
         return response.success(ResponseCode.COMMENTS_FETCHED.getMessage(), list);
     }

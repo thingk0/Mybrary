@@ -9,8 +9,8 @@ import com.mybrary.backend.domain.bookmarker.dto.BookMarkerPostDto;
 import com.mybrary.backend.domain.category.dto.MyCategoryGetDto;
 import com.mybrary.backend.domain.contents.paper.dto.PaperInBookGetDto;
 import com.mybrary.backend.domain.member.dto.MemberInfoDto;
-import com.mybrary.backend.global.format.ApiResponse;
-import com.mybrary.backend.global.format.ResponseCode;
+import com.mybrary.backend.global.format.code.ApiResponse;
+import com.mybrary.backend.global.format.response.ResponseCode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.ArrayList;
@@ -96,27 +96,27 @@ public class BookController {
         mentionList.add(new MemberInfoDto(2L, "닉넴2", "자기소개2", "Url2"));
 
         PaperInBookGetDto paper1 = PaperInBookGetDto.builder()
-                                                   .paperId(1L)
-                                                   .createdAt("2023-12-12")
-                                                   .writer(writer)
-                                                   .layoutType(1)
-                                                   .content1("내용입니다")
-                                                   .content1("어쩌구저저구")
-                                                   .image1Url("1")
-                                                   .image2Url("2")
-                                                   .image3Url("3")
-                                                   .image4Url("4")
-                                                   .thumbnailImage1Url("1")
-                                                   .thumbnailImage2Url("2")
-                                                   .thumbnailImage3Url("3")
-                                                   .thumbnailImage4Url("4")
-                                                   .tagList(tagList)
-                                                   .mentionList(mentionList)
-                                                   .likeCount(2589423)
-                                                   .commentCount(13)
-                                                   .scrapCount(422)
-                                                   .isLiked(true)
-                                                   .build();
+                                                    .paperId(1L)
+                                                    .createdAt("2023-12-12")
+                                                    .writer(writer)
+                                                    .layoutType(1)
+                                                    .content1("내용입니다")
+                                                    .content1("어쩌구저저구")
+                                                    .image1Url("1")
+                                                    .image2Url("2")
+                                                    .image3Url("3")
+                                                    .image4Url("4")
+                                                    .thumbnailImage1Url("1")
+                                                    .thumbnailImage2Url("2")
+                                                    .thumbnailImage3Url("3")
+                                                    .thumbnailImage4Url("4")
+                                                    .tagList(tagList)
+                                                    .mentionList(mentionList)
+                                                    .likeCount(2589423)
+                                                    .commentCount(13)
+                                                    .scrapCount(422)
+                                                    .isLiked(true)
+                                                    .build();
 
         PaperInBookGetDto paper2 = PaperInBookGetDto.builder()
                                                     .paperId(1L)

@@ -6,8 +6,8 @@ import com.mybrary.backend.domain.category.dto.CategoryPostDto;
 import com.mybrary.backend.domain.category.dto.CategoryUpdateDto;
 import com.mybrary.backend.domain.category.service.CategoryService;
 import com.mybrary.backend.domain.member.dto.MemberInfoDto;
-import com.mybrary.backend.global.format.ApiResponse;
-import com.mybrary.backend.global.format.ResponseCode;
+import com.mybrary.backend.global.format.code.ApiResponse;
+import com.mybrary.backend.global.format.response.ResponseCode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.ArrayList;
@@ -66,13 +66,11 @@ public class CategoryController {
         BookGetDto book3 = new BookGetDto(3L, writer3, "혜선이의 여행", "1234", 4, 2, 1);
         BookGetDto book4 = new BookGetDto(4L, writer4, "소영이의 일상", "1234", 3, 1, 0);
 
-
         List<BookGetDto> list = new ArrayList<>();
         list.add(book1);
         list.add(book2);
         list.add(book3);
         list.add(book4);
-
 
         return response.success(ResponseCode.CATEGORY_BOOKS_FETCHED.getMessage(), list);
     }
@@ -90,13 +88,13 @@ public class CategoryController {
 
         return response.success(ResponseCode.CATEGORY_UPDATED.getMessage(), category.getBookShelfId());
     }
+
     @Operation(summary = "카테고리 삭제", description = "카테고리 아이디를 통한 카테고리 삭제")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteCategory(@PathVariable(name = "id") Long categoryId) {
 
         return response.success(ResponseCode.CATEGORY_DELETED.getMessage(), categoryId);
     }
-
 
 
 }
