@@ -4,6 +4,7 @@ spring:
     include:
       - jwt
       - mail
+      - filter
 
   jpa:
     open-in-view: false
