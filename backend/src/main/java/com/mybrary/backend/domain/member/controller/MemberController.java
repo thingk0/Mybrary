@@ -14,11 +14,14 @@ import com.mybrary.backend.domain.member.dto.email.EmailValidationRequestDto;
 import com.mybrary.backend.domain.member.entity.Member;
 import com.mybrary.backend.domain.member.service.MailService;
 import com.mybrary.backend.domain.member.service.MemberService;
-import com.mybrary.backend.global.format.ApiResponse;
-import com.mybrary.backend.global.format.ResponseCode;
+import com.mybrary.backend.global.annotation.AccessToken;
+import com.mybrary.backend.global.format.code.ApiResponse;
+import com.mybrary.backend.global.format.response.ResponseCode;
+import com.mybrary.backend.global.jwt.service.TokenService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -45,8 +48,15 @@ import org.springframework.web.multipart.MultipartFile;
 public class MemberController {
 
     private final ApiResponse response;
-    private final MemberService memberService;
+    private final TokenService tokenService;
     private final MailService mailService;
+    private final MemberService memberService;
+
+    @Operation(summary = "토큰 갱신", description = "리프레쉬 토큰을 통해 액세스 토큰 재발급 요청")
+    @PutMapping
+    public ResponseEntity<?> token(@AccessToken @RequestBody String accessToken) {
+        return response.success(tokenService.reIssueAccessToken(accessToken));
+    }
 
     @Operation(summary = "일반 회원가입", description = "일반 회원가입")
     @PostMapping
@@ -111,8 +121,7 @@ public class MemberController {
             return response.fail(bindingResult);
         }
 
-        memberService.login(requestDto, httpServletResponse);
-        return response.success(ResponseCode.LOGIN_SUCCESS.getMessage());
+        return response.success(ResponseCode.LOGIN_SUCCESS.getMessage(), memberService.login(requestDto, httpServletResponse));
     }
 
     @Operation(summary = "소셜 로그인", description = "소셜 로그인")
