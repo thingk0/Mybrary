@@ -23,7 +23,7 @@ export default function FeedPage() {
       paperList: [
         {
           paperId: 301,
-          layoutType: 2151,
+          layoutType: 1101,
           content1:
             "본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용",
           content2: "본문2 내용",
@@ -46,7 +46,7 @@ export default function FeedPage() {
         },
         {
           paperId: 301,
-          layoutType: 101,
+          layoutType: 1102,
           content1: "본문1 내용",
           content2: "본문2 내용",
           thumbnail1Url: "썸네일1 주소",
@@ -68,7 +68,7 @@ export default function FeedPage() {
         },
         {
           paperId: 301,
-          layoutType: 102,
+          layoutType: 1103,
           content1: "본문1 내용",
           content2: "본문2 내용",
           thumbnail1Url: "썸네일1 주소",
@@ -105,7 +105,7 @@ export default function FeedPage() {
       paperList: [
         {
           paperId: 301,
-          layoutType: 201,
+          layoutType: 1201,
           content1: "본문1 내용",
           content2: "본문2 내용",
           thumbnail1Url: "썸네일1 주소",
@@ -142,7 +142,7 @@ export default function FeedPage() {
       paperList: [
         {
           paperId: 301,
-          layoutType: 202,
+          layoutType: 1202,
           content1: "본문1 내용",
           content2: "본문2 내용",
           thumbnail1Url: "썸네일1 주소",
@@ -164,7 +164,7 @@ export default function FeedPage() {
         },
         {
           paperId: 301,
-          layoutType: 203,
+          layoutType: 1203,
           content1: "본문1 내용",
           content2: "본문2 내용",
           thumbnail1Url: "썸네일1 주소",
@@ -201,7 +201,7 @@ export default function FeedPage() {
       paperList: [
         {
           paperId: 301,
-          layoutType: 101,
+          layoutType: 1204,
           content1: "본문1 내용",
           content2: "본문2 내용",
           thumbnail1Url: "썸네일1 주소",
@@ -223,7 +223,7 @@ export default function FeedPage() {
         },
         {
           paperId: 301,
-          layoutType: 201,
+          layoutType: 1205,
           content1: "본문1 내용",
           content2: "본문2 내용",
           thumbnail1Url: "썸네일1 주소",
@@ -245,7 +245,7 @@ export default function FeedPage() {
         },
         {
           paperId: 301,
-          layoutType: 200,
+          layoutType: 1301,
           content1: "본문1 내용",
           content2: "본문2 내용",
           thumbnail1Url: "썸네일1 주소",
@@ -282,7 +282,7 @@ export default function FeedPage() {
       paperList: [
         {
           paperId: 301,
-          layoutType: 101,
+          layoutType: 1302,
           content1: "본문1 내용",
           content2: "본문2 내용",
           thumbnail1Url: "썸네일1 주소",
@@ -319,7 +319,7 @@ export default function FeedPage() {
       paperList: [
         {
           paperId: 301,
-          layoutType: 102,
+          layoutType: 1303,
           content1: "본문1 내용",
           content2: "본문2 내용",
           thumbnail1Url: "썸네일1 주소",
@@ -341,7 +341,7 @@ export default function FeedPage() {
         },
         {
           paperId: 301,
-          layoutType: 105,
+          layoutType: 1304,
           content1: "본문1 내용",
           content2: "본문2 내용",
           thumbnail1Url: "썸네일1 주소",
@@ -378,7 +378,7 @@ export default function FeedPage() {
       paperList: [
         {
           paperId: 301,
-          layoutType: 107,
+          layoutType: 1401,
           content1: "본문1 내용",
           content2: "본문2 내용",
           thumbnail1Url: "썸네일1 주소",
@@ -400,7 +400,7 @@ export default function FeedPage() {
         },
         {
           paperId: 301,
-          layoutType: 205,
+          layoutType: 1402,
           content1: "본문1 내용",
           content2: "본문2 내용",
           thumbnail1Url: "썸네일1 주소",
@@ -422,7 +422,7 @@ export default function FeedPage() {
         },
         {
           paperId: 301,
-          layoutType: 206,
+          layoutType: 1501,
           content1: "본문1 내용",
           content2: "본문2 내용",
           thumbnail1Url: "썸네일1 주소",
@@ -459,7 +459,7 @@ export default function FeedPage() {
       paperList: [
         {
           paperId: 301,
-          layoutType: 107,
+          layoutType: 1502,
           content1: "본문1 내용",
           content2: "본문2 내용",
           thumbnail1Url: "썸네일1 주소",
@@ -496,7 +496,7 @@ export default function FeedPage() {
       paperList: [
         {
           paperId: 301,
-          layoutType: 102,
+          layoutType: 1503,
           content1: "본문1 내용",
           content2: "본문2 내용",
           thumbnail1Url: "썸네일1 주소",
@@ -518,7 +518,7 @@ export default function FeedPage() {
         },
         {
           paperId: 301,
-          layoutType: 103,
+          layoutType: 1504,
           content1: "본문1 내용",
           content2: "본문2 내용",
           thumbnail1Url: "썸네일1 주소",
@@ -555,7 +555,7 @@ export default function FeedPage() {
       paperList: [
         {
           paperId: 301,
-          layoutType: 108,
+          layoutType: 1101,
           content1: "본문1 내용",
           content2: "본문2 내용",
           thumbnail1Url: "썸네일1 주소",
@@ -577,7 +577,600 @@ export default function FeedPage() {
         },
         {
           paperId: 301,
-          layoutType: 109,
+          layoutType: 1102,
+          content1: "본문1 내용",
+          content2: "본문2 내용",
+          thumbnail1Url: "썸네일1 주소",
+          thumbnail2Url: "썸네일2 주소",
+          likeCount: 15,
+          commentCount: 7,
+          scrapCount: 3,
+          isLiked: false,
+          isPaperPublic: true,
+          isScrapEnable: true,
+          tagList: [
+            {
+              tagName: "태그1",
+            },
+            {
+              tagName: "태그2",
+            },
+          ],
+        },
+      ],
+    },
+  ];
+  const threadList2 = [
+    {
+      bookId: 1,
+      threadId: 101,
+      time: "2024-02-03T12:30:00234234",
+      isOwner: true,
+      owner: {
+        ownerId: 201,
+        name: "너의이름",
+        nickname: "닉네임",
+        profileImageUrl: "프로필이미지주소",
+        isFollowed: false,
+      },
+      paperList: [
+        {
+          paperId: 301,
+          layoutType: 2111,
+          content1:
+            "본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용본문1 내용",
+          content2: "본문2 내용",
+          thumbnail1Url: "썸네일1 주소",
+          thumbnail2Url: "썸네일2 주소",
+          likeCount: 15,
+          commentCount: 7,
+          scrapCount: 3,
+          isLiked: false,
+          isPaperPublic: true,
+          isScrapEnable: true,
+          tagList: [
+            {
+              tagName: "태그1",
+            },
+            {
+              tagName: "태그2",
+            },
+          ],
+        },
+        {
+          paperId: 301,
+          layoutType: 2112,
+          content1: "본문1 내용",
+          content2: "본문2 내용",
+          thumbnail1Url: "썸네일1 주소",
+          thumbnail2Url: "썸네일2 주소",
+          likeCount: 15,
+          commentCount: 7,
+          scrapCount: 3,
+          isLiked: false,
+          isPaperPublic: true,
+          isScrapEnable: true,
+          tagList: [
+            {
+              tagName: "태그1",
+            },
+            {
+              tagName: "태그2",
+            },
+          ],
+        },
+        {
+          paperId: 301,
+          layoutType: 2141,
+          content1: "본문1 내용",
+          content2: "본문2 내용",
+          thumbnail1Url: "썸네일1 주소",
+          thumbnail2Url: "썸네일2 주소",
+          likeCount: 15,
+          commentCount: 7,
+          scrapCount: 3,
+          isLiked: false,
+          isPaperPublic: true,
+          isScrapEnable: true,
+          tagList: [
+            {
+              tagName: "태그1",
+            },
+            {
+              tagName: "태그2",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      bookId: 2,
+      threadId: 101,
+      time: "2024-02-03T12:30:002222",
+      isOwner: true,
+      owner: {
+        ownerId: 201,
+        name: "너의이름",
+        nickname: "닉네임",
+        profileImageUrl: "프로필이미지주소",
+        isFollowed: false,
+      },
+      paperList: [
+        {
+          paperId: 301,
+          layoutType: 2411,
+          content1: "본문1 내용",
+          content2: "본문2 내용",
+          thumbnail1Url: "썸네일1 주소",
+          thumbnail2Url: "썸네일2 주소",
+          likeCount: 15,
+          commentCount: 7,
+          scrapCount: 3,
+          isLiked: false,
+          isPaperPublic: true,
+          isScrapEnable: true,
+          tagList: [
+            {
+              tagName: "태그1",
+            },
+            {
+              tagName: "태그2",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      bookId: 3,
+      threadId: 101,
+      time: "2024-02-03T12:30:00",
+      isOwner: true,
+      owner: {
+        ownerId: 201,
+        name: "너의이름",
+        nickname: "닉네임",
+        profileImageUrl: "프로필이미지주소",
+        isFollowed: false,
+      },
+      paperList: [
+        {
+          paperId: 301,
+          layoutType: 2151,
+          content1: "본문1 내용",
+          content2: "본문2 내용",
+          thumbnail1Url: "썸네일1 주소",
+          thumbnail2Url: "썸네일2 주소",
+          likeCount: 15,
+          commentCount: 7,
+          scrapCount: 3,
+          isLiked: false,
+          isPaperPublic: true,
+          isScrapEnable: true,
+          tagList: [
+            {
+              tagName: "태그1",
+            },
+            {
+              tagName: "태그2",
+            },
+          ],
+        },
+        {
+          paperId: 301,
+          layoutType: 2511,
+          content1: "본문1 내용",
+          content2: "본문2 내용",
+          thumbnail1Url: "썸네일1 주소",
+          thumbnail2Url: "썸네일2 주소",
+          likeCount: 15,
+          commentCount: 7,
+          scrapCount: 3,
+          isLiked: false,
+          isPaperPublic: true,
+          isScrapEnable: true,
+          tagList: [
+            {
+              tagName: "태그1",
+            },
+            {
+              tagName: "태그2",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      bookId: 4,
+      threadId: 101,
+      time: "2024-02-03T12:30:00",
+      isOwner: true,
+      owner: {
+        ownerId: 201,
+        name: "너의이름",
+        nickname: "닉네임",
+        profileImageUrl: "프로필이미지주소",
+        isFollowed: false,
+      },
+      paperList: [
+        {
+          paperId: 301,
+          layoutType: 2221,
+          content1: "본문1 내용",
+          content2: "본문2 내용",
+          thumbnail1Url: "썸네일1 주소",
+          thumbnail2Url: "썸네일2 주소",
+          likeCount: 15,
+          commentCount: 7,
+          scrapCount: 3,
+          isLiked: false,
+          isPaperPublic: true,
+          isScrapEnable: true,
+          tagList: [
+            {
+              tagName: "태그1",
+            },
+            {
+              tagName: "태그2",
+            },
+          ],
+        },
+        {
+          paperId: 301,
+          layoutType: 2231,
+          content1: "본문1 내용",
+          content2: "본문2 내용",
+          thumbnail1Url: "썸네일1 주소",
+          thumbnail2Url: "썸네일2 주소",
+          likeCount: 15,
+          commentCount: 7,
+          scrapCount: 3,
+          isLiked: false,
+          isPaperPublic: true,
+          isScrapEnable: true,
+          tagList: [
+            {
+              tagName: "태그1",
+            },
+            {
+              tagName: "태그2",
+            },
+          ],
+        },
+        {
+          paperId: 301,
+          layoutType: 2321,
+          content1: "본문1 내용",
+          content2: "본문2 내용",
+          thumbnail1Url: "썸네일1 주소",
+          thumbnail2Url: "썸네일2 주소",
+          likeCount: 15,
+          commentCount: 7,
+          scrapCount: 3,
+          isLiked: false,
+          isPaperPublic: true,
+          isScrapEnable: true,
+          tagList: [
+            {
+              tagName: "태그1",
+            },
+            {
+              tagName: "태그2",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      bookId: 5,
+      threadId: 101,
+      time: "2024-02-03T12:30:00",
+      isOwner: true,
+      owner: {
+        ownerId: 201,
+        name: "너의이름",
+        nickname: "닉네임",
+        profileImageUrl: "프로필이미지주소",
+        isFollowed: false,
+      },
+      paperList: [
+        {
+          paperId: 301,
+          layoutType: 2331,
+          content1: "본문1 내용",
+          content2: "본문2 내용",
+          thumbnail1Url: "썸네일1 주소",
+          thumbnail2Url: "썸네일2 주소",
+          likeCount: 15,
+          commentCount: 7,
+          scrapCount: 3,
+          isLiked: false,
+          isPaperPublic: true,
+          isScrapEnable: true,
+          tagList: [
+            {
+              tagName: "태그1",
+            },
+            {
+              tagName: "태그2",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      bookId: 6,
+      threadId: 101,
+      time: "2024-02-03T12:30:00",
+      isOwner: true,
+      owner: {
+        ownerId: 201,
+        name: "너의이름",
+        nickname: "닉네임",
+        profileImageUrl: "프로필이미지주소",
+        isFollowed: false,
+      },
+      paperList: [
+        {
+          paperId: 301,
+          layoutType: 2332,
+          content1: "본문1 내용",
+          content2: "본문2 내용",
+          thumbnail1Url: "썸네일1 주소",
+          thumbnail2Url: "썸네일2 주소",
+          likeCount: 15,
+          commentCount: 7,
+          scrapCount: 3,
+          isLiked: false,
+          isPaperPublic: true,
+          isScrapEnable: true,
+          tagList: [
+            {
+              tagName: "태그1",
+            },
+            {
+              tagName: "태그2",
+            },
+          ],
+        },
+        {
+          paperId: 301,
+          layoutType: 2333,
+          content1: "본문1 내용",
+          content2: "본문2 내용",
+          thumbnail1Url: "썸네일1 주소",
+          thumbnail2Url: "썸네일2 주소",
+          likeCount: 15,
+          commentCount: 7,
+          scrapCount: 3,
+          isLiked: false,
+          isPaperPublic: true,
+          isScrapEnable: true,
+          tagList: [
+            {
+              tagName: "태그1",
+            },
+            {
+              tagName: "태그2",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      bookId: 7,
+      threadId: 101,
+      time: "2024-02-03T12:30:00",
+      isOwner: true,
+      owner: {
+        ownerId: 201,
+        name: "너의이름",
+        nickname: "닉네임",
+        profileImageUrl: "프로필이미지주소",
+        isFollowed: false,
+      },
+      paperList: [
+        {
+          paperId: 301,
+          layoutType: 2322,
+          content1: "본문1 내용",
+          content2: "본문2 내용",
+          thumbnail1Url: "썸네일1 주소",
+          thumbnail2Url: "썸네일2 주소",
+          likeCount: 15,
+          commentCount: 7,
+          scrapCount: 3,
+          isLiked: false,
+          isPaperPublic: true,
+          isScrapEnable: true,
+          tagList: [
+            {
+              tagName: "태그1",
+            },
+            {
+              tagName: "태그2",
+            },
+          ],
+        },
+        {
+          paperId: 301,
+          layoutType: 2232,
+          content1: "본문1 내용",
+          content2: "본문2 내용",
+          thumbnail1Url: "썸네일1 주소",
+          thumbnail2Url: "썸네일2 주소",
+          likeCount: 15,
+          commentCount: 7,
+          scrapCount: 3,
+          isLiked: false,
+          isPaperPublic: true,
+          isScrapEnable: true,
+          tagList: [
+            {
+              tagName: "태그1",
+            },
+            {
+              tagName: "태그2",
+            },
+          ],
+        },
+        {
+          paperId: 301,
+          layoutType: 2311,
+          content1: "본문1 내용",
+          content2: "본문2 내용",
+          thumbnail1Url: "썸네일1 주소",
+          thumbnail2Url: "썸네일2 주소",
+          likeCount: 15,
+          commentCount: 7,
+          scrapCount: 3,
+          isLiked: false,
+          isPaperPublic: true,
+          isScrapEnable: true,
+          tagList: [
+            {
+              tagName: "태그1",
+            },
+            {
+              tagName: "태그2",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      bookId: 8,
+      threadId: 101,
+      time: "2024-02-03T12:30:00",
+      isOwner: true,
+      owner: {
+        ownerId: 201,
+        name: "너의이름",
+        nickname: "닉네임",
+        profileImageUrl: "프로필이미지주소",
+        isFollowed: false,
+      },
+      paperList: [
+        {
+          paperId: 301,
+          layoutType: 2131,
+          content1: "본문1 내용",
+          content2: "본문2 내용",
+          thumbnail1Url: "썸네일1 주소",
+          thumbnail2Url: "썸네일2 주소",
+          likeCount: 15,
+          commentCount: 7,
+          scrapCount: 3,
+          isLiked: false,
+          isPaperPublic: true,
+          isScrapEnable: true,
+          tagList: [
+            {
+              tagName: "태그1",
+            },
+            {
+              tagName: "태그2",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      bookId: 9,
+      threadId: 101,
+      time: "2024-02-03T12:30:00",
+      isOwner: true,
+      owner: {
+        ownerId: 201,
+        name: "너의이름",
+        nickname: "닉네임",
+        profileImageUrl: "프로필이미지주소",
+        isFollowed: false,
+      },
+      paperList: [
+        {
+          paperId: 301,
+          layoutType: 2441,
+          content1: "본문1 내용",
+          content2: "본문2 내용",
+          thumbnail1Url: "썸네일1 주소",
+          thumbnail2Url: "썸네일2 주소",
+          likeCount: 15,
+          commentCount: 7,
+          scrapCount: 3,
+          isLiked: false,
+          isPaperPublic: true,
+          isScrapEnable: true,
+          tagList: [
+            {
+              tagName: "태그1",
+            },
+            {
+              tagName: "태그2",
+            },
+          ],
+        },
+        {
+          paperId: 301,
+          layoutType: 2442,
+          content1: "본문1 내용",
+          content2: "본문2 내용",
+          thumbnail1Url: "썸네일1 주소",
+          thumbnail2Url: "썸네일2 주소",
+          likeCount: 15,
+          commentCount: 7,
+          scrapCount: 3,
+          isLiked: false,
+          isPaperPublic: true,
+          isScrapEnable: true,
+          tagList: [
+            {
+              tagName: "태그1",
+            },
+            {
+              tagName: "태그2",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      bookId: 10,
+      threadId: 101,
+      time: "2024-02-03T12:30:00sdsd",
+      isOwner: true,
+      owner: {
+        ownerId: 201,
+        name: "너의이름",
+        nickname: "닉네임",
+        profileImageUrl: "프로필이미지주소",
+        isFollowed: false,
+      },
+      paperList: [
+        {
+          paperId: 301,
+          layoutType: 2551,
+          content1: "본문1 내용",
+          content2: "본문2 내용",
+          thumbnail1Url: "썸네일1 주소",
+          thumbnail2Url: "썸네일2 주소",
+          likeCount: 15,
+          commentCount: 7,
+          scrapCount: 3,
+          isLiked: false,
+          isPaperPublic: true,
+          isScrapEnable: true,
+          tagList: [
+            {
+              tagName: "태그1",
+            },
+            {
+              tagName: "태그2",
+            },
+          ],
+        },
+        {
+          paperId: 301,
+          layoutType: 2111,
           content1: "본문1 내용",
           content2: "본문2 내용",
           thumbnail1Url: "썸네일1 주소",
@@ -624,7 +1217,7 @@ export default function FeedPage() {
     setComment(false);
     setZIndex(-1);
     if (activeIndex === list.length - 3 && list.length - 4 < activeIndex) {
-      setList([...list, ...threadList]);
+      setList([...list, ...threadList2]);
     }
   }, [activeIndex, list]);
 
