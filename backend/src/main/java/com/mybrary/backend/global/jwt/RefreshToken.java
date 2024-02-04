@@ -1,4 +1,4 @@
-package com.mybrary.backend.global.jwt.token;
+package com.mybrary.backend.global.jwt;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,19 +10,18 @@ import org.springframework.data.redis.core.index.Indexed;
 @Getter
 @Builder
 @AllArgsConstructor
-@RedisHash(value = "refresh_token", timeToLive = 60 * 60 * 24)
+@RedisHash(value = "RefreshToken", timeToLive = 60 * 60 * 24 * 7)
 public class RefreshToken {
 
     @Id
-    private String key;
+    private String email;
 
     @Indexed
-    private String value;
+    private String refreshToken;
 
     private String accessToken;
 
-    public void reIssueAccessToken(String accessToken) {
+    public void updateAccessToken(String accessToken) {
         this.accessToken = accessToken;
     }
-
 }
