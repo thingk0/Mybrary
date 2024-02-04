@@ -2,10 +2,13 @@ package com.mybrary.backend.global.handler;
 
 import com.mybrary.backend.global.exception.email.FailedMessageTransmissionException;
 import com.mybrary.backend.global.exception.email.InvalidAuthCodeException;
+import com.mybrary.backend.global.exception.jwt.RefreshTokenNotFoundException;
 import com.mybrary.backend.global.exception.member.DuplicateEmailException;
+import com.mybrary.backend.global.exception.member.EmailNotFoundException;
+import com.mybrary.backend.global.exception.member.InvalidLoginAttemptException;
 import com.mybrary.backend.global.exception.member.PasswordMismatchException;
-import com.mybrary.backend.global.format.ApiResponse;
-import com.mybrary.backend.global.format.ErrorCode;
+import com.mybrary.backend.global.format.code.ApiResponse;
+import com.mybrary.backend.global.format.response.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
@@ -21,33 +24,51 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     private final ApiResponse response;
 
     @ExceptionHandler(Exception.class)
-    protected ResponseEntity<?> handleException(Exception e) {
+    protected ResponseEntity<?> handle(Exception e) {
         log.error("Exception = {}", e.getMessage());
-        return response.error(ErrorCode.GLOBAL_UNEXPECTED_ERROR.getMessage());
+        return response.error(ErrorCode.GLOBAL_UNEXPECTED_ERROR);
     }
 
     @ExceptionHandler(PasswordMismatchException.class)
-    protected ResponseEntity<?> handlePasswordMismatchException(PasswordMismatchException e) {
-        log.error("PasswordMismatchException = {}", e.getMessage());
-        return response.error(ErrorCode.MEMBER_PASSWORD_MISMATCH.getMessage());
+    protected ResponseEntity<?> handle(PasswordMismatchException e) {
+        log.error("PasswordMismatchException = {}", e.getErrorCode().getMessage());
+        return response.error(e.getErrorCode());
     }
 
     @ExceptionHandler(DuplicateEmailException.class)
-    protected ResponseEntity<?> handleDuplicateEmailException(DuplicateEmailException e) {
-        log.error("DuplicateEmailException = {}", e.getMessage());
-        return response.error(ErrorCode.MEMBER_EMAIL_DUPLICATED.getMessage());
+    protected ResponseEntity<?> handle(DuplicateEmailException e) {
+        log.error("DuplicateEmailException = {}", e.getErrorCode().getMessage());
+        return response.error(e.getErrorCode());
     }
 
     @ExceptionHandler(FailedMessageTransmissionException.class)
-    protected ResponseEntity<?> handleFailedMessageTransmissionException(FailedMessageTransmissionException e) {
-        log.error("FailedMessageTransmissionException = {}", e.getMessage());
-        return response.error(ErrorCode.EMAIL_SEND_FAILED.getMessage());
+    protected ResponseEntity<?> handle(FailedMessageTransmissionException e) {
+        log.error("FailedMessageTransmissionException = {}", e.getErrorCode().getMessage());
+        return response.error(e.getErrorCode());
     }
 
     @ExceptionHandler(InvalidAuthCodeException.class)
-    protected ResponseEntity<?> handleInvalidAuthCodeException(InvalidAuthCodeException e) {
-        log.error("InvalidAuthCodeException = {}", e.getMessage());
-        return response.error(ErrorCode.AUTH_CODE_INVALID.getMessage());
+    protected ResponseEntity<?> handle(InvalidAuthCodeException e) {
+        log.error("InvalidAuthCodeException = {}", e.getErrorCode().getMessage());
+        return response.error(e.getErrorCode());
+    }
+
+    @ExceptionHandler(InvalidLoginAttemptException.class)
+    protected ResponseEntity<?> handle(InvalidLoginAttemptException e) {
+        log.error("InvalidLoginAttemptException = {}", e.getErrorCode().getMessage());
+        return response.error(e.getErrorCode());
+    }
+
+    @ExceptionHandler(EmailNotFoundException.class)
+    protected ResponseEntity<?> handle(EmailNotFoundException e) {
+        log.error("EmailNotFoundException = {}", e.getErrorCode().getMessage());
+        return response.error(e.getErrorCode());
+    }
+
+    @ExceptionHandler(RefreshTokenNotFoundException.class)
+    protected ResponseEntity<?> handle(RefreshTokenNotFoundException e) {
+        log.error("RefreshTokenNotFoundException = {}", e.getErrorCode().getMessage());
+        return response.error(e.getErrorCode());
     }
 
 }
