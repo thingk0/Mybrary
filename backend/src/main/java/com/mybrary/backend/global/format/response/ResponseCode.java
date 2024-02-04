@@ -1,4 +1,4 @@
-package com.mybrary.backend.global.format;
+package com.mybrary.backend.global.format.response;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
