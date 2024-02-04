@@ -7,21 +7,19 @@ export default function Comment({ commentId }) {
   const [addcomment, setAddcomment] = useState("");
 
   useEffect(() => {
-    //   - 댓글ID(commentId)
-    // - 작성자ID(ownerId)
-    // - 작성자닉네임(ownerNickname)
-    // - 작성자여부(isOwner)
-    // - 댓글내용(comment)
-    // - 컬러코드(colorCode)
-    // - 시간(time)
-    // - 대댓글리스트(recommentList)
-    // [
-    //   - 대댓글ID(recommentId)
-    //   - 대댓글작성자ID(recommentOwnerId)
-    //   - 대댓글작성자닉네임(recommentOwnerNickname)
-    //   - 대댓글내용(recomment)
-    //   - 대댓글시간(recommentTime)
-    // ]
+    //   // 댓글ID(commentId)
+    //   // 작성자ID(ownerId)
+    //   // 작성자닉네임(ownerNickname)
+    //   // 작성자여부(isOwner)
+    //   // 댓글내용(comment)
+    //   // 컬러코드(colorCode)
+    //   // 시간(time)
+    //   // 대댓글리스트(recommentList)
+    //   //  대댓글ID(recommentId)
+    //   //  대댓글작성자ID(recommentOwnerId)
+    //   //  대댓글작성자닉네임(recommentOwnerNickname)
+    //   //  대댓글내용(recomment)
+    //   //  대댓글시간(recommentTime)
     setCommentList([
       {
         commentId: 1,
@@ -83,38 +81,47 @@ export default function Comment({ commentId }) {
   return (
     <>
       <div className={styles.comment_container}>
-        {commentList.map((comment) => (
-          <div className={styles.comment_item}>
-            <div className={styles.comment_nickname}>
-              {comment.ownerNickname}
-            </div>
-            <div className={styles.comment_text}>{comment.comment}</div>
-            <div className={styles.comment_info}>
-              <div className={styles.comment_left}>
-                <div>{comment.time}</div> | <div>수정</div> | <div>삭제</div>
+        {commentList.length !== 0 ? (
+          <>
+            {commentList.map((comment) => (
+              <div className={styles.comment_item}>
+                <div className={styles.comment_nickname}>
+                  {comment.ownerNickname}
+                </div>
+                <div className={styles.comment_text}>{comment.comment}</div>
+                <div className={styles.comment_info}>
+                  <div className={styles.comment_left}>
+                    <div>{comment.time}</div> | <div>수정</div> |{" "}
+                    <div>삭제</div>
+                  </div>
+                  <div className={styles.comment_right}>
+                    <div>{comment.recommentList.length}</div> |{" "}
+                    <div>답글달기</div>
+                  </div>
+                </div>
               </div>
-              <div className={styles.comment_right}>
-                <div>{comment.recommentList.length}</div> | <div>답글달기</div>
-              </div>
-            </div>
+            ))}
+          </>
+        ) : (
+          <div className={styles.comment_none}>
+            <div>게시물에 댓글이 하나도 없습니다.</div>
           </div>
-        ))}
+        )}
       </div>
       <div className={styles.comment_create}>
-        <div className={styles.comment_create}>댓글을 입력하세여~</div>
-        <div className={styles.comment_create}>
-          <div className={styles.comment_create}>
+        <div className={styles.comment_create_header}>
+          <div className={styles.comment_create_left}>
             <img src={user_img} alt="" className={styles.user_img} />
-            <div>{"mangmangi_98"}</div>
+            <div className={styles.user_nickname}>{"mangmangi_98"}</div>
           </div>
-          <div className={styles.comment_create}>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
+          <div className={styles.comment_colors}>
+            <div className={styles.color_1}></div>
+            <div className={styles.color_2}></div>
+            <div className={styles.color_3}></div>
+            <div className={styles.color_4}></div>
           </div>
         </div>
-        <div>
+        <div className={styles.comment_input}>
           <input
             type="text"
             id="add"

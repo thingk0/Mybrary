@@ -10,6 +10,11 @@
   --gomin3: #6a5b82;
   --gomin4: #946087;
   --gomin5: #ba667e;
+  --comment1: #ffeaea;
+  --comment2: #fff4ea;
+  --comment3: #eafbff;
+  --comment4: #f1eaff;
+
   --blur1: #fff9f680;
   /* 1번이 모달컬러 */
   --blur2: #ddccc380;
@@ -34,6 +39,15 @@
   height: 80%;
   overflow-y: auto;
 }
+.comment_none {
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  font-size: 2vi;
+  text-shadow: 0 0 5px var(--main3);
+}
 /* 댓글목록공간 */
 .comment_item {
   width: 89%;
@@ -44,11 +58,11 @@
   margin: 1vi;
 }
 .comment_nickname {
-  font-size: 1vi;
+  font-size: 1.2vi;
   margin-bottom: 0.3vi;
 }
 .comment_text {
-  font-size: 0.8vi;
+  font-size: 1vi;
   margin-bottom: 0.3vi;
 }
 
@@ -57,6 +71,8 @@
 .comment_info {
   display: flex;
   justify-content: space-between;
+  gap: 0.3vi;
+  font-size: 1vi;
 }
 
 /* 댓글작성공간 */
@@ -71,4 +87,54 @@
   width: 2.5vi;
   height: 2.5vi;
   cursor: pointer;
+}
+
+.comment_create_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.comment_create_left {
+  display: flex;
+  align-items: center;
+  gap: 0.4vi;
+}
+.user_nickname {
+  font-size: 1vi;
+}
+.comment_colors {
+  display: flex;
+  gap: 0.2vi;
+}
+.comment_colors > div {
+  width: 2vi;
+  height: 2vi;
+  border-radius: 1vi;
+}
+.color_1 {
+  background-color: #f9caca;
+}
+.color_2 {
+  background-color: #fce0c6;
+}
+.color_3 {
+  background-color: #c5f4ff;
+}
+.color_4 {
+  background-color: #d6c2ff;
+}
+
+.comment_input {
+  display: flex;
+}
+
+.comment_input > input {
+  margin-top: 1vi;
+  width: 100%;
+  height: 2vi;
+  padding: 0 0.5vi;
+  border-radius: 0.2vi;
+  font-size: 1vi;
+  outline: none;
+  border: none;
 }
