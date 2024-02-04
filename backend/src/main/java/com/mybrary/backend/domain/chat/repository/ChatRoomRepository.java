@@ -1,6 +1,5 @@
 package com.mybrary.backend.domain.chat.repository;
 
-import com.mybrary.backend.domain.chat.entity.ChatJoin;
 import com.mybrary.backend.domain.chat.entity.ChatMessage;
 import com.mybrary.backend.domain.chat.entity.ChatRoom;
 import com.mybrary.backend.domain.chat.repository.custom.ChatRepositoryCustom;
@@ -10,8 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long>,
-    ChatRepositoryCustom {
+public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long>, ChatRepositoryCustom {
 
     /* 채팅방 목록 조회 */
     @Query("select cj.chatRoom.id from ChatJoin cj where cj.joinMember.id = :memberId and cj.isExited = false and cj.chatRoom.id in (select distinct cm.chatRoom.id from ChatMessage cm where cm.chatRoom.id = cj.chatRoom.id)")
