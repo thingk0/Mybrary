@@ -3,7 +3,6 @@ package com.mybrary.backend.domain.member.service.impl;
 import com.mybrary.backend.domain.member.service.MailService;
 import com.mybrary.backend.global.exception.email.FailedMessageTransmissionException;
 import com.mybrary.backend.global.exception.email.InvalidAuthCodeException;
-import com.mybrary.backend.global.format.response.ErrorCode;
 import com.mybrary.backend.global.util.CookieUtil;
 import com.mybrary.backend.global.util.RedisUtil;
 import jakarta.mail.MessagingException;
@@ -94,7 +93,7 @@ public class MailServiceImpl implements MailService {
             helper.setText(content, true);
             mailSender.send(message);
         } catch (MessagingException e) {
-            throw new FailedMessageTransmissionException(ErrorCode.EMAIL_SEND_FAILED);
+            throw new FailedMessageTransmissionException();
         }
     }
 
