@@ -3,12 +3,13 @@ package com.mybrary.backend.domain.member.service.impl;
 import com.mybrary.backend.domain.member.service.MailService;
 import com.mybrary.backend.global.exception.email.FailedMessageTransmissionException;
 import com.mybrary.backend.global.exception.email.InvalidAuthCodeException;
-import com.mybrary.backend.global.format.ErrorCode;
+import com.mybrary.backend.global.format.response.ErrorCode;
 import com.mybrary.backend.global.util.CookieUtil;
 import com.mybrary.backend.global.util.RedisUtil;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -28,9 +29,8 @@ public class MailServiceImpl implements MailService {
     @Value("${email.subject}")
     private String subject;
 
-
     @Value("${email.authCode.duration}")
-    private long emailAuthCodeDuration;
+    private int emailAuthCodeDuration;
 
     private final JavaMailSender mailSender;
     private final RedisUtil redisUtil;
@@ -59,12 +59,12 @@ public class MailServiceImpl implements MailService {
      * @return : 인증 번호가 일치하면 true, 그렇지 않으면 false 를 반환
      */
     @Override
-    public boolean confirmAuthCode(String email, String authNum, HttpServletResponse servletResponse) {
-        if (!email.equals(redisUtil.getData(authNum))) {
-            throw new InvalidAuthCodeException(ErrorCode.AUTH_CODE_INVALID);
-        }
+    public boolean confirmAuthCode(String email, String authNum, HttpServletResponse response) {
+        Optional.ofNullable(redisUtil.getData(authNum))
+                .filter(authData -> authData.equals(email))
+                .orElseThrow(InvalidAuthCodeException::new);
         redisUtil.deleteData(authNum);
-        cookieUtil.addCookie("confirmedEmail", email, 300, servletResponse);
+        cookieUtil.addCookie("confirmedEmail", email, emailAuthCodeDuration, response);
         return true;
     }
 
