@@ -50,7 +50,7 @@ function SignUpForm() {
 
   /* 닉네임은 입력하면 닉네임 중복 처리가 초기화되므로 따로 처리 */
   const handleNickNameChange = (e) => {
-    setIsNickNameChecked(false);
+    // setIsNickNameChecked(false);
     handleChange(e);
   };
 
@@ -106,20 +106,20 @@ function SignUpForm() {
     e.preventDefault();
 
     try {
-      const data = await verifyCode(code);
+      const data = await verifyCode(formData.email, code);
       // 일치하면
       if (data.status === "SUCCESS") {
-        setFormErrors((prevFormErrors) => ({
-          ...prevFormErrors,
-          code: "인증번호가 일치하지 않습니다.",
-        }));
-        setIsEmailVerifying(false);
-        setIsEmailVerified(true);
-      } else {
         setFormErrors((prevFormErrors) => {
           const { code, email, ...rest } = prevFormErrors;
           return rest;
         });
+        setIsEmailVerifying(false);
+        setIsEmailVerified(true);
+      } else {
+        setFormErrors((prevFormErrors) => ({
+          ...prevFormErrors,
+          code: "인증번호가 일치하지 않습니다.",
+        }));
       }
     } catch (e) {
       console.log(e);
@@ -218,9 +218,10 @@ function SignUpForm() {
     } else if (!regex.nickname.test(formData.nickname)) {
       errors.nickname =
         "닉네임은 영어, 숫자, 언더바만 사용하여 3~15자 입력해야 합니다.";
-    } else if (!isNickNameChecked) {
-      errors.nickname = "닉네임 중복 검사를 완료해주세요.";
     }
+    // else if (!isNickNameChecked) {
+    //   errors.nickname = "닉네임 중복 검사를 완료해주세요.";
+    // }
 
     return errors;
   };

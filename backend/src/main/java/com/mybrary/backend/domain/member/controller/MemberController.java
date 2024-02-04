@@ -72,7 +72,7 @@ public class MemberController {
     @PostMapping("/email/verification")
     public ResponseEntity<?> emailVerification(@Valid @RequestBody EmailValidationRequestDto requestDto,
                                                BindingResult bindingResult) {
-
+        System.out.println(requestDto.getEmail());
         if (bindingResult.hasErrors()) {
             return response.fail(bindingResult);
         }

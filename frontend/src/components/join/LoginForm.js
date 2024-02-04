@@ -2,8 +2,13 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../api/member/Login";
 import useUserStore from "../../store/useUserStore";
+import useStompStore from "../../store/useStompStore";
+import useNotificationStore from "../../store/useNotificationStore";
 
 function LoginForm() {
+  /* 로그인하고 바로 stompClient 초기화. */
+  const { connect } = useStompStore();
+  const { setNewNotification } = useNotificationStore();
   /* 오류페이지 이동 */
   const navigate = useNavigate();
   const navigateToErrorPage = () => {
@@ -11,6 +16,7 @@ function LoginForm() {
   };
   // 유저상태 전역 관리를 위한 코드
   const setUser = useUserStore((state) => state.setUser);
+  const user = useUserStore((state) => state.user);
 
   /* 상태 */
   const [formData, setFormData] = useState({
@@ -44,12 +50,24 @@ function LoginForm() {
       if (data.status === "SUCCESS") {
         // useStore에 data안에 들어있는 기본 정보들을 저장해라
         await setUser({
-          email: "user1@ssafy.com",
+          email: "dmdkvj369@naver.com",
           memberId: data.memberId,
           nickname: data.nickname,
         });
 
-        //navigate(`/mybrary/${data.memberId}`);
+        async function socketConnect() {
+          try {
+            if (formData.email) {
+              await connect(formData.email, setNewNotification);
+            }
+          } catch (e) {
+            //웹소켓 연결 실패
+            console.log(e);
+          }
+        }
+        await socketConnect();
+
+        navigate(`/mybrary/${data.memberId}`);
         navigate(`/mybrary/userid`);
       } else {
         // 이메일, 비밀번호 불일치

@@ -4,6 +4,7 @@ import com.mybrary.backend.domain.member.dto.MemberInfoDto;
 import com.mybrary.backend.domain.member.entity.Member;
 import com.mybrary.backend.domain.member.service.MemberService;
 import com.mybrary.backend.domain.notification.dto.NotificationGetDto;
+import com.mybrary.backend.domain.notification.dto.TestAlarmDto;
 import com.mybrary.backend.domain.notification.service.NotificationService;
 import com.mybrary.backend.global.format.ApiResponse;
 import com.mybrary.backend.global.format.ResponseCode;
@@ -14,15 +15,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Notification 컨트롤러", description = "Notification Controller API")
 @RestController
@@ -33,6 +32,9 @@ public class NotificationController {
     private final ApiResponse response;
     private final NotificationService notificationService;
     private final MemberService memberService;
+
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
 
     @Operation(summary = "나의 알림 조회", description = "알림 조회")
     @GetMapping
@@ -86,5 +88,19 @@ public class NotificationController {
         notificationService.deleteAllNotification(myId);
         return response.success(ResponseCode.NOTIFICATION_DELETED.getMessage());
     }
+
+
+    @PostMapping("/test")
+    public ResponseEntity<?> testNotification(@Parameter(hidden = true) Authentication authentication,
+                                              @RequestBody TestAlarmDto notification) {
+
+
+        String destination = "/sub/notification/" + notification.getReceiver();
+        messagingTemplate.convertAndSend(destination, notification); // 구독한 주소로 보내는 메서드임
+        return response.success("test");
+    }
+
+
+
 
 }

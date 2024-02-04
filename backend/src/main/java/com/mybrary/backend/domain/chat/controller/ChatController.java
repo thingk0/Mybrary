@@ -5,6 +5,7 @@ import com.mybrary.backend.domain.chat.dto.ChatMessagePostDto;
 import com.mybrary.backend.domain.chat.dto.ChatRoomGetDto;
 import com.mybrary.backend.domain.chat.service.ChatService;
 import com.mybrary.backend.domain.member.dto.MemberInfoDto;
+import com.mybrary.backend.domain.notification.dto.TestAlarmDto;
 import com.mybrary.backend.global.format.ApiResponse;
 import com.mybrary.backend.global.format.ResponseCode;
 import io.swagger.v3.oas.annotations.Operation;
@@ -14,9 +15,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +35,26 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/chat")
 public class ChatController {
+
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
+
+    @PostMapping("/test")
+    public ResponseEntity<?> testNotification(@Parameter(hidden = true) Authentication authentication,
+                                              @RequestBody TestAlarmDto notification) {
+
+
+        //String destination = "/sub/chat/" + notification.getReceiver();
+        String destination = "/sub/chat/user1@ssafy.com";
+        messagingTemplate.convertAndSend(destination, notification); // 구독한 주소로 보내는 메서드임
+        destination = "/sub/notification/user1@ssafy.com";
+        messagingTemplate.convertAndSend(destination, notification); // 구독한 주소로 보내는 메서드임
+        return response.success("test");
+
+
+    }
+
+
 
     private final ApiResponse response;
     private final ChatService chatService;
