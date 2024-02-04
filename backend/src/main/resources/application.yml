@@ -1,0 +1,17 @@
+spring:
+  profiles:
+    active: dev
+    include:
+      - jwt
+      - mail
+
+  jpa:
+    open-in-view: false
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+
+logging:
+  level:
+    org.springframework.boot.autoconfigure.security: ERROR
