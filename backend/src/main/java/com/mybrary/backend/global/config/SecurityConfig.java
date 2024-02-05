@@ -1,5 +1,6 @@
 package com.mybrary.backend.global.config;
 
+import com.mybrary.backend.global.entrypoint.JwtAuthenticationEntryPoint;
 import com.mybrary.backend.global.filter.EmailVerificationFilter;
 import com.mybrary.backend.global.filter.JwtAuthenticationFilter;
 import com.mybrary.backend.global.filter.TokenExceptionFilter;
@@ -23,6 +24,7 @@ import org.springframework.web.cors.CorsConfiguration;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final TokenExceptionFilter tokenExceptionFilter;
     private final EmailVerificationFilter emailVerificationFilter;
@@ -61,7 +63,7 @@ public class SecurityConfig {
                     "/api/v1/member/social",
                     "/api/v1/member/login/**",
                     "/api/v1/member/logout",
-                    "/api/v1/member/nickname",
+                    "/api/v1/member/nickname/**",
                     "/api/v1/member/email/**",
                     "/api/v1/member/password-reset"
                 ).permitAll();
@@ -85,6 +87,10 @@ public class SecurityConfig {
             .addFilterBefore(tokenExceptionFilter,
                              UsernamePasswordAuthenticationFilter.class)
         ;
+
+        security.exceptionHandling(handlingConfigurer -> {
+            handlingConfigurer.authenticationEntryPoint(jwtAuthenticationEntryPoint);
+        });
 
         return security.build();
     }
