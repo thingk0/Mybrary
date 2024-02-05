@@ -26,6 +26,7 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import useUserStore from "../store/useUserStore";
 import useStompStore from "../store/useStompStore";
+import 혜선누나 from "../assets/혜선누나.jpg";
 
 export default function MybraryPage() {
   const navigate = useNavigate();
@@ -138,9 +139,7 @@ export default function MybraryPage() {
 
   return (
     <>
-      <div
-        className={s(`${styles.bg} ${styles[`bg${bgColor}`]}`, styles.fadeIn)}
-      >
+      <div className={s(`${styles.bg} ${styles[`bg${bgColor}`]}`)}>
         <input onKeyDown={sendAlarm}></input>
         <div className={styles.center}>
           <img
@@ -166,6 +165,12 @@ export default function MybraryPage() {
             alt=""
             className={s(styles.frame, !edit && styles.img)}
           />
+          <img
+            src={혜선누나}
+            alt=""
+            className={s(styles.trapezoid, styles.img, styles.traedit)}
+          />
+
           <img
             src={door}
             alt=""
@@ -207,6 +212,7 @@ export default function MybraryPage() {
             </div>
           )}
         </div>
+        {/* <div className={styles.trapezoid}></div> */}
         <div className={s(edit ? styles.active : styles.container)}>
           <div className={styles.profileContainer}>
             <div className={styles.profile}>

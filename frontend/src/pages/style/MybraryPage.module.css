@@ -111,6 +111,42 @@
   left: -30.2vi;
   width: 12vw;
 }
+/* 
+
+
+
+
+
+
+
+*/
+.trapezoid {
+  position: absolute;
+  bottom: 4.6vi;
+  left: -28.67vi;
+  width: 9.23vw;
+  height: 22.399vh; /* 높이 설정 */
+  background-color: blue; /* 배경 색상 설정 */
+  transform: skewY(-30deg); /* 가로 방향만 20도 기울임 */
+}
+.traedit {
+  position: absolute;
+  box-shadow: 0 0 25px 0 #00000036;
+  animation: trafadeIn2 0.7s ease-in-out;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* 
+
+
+
+
+
+
+
+*/
 .door {
   position: absolute;
   bottom: 0vi;
@@ -199,6 +235,23 @@
   }
   100% {
     transform: scale(1);
+  }
+}
+@keyframes trafadeIn2 {
+  0% {
+    transform: skewY(-30deg) scale(0);
+  }
+  20% {
+    transform: skewY(-30deg) scale(1.1);
+  }
+  40% {
+    transform: skewY(-30deg) scale(0.95);
+  }
+  75% {
+    transform: skewY(-30deg) scale(1.02);
+  }
+  100% {
+    transform: skewY(-30deg) scale(1);
   }
 }
 @keyframes trans {

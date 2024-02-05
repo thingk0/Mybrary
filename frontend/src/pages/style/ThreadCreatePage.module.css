@@ -19,7 +19,8 @@
   align-items: center;
 }
 .페이지작성 {
-  font-size: 26px;
+  font-size: 28px;
+  width: 160px;
 }
 .페이지만들기 {
   width: 100%;
@@ -40,6 +41,57 @@
   justify-content: space-between;
   align-items: center;
   width: 93%;
+}
+.페이지버튼모음 {
+  position: relative;
+  display: flex;
+  width: 100%;
+  gap: 20px;
+}
+.페이지삭제버튼 {
+  position: absolute;
+  right: 10px;
+  border: 2px solid rgb(255, 168, 168);
+  background-color: #fff9f6;
+  border-radius: 10px;
+  padding: 8px;
+  color: red;
+}
+.페이지삭제버튼:hover {
+  background-color: #f8b9b2;
+  transition: 0.3s;
+  border: 2px solid rgb(255, 95, 95);
+}
+
+.페이지버튼 {
+  border: 0px;
+  background-color: #bfa6a2;
+  padding: 5px 10px 5px 10px;
+  color: #57423f;
+  border-radius: 3px;
+}
+.새페이지버튼 {
+  border: 2px solid rgb(168, 220, 255);
+  background-color: #fff9f6;
+  border-radius: 10px;
+  padding: 8px;
+  color: rgb(0, 110, 255);
+}
+.새페이지버튼:hover {
+  background-color: #c3ccff;
+  transition: 0.3s;
+  border: 2px solid rgb(69, 87, 245);
+}
+.현재페이지버튼 {
+  /* 강조 스타일 */
+  background-color: #57423f;
+  color: #bfa6a2;
+  border-radius: 3px;
+}
+.페이지버튼:hover {
+  background-color: #e9bab4;
+  color: #57423f;
+  transition: 0.3s;
 }
 .버튼들 {
   display: flex;
@@ -69,6 +121,7 @@
 .페이지만들기미드 {
   display: flex;
   overflow: hidden;
+  align-content: center;
   width: 100%;
   max-width: 100%;
   height: 85vh;
@@ -83,17 +136,18 @@
   justify-content: center;
   align-items: center;
   width: 43%;
-  background-color: #fff9f6;
+  height: 100%;
 }
 .미드왼쪽사이즈조정 {
   width: 95%;
-  height: 100%;
-  /* background-color: rgb(201, 255, 255); */
+  height: 98%;
+  background-color: #fffaf8;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   display: flex;
   gap: 10%;
+  border-radius: 5px;
 }
 .선택된페이지 {
   background-color: rgb(224, 150, 52);
@@ -170,21 +224,29 @@
 .미드중앙사이즈조정 {
   position: relative;
   width: 95%;
-  height: 99%;
-  background-color: #fffafa;
+  height: 98%;
+  /* background-color: #fffafa; */
+  border-radius: 5px;
 }
 .이미지업로드부분 {
   position: absolute;
   top: 95px;
   left: 5px;
-  width: 48%;
-  height: 50%;
+  width: 310px;
+  height: 420px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  /* border: 1px solid black; */
 }
 .이미지업로드버튼 {
+  background-color: #57423f;
+  width: 40px;
+  height: 40px;
+  font-size: 27px;
+  border: 1px solid;
+  color: #ffffff;
 }
 .업로드이미지 {
   position: absolute;
@@ -203,20 +265,106 @@
   /* background-color: rgb(255, 201, 170); */
 }
 .오른쪽크기조정 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   width: 95%;
   height: 95%;
+  gap: 30px;
   /* background-color: rgb(255, 233, 211); */
+}
+/* 
+
+
+
+
+*/
+.searchInput1 {
+  height: 100%;
+  width: 60%;
+  padding: 10px;
+  background-color: #bfa6a2;
+  border: 0px;
+  color: #fff9f6;
+}
+.searchInput2 {
+  height: 100%;
+  width: 60%;
+  padding: 10px;
+  background-color: #f5998f;
+  border: 0px;
+  color: #fff9f6;
+}
+
+.x버튼 {
+  margin-left: 4px;
+  border: 0px;
+  font-size: 12px;
+  padding-bottom: 2px;
+  padding-right: 7px;
+  padding-left: 7px;
+  display: flex;
+  align-items: center;
 }
 .추가된태그들 {
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 10px; /* 필요에 따라 조절 */
+  overflow-y: auto;
+  /* height: 90%; 제거하거나 조정 */
+  align-items: flex-start; /* 아이템들을 컨테이너의 위쪽에 정렬 */
 }
+
+.글자태그 {
+  display: flex;
+  width: auto;
+  align-items: center;
+  background-color: #bfa6a2;
+  margin-top: 5px; /* 상단 마진 조정 */
+  margin-bottom: 5px; /* 하단 마진 조정 */
+  padding-left: 7px;
+  padding-right: 3px;
+  padding-top: 3px;
+  padding-bottom: 2px;
+  /* padding: 2px 4px 0px 4px; 패딩을 간소화 */
+  height: 20px;
+  border-radius: 10px;
+}
+.친구태그 {
+  display: flex;
+  width: auto;
+  align-items: center;
+  background-color: #f5998f;
+  margin-top: 5px; /* 상단 마진 조정 */
+  margin-bottom: 5px; /* 하단 마진 조정 */
+  padding-top: 3px;
+  padding-bottom: 2px;
+  padding-right: 3px;
+  padding-left: 5px;
+  /* padding: 2px 4px 0px 4px; 패딩을 간소화 */
+  height: 20px;
+  border-radius: 10px;
+}
+
 .태그추가부분,
 .친구태그부분,
 .레아수정 {
   width: 100%;
 }
+.레이아웃수정버튼 {
+  width: 45%;
+  border-radius: 10px;
+  border: 0px;
+  padding: 10px;
+  font-size: 18px;
+  background-color: #bfa6a2;
+}
+/* 
 
+
+
+*/
 .미드왼쪽,
 .미드중앙,
 .미드오른쪽 {
@@ -249,6 +397,9 @@
 .태그추가부분,
 .친구태그부분 {
   height: 43%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .태그span {
@@ -265,6 +416,7 @@
   flex-direction: column;
   width: 100%;
   gap: 30px;
+  margin-top: 20px;
 }
 .푸터 {
   display: flex;
@@ -306,9 +458,10 @@
   margin: 0 auto;
 }
 .editorClass {
-  border: solid 1px black;
+  border: 2px solid rgb(110, 110, 110);
   border-radius: 2px;
   position: absolute;
+  padding: 4px 0px 0px 4px;
   top: 100px;
   right: 0px;
   width: 50%;
@@ -318,24 +471,33 @@
   overflow: auto; /* 내용이 넘칠 때만 스크롤바 표시 */
 }
 .editorClass2 {
-  border: solid 1px black;
+  border: 2px solid rgb(110, 110, 110);
   border-radius: 2px;
+  /* padding-top: 5px; */
+  padding-left: 7px;
+  padding-right: 7px;
   position: absolute;
-  top: 510px;
+  top: 520px;
   right: 0px;
-  width: 99%;
+  width: 98%;
   height: auto; /* 높이 자동 조절 */
-  min-height: 300px; /* 최소 높이 설정 */
-  max-height: 300px; /* 최대 높이 설정, 이를 초과하면 스크롤바 표시 */
+  min-height: 270px; /* 최소 높이 설정 */
+  max-height: 270px; /* 최대 높이 설정, 이를 초과하면 스크롤바 표시 */
   overflow: auto; /* 내용이 넘칠 때만 스크롤바 표시 */
 }
 /* 이거는 공용임둘다 이클레스이름임 */
 .toolbarClass {
+  margin: 0;
+  padding: 0;
   position: absolute;
-  height: 90px;
+  height: 75px;
   top: 0px;
   left: 0px;
   right: 0px;
   z-index: 4;
-  background-color: #fffafa;
+  background-color: #fff9f6;
+}
+
+.toolbarClass div {
+  margin: 0px 3px 0px 3px;
 }
