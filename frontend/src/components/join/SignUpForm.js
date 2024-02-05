@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./SignUpForm.module.css";
+import toast from "react-hot-toast";
 
 import {
   checkNickName,
@@ -8,10 +9,8 @@ import {
   verifyCode,
   verifyEmail,
 } from "../../api/member/SignUp";
-//import useStompStore from "../../store/useStompStore";
 
-function SignUpForm() {
-  // const client = useStompStore((state) => state.stompClient);
+function SignUpForm({ setPageremote }) {
   /* 에러페이지 이동 */
   const navigate = useNavigate();
   const navigateToErrorPage = () => {
@@ -26,6 +25,23 @@ function SignUpForm() {
     nickname: /^[a-zA-Z0-9_]{3,15}$/,
   };
 
+  /* 알림 함수 */
+  const showToast = (string) => {
+    toast.success(`${string}`, {
+      style: {
+        border: "1px solid #713200",
+        padding: "16px",
+        color: "#713200",
+        zIndex: "100",
+      },
+      iconTheme: {
+        primary: "#713200",
+        secondary: "#FFFAEE",
+      },
+      position: "top-center",
+    });
+  };
+
   /* useState 상태 */
   const [formData, setFormData] = useState({
     email: "",
@@ -34,12 +50,12 @@ function SignUpForm() {
     name: "",
     nickname: "",
   });
+
   const [formErrors, setFormErrors] = useState({});
-  const [isEmailVerifying, setIsEmailVerifying] = useState(false);
-  const [isEmailVerified, setIsEmailVerified] = useState(false);
-  const [isNickNameChecked, setIsNickNameChecked] = useState(false);
+  const [isEmailVerifying, setIsEmailVerifying] = useState(false); // 이메일 인증 중인 상태
+  const [isEmailVerified, setIsEmailVerified] = useState(false); // 이메일 인증 완료 (해당 조건을 만족해야만, 가입 가능. 인증 하고 나면 인증 버튼이 사라진다)
+  const [isNickNameChecked, setIsNickNameChecked] = useState(false); // 중복검사를 해야만 회원가입 가능
   const [code, setCode] = useState(""); // 이메일인증코드
-  const [isSuccess, setIsSuccess] = useState(false);
 
   /* 값을 입력함과 동시에 form 데이터 동시에 갱신 */
   function handleChange(e) {
@@ -51,7 +67,7 @@ function SignUpForm() {
 
   /* 닉네임은 입력하면 닉네임 중복 처리가 초기화되므로 따로 처리 */
   const handleNickNameChange = (e) => {
-    // setIsNickNameChecked(false);
+    setIsNickNameChecked(false);
     handleChange(e);
   };
 
@@ -63,6 +79,7 @@ function SignUpForm() {
   /* 이메일 인증 버튼 클릭 */
   const handleVerifyEmail = async (e, mail) => {
     e.preventDefault();
+
     //console.log(client);
 
     // 일단 유효성에 대한 검증을 먼저 한 후에, 유효성을 만족하면 검증 요청을 보냄. 응답에 따라 상태를 바꾼다.
@@ -79,15 +96,19 @@ function SignUpForm() {
     } else {
       // 유효성은 검증 됐으므로, 메일 전송.
       // 이메일 전송 코드
+
+      showToast("인증 코드가 전송되었습니다."); // 실제 백엔드 검사 전 미리 출력. (사용자 경험 향상)
+      setIsEmailVerifying(true); // 이메일 인증 중인 상태
+      // 이메일 관련 오류메시지 해제
+      setFormErrors((prevFormErrors) => {
+        const { email, ...rest } = prevFormErrors;
+        return rest;
+      });
+
       try {
         const data = await verifyEmail(formData.email);
         // 데이터는 에러객체이거나, response.data의 값임
         if (data.status === "SUCCESS") {
-          setIsEmailVerifying(true);
-          setFormErrors((prevFormErrors) => {
-            const { email, ...rest } = prevFormErrors;
-            return rest;
-          });
         } else {
           // 백엔드에서의 유효성 검사에서 막힘.
           setFormErrors((prevFormErrors) => ({
@@ -96,9 +117,8 @@ function SignUpForm() {
           }));
         }
       } catch (e) {
-        console.log(e);
+        // 서버통신에러. 에러페이지로 이동
         navigateToErrorPage();
-        // 서버에러. 에러페이지로 이동
       }
     }
   };
@@ -114,6 +134,11 @@ function SignUpForm() {
           const { code, email, ...rest } = prevFormErrors;
           return rest;
         });
+
+        showToast("이메일 인증이 완료 되었습니다.");
+
+        setCode("");
+
         setIsEmailVerifying(false);
         setIsEmailVerified(true);
       } else {
@@ -146,12 +171,14 @@ function SignUpForm() {
         const data = await checkNickName(nname);
         /* 중복이 아닐 경우 */
 
-        if (data.status === "SUCCESS") {
+        if (data.message === "사용 가능한 닉네임입니다") {
           setFormErrors((prevFormErrors) => {
             const { nickname, ...rest } = prevFormErrors;
             return rest;
           });
           setIsNickNameChecked(true);
+
+          showToast("사용 가능한 닉네임입니다.");
         } else {
           /* 중복 닉네임인 경우 */
           setFormErrors((prevFormErrors) => ({
@@ -167,7 +194,7 @@ function SignUpForm() {
   };
 
   // 폼 검사
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault(); // 원래 form 안에서 button 이 가지는 기본 기능을 막음
     const errors = validate(formData);
     if (Object.keys(errors).length === 0) {
@@ -175,8 +202,19 @@ function SignUpForm() {
       // 여기에 폼 제출 로직을 추가하세요.
       // 여기서 회원가입 post 요청을 보내면 된다. 이 요청은 api 폴더에 있기 때문에 import 해온 것을 쓰면 된다.
       try {
-        signup(formData);
-        setIsSuccess(true);
+        const data = await signup(formData);
+        console.log(data.status);
+        if (data.status === "SUCCESS") {
+          showToast("회원가입이 완료되었습니다.");
+          setPageremote((prev) => !prev);
+        } else {
+          setFormErrors((prevFormErrors) => ({
+            ...prevFormErrors,
+            email: "이미 가입된 이메일 입니다.",
+          }));
+          setIsEmailVerifying(false);
+          setIsEmailVerified(false);
+        }
       } catch (e) {
         // 에러 페이지로 이동 또는 signup 메서드 반환값의 message 를 출력 (백엔드에서 보내주는 에러 미시지)
         //signup 에서 에러 처리 돼있으므로 생략함.
@@ -219,10 +257,9 @@ function SignUpForm() {
     } else if (!regex.nickname.test(formData.nickname)) {
       errors.nickname =
         "닉네임은 영어, 숫자, 언더바만 사용하여 3~15자 입력해야 합니다.";
+    } else if (!isNickNameChecked) {
+      errors.nickname = "닉네임 중복 검사를 완료해주세요.";
     }
-    // else if (!isNickNameChecked) {
-    //   errors.nickname = "닉네임 중복 검사를 완료해주세요.";
-    // }
 
     return errors;
   };
@@ -245,7 +282,10 @@ function SignUpForm() {
                   disabled={isEmailVerifying || isEmailVerified}
                 />
                 {!isEmailVerified && (
-                  <button onClick={(e) => handleVerifyEmail(e, formData.email)}>
+                  <button
+                    onClick={(e) => handleVerifyEmail(e, formData.email)}
+                    disabled={isEmailVerifying || isEmailVerified}
+                  >
                     이메일 인증
                   </button>
                 )}
@@ -359,7 +399,6 @@ function SignUpForm() {
             </div>
           </div>
         </form>
-        {isSuccess && <h1>회원가입성공</h1>}
       </div>
     </>
   );
