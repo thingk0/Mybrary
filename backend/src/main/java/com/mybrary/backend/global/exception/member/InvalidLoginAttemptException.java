@@ -9,6 +9,6 @@ public class InvalidLoginAttemptException extends RuntimeException {
     private final ErrorCode errorCode;
 
     public InvalidLoginAttemptException() {
-        this.errorCode = ErrorCode.MEMBER_LOGIN_FAILED;
+        this.errorCode = ErrorCode.LOGIN_FAILED;
     }
 }
