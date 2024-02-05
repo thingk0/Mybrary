@@ -3,8 +3,8 @@ package com.mybrary.backend.domain.book.controller;
 import com.mybrary.backend.domain.book.dto.BookPostDto;
 import com.mybrary.backend.domain.book.dto.BookSubscribeDto;
 import com.mybrary.backend.domain.book.dto.BookUpdateDto;
-import com.mybrary.backend.domain.book.service.BookService;
 import com.mybrary.backend.domain.book.dto.MyBookGetDto;
+import com.mybrary.backend.domain.book.service.BookService;
 import com.mybrary.backend.domain.bookmarker.dto.BookMarkerPostDto;
 import com.mybrary.backend.domain.category.dto.MyCategoryGetDto;
 import com.mybrary.backend.domain.contents.paper.dto.PaperInBookGetDto;
@@ -16,15 +16,21 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "Book 컨트롤러", description = "Book Controller API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/book")
-public class BookControllerV1 {
+public class BookController {
 
     private final ApiResponse response;
     private final BookService bookService;

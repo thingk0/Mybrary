@@ -33,6 +33,10 @@ public class ChatMessage extends BaseEntity {
     private ChatRoom chatRoom;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sender_id")
+    private Member sender;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "receiver_id")
     private Member receiver;
 
@@ -40,8 +44,9 @@ public class ChatMessage extends BaseEntity {
 
     private Long threadId;
 
-    private Long paperId;
-
     private boolean isRead;
 
+    public void setRead(boolean read) {
+        isRead = read;
+    }
 }

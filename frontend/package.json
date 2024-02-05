@@ -1,6 +1,7 @@
 {
   "name": "mybraryfront",
   "version": "0.1.0",
+  "proxy": "http://localhost:8080",
   "private": true,
   "dependencies": {
     "@looop/quill-image-resize-module-react": "^3.1.5",

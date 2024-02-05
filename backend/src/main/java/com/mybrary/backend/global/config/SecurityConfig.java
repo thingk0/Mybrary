@@ -1,11 +1,14 @@
 package com.mybrary.backend.global.config;
 
-import com.mybrary.backend.global.cookie.CookieUtil;
+import com.mybrary.backend.global.filter.EmailVerificationFilter;
 import com.mybrary.backend.global.handler.TokenExceptionFilterHandler;
 import com.mybrary.backend.global.jwt.JwtFilter;
 import com.mybrary.backend.global.jwt.JwtProvider;
 import com.mybrary.backend.global.jwt.repository.RefreshTokenRepository;
+import com.mybrary.backend.global.util.CookieUtil;
+import java.util.Collections;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -15,6 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
 
 @Configuration
 @EnableWebSecurity
@@ -25,6 +29,10 @@ public class SecurityConfig {
     private final CookieUtil cookieUtil;
     private final RefreshTokenRepository refreshTokenRepository;
     private final TokenExceptionFilterHandler tokenExceptionFilterHandler;
+    private final EmailVerificationFilter emailVerificationFilter;
+
+    @Value("${cors.allowed.origin}")
+    private String CORS_ALLOWED_URL;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -37,10 +45,20 @@ public class SecurityConfig {
         security
             .httpBasic(basic -> basic.disable())
             .csrf(csrf -> csrf.disable())
-            .cors(cors -> cors.disable());
+            .cors(cors -> cors.configurationSource(request -> {
+                CorsConfiguration config = new CorsConfiguration();
+                config.setAllowedOrigins(Collections.singletonList(CORS_ALLOWED_URL));
+                config.setAllowedMethods(Collections.singletonList("*"));
+                config.setAllowedHeaders(Collections.singletonList("*"));
+                config.setAllowCredentials(true);
+                config.setMaxAge(3600L);
+                return config;
+            }));
 
         security
-            .authorizeHttpRequests((authorize -> {
+            .authorizeHttpRequests((authorize ->
+
+            {
                 authorize.requestMatchers(
                     "/api-docs/**",
                     "/v2/api-docs/**",
@@ -61,17 +79,25 @@ public class SecurityConfig {
                 authorize.anyRequest().authenticated();
             }));
 
+        security
+            .sessionManagement(sessionManager ->
+
+                               {
+                                   sessionManager.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                               });
 
         security
-            .sessionManagement(sessionManager -> {
-                sessionManager.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-            });
-
-        security
-            .addFilterBefore(tokenExceptionFilterHandler,
+            .addFilterBefore(emailVerificationFilter,
                              UsernamePasswordAuthenticationFilter.class)
-            .addFilterBefore(new JwtFilter(jwtProvider, cookieUtil, refreshTokenRepository),
-                             UsernamePasswordAuthenticationFilter.class);
+                .
+
+            addFilterBefore(tokenExceptionFilterHandler,
+                            UsernamePasswordAuthenticationFilter.class)
+                .
+
+            addFilterBefore(new JwtFilter(jwtProvider, cookieUtil, refreshTokenRepository),
+
+                            UsernamePasswordAuthenticationFilter.class);
 
         return security.build();
     }

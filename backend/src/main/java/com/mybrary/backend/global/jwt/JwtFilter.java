@@ -1,6 +1,6 @@
 package com.mybrary.backend.global.jwt;
 
-import com.mybrary.backend.global.cookie.CookieUtil;
+import com.mybrary.backend.global.util.CookieUtil;
 import com.mybrary.backend.global.exception.jwt.RefreshTokenNotFoundException;
 import com.mybrary.backend.global.exception.jwt.UnauthorizedAccessException;
 import com.mybrary.backend.global.format.ErrorCode;

@@ -2,9 +2,9 @@ spring:
   profiles:
     active: dev
     include:
-      - db
-      - redis
       - jwt
+      - mail
+      - aws
 
   jpa:
     open-in-view: false

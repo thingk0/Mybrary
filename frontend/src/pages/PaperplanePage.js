@@ -3,13 +3,33 @@ import styles from "./style/PaperplanePage.module.css";
 import 예시이미지2 from "../assets/예시이미지2.png";
 import 이미지예시 from "../assets/이미지예시.png";
 import 종이비행기 from "../assets/종이비행기.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import useStompStore from "../store/useStompStore";
+import useUserStore from "../store/useUserStore";
 
 export default function PaperplanePage() {
   // const [chatRoomList, setChatRoomList] = useState([]);
+  // 현재 내가 보고 있는 채팅방의 아이디
   const [chatRoomId, setChatRoomId] = useState();
 
   // const chatRoomId = "room123"; // 채팅방 ID
+
+  /* 웹소켓: 채팅용 주소를 구독 */
+  const stompClient = useStompStore((state) => state.stompClient);
+  const user = useUserStore((state) => state.user);
+
+  useEffect(() => {
+    console.log(stompClient);
+    console.log("hi");
+    if (stompClient) {
+      stompClient.subscribe(`/sub/chat/${user.email}`, (message) => {
+        console.log("구독됐나요?");
+        const receivedData = JSON.parse(message.body);
+        console.log(receivedData.sender);
+      });
+    }
+  }, [stompClient]);
+
   const chatRoomList = [
     {
       chatRoomId: "room1",
@@ -107,6 +127,32 @@ export default function PaperplanePage() {
     // 다른 메시지들...
   ];
 
+  const sendMsg = async (e) => {
+    e.preventDefault();
+    if (e.key === "Enter") {
+      console.log(e.target.value);
+
+      // 여기에 알람 전송 요청 코드 작성
+      try {
+        const msg = {
+          sender: user.email,
+          receiver: user.email,
+        };
+
+        const data = await fetch("/api/v1/chat/test", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(msg),
+        });
+      } catch (error) {
+        console.log(error);
+        throw error;
+      }
+    }
+  };
+
   return (
     <>
       <Container backgroundColor={"#FFFAFA"}>
@@ -133,6 +179,7 @@ export default function PaperplanePage() {
                   </form>
                 </>
               </div>
+              <input onKeyDown={sendMsg}></input>
               <div className={styles.users}>
                 {chatRoomList.length > 0 ? (
                   chatRoomList.map((list) => (

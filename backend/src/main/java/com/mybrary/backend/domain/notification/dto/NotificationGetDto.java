@@ -20,7 +20,7 @@ public class NotificationGetDto {
      */
 
     private Long notifyId;
-    private MemberInfoDto receiver;
+    private MemberInfoDto sender;
     private int notifyType;
     private Long bookId;
     private String bookName;

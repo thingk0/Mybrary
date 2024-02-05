@@ -8,7 +8,6 @@ import com.mybrary.backend.domain.contents.thread.dto.ThreadGetDto;
 import com.mybrary.backend.domain.contents.thread.dto.ThreadPostDto;
 import com.mybrary.backend.domain.contents.thread.dto.ThreadUpdateDto;
 import com.mybrary.backend.domain.contents.thread.service.ThreadService;
-import com.mybrary.backend.domain.contents.thread.service.impl.ThreadServiceImpl;
 import com.mybrary.backend.domain.member.dto.MemberGetDto;
 import com.mybrary.backend.domain.member.dto.MemberInfoDto;
 import com.mybrary.backend.global.format.ApiResponse;
@@ -18,11 +17,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,7 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/thread")
-public class ThreadControllerV1 {
+public class ThreadController {
 
     private final ApiResponse response;
     private final ThreadService threadService;

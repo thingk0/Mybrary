@@ -1,3 +1,5 @@
+import java.text.SimpleDateFormat
+
 buildscript {
     ext {
         queryDslVersion = "5.0.0"
@@ -76,9 +78,31 @@ dependencies {
     }
     // WebSocket
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
+    // Email
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
 }
 
 def generated = 'src/main/generated'
+
+def getCurrentDateTime() {
+    return new SimpleDateFormat("yyyyMMddHHmmss").format(new Date())
+}
+
+bootJar {
+    archiveBaseName = 'mybrary-app'
+    archiveVersion = ''
+    archiveExtension = 'jar'
+}
+
+tasks.named('bootJar') {
+    doFirst {
+        def existingJar = file("${buildDir}/libs/mybrary-app.jar")
+        if (existingJar.exists()) {
+            def newFileName = "mybrary-app-${getCurrentDateTime()}.jar"
+            existingJar.renameTo(file("${buildDir}/libs/${newFileName}"))
+        }
+    }
+}
 
 tasks.withType(JavaCompile) {
     options.getGeneratedSourceOutputDirectory().set(file(generated))

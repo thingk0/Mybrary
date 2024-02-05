@@ -1,6 +1,5 @@
 //로그인요청
 export async function login(user) {
-  /*
   try {
     const response = await fetch("/api/v1/member/login", {
       method: "POST",
@@ -13,16 +12,12 @@ export async function login(user) {
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
-    
+
     const data = await response.json();
+    console.log(data);
     return data;
   } catch (error) {
     console.log(error);
     throw error;
-  }*/
-  const data = {
-    status: "SUCCESS",
-    email: user.email,
-  };
-  return data;
+  }
 }

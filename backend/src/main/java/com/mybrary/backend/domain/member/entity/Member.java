@@ -80,6 +80,8 @@ public class Member extends BaseEntity {
                      .build();
     }
 
+    public void updatePassword(String password) { this.password = password; }
+
     public void uploadProfileImage(Image profileImage) {
         this.profileImage = profileImage;
     }
@@ -91,6 +93,10 @@ public class Member extends BaseEntity {
     public void updateIntro(String intro) {
         this.intro = intro;
     }
+
+    public void updateIsProfilePublic(boolean isProfilePublic) { this.isProfilePublic = isProfilePublic; }
+
+    public void updateIsNotifyEnable(boolean isNotifyEnabled) { this.isNotifyEnabled = isNotifyEnabled; }
 
 
     /**

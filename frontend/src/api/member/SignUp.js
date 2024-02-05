@@ -1,3 +1,5 @@
+import { json } from "react-router-dom";
+
 // 일반 회원가입
 export async function signup(user) {
   try {
@@ -22,16 +24,19 @@ export async function signup(user) {
 }
 
 // 이메일 인증 요청
-export async function verifyEmail(email) {
+export async function verifyEmail(emailString) {
   try {
-    const response = await fetch("api/v1/member/email/verification", {
+    const jsonEmail = JSON.stringify({
+      email: emailString,
+    });
+    const response = await fetch("/api/v1/member/email/verification", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: email,
+      body: jsonEmail,
     });
-
+    console.log(response);
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
@@ -45,14 +50,21 @@ export async function verifyEmail(email) {
 }
 
 // 인증번호 검사
-export async function verifyCode(code) {
+export async function verifyCode(email, code) {
   try {
+    const jsonData = JSON.stringify({
+      email: email,
+      authNum: code,
+    });
+
+    console.log(jsonData);
+
     const response = await fetch("/api/v1/member/email/verify", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: code,
+      body: jsonData,
     });
 
     if (!response.ok) {
