@@ -29,6 +29,8 @@ public enum ResponseCode {
     EMAIL_VERIFICATION_SENT(HttpStatus.OK, "이메일 인증코드가 성공적으로 발송되었습니다."),
     EMAIL_VERIFIED_SUCCESS(HttpStatus.OK, "이메일이 성공적으로 인증되었습니다."),
     EMAIL_VERIFICATION_REQUEST_SUCCESS(HttpStatus.OK, "이메일 인증요청이 성공적으로 처리되었습니다."),
+    NICKNAME_AVAILABLE(HttpStatus.OK, "사용 가능한 닉네임입니다"),
+    DUPLICATE_NICKNAME(HttpStatus.OK, "중복된 닉네임입니다"),
 
 
     /* 책(Book) */
