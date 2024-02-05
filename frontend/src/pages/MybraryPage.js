@@ -161,16 +161,10 @@ export default function MybraryPage() {
             className={s(styles.easel, !edit && styles.img)}
             onClick={() => !edit && navigate("rollingpaper")}
           />
-          <img
-            src={frame}
-            alt=""
-            className={s(styles.frame, !edit && styles.img)}
-          />
-          <img
-            src={혜선누나}
-            alt=""
-            className={s(styles.trapezoid, styles.img, styles.traedit)}
-          />
+          <div className={s(styles.frame, !edit && styles.img)}>
+            <img src={혜선누나} alt="" className={styles.trapezoid} />
+            <img src={frame} alt="" className={styles.frameimg} />
+          </div>
 
           <img
             src={door}
