@@ -18,6 +18,7 @@ import SearchResultPage1 from "./pages/SearchResultPage1";
 import SearchResultPage2 from "./pages/SearchResultPage2";
 import BookDetailPage from "./pages/BookDetailPage";
 import ErrorPage from "./pages/ErrorPage";
+import ThreadUpdatePage from "./pages/ThreadUpdatePage";
 
 function Main() {
   return (
@@ -54,6 +55,7 @@ function Main() {
             </Route>
           </Route>
           <Route path="threadCreate" element={<ThreadCreatePage />} />
+          <Route path="threadUpdate" element={<ThreadUpdatePage />} />
           <Route path="account" element={<SettingPage />} />
         </Route>
       </Routes>
