@@ -144,7 +144,7 @@ function SignUpForm({ setPageremote }) {
       } else {
         setFormErrors((prevFormErrors) => ({
           ...prevFormErrors,
-          code: "인증번호가 일치하지 않습니다.",
+          code: "인증번호가 일치하지 않거나, 인증 시간이 만료되었습니다.",
         }));
       }
     } catch (e) {
