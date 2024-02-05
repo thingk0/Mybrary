@@ -1,8 +1,8 @@
 {
   "name": "mybraryfront",
   "version": "0.1.0",
-  "proxy": "http://localhost:8080",
   "private": true,
+  "proxy": "http://thingk0.duckdns.org:8080/",
   "dependencies": {
     "@looop/quill-image-resize-module-react": "^3.1.5",
     "@stomp/stompjs": "^7.0.0",

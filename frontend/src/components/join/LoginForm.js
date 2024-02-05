@@ -49,8 +49,10 @@ function LoginForm() {
       const data = await login(formData);
       if (data.status === "SUCCESS") {
         // useStore에 data안에 들어있는 기본 정보들을 저장해라
+        localStorage.setItem("accessToken", data.data);
+        localStorage.setItem("tokenTimestamp", Date.now());
         await setUser({
-          email: "dmdkvj369@naver.com",
+          email: formData.email,
           memberId: data.memberId,
           nickname: data.nickname,
         });
@@ -118,12 +120,12 @@ function LoginForm() {
                 로그인
               </button>
             </div>
+            {isLoginFail && (
+              <span className={styles.에러메시지}>
+                아이디와 비밀번호를 확인해주세요.
+              </span>
+            )}
           </form>
-          {isLoginFail && (
-            <span className={styles.에러메시지}>
-              아이디와 비밀번호를 확인해주세요.
-            </span>
-          )}
         </div>
       </div>
     </>

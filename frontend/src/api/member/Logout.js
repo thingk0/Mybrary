@@ -1,19 +1,11 @@
-//로그아웃요청
+import axios from "axios";
+
 export async function doLogout() {
   try {
-    const response = await fetch("/api/v1/member/logout", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await axios.post("/api/v1/member/logout");
 
-    console.log(response.ok);
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
+    return response.data;
   } catch (error) {
-    console.log(error);
     throw error;
   }
 }

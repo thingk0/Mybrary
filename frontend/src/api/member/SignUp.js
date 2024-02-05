@@ -1,5 +1,5 @@
 import axios from "axios";
-const BASE_URL = "http://thingk0.duckdns.org:8080";
+// const BASE_URL = "http://thingk0.duckdns.org:8080"; proxy 설정 해놔서 안해도 됨.
 
 // 일반 회원가입
 
