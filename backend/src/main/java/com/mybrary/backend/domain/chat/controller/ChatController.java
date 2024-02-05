@@ -4,7 +4,10 @@ import com.mybrary.backend.domain.chat.dto.ChatMessageGetDto;
 import com.mybrary.backend.domain.chat.dto.ChatMessagePostDto;
 import com.mybrary.backend.domain.chat.dto.ChatRoomGetDto;
 import com.mybrary.backend.domain.chat.service.ChatService;
+import com.mybrary.backend.domain.contents.paper.dto.PaperShareDto;
 import com.mybrary.backend.domain.member.dto.MemberInfoDto;
+import com.mybrary.backend.domain.member.entity.Member;
+import com.mybrary.backend.domain.member.service.MemberService;
 import com.mybrary.backend.global.format.code.ApiResponse;
 import com.mybrary.backend.global.format.response.ResponseCode;
 import io.swagger.v3.oas.annotations.Operation;
@@ -35,6 +38,7 @@ public class ChatController {
 
     private final ApiResponse response;
     private final ChatService chatService;
+    private final MemberService memberService;
 
     @Operation(summary = "채팅방 리스트 조회", description = "자신의 채팅방 리스트 조회")
     @GetMapping
@@ -57,7 +61,9 @@ public class ChatController {
         list.add(chatRoom3);
         list.add(chatRoom4);
 
-        List<ChatRoomGetDto> result = chatService.getAllChatRoom(authentication);
+        Member me = memberService.findMember(authentication.getName());
+        Long myId = me.getId();
+        List<ChatRoomGetDto> result = chatService.getAllChatRoom(myId);
 
         return response.success(ResponseCode.CHATROOM_LIST_FETCHED, result);
     }
@@ -67,6 +73,9 @@ public class ChatController {
     public ResponseEntity<?> deleteChatRoom(@Parameter(hidden = true) Authentication authentication,
                                             @PathVariable(name = "id") Long chatRoomId) {
 
+        Member me = memberService.findMember(authentication.getName());
+        Long myId = me.getId();
+        chatService.deleteChatRoom(myId, chatRoomId);
         return response.success(ResponseCode.CHATROOM_EXITED, chatRoomId);
     }
 
@@ -98,7 +107,9 @@ public class ChatController {
         list.add(message4);
         list.add(message5);
 
-        List<ChatMessageGetDto> result = chatService.getAllChatByChatRoomId(authentication,
+        Member me = memberService.findMember(authentication.getName());
+        Long myId = me.getId();
+        List<ChatMessageGetDto> result = chatService.getAllChatByChatRoomId(myId,
                                                                             chatRoomId, page);
 
         HashMap<String, Object> map = new HashMap<>();
@@ -135,8 +146,9 @@ public class ChatController {
         list.add(message5);
 
         List<ChatMessageGetDto> emptyList = new ArrayList<>();
-
-        List<ChatMessageGetDto> result = chatService.getAllChatByMemberId(authentication, memberId, page);
+        Member me = memberService.findMember(authentication.getName());
+        Long myId = me.getId();
+        List<ChatMessageGetDto> result = chatService.getAllChatByMemberId(myId, memberId, page);
 
         HashMap<String, Object> map = new HashMap<>();
         map.put("chatMessageList", result);
@@ -150,9 +162,10 @@ public class ChatController {
     public ResponseEntity<?> createChat(@Parameter(hidden = true) Authentication authentication,
                                         @PathVariable("id") Long chatRoomId,
                                         @RequestBody ChatMessagePostDto message) {
-
         // TODO: 기존 코드에 @PathVariable("id") Long chatRoomId 이 빠져있었음. 해당 파라미터도 포함해서 로직 완성 !
-        chatService.createChat(authentication, message);
+        Member me = memberService.findMember(authentication.getName());
+        Long myId = me.getId();
+        chatService.createChat(myId, message);
         return response.success(ResponseCode.CHAT_MESSAGE_SENT);
     }
 

@@ -24,4 +24,6 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long>, ChatR
     @Query("select count(*) from ChatMessage cm where cm.chatRoom.id = :chatRoomId")
     int countNotReadMessage(@Param("chatRoomId") Long chatRoomId);
 
+    @Query("select cr from ChatRoom cr inner join ChatJoin cj1 on cr.id = cj1.chatRoom.id inner join ChatJoin cj2 on cj1.chatRoom.id = cj2.chatRoom.id where cj1.joinMember.id = :myId and cj2.joinMember.id = :memberId")
+    ChatRoom findChatRoom(@Param("myId") Long myId, @Param("memberId") Long receiverId);
 }

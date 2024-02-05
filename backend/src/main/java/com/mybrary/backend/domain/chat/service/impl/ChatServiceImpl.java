@@ -31,17 +31,14 @@ public class ChatServiceImpl implements ChatService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<ChatRoomGetDto> getAllChatRoom(Authentication authentication) {
-        // 로그인한 회원 정보
-        Member me = memberService.findMember(authentication.getName());
-        Long myId = me.getId();
+    public List<ChatRoomGetDto> getAllChatRoom(Long myId) {
 
         // 채팅방 리스트 담을 변수
         List<ChatRoomGetDto> list = new ArrayList<>();
 
         // 1. 채팅방 Id 리스트 (채팅방 나가기 했거나 채팅메세지가 하나도 없는 채팅방은 가져오지 X)
         //                                     => 마이브러리에서 pipi 누른다음에 메세지 안보내고 그냥 채팅방을 나온 경우
-        List<Long> chatRoomIdList = chatRoomRepository.chatRoomIdList(me.getId());
+        List<Long> chatRoomIdList = chatRoomRepository.chatRoomIdList(myId);
 
         // 채팅방 리스트만큼 반복
         for (int i = 0; i < chatRoomIdList.size(); i++) {
@@ -73,11 +70,7 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
-    public void deleteChatRoom(Authentication authentication, Long chatRoomId) {
-        // 로그인한 회원 정보
-        Member me = memberService.findMember(authentication.getName());
-        Long myId = me.getId();
-
+    public void deleteChatRoom(Long myId, Long chatRoomId) {
         // 회원Id와 채팅방Id로 채팅참여 조회
         ChatJoin chatJoin = chatJoinRepository.findByChatJoin(myId, chatRoomId);
         // 나감여부 수정
@@ -86,11 +79,8 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
-    public List<ChatMessageGetDto> getAllChatByChatRoomId(Authentication authentication,
+    public List<ChatMessageGetDto> getAllChatByChatRoomId(Long myId,
                                                           Long chatRoomId, Pageable page) {
-        // 로그인한 회원 정보
-        Member me = memberService.findMember(authentication.getName());
-        Long myId = me.getId();
 
         // 채팅 리스트 담을 변수
         List<ChatMessageGetDto> chatMessageList = new ArrayList<>();
@@ -127,12 +117,8 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
-    public List<ChatMessageGetDto> getAllChatByMemberId(Authentication authentication,
+    public List<ChatMessageGetDto> getAllChatByMemberId(Long myId,
                                                         Long memberId, Pageable page) {
-        // 로그인한 회원 정보
-        Member me = memberService.findMember(authentication.getName());
-        Long myId = me.getId();
-
         // 1. 나와 상대방이 있는 채팅방이 존재하는지 (= 상대방과 한번이라도 채팅을 한적이 있는지)
         ChatJoin chatJoin = chatMessageRepository.isExistChatRoom(myId, memberId);
         if (chatJoin != null) {
@@ -145,7 +131,7 @@ public class ChatServiceImpl implements ChatService {
             Long chatRoomId = chatJoin.getChatRoom().getId();
 
             // 위의 메서드를 사용해서 채팅 리스트 구하기
-            return getAllChatByChatRoomId(authentication, chatRoomId, page);
+            return getAllChatByChatRoomId(myId, chatRoomId, page);
         } else {
             System.out.println("존재안함");
 
@@ -158,6 +144,7 @@ public class ChatServiceImpl implements ChatService {
 
             // 4. 채팅참여 테이블에 나랑 상대방을 참여자로 하는 데이터 2개 생성하기
             // 4-1. 참여자 = 나
+            Member me = memberRepository.findById(myId).get();
             ChatJoin chatJoin1 = new ChatJoin(1L, me, chatRoom, false);
             // 4-2. 참여자 = 상대방
             Member other = memberRepository.findById(memberId).get();
@@ -166,22 +153,51 @@ public class ChatServiceImpl implements ChatService {
             chatJoinRepository.save(chatJoin2);
 
             // 위의 메서드를 사용해서 채팅 리스트 구하기 (= 사실상 메세지는 없는 채팅 리스트)
-            return getAllChatByChatRoomId(authentication, chatRoomId, page);
+            return getAllChatByChatRoomId(myId, chatRoomId, page);
         }
 
     }
 
     @Override
-    public void createChat(Authentication authentication, ChatMessagePostDto message) {
-        // 로그인한 회원 정보
-        Member me = memberService.findMember(authentication.getName());
-        Long myId = me.getId();
+    public void createChat(Long myId, ChatMessagePostDto message) {
 
         ChatRoom chatRoom = chatRoomRepository.findById(message.getChatRoomId()).get();
+        Member me = memberRepository.findById(myId).get();
         Member receiver = memberRepository.findById(message.getReceiverId()).get();
 
         ChatMessage newMessage = ChatMessage.builder()
+                                            .chatRoom(chatRoom)
                                             .sender(me).receiver(receiver).message(message.getMessage())
+                                            .threadId(null).isRead(false).build();
+
+        ChatMessage savedMessage = chatMessageRepository.save(newMessage);
+
+    }
+
+    @Override
+    public void threadShare(Long myId, ChatMessagePostDto message) {
+
+        ChatRoom chatRoom;
+
+        // 채팅방id 없을 때
+        if (message.getChatRoomId() == null) {
+            chatRoom = chatRoomRepository.findChatRoom(myId, message.getReceiverId());
+            // 둘이 함께한 채팅방이 없을 때
+            if (chatRoom == null) {
+                // 새로운 채팅방 생성
+                chatRoom = ChatRoom.builder().build();
+                chatRoomRepository.save(chatRoom);
+            }
+        } else {
+            chatRoom = chatRoomRepository.findById(message.getChatRoomId()).get();
+        }
+
+        Member me = memberRepository.findById(myId).get();
+        Member receiver = memberRepository.findById(message.getReceiverId()).get();
+
+        ChatMessage newMessage = ChatMessage.builder()
+                                            .chatRoom(chatRoom)
+                                            .sender(me).receiver(receiver).message(null)
                                             .threadId(message.getThreadId()).isRead(false).build();
 
         ChatMessage savedMessage = chatMessageRepository.save(newMessage);

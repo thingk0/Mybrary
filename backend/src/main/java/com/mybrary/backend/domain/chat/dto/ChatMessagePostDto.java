@@ -16,7 +16,7 @@ public class ChatMessagePostDto {
 
     /**
      *  채팅 보낼 때 요청
-     *  message or threadId(paperId) 둘 중 하나만 데이터 있고 나머지는 null
+     *  message
      */
 
     private Long chatRoomId;

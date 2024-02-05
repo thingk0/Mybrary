@@ -9,14 +9,16 @@ import org.springframework.security.core.Authentication;
 
 public interface ChatService {
 
-    List<ChatRoomGetDto> getAllChatRoom(Authentication authentication);
+    List<ChatRoomGetDto> getAllChatRoom(Long myId);
 
-    void deleteChatRoom(Authentication authentication, Long chatRoomId);
+    void deleteChatRoom(Long myId, Long chatRoomId);
 
-    List<ChatMessageGetDto> getAllChatByChatRoomId(Authentication authentication, Long chatRoomId, Pageable page);
+    List<ChatMessageGetDto> getAllChatByChatRoomId(Long myId, Long chatRoomId, Pageable page);
 
-    List<ChatMessageGetDto> getAllChatByMemberId(Authentication authentication, Long memberId, Pageable page);
+    List<ChatMessageGetDto> getAllChatByMemberId(Long myId, Long memberId, Pageable page);
 
-    void createChat(Authentication authentication, ChatMessagePostDto message);
+    void createChat(Long myId, ChatMessagePostDto message);
+
+    void threadShare(Long myId, ChatMessagePostDto message);
 
 }
