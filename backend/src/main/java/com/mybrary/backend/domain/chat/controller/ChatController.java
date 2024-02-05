@@ -59,7 +59,7 @@ public class ChatController {
 
         List<ChatRoomGetDto> result = chatService.getAllChatRoom(authentication);
 
-        return response.success(ResponseCode.CHATROOM_LIST_FETCHED.getMessage(), result);
+        return response.success(ResponseCode.CHATROOM_LIST_FETCHED, result);
     }
 
     @Operation(summary = "채팅방 나가기", description = "채팅방 나가기 (채팅참여 삭제처리)")
@@ -67,7 +67,7 @@ public class ChatController {
     public ResponseEntity<?> deleteChatRoom(@Parameter(hidden = true) Authentication authentication,
                                             @PathVariable(name = "id") Long chatRoomId) {
 
-        return response.success(ResponseCode.CHATROOM_EXITED.getMessage(), chatRoomId);
+        return response.success(ResponseCode.CHATROOM_EXITED, chatRoomId);
     }
 
     @Operation(summary = "채팅방의 메세지 리스트 조회", description = "채팅방의 메세지 리스트 조회")
@@ -105,7 +105,7 @@ public class ChatController {
         map.put("chatMessageList", result);
         map.put("page", page);
 
-        return response.success(ResponseCode.CHAT_MESSAGES_FETCHED.getMessage(), map);
+        return response.success(ResponseCode.CHAT_MESSAGES_FETCHED, map);
     }
 
     @Operation(summary = "회원정보에서 채팅 시작", description = "한번도 안했으면 리스트가 비어있고, 아니면 리스트가 있음")
@@ -142,7 +142,7 @@ public class ChatController {
         map.put("chatMessageList", result);
         map.put("page", page);
 
-        return response.success(ResponseCode.CHATROOM_ENTERED.getMessage(), map);
+        return response.success(ResponseCode.CHATROOM_ENTERED, map);
     }
 
     @Operation(summary = "채팅 메세지 보내기", description = "채팅 메세지 보내기")
@@ -153,7 +153,7 @@ public class ChatController {
 
         // TODO: 기존 코드에 @PathVariable("id") Long chatRoomId 이 빠져있었음. 해당 파라미터도 포함해서 로직 완성 !
         chatService.createChat(authentication, message);
-        return response.success(ResponseCode.CHAT_MESSAGE_SENT.getMessage());
+        return response.success(ResponseCode.CHAT_MESSAGE_SENT);
     }
 
 }

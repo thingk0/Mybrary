@@ -80,28 +80,28 @@ public class ThreadController {
 
         HomeThreadGetDto thread = new HomeThreadGetDto(1L, member1, true, false, paperList);
 
-        return response.success(ResponseCode.THREAD_FETCHED.getMessage(), thread);
+        return response.success(ResponseCode.THREAD_FETCHED, thread);
     }
 
     @Operation(summary = "쓰레드 생성", description = "쓰레드 생성")
     @PostMapping
     public ResponseEntity<?> createThread(@RequestBody ThreadPostDto threads) {
 
-        return response.success(ResponseCode.THREAD_CREATED.getMessage(), threads.getBookId());
+        return response.success(ResponseCode.THREAD_CREATED, threads.getBookId());
     }
 
     @Operation(summary = "쓰레드 수정", description = "쓰레드 수정")
     @PutMapping
     public ResponseEntity<?> updateThread(@RequestBody ThreadUpdateDto threads) {
 
-        return response.success(ResponseCode.THREAD_UPDATED.getMessage(), threads.getThreadId());
+        return response.success(ResponseCode.THREAD_UPDATED, threads.getThreadId());
     }
 
     @Operation(summary = "쓰레드 삭제", description = "쓰레드 아이디를 통한 쓰레드 삭제")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteThread(@PathVariable(name = "id") Long threadId) {
 
-        return response.success(ResponseCode.THREAD_DELETED.getMessage(), threadId);
+        return response.success(ResponseCode.THREAD_DELETED, threadId);
     }
 
     @Operation(summary = "메인홈 쓰레드 조회", description = "메인홈에서의 쓰레드 목록 조회")
@@ -164,7 +164,7 @@ public class ThreadController {
         map.put("threadList", list);
         map.put("page", page);
 
-        return response.success(ResponseCode.MAIN_THREAD_LIST_FETCHED.getMessage(), map);
+        return response.success(ResponseCode.MAIN_THREAD_LIST_FETCHED, map);
     }
 
     @Operation(summary = "나의 쓰레드 조회", description = "나의 마이브러리 책상에서의 쓰레드 목록 조회")
@@ -228,7 +228,7 @@ public class ThreadController {
         map.put("threadList", list);
         map.put("page", page);
 
-        return response.success(ResponseCode.MY_THREAD_LIST_FETCHED.getMessage(), map);
+        return response.success(ResponseCode.MY_THREAD_LIST_FETCHED, map);
     }
 
     @Operation(summary = "특정 회원의 쓰레드 조회", description = "회원 아이디를 통한 특정 회원의 마이브러리 책상에서의 쓰레드 목록 조회")
@@ -291,7 +291,7 @@ public class ThreadController {
         map.put("threadList", list);
         map.put("page", page);
 
-        return response.success(ResponseCode.OTHER_MEMBER_THREAD_LIST_FETCHED.getMessage(), map);
+        return response.success(ResponseCode.OTHER_MEMBER_THREAD_LIST_FETCHED, map);
     }
 
 

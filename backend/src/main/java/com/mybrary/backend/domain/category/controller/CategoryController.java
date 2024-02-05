@@ -49,7 +49,7 @@ public class CategoryController {
         list.add(category3);
         list.add(category4);
 
-        return response.success(ResponseCode.CATEGORIES_FETCHED.getMessage(), list);
+        return response.success(ResponseCode.CATEGORIES_FETCHED, list);
     }
 
     @Operation(summary = "카테고리 책 리스트 조회", description = "카테고리 아이디를 통한 책 목록 조회")
@@ -72,28 +72,28 @@ public class CategoryController {
         list.add(book3);
         list.add(book4);
 
-        return response.success(ResponseCode.CATEGORY_BOOKS_FETCHED.getMessage(), list);
+        return response.success(ResponseCode.CATEGORY_BOOKS_FETCHED, list);
     }
 
     @Operation(summary = "카테고리 생성", description = "카테고리 생성")
     @PostMapping
     public ResponseEntity<?> createCategory(@RequestBody CategoryPostDto category) {
 
-        return response.success(ResponseCode.CATEGORY_CREATED.getMessage(), category.getName());
+        return response.success(ResponseCode.CATEGORY_CREATED, category.getName());
     }
 
     @Operation(summary = "카테고리 수정", description = "카테고리 관련 정보 수정")
     @PutMapping
     public ResponseEntity<?> updateCategory(@RequestBody CategoryUpdateDto category) {
 
-        return response.success(ResponseCode.CATEGORY_UPDATED.getMessage(), category.getBookShelfId());
+        return response.success(ResponseCode.CATEGORY_UPDATED, category.getBookShelfId());
     }
 
     @Operation(summary = "카테고리 삭제", description = "카테고리 아이디를 통한 카테고리 삭제")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteCategory(@PathVariable(name = "id") Long categoryId) {
 
-        return response.success(ResponseCode.CATEGORY_DELETED.getMessage(), categoryId);
+        return response.success(ResponseCode.CATEGORY_DELETED, categoryId);
     }
 
 

@@ -63,7 +63,7 @@ public class BookController {
         list.add(myCategory1);
         list.add(myCategory2);
 
-        return response.success(ResponseCode.BOOK_LIST_FETCHED.getMessage(), list);
+        return response.success(ResponseCode.BOOK_LIST_FETCHED, list);
 
     }
 
@@ -71,14 +71,14 @@ public class BookController {
     @PostMapping
     public ResponseEntity<?> createBook(@RequestBody BookPostDto book) {
 
-        return response.success(ResponseCode.BOOK_CREATED.getMessage(), book.getTitle());
+        return response.success(ResponseCode.BOOK_CREATED, book.getTitle());
     }
 
     @Operation(summary = "북마크 생성", description = "책에 대한 북마크 정보 생성 or 수정")
     @PostMapping("/bookmark")
     public ResponseEntity<?> createBookMarker(@RequestBody BookMarkerPostDto bookMarker) {
 
-        return response.success(ResponseCode.BOOKMARK_CREATED.getMessage(), bookMarker.getIndex());
+        return response.success(ResponseCode.BOOKMARK_CREATED, bookMarker.getIndex());
     }
 
     @Operation(summary = "책 정보 조회", description = "책 아이디를 통한 책 정보 조회")
@@ -145,35 +145,35 @@ public class BookController {
         list.add(paper1);
         list.add(paper2);
 
-        return response.success(ResponseCode.BOOK_INFO_FETCHED.getMessage(), list);
+        return response.success(ResponseCode.BOOK_INFO_FETCHED, list);
     }
 
     @Operation(summary = "책 수정", description = "책 아이디를 통한 책 정보 수정")
     @PutMapping
     public ResponseEntity<?> updateBook(@RequestBody BookUpdateDto book) {
 
-        return response.success(ResponseCode.BOOK_UPDATED.getMessage(), book.getTitle());
+        return response.success(ResponseCode.BOOK_UPDATED, book.getTitle());
     }
 
     @Operation(summary = "책 삭제", description = "책 아이디를 통한 책 삭제")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteBook(@PathVariable(name = "id") Long bookId) {
 
-        return response.success(ResponseCode.BOOK_DELETED.getMessage(), bookId);
+        return response.success(ResponseCode.BOOK_DELETED, bookId);
     }
 
     @Operation(summary = "책 구독", description = "책 아이디, 카테고리 아이디를 통한 책 구독")
     @PostMapping("/subscription")
     public ResponseEntity<?> subscribeBook(@RequestBody BookSubscribeDto bookSubscribe) {
 
-        return response.success(ResponseCode.BOOK_SUBSCRIBED.getMessage(), bookSubscribe.getBookId());
+        return response.success(ResponseCode.BOOK_SUBSCRIBED, bookSubscribe.getBookId());
     }
 
     @Operation(summary = "책 구독 삭제", description = "책 아이디를 통한 책 구독 취소")
     @DeleteMapping("/unsubscription/{id}")
     public ResponseEntity<?> unsubscribeBook(@PathVariable(name = "id") Long bookId) {
 
-        return response.success(ResponseCode.BOOK_UNSUBSCRIBED.getMessage(), bookId);
+        return response.success(ResponseCode.BOOK_UNSUBSCRIBED, bookId);
     }
 
 }

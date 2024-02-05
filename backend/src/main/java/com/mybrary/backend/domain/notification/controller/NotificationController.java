@@ -64,7 +64,7 @@ public class NotificationController {
         map.put("notificationList", result);
         map.put("page", page);
 
-        return response.success(ResponseCode.NOTIFICATION_FETCHED.getMessage(), map);
+        return response.success(ResponseCode.NOTIFICATION_FETCHED, map);
     }
 
     @Operation(summary = "알림 단건 삭제", description = "알림 삭제 버튼 X 클릭했을 때")
@@ -72,7 +72,7 @@ public class NotificationController {
     public ResponseEntity<?> deleteNotification(@PathVariable(name = "id") Long notifyId) {
 
         notificationService.deleteNotification(notifyId);
-        return response.success(ResponseCode.NOTIFICATION_DELETED.getMessage());
+        return response.success(ResponseCode.NOTIFICATION_DELETED);
     }
 
     @Operation(summary = "알림 전체 삭제", description = "알림 전체 삭제 클릭했을 때")
@@ -83,7 +83,7 @@ public class NotificationController {
         Long myId = me.getId();
 
         notificationService.deleteAllNotification(myId);
-        return response.success(ResponseCode.NOTIFICATION_DELETED.getMessage());
+        return response.success(ResponseCode.NOTIFICATION_DELETED);
     }
 
 }

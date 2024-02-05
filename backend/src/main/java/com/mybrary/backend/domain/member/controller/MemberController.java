@@ -15,13 +15,13 @@ import com.mybrary.backend.domain.member.entity.Member;
 import com.mybrary.backend.domain.member.service.MailService;
 import com.mybrary.backend.domain.member.service.MemberService;
 import com.mybrary.backend.global.annotation.AccessToken;
+import com.mybrary.backend.global.annotation.Nickname;
 import com.mybrary.backend.global.format.code.ApiResponse;
 import com.mybrary.backend.global.format.response.ResponseCode;
 import com.mybrary.backend.global.jwt.service.TokenService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -68,7 +68,7 @@ public class MemberController {
         }
 
         Long savedId = memberService.create(requestDto);
-        return response.success(ResponseCode.MEMBER_SIGNUP_SUCCESS.getMessage(), savedId);
+        return response.success(ResponseCode.MEMBER_SIGNUP_SUCCESS, savedId);
     }
 
     @Operation(summary = "소셜 회원가입", description = "소셜 회원가입")
@@ -101,7 +101,7 @@ public class MemberController {
             return response.fail(bindingResult);
         }
 
-        return response.success(ResponseCode.EMAIL_VERIFIED_SUCCESS.getMessage(),
+        return response.success(ResponseCode.EMAIL_VERIFIED_SUCCESS,
                                 mailService.confirmAuthCode(requestDto.getEmail(), requestDto.getAuthNum(), servletResponse));
     }
 
@@ -110,6 +110,7 @@ public class MemberController {
     public ResponseEntity<?> nicknameCheck(@RequestParam String nickname) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
 
     @Operation(summary = "일반 로그인", description = "일반 로그인")
     @PostMapping("/login")
@@ -121,7 +122,7 @@ public class MemberController {
             return response.fail(bindingResult);
         }
 
-        return response.success(ResponseCode.LOGIN_SUCCESS.getMessage(), memberService.login(requestDto, httpServletResponse));
+        return response.success(ResponseCode.LOGIN_SUCCESS, memberService.login(requestDto, httpServletResponse));
     }
 
     @Operation(summary = "소셜 로그인", description = "소셜 로그인")
@@ -148,7 +149,7 @@ public class MemberController {
         Member me = memberService.findMember(authentication.getName());
         Long myId = me.getId();
         List<MyFollowingDto> result = memberService.getAllMyFollowing(myId);
-        return response.success(ResponseCode.FOLLOWINGS_FETCH_SUCCESS.getMessage(), result);
+        return response.success(ResponseCode.FOLLOWINGS_FETCH_SUCCESS, result);
     }
 
     @Operation(summary = "나의 팔로워 리스트", description = "나의 팔로워 리스트")
@@ -157,7 +158,7 @@ public class MemberController {
         Member me = memberService.findMember(authentication.getName());
         Long myId = me.getId();
         List<MyFollowerDto> result = memberService.getAllMyFollower(myId);
-        return response.success(ResponseCode.FOLLOWERS_FETCH_SUCCESS.getMessage(), result);
+        return response.success(ResponseCode.FOLLOWERS_FETCH_SUCCESS, result);
     }
 
     @Operation(summary = "특정회원의 팔로잉 리스트", description = "특정회원의 팔로잉 리스트")
@@ -167,7 +168,7 @@ public class MemberController {
         Member me = memberService.findMember(authentication.getName());
         Long myId = me.getId();
         List<FollowingDto> result = memberService.getAllFollowing(myId, memberId);
-        return response.success(ResponseCode.FOLLOWINGS_FETCH_SUCCESS.getMessage(), result);
+        return response.success(ResponseCode.FOLLOWINGS_FETCH_SUCCESS, result);
     }
 
     @Operation(summary = "특정회원의 팔로워 리스트", description = "특정회원의 팔로워 리스트")
@@ -177,7 +178,7 @@ public class MemberController {
         Member me = memberService.findMember(authentication.getName());
         Long myId = me.getId();
         List<FollowerDto> result = memberService.getAllFollower(myId, memberId);
-        return response.success(ResponseCode.FOLLOWERS_FETCH_SUCCESS.getMessage(), result);
+        return response.success(ResponseCode.FOLLOWERS_FETCH_SUCCESS, result);
     }
 
     @Operation(summary = "팔로우하기", description = "특정회원을 팔로우하기")

@@ -34,7 +34,7 @@ public class MybraryController {
         MemberGetDto member = new MemberGetDto(1L, "hyeseon@ssafy.com", "박혜선", "hyeseon","안녕하세요", "profileUrl", true, true);
         MybraryGetDto mybrary = new MybraryGetDto(1L, "액자url", 4, 2, 1, 3, member, 20, 5, 10, 20, 1L, 1L);
 
-        return response.success(ResponseCode.MYBRARY_FETCHED.getMessage(), mybrary);
+        return response.success(ResponseCode.MYBRARY_FETCHED, mybrary);
     }
 
     @Operation(summary = "타인의 마이브러리 조회", description = "회원 아이디를 통한 회원의 마이브러리 정보 조회")
@@ -45,7 +45,7 @@ public class MybraryController {
         MemberGetDto member = new MemberGetDto(1L, "hyeseon@ssafy.com", "박혜선", "hyeseon","안녕하세요", "profileUrl", true, true);
         MybraryOtherGetDto mybrary = new MybraryOtherGetDto(1L, "액자url", 4, 2, 1, 3, member, 20, 5, 10, 20, true, 1L, 1L);
 
-        return response.success(ResponseCode.OTHER_MYBRARY_FETCHED.getMessage(), mybrary);
+        return response.success(ResponseCode.OTHER_MYBRARY_FETCHED, mybrary);
 
     }
 
@@ -53,7 +53,7 @@ public class MybraryController {
     @PutMapping
     public ResponseEntity<?> updateMybrary(@RequestBody MybraryUpdateDto mybrary) {
 
-        return response.success(ResponseCode.MYBRARY_UPDATED.getMessage(), mybrary.getMybraryId());
+        return response.success(ResponseCode.MYBRARY_UPDATED, mybrary.getMybraryId());
     }
 
 

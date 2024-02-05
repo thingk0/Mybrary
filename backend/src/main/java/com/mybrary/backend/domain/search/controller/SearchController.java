@@ -69,7 +69,7 @@ public class SearchController {
         map.put("threadList", list);
         map.put("page", page);
 
-        return response.success(ResponseCode.THREADS_SEARCHED.getMessage(), map);
+        return response.success(ResponseCode.THREADS_SEARCHED, map);
     }
 
     @Operation(summary = "책 검색", description = "책 제목 기반 검색")
@@ -98,7 +98,7 @@ public class SearchController {
         map.put("bookList", list);
         map.put("page", page);
 
-        return response.success(ResponseCode.BOOKS_SEARCHED.getMessage(), map);
+        return response.success(ResponseCode.BOOKS_SEARCHED, map);
     }
 
     @Operation(summary = "계정 검색", description = "계정 닉네임 or 이름 기반 검색")
@@ -121,7 +121,7 @@ public class SearchController {
         map.put("accountList", list);
         map.put("page", page);
 
-        return response.success(ResponseCode.ACCOUNTS_SEARCHED.getMessage(), map);
+        return response.success(ResponseCode.ACCOUNTS_SEARCHED, map);
     }
 
     @Operation(summary = "멘션을 하기 위한 계정 검색", description = "계정 닉네임 or 이름 기반 검색")
@@ -145,7 +145,7 @@ public class SearchController {
         map.put("accountList", list);
         map.put("page", page);
 
-        return response.success(ResponseCode.MENTION_ACCOUNTS_SEARCHED.getMessage(), map);
+        return response.success(ResponseCode.MENTION_ACCOUNTS_SEARCHED, map);
     }
 
 }

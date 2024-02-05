@@ -32,13 +32,13 @@ public class CommentController {
     @PostMapping
     public ResponseEntity<?> createComment(@RequestBody CommentPostDto comment) {
 
-        return response.success(ResponseCode.COMMENT_CREATED.getMessage(), comment.getContent());
+        return response.success(ResponseCode.COMMENT_CREATED, comment.getContent());
     }
 
     @Operation(summary = "댓글 삭제", description = "댓글 아이디를 통한 댓글 삭제")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteComment(@PathVariable("id") Long commentId) {
-        return response.success(ResponseCode.COMMENT_DELETED.getMessage(), commentId);
+        return response.success(ResponseCode.COMMENT_DELETED, commentId);
     }
 
     @Operation(summary = "페이퍼 댓글 조회", description = "페이퍼 아이디를 통한 페이퍼의 댓글 조회")
@@ -75,6 +75,6 @@ public class CommentController {
         list.add(comment3);
         list.add(comment4);
 
-        return response.success(ResponseCode.COMMENTS_FETCHED.getMessage(), list);
+        return response.success(ResponseCode.COMMENTS_FETCHED, list);
     }
 }

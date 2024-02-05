@@ -27,14 +27,14 @@ public class PaperController {
     @PostMapping("/scrap")
     public ResponseEntity<?> scrapPaper(@RequestBody PaperScrapDto scrap) {
 
-        return response.success(ResponseCode.PAPER_SCRAPPED.getMessage(), scrap.getBookId());
+        return response.success(ResponseCode.PAPER_SCRAPPED, scrap.getBookId());
     }
 
     @Operation(summary = "페이퍼 공유", description = "페이퍼 다른 사용자에게 공유")
     @PostMapping("/share")
     public ResponseEntity<?> sharePaper(@RequestBody PaperShareDto share) {
 
-        return response.success(ResponseCode.PAPER_SHARED.getMessage(), share.getThreadId());
+        return response.success(ResponseCode.PAPER_SHARED, share.getThreadId());
     }
 
 }
