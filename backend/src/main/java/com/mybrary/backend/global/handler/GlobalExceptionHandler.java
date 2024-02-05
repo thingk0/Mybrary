@@ -6,6 +6,8 @@ import com.mybrary.backend.global.exception.jwt.RefreshTokenNotFoundException;
 import com.mybrary.backend.global.exception.member.DuplicateEmailException;
 import com.mybrary.backend.global.exception.member.EmailNotFoundException;
 import com.mybrary.backend.global.exception.member.InvalidLoginAttemptException;
+import com.mybrary.backend.global.exception.member.InvalidNicknameException;
+import com.mybrary.backend.global.exception.member.MissingPathVariableException;
 import com.mybrary.backend.global.exception.member.PasswordMismatchException;
 import com.mybrary.backend.global.format.code.ApiResponse;
 import com.mybrary.backend.global.format.response.ErrorCode;
@@ -68,6 +70,18 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(RefreshTokenNotFoundException.class)
     protected ResponseEntity<?> handle(RefreshTokenNotFoundException e) {
         log.error("RefreshTokenNotFoundException = {}", e.getErrorCode().getMessage());
+        return response.error(e.getErrorCode());
+    }
+
+    @ExceptionHandler(InvalidNicknameException.class)
+    protected ResponseEntity<?> handle(InvalidNicknameException e) {
+        log.error("InvalidNicknameException = {}", e.getErrorCode().getMessage());
+        return response.error(e.getErrorCode());
+    }
+
+    @ExceptionHandler(MissingPathVariableException.class)
+    protected ResponseEntity<?> handle(MissingPathVariableException e) {
+        log.error("MissingPathVariableException = {}", e.getErrorCode().getMessage());
         return response.error(e.getErrorCode());
     }
 
