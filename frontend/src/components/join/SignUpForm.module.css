@@ -1,0 +1,72 @@
+.인풋창 {
+  background-color: #fff9f6;
+  border: 0px;
+  border-radius: 8px;
+  padding: 5px 2px 5px 2px;
+  max-width: 60%;
+}
+.인풋창:focus {
+  outline: none;
+  border: 0px;
+}
+.폼내부 {
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+  gap: 6px;
+}
+.폼1 {
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+}
+.에러메시지 {
+  font-size: 13px;
+  max-width: 80%;
+  color: rgb(254, 139, 139);
+}
+.각각의폼디브 {
+  background-color: #fff9f6;
+  border: 2px solid black;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  padding: 1px 2px 1px 2px;
+  margin-bottom: 9px;
+}
+.각각의폼디브 button {
+  background-color: #57423f;
+  border-radius: 5px;
+  font-weight: 100;
+  color: rgb(248, 255, 255);
+  font-size: 13px;
+}
+.회원가입폼전체 {
+  padding-top: 20px;
+  padding-left: 10px;
+  padding-bottom: 20px;
+  padding-right: 40px;
+  overflow-y: auto;
+  max-height: 43vh;
+  max-width: 18vw;
+  min-width: 18vw;
+}
+.버튼디브 {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.가입버튼 {
+  background-color: #57423f;
+  border-radius: 5px;
+  font-weight: 100;
+  color: rgb(248, 255, 255);
+  font-size: 13px;
+  margin-left: 25px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-right: 10px;
+  padding-left: 10px;
+}

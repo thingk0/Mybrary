@@ -4,6 +4,7 @@ import { login } from "../../api/member/Login";
 import useUserStore from "../../store/useUserStore";
 import useStompStore from "../../store/useStompStore";
 import useNotificationStore from "../../store/useNotificationStore";
+import styles from "./LoginForm.module.css";
 
 function LoginForm() {
   /* 로그인하고 바로 stompClient 초기화. */
@@ -82,29 +83,49 @@ function LoginForm() {
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>이메일:</label>
-          <input
-            type="text"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-          />
-        </div>
+      <div className={styles.로그인메인}>
+        <div className={styles.로그인사이즈조정}>
+          <form onSubmit={handleSubmit}>
+            <div>
+              <label>email</label>
+              <div className={styles.각각의폼디브}>
+                <input
+                  className={styles.인풋창}
+                  type="text"
+                  name="email"
+                  placeholder="이메일을 입력하세요"
+                  value={formData.email}
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
 
-        <div>
-          <label>비밀번호:</label>
-          <input
-            type="text"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-          />
+            <div>
+              <label>비밀번호</label>
+              <div className={styles.각각의폼디브}>
+                <input
+                  className={styles.인풋창}
+                  type="text"
+                  name="password"
+                  placeholder="비밀번호를 입력하세요"
+                  value={formData.password}
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
+            <div className={styles.버튼디브}>
+              <button className={styles.로그인버튼} type="submit">
+                로그인
+              </button>
+            </div>
+          </form>
+          {isLoginFail && (
+            <span className={styles.에러메시지}>
+              아이디와 비밀번호를 확인해주세요.
+            </span>
+          )}
         </div>
-        <button type="submit">로그인</button>
-      </form>
-      {isLoginFail && <h1>아이디와 비밀번호를 확인해주세요.</h1>}
+      </div>
     </>
   );
 }
