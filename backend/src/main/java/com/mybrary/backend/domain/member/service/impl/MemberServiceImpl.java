@@ -165,14 +165,14 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void unfollow(Long myId, Long memberId) {
         Follow follow = followRepository.findFollow(myId, memberId);
-        follow.setDeleted(true);
+        followRepository.delete(follow);
     }
 
     @Transactional
     @Override
     public void deleteFollower(Long myId, Long memberId) {
         Follow follow = followRepository.findFollow(memberId, myId);
-        follow.setDeleted(true);
+        followRepository.delete(follow);
     }
 
     @Transactional

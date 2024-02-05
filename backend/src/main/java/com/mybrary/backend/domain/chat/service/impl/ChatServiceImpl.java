@@ -112,7 +112,7 @@ public class ChatServiceImpl implements ChatService {
             }
 
             // 4. sender가 상대방이고 읽음 여부가 false라면 true로 바꾸고 보내기
-            if(chatMessage.getSender().getId().equals(member.getId()) && !chatMessage.isRead()){
+            if (chatMessage.getSender().getId().equals(member.getId()) && !chatMessage.isRead()) {
                 chatMessage.setRead(true);
             }
 
@@ -135,7 +135,7 @@ public class ChatServiceImpl implements ChatService {
 
         // 1. 나와 상대방이 있는 채팅방이 존재하는지 (= 상대방과 한번이라도 채팅을 한적이 있는지)
         ChatJoin chatJoin = chatMessageRepository.isExistChatRoom(myId, memberId);
-        if(chatJoin != null){
+        if (chatJoin != null) {
             System.out.println("존재함");
 
             // 2. 해당 chatJoin 나감여부를 해제하기
@@ -146,11 +146,11 @@ public class ChatServiceImpl implements ChatService {
 
             // 위의 메서드를 사용해서 채팅 리스트 구하기
             return getAllChatByChatRoomId(authentication, chatRoomId, page);
-        } else{
+        } else {
             System.out.println("존재안함");
 
             // 2. 새로운 채팅방 생성
-            ChatRoom chatRoom = new ChatRoom();
+            ChatRoom chatRoom = ChatRoom.builder().build();
             chatRoomRepository.save(chatRoom);
 
             // 3. 새로 생성한 채팅방 Id
@@ -181,7 +181,8 @@ public class ChatServiceImpl implements ChatService {
         Member receiver = memberRepository.findById(message.getReceiverId()).get();
 
         ChatMessage newMessage = ChatMessage.builder()
-            .sender(me).receiver(receiver).message(message.getMessage()).threadId(message.getThreadId()).isRead(false).build();
+                                            .sender(me).receiver(receiver).message(message.getMessage())
+                                            .threadId(message.getThreadId()).isRead(false).build();
 
         ChatMessage savedMessage = chatMessageRepository.save(newMessage);
     }
