@@ -105,10 +105,11 @@ public class MemberController {
                                 mailService.confirmAuthCode(requestDto.getEmail(), requestDto.getAuthNum(), servletResponse));
     }
 
-    @Operation(summary = "닉네임 검사", description = "닉네임 유효성 및 중복 검사")
-    @GetMapping("/nickname")
-    public ResponseEntity<?> nicknameCheck(@RequestParam String nickname) {
-        return new ResponseEntity<>(HttpStatus.OK);
+    @Operation(summary = "닉네임 중복 검사", description = "닉네임의 중복 여부를 검사")
+    @GetMapping("/nickname/{nickname}/exists")
+    public ResponseEntity<?> nicknameExists(@Nickname @PathVariable String nickname) {
+        boolean result = memberService.checkNicknameDuplication(nickname);
+        return response.success(result ? ResponseCode.DUPLICATE_NICKNAME : ResponseCode.NICKNAME_AVAILABLE, result);
     }
 
 
