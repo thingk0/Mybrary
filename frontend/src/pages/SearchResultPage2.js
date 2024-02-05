@@ -59,6 +59,38 @@ export default function SearchResultPage2() {
       isFollowing: 0,
       intro: "딩성입니당",
     },
+    {
+      memberId: "7",
+      memberName: "777777",
+      memberNickname: "raudtjd",
+      memberImageUrl: "https://via.placeholder.com/150",
+      isFollowing: 0,
+      intro: "7777",
+    },
+    {
+      memberId: "7",
+      memberName: "777777",
+      memberNickname: "raudtjd",
+      memberImageUrl: "https://via.placeholder.com/150",
+      isFollowing: 0,
+      intro: "7777",
+    },
+    {
+      memberId: "7",
+      memberName: "777777",
+      memberNickname: "raudtjd",
+      memberImageUrl: "https://via.placeholder.com/150",
+      isFollowing: 0,
+      intro: "7777",
+    },
+    {
+      memberId: "7",
+      memberName: "777777",
+      memberNickname: "raudtjd",
+      memberImageUrl: "https://via.placeholder.com/150",
+      isFollowing: 0,
+      intro: "7777",
+    },
   ];
 
   console.log(animateOut);

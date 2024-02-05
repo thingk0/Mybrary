@@ -1,0 +1,28 @@
+.main {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.이미지공간 {
+  width: 50%;
+  height: 50%;
+}
+.문구모음 {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+}
+.앗 {
+  color: rgb(96, 234, 54);
+  font-size: 45px;
+}
+.잘못된 {
+  color: rgb(255, 84, 49);
+  font-size: 29px;
+}
