@@ -7,17 +7,23 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import java.util.ArrayList;
 import java.util.List;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 @Entity
-@Builder
 @Getter
-@NoArgsConstructor
+@Builder
 @AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Where(clause = "is_deleted = false")
+@SQLDelete(sql = "UPDATE chat_room SET is_deleted = TRUE WHERE chat_room_id = ?")
 public class ChatRoom extends BaseEntity {
 
     @Id
@@ -25,12 +31,12 @@ public class ChatRoom extends BaseEntity {
     @Column(name = "chat_room_id")
     private Long id;
 
-    // ChatJoin
+    @Builder.Default
     @OneToMany(mappedBy = "chatRoom")
-    private List<ChatJoin> chatJoinList;
+    private List<ChatJoin> chatJoinList = new ArrayList<>();
 
-    // ChatMessage
+    @Builder.Default
     @OneToMany(mappedBy = "chatRoom")
-    private List<ChatMessage> chatMessageList;
+    private List<ChatMessage> chatMessageList = new ArrayList<>();
 
 }

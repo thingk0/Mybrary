@@ -10,16 +10,21 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 @Entity
-@Builder
 @Getter
-@NoArgsConstructor
+@Builder
 @AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Where(clause = "is_deleted = false")
+@SQLDelete(sql = "UPDATE tag SET is_deleted = TRUE WHERE tag_id = ?")
 public class Tag extends BaseEntity {
 
     @Id
@@ -31,6 +36,7 @@ public class Tag extends BaseEntity {
     @JoinColumn(name = "paper_id")
     private Paper paper;
 
+    @Column(name = "tag_name")
     private String tagName;
 
 }

@@ -1,20 +1,15 @@
 package com.mybrary.backend.domain.notification.entity;
 
 import com.mybrary.backend.domain.base.BaseEntity;
-import com.mybrary.backend.domain.book.entity.Book;
-import com.mybrary.backend.domain.comment.entity.Comment;
-import com.mybrary.backend.domain.contents.paper.entity.Paper;
-import com.mybrary.backend.domain.contents.thread.entity.Threads;
 import com.mybrary.backend.domain.member.entity.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,12 +18,12 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 @Entity
-@Builder
 @Getter
-@NoArgsConstructor
+@Builder
 @AllArgsConstructor
-@Where(clause = "is_deleted <> true")
-@SQLDelete(sql = "UPDATE member SET is_deleted = TRUE WHERE member_id = ?")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Where(clause = "is_deleted = false")
+@SQLDelete(sql = "UPDATE notification SET is_deleted = TRUE WHERE notification_id = ?")
 public class Notification extends BaseEntity {
 
     @Id
@@ -44,14 +39,25 @@ public class Notification extends BaseEntity {
     @JoinColumn(name = "receiver_id")
     private Member receiver;
 
+    @Column(name = "notify_type")
     private int notifyType;
 
+    @Column(name = "is_read")
     private boolean isRead;
 
+    @Column(name = "book_id")
     private Long bookId;
+
+    @Column(name = "thread_id")
     private Long threadId;
+
+    @Column(name = "paper_id")
     private Long paperId;
+
+    @Column(name = "comment_id")
     private Long commentId;
+
+    @Column(name = "reply_comment_id")
     private Long replyCommentId;
 
 }

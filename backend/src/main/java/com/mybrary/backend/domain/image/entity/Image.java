@@ -6,17 +6,21 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 @Entity
-@Builder
 @Getter
-@NoArgsConstructor
+@Builder
 @AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Where(clause = "is_deleted = false")
+@SQLDelete(sql = "UPDATE image SET is_deleted = TRUE WHERE image_id = ?")
 public class Image extends BaseEntity {
 
     @Id
@@ -24,16 +28,16 @@ public class Image extends BaseEntity {
     @Column(name = "image_id")
     private Long id;
 
-    private String originUr1l;
+    @Column(name = "image_url")
+    private String url;
 
-    private String thumbnailUrl;
-
+    @Column(name = "image_name")
     private String name;
 
-    private String originName;
-
+    @Column(name = "format")
     private String format;
 
+    @Column(name = "size")
     private double size;
 
 }

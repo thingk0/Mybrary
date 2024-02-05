@@ -8,6 +8,7 @@ import com.mybrary.backend.domain.image.entity.Image;
 import com.mybrary.backend.domain.contents.like.entity.Like;
 import com.mybrary.backend.domain.member.dto.SignupRequestDto;
 import com.mybrary.backend.domain.notification.entity.Notification;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -38,7 +39,7 @@ import org.hibernate.annotations.Where;
     @Index(name = "unique_index_email", columnList = "email"),
     @Index(name = "unique_index_nickname", columnList = "nickname")
 })
-@Where(clause = "is_deleted <> true")
+@Where(clause = "is_deleted = false")
 @SQLDelete(sql = "UPDATE member SET is_deleted = TRUE WHERE member_id = ?")
 public class Member extends BaseEntity {
 
@@ -54,22 +55,24 @@ public class Member extends BaseEntity {
     @JoinColumn(name = "image_id")
     private Image profileImage;
 
-    @Column(nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(length = 10, nullable = false, unique = true)
+    @Column(name = "nickname", length = 10, nullable = false, unique = true)
     private String nickname;
 
-    @Column(nullable = false)
+    @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(length = 50)
+    @Column(name = "intro", length = 50)
     private String intro;
 
     @Builder.Default()
+    @Column(name = "is_profile_public")
     private boolean isProfilePublic = true;
 
     @Builder.Default()
+    @Column(name = "is_notify_enabled")
     private boolean isNotifyEnabled = true;
 
     public static Member of(SignupRequestDto requestDto, String encodedPassword) {
@@ -109,19 +112,25 @@ public class Member extends BaseEntity {
     /**
      * 양방향 관계 - 팔로잉/팔로워, 알림 발신자/수신자, 채팅참여, 메시지, 좋아요
      */
-    @OneToMany(mappedBy = "following")
+    @OneToMany(mappedBy = "following", cascade = {CascadeType.REMOVE})
     private List<Follow> followingList = new ArrayList<>();
-    @OneToMany(mappedBy = "follower")
+
+    @OneToMany(mappedBy = "follower", cascade = {CascadeType.REMOVE})
     private List<Follow> followerList = new ArrayList<>();
-    @OneToMany(mappedBy = "sender")
+
+    @OneToMany(mappedBy = "sender", cascade = {CascadeType.REMOVE})
     private List<Notification> sendList = new ArrayList<>();
-    @OneToMany(mappedBy = "receiver")
+
+    @OneToMany(mappedBy = "receiver", cascade = {CascadeType.REMOVE})
     private List<Notification> receiveList = new ArrayList<>();
-    @OneToMany(mappedBy = "joinMember")
+
+    @OneToMany(mappedBy = "joinMember", cascade = {CascadeType.REMOVE})
     private List<ChatJoin> chatJoinList = new ArrayList<>();
-    @OneToMany(mappedBy = "receiver")
+
+    @OneToMany(mappedBy = "receiver", cascade = {CascadeType.REMOVE})
     private List<ChatMessage> messageList = new ArrayList<>();
-    @OneToMany(mappedBy = "member")
+
+    @OneToMany(mappedBy = "member", cascade = {CascadeType.REMOVE})
     private List<Like> likeList = new ArrayList<>();
 
 }
