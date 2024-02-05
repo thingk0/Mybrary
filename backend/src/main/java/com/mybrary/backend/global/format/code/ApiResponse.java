@@ -1,6 +1,7 @@
 package com.mybrary.backend.global.format.code;
 
 import com.mybrary.backend.global.format.response.ErrorCode;
+import com.mybrary.backend.global.format.response.ResponseCode;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -82,13 +83,9 @@ public class ApiResponse {
      *      "data" : "배열 또는 단일 데이터"
      *  }
      * </pre>
-     *
-     * @param message 응답 바디 message 필드에 포함될 정보
-     * @param data    응답 바디 data 필드에 포함될 정보
-     * @return 응답 객체
      */
-    public <T> ResponseEntity<?> success(String message, T data) {
-        return get(STATUS_SUCCESS, message, data, null, null, null, null);
+    public <T> ResponseEntity<?> success(ResponseCode responseCode, T data) {
+        return get(STATUS_SUCCESS, responseCode.getMessage(), data, null, null, null, null);
     }
 
     /**
@@ -117,12 +114,9 @@ public class ApiResponse {
      *      "data" : null
      *  }
      * </pre>
-     *
-     * @param message 응답 바디 message 필드에 포함될 정보
-     * @return 응답 객체
      */
-    public <T> ResponseEntity<?> success(String message) {
-        return get(STATUS_SUCCESS, message, null, null, null, null, null);
+    public <T> ResponseEntity<?> success(ResponseCode responseCode) {
+        return get(STATUS_SUCCESS, responseCode.getMessage(), null, null, null, null, null);
     }
 
     /**
