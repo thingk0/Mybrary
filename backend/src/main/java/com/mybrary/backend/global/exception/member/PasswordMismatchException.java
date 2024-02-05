@@ -9,6 +9,6 @@ public class PasswordMismatchException extends RuntimeException {
     private final ErrorCode errorCode;
 
     public PasswordMismatchException() {
-        this.errorCode = ErrorCode.MEMBER_PASSWORD_MISMATCH;
+        this.errorCode = ErrorCode.PASSWORD_MISMATCH;
     }
 }
