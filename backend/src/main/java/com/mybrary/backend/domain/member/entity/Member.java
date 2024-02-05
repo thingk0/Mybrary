@@ -35,7 +35,8 @@ import org.hibernate.annotations.Where;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "member", indexes = {
-    @Index(name = "unique_index_email", columnList = "email")
+    @Index(name = "unique_index_email", columnList = "email"),
+    @Index(name = "unique_index_nickname", columnList = "nickname")
 })
 @Where(clause = "is_deleted <> true")
 @SQLDelete(sql = "UPDATE member SET is_deleted = TRUE WHERE member_id = ?")
@@ -56,7 +57,7 @@ public class Member extends BaseEntity {
     @Column(nullable = false)
     private String name;
 
-    @Column(length = 10, nullable = false)
+    @Column(length = 10, nullable = false, unique = true)
     private String nickname;
 
     @Column(nullable = false)
@@ -80,7 +81,9 @@ public class Member extends BaseEntity {
                      .build();
     }
 
-    public void updatePassword(String password) { this.password = password; }
+    public void updatePassword(String password) {
+        this.password = password;
+    }
 
     public void uploadProfileImage(Image profileImage) {
         this.profileImage = profileImage;
@@ -94,9 +97,13 @@ public class Member extends BaseEntity {
         this.intro = intro;
     }
 
-    public void updateIsProfilePublic(boolean isProfilePublic) { this.isProfilePublic = isProfilePublic; }
+    public void updateIsProfilePublic(boolean isProfilePublic) {
+        this.isProfilePublic = isProfilePublic;
+    }
 
-    public void updateIsNotifyEnable(boolean isNotifyEnabled) { this.isNotifyEnabled = isNotifyEnabled; }
+    public void updateIsNotifyEnable(boolean isNotifyEnabled) {
+        this.isNotifyEnabled = isNotifyEnabled;
+    }
 
 
     /**
