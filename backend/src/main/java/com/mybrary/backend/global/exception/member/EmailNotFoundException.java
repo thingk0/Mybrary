@@ -9,6 +9,6 @@ public class EmailNotFoundException extends RuntimeException {
     private final ErrorCode errorCode;
 
     public EmailNotFoundException() {
-        this.errorCode = ErrorCode.MEMBER_EMAIL_NOT_FOUND;
+        this.errorCode = ErrorCode.EMAIL_NOT_FOUND;
     }
 }

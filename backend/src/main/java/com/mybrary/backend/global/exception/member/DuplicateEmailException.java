@@ -9,6 +9,6 @@ public class DuplicateEmailException extends RuntimeException {
     private final ErrorCode errorCode;
 
     public DuplicateEmailException() {
-        this.errorCode = ErrorCode.MEMBER_EMAIL_DUPLICATED;
+        this.errorCode = ErrorCode.EMAIL_DUPLICATED;
     }
 }
