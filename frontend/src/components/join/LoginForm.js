@@ -16,7 +16,6 @@ function LoginForm() {
   };
   // 유저상태 전역 관리를 위한 코드
   const setUser = useUserStore((state) => state.setUser);
-  const user = useUserStore((state) => state.user);
 
   /* 상태 */
   const [formData, setFormData] = useState({

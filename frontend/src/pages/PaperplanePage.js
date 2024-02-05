@@ -17,6 +17,7 @@ export default function PaperplanePage() {
   /* 웹소켓: 채팅용 주소를 구독 */
   const stompClient = useStompStore((state) => state.stompClient);
   const user = useUserStore((state) => state.user);
+
   useEffect(() => {
     console.log(stompClient);
     console.log("hi");
@@ -27,7 +28,7 @@ export default function PaperplanePage() {
         console.log(receivedData.sender);
       });
     }
-  }, []);
+  }, [stompClient]);
 
   const chatRoomList = [
     {
@@ -145,7 +146,6 @@ export default function PaperplanePage() {
           },
           body: JSON.stringify(msg),
         });
-        console.log(data);
       } catch (error) {
         console.log(error);
         throw error;
