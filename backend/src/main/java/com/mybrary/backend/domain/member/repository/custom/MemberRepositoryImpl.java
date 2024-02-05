@@ -8,7 +8,7 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class QuerydslMemberRepositoryImpl implements QuerydslMemberRepository {
+public class MemberRepositoryImpl implements MemberRepositoryCustom {
 
     private final JPAQueryFactory query;
 
@@ -18,5 +18,14 @@ public class QuerydslMemberRepositoryImpl implements QuerydslMemberRepository {
                                         .where(member.email.eq(email))
                                         .fetchFirst());
     }
+
+    @Override
+    public boolean isNicknameDuplicate(String nickname) {
+        return query
+            .selectFrom(member)
+            .where(member.nickname.eq(nickname))
+            .fetchCount() > 0;
+    }
+
 
 }
