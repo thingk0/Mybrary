@@ -43,6 +43,7 @@ public class SignupRequestDto {
 
     @Pattern(regexp = "^[a-zA-Z0-9_]{3,15}$",
              message = "닉네임은 영문자, 숫자 및 언더바(_)를 포함할 수 있으며 3~15자 이내여야 합니다.")
+    @Schema(description = "닉네임", example = "MyBrary_2024")
     private String nickname;
 
 }
