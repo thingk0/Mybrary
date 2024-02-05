@@ -40,4 +40,6 @@ public interface MemberService {
     void updatePassword(Long myId, PasswordUpdateDto password);
 
     void secession(SecessionRequestDto secession);
+
+    boolean checkNicknameDuplication(String nickname);
 }

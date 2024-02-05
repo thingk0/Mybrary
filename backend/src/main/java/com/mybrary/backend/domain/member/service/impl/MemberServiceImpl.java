@@ -34,6 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Log4j2
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
 
@@ -45,8 +46,8 @@ public class MemberServiceImpl implements MemberService {
     private final FollowRepository followRepository;
     private final RefreshTokenRepository refreshTokenRepository;
 
-    @Override
     @Transactional
+    @Override
     public Long create(SignupRequestDto requestDto) {
 
         /* 비밀번호 불일치 */
@@ -61,8 +62,8 @@ public class MemberServiceImpl implements MemberService {
         return member.getId();
     }
 
-    @Override
     @Transactional
+    @Override
     public String login(LoginRequestDto requestDto, HttpServletResponse response) {
         log.info("event=LoginAttempt, email={}", requestDto.getEmail());
 
@@ -84,7 +85,6 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public List<MyFollowingDto> getAllMyFollowing(Long myId) {
-
         List<Member> myFollowing = memberRepository.getAllFollowing(myId);
 
         List<MyFollowingDto> list = new ArrayList<>();
@@ -149,6 +149,7 @@ public class MemberServiceImpl implements MemberService {
         return list;
     }
 
+    @Transactional
     @Override
     public void follow(Long myId, Long memberId) {
         Member me = memberRepository.findById(myId).get();
@@ -165,7 +166,6 @@ public class MemberServiceImpl implements MemberService {
     public void unfollow(Long myId, Long memberId) {
         Follow follow = followRepository.findFollow(myId, memberId);
         follow.setDeleted(true);
-
     }
 
     @Transactional
@@ -210,6 +210,11 @@ public class MemberServiceImpl implements MemberService {
         isPasswordMatchingWithEncoded(secession.getPassword(), member.getPassword());
         memberRepository.delete(member);
 
+    }
+
+    @Override
+    public boolean checkNicknameDuplication(String nickname) {
+        return memberRepository.isNicknameDuplicate(nickname);
     }
 
     private Member findMemberByEmail(String email) {
