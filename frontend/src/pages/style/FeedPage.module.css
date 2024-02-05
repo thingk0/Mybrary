@@ -15,7 +15,7 @@
   grid-auto-rows: minmax(0, 1fr);
   align-items: end;
   transition: 0.5s;
-  transform: translateX(17vw);
+  transform: translateX(17vw) scale(0.9);
 }
 .StackCarousel_translate {
   transition: transform 0.5s;
