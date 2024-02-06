@@ -5,6 +5,12 @@ import Container from "../components/frame/Container";
 import styles from "./style/SearchPage.module.css";
 import searchicon from "../assets/searchicon.png";
 import { useNavigate } from "react-router-dom";
+import {
+  searchBook,
+  searchAccount,
+  searchThread,
+  getPopularList,
+} from "../api/search/Search";
 
 export default function SearchPage() {
   const [searchtext, setSearchtext] = useState("");
@@ -61,6 +67,27 @@ export default function SearchPage() {
     }, 500);
   };
   useEffect(() => {
+    const test = async () => {
+      const res1 = await getPopularList(); // data로 아무것도 안넘어옴
+      const res2 = await searchThread("키워드", {
+        page: 10,
+        size: 1,
+      });
+      const res3 = await searchBook("키워드", {
+        page: 10,
+        size: 1,
+      });
+      const res4 = await searchAccount("키워드", {
+        page: 10,
+        size: 1,
+      });
+
+      console.log(res1);
+      console.log(res2);
+      console.log(res3);
+      console.log(res4);
+    };
+    test();
     // 컴포넌트 마운트 시 localStorage에서 최근 검색어 불러오기
     const savedSearches = JSON.parse(localStorage.getItem("recentSearches"));
     if (savedSearches) {
