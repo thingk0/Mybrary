@@ -1,13 +1,11 @@
 .modal {
-  width: 600px;
-  height: 400px;
   margin: auto;
   position: fixed;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgb(255, 255, 255);
+  background: var(--main4);
   overflow: hidden;
   border-radius: 10px;
   outline: none;
