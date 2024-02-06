@@ -1,6 +1,5 @@
 package com.mybrary.backend.domain.contents.thread.controller;
 
-
 import com.mybrary.backend.domain.contents.thread.dto.ThreadPostDto;
 import com.mybrary.backend.domain.contents.thread.dto.ThreadUpdateDto;
 import com.mybrary.backend.domain.contents.thread.service.ThreadService;
@@ -35,6 +34,7 @@ public class ThreadController {
 
     private final ApiResponse response;
     private final ThreadService threadService;
+    /**/
 
     @Operation(summary = "쓰레드 생성", description = "쓰레드 생성")
     @PostMapping
@@ -45,80 +45,40 @@ public class ThreadController {
         return response.success(ResponseCode.THREAD_CREATED,
             threadService.createThread(files, threadPostDto));
     }
-
     @Operation(summary = "메인홈 쓰레드 조회", description = "메인홈에서의 쓰레드 목록 조회")
     @GetMapping("/home")
     public ResponseEntity<?> getMainAllThread(
-        @PageableDefault(page = 0, size = 10) Pageable page) {
-
-        MemberInfoDto member1 = new MemberInfoDto(1L, "wnsgh", "안녕하세요 최준호입니다", "123123");
-        MemberInfoDto member2 = new MemberInfoDto(2L, "aksrl", "안녕하세요 서만기입니다", "666666");
-        MemberInfoDto member3 = new MemberInfoDto(3L, "gPtjs", "안녕하세요 박혜선입니다", "145643");
-        MemberInfoDto member4 = new MemberInfoDto(4L, "thdud", "안녕하세요 최소영입니다", "000000");
-
-        MemberGetDto memberdetail1 = new MemberGetDto(1L, "wndgh@ssafy.com", "최준호", "wnsgh", "안녕하세요 최준호입니다", "123123", true,
-                                                      true);
-        MemberGetDto memberdetail2 = new MemberGetDto(2L, "aksrl@ssafy.com", "서만기", "aksrl", "안녕하세요 서만기입니다", "666666", true,
-                                                      true);
-        MemberGetDto memberdetail3 = new MemberGetDto(3L, "gPtjs@ssafy.com", "박헤선", "gPtjs", "안녕하세요 박혜선입니다", "145643", true,
-                                                      true);
-        MemberGetDto memberdetail4 = new MemberGetDto(4L, "thdud@ssafy.com", "최소영", "thdud", "안녕하세요 최소영입니다", "000000", true,
-                                                      true);
-
-        List<String> tagList1 = new ArrayList<>();
-        tagList1.add("여행");
-        tagList1.add("부산");
-        tagList1.add("해운대바다");
-        tagList1.add("광어연어우럭");
-        tagList1.add("광안리해수욕장");
-        tagList1.add("부산여행");
-        tagList1.add("대전");
-
-        List<String> tagList2 = new ArrayList<>();
-        tagList2.add("태그");
-        tagList2.add("#####");
-
-        List<MemberGetDto> mentionList1 = new ArrayList<>();
-        mentionList1.add(memberdetail1);
-        mentionList1.add(memberdetail2);
-
-        List<MemberGetDto> mentionList2 = new ArrayList<>();
-        mentionList2.add(memberdetail3);
-        mentionList2.add(memberdetail4);
-
+        @Parameter(hidden = true) Authentication authentication,
+        @RequestParam(name = "page") int number,
+        @RequestBody Long memberId,
+        @PageableDefault(page = 0, size = 10) Pageable pageable) {
         return response.success(ResponseCode.MAIN_THREAD_LIST_FETCHED,
             threadService.getMainAllThread(memberId, pageable));
     }
-
     @Operation(summary = "나의 쓰레드 조회", description = "나의 마이브러리 책상에서의 쓰레드 목록 조회")
     @GetMapping("/desk")
     public ResponseEntity<?> getMyAllThread(
         @Parameter(hidden = true) Authentication authentication,
         @RequestBody Long memberId,
         @PageableDefault(page = 0, size = 10) Pageable page) {
-
         return response.success(ResponseCode.MY_THREAD_LIST_FETCHED,
             threadService.getMyAllThread(memberId, page));
     }
-
     @Operation(summary = "특정 회원의 쓰레드 조회", description = "회원 아이디를 통한 특정 회원의 마이브러리 책상에서의 쓰레드 목록 조회")
     @GetMapping("/{id}/desk")
     public ResponseEntity<?> getOtherAllThread(
         @Parameter(hidden = true) Authentication authentication,
         @RequestBody Long memberId,
         @PageableDefault(page = 0, size = 10) Pageable page) {
-
         return response.success(ResponseCode.MY_THREAD_LIST_FETCHED,
             threadService.getOtherAllThread(memberId, page));
     }
-
     @Operation(summary = "쓰레드 수정", description = "쓰레드 수정")
     @PutMapping
     public ResponseEntity<?> updateThread(@Parameter(hidden = true) Authentication authentication,
         @RequestBody ThreadUpdateDto threadUpdateDto) {
         return response.success(ResponseCode.THREAD_UPDATED, threadService.updateThread(threadUpdateDto));
     }
-
     @Operation(summary = "쓰레드 삭제", description = "쓰레드 아이디를 통한 쓰레드 삭제")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteThread(@Parameter(hidden = true) Authentication authentication,
@@ -126,7 +86,6 @@ public class ThreadController {
         return response.success(ResponseCode.THREAD_DELETED,
             threadService.deleteThread(threadId));
     }
-
 
 
 
@@ -140,14 +99,10 @@ public class ThreadController {
 //        MemberInfoDto member3 = new MemberInfoDto(3L, "gPtjs", "안녕하세요 박혜선입니다", "145643");
 //        MemberInfoDto member4 = new MemberInfoDto(4L, "thdud", "안녕하세요 최소영입니다", "000000");
 //
-//        MemberGetDto memberdetail1 = new MemberGetDto(1L, "wndgh@ssafy.com", "최준호", "wnsgh", "안녕하세요 최준호입니다", "123123", true,
-//                                                      true);
-//        MemberGetDto memberdetail2 = new MemberGetDto(2L, "aksrl@ssafy.com", "서만기", "aksrl", "안녕하세요 서만기입니다", "666666", true,
-//                                                      true);
-//        MemberGetDto memberdetail3 = new MemberGetDto(3L, "gPtjs@ssafy.com", "박헤선", "gPtjs", "안녕하세요 박혜선입니다", "145643", true,
-//                                                      true);
-//        MemberGetDto memberdetail4 = new MemberGetDto(4L, "thdud@ssafy.com", "최소영", "thdud", "안녕하세요 최소영입니다", "000000", true,
-//                                                      true);
+//        MemberGetDto memberdetail1 = new MemberGetDto(1L, "wndgh@ssafy.com", "최준호", "wnsgh", "안녕하세요 최준호입니다", "123123", true, true);
+//        MemberGetDto memberdetail2 = new MemberGetDto(2L, "aksrl@ssafy.com", "서만기", "aksrl", "안녕하세요 서만기입니다", "666666", true, true);
+//        MemberGetDto memberdetail3 = new MemberGetDto(3L, "gPtjs@ssafy.com", "박헤선", "gPtjs", "안녕하세요 박혜선입니다", "145643", true, true);
+//        MemberGetDto memberdetail4 = new MemberGetDto(4L, "thdud@ssafy.com", "최소영", "thdud", "안녕하세요 최소영입니다", "000000", true, true);
 //
 //        List<String> tagList = new ArrayList<>();
 //        tagList.add("여행");
@@ -164,14 +119,10 @@ public class ThreadController {
 //        mentionList.add(memberdetail3);
 //        mentionList.add(memberdetail4);
 //
-//        HomePaperGetDto paper1 = new HomePaperGetDto(1L, "2023-09-06", 8, "내용1", "내용2", "123", "123", "123", "123", "000", "000",
-//                                                     "000", "000", tagList, mentionList, 1344563, 10, 34213, true, true, true);
-//        HomePaperGetDto paper2 = new HomePaperGetDto(2L, "2023-09-06", 2, "내용234332", "두번째페이지", "123", "123", "123", "123", "000",
-//                                                     "000", "000", "000", tagList, mentionList, 1344563, 10, 34213, true, true,
-//                                                     true);
-//        HomePaperGetDto paper3 = new HomePaperGetDto(3L, "2023-09-06", 4, "23423423", "세번째페이지", "123", "123", "123", "123", "000",
-//                                                     "000", "000", "000", tagList, mentionList, 1344563, 10, 34213, true, true,
-//                                                     true);
+//
+//        HomePaperGetDto paper1 = new HomePaperGetDto(1L, "2023-09-06", 8, "내용1", "내용2", "123", "123", "123", "123", "000", "000", "000", "000", tagList, mentionList, 1344563, 10, 34213, true, true, true);
+//        HomePaperGetDto paper2 = new HomePaperGetDto(2L, "2023-09-06", 2, "내용234332", "두번째페이지", "123", "123", "123", "123", "000", "000", "000", "000", tagList, mentionList, 1344563, 10, 34213, true, true, true);
+//        HomePaperGetDto paper3 = new HomePaperGetDto(3L, "2023-09-06", 4, "23423423", "세번째페이지", "123", "123", "123", "123", "000", "000", "000", "000", tagList, mentionList, 1344563, 10, 34213, true, true, true);
 //        List<HomePaperGetDto> paperList = new ArrayList<>();
 //        paperList.add(paper1);
 //        paperList.add(paper2);
@@ -182,26 +133,6 @@ public class ThreadController {
 //        return response.success(ResponseCode.THREAD_FETCHED, thread);
 //    }
 //
-//    @Operation(summary = "쓰레드 생성", description = "쓰레드 생성")
-//    @PostMapping
-//    public ResponseEntity<?> createThread(@RequestBody ThreadPostDto thread) {
-//
-//        return response.success(ResponseCode.THREAD_CREATED, thread.getBookId());
-//    }
-//
-//    @Operation(summary = "쓰레드 수정", description = "쓰레드 수정")
-//    @PutMapping
-//    public ResponseEntity<?> updateThread(@RequestBody ThreadUpdateDto thread) {
-//
-//        return response.success(ResponseCode.THREAD_UPDATED, thread.getThreadId());
-//    }
-//
-//    @Operation(summary = "쓰레드 삭제", description = "쓰레드 아이디를 통한 쓰레드 삭제")
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<?> deleteThread(@PathVariable(name = "id") Long threadId) {
-//
-//        return response.success(ResponseCode.THREAD_DELETED, threadId);
-//    }
 //
 //    @Operation(summary = "메인홈 쓰레드 조회", description = "메인홈에서의 쓰레드 목록 조회")
 //    @GetMapping("/home")
@@ -213,14 +144,10 @@ public class ThreadController {
 //        MemberInfoDto member3 = new MemberInfoDto(3L, "gPtjs", "안녕하세요 박혜선입니다", "145643");
 //        MemberInfoDto member4 = new MemberInfoDto(4L, "thdud", "안녕하세요 최소영입니다", "000000");
 //
-//        MemberGetDto memberdetail1 = new MemberGetDto(1L, "wndgh@ssafy.com", "최준호", "wnsgh", "안녕하세요 최준호입니다", "123123", true,
-//                                                      true);
-//        MemberGetDto memberdetail2 = new MemberGetDto(2L, "aksrl@ssafy.com", "서만기", "aksrl", "안녕하세요 서만기입니다", "666666", true,
-//                                                      true);
-//        MemberGetDto memberdetail3 = new MemberGetDto(3L, "gPtjs@ssafy.com", "박헤선", "gPtjs", "안녕하세요 박혜선입니다", "145643", true,
-//                                                      true);
-//        MemberGetDto memberdetail4 = new MemberGetDto(4L, "thdud@ssafy.com", "최소영", "thdud", "안녕하세요 최소영입니다", "000000", true,
-//                                                      true);
+//        MemberGetDto memberdetail1 = new MemberGetDto(1L, "wndgh@ssafy.com", "최준호", "wnsgh", "안녕하세요 최준호입니다", "123123", true, true);
+//        MemberGetDto memberdetail2 = new MemberGetDto(2L, "aksrl@ssafy.com", "서만기", "aksrl", "안녕하세요 서만기입니다", "666666", true, true);
+//        MemberGetDto memberdetail3 = new MemberGetDto(3L, "gPtjs@ssafy.com", "박헤선", "gPtjs", "안녕하세요 박혜선입니다", "145643", true, true);
+//        MemberGetDto memberdetail4 = new MemberGetDto(4L, "thdud@ssafy.com", "최소영", "thdud", "안녕하세요 최소영입니다", "000000", true, true);
 //
 //        List<String> tagList1 = new ArrayList<>();
 //        tagList1.add("여행");
@@ -243,10 +170,9 @@ public class ThreadController {
 //        mentionList2.add(memberdetail3);
 //        mentionList2.add(memberdetail4);
 //
-//        HomePaperGetDto paper1 = new HomePaperGetDto(1L, "2023-09-06", 8, "내용1", "내용2", "123", "123", "123", "123", "000", "000",
-//                                                     "000", "000", tagList1, mentionList1, 1344563, 10, 34213, true, true, true);
-//        HomePaperGetDto paper2 = new HomePaperGetDto(2L, "2023-09-06", 2, "내용1", "내용2", "123", "123", "123", "123", "000", "000",
-//                                                     "000", "000", tagList2, mentionList2, 874647, 2, 1345, false, true, true);
+//
+//        HomePaperGetDto paper1 = new HomePaperGetDto(1L, "2023-09-06", 8, "내용1", "내용2", "123", "123", "123", "123", "000", "000", "000", "000", tagList1, mentionList1, 1344563, 10, 34213, true, true, true);
+//        HomePaperGetDto paper2 = new HomePaperGetDto(2L, "2023-09-06", 2, "내용1", "내용2", "123", "123", "123", "123", "000", "000", "000", "000", tagList2, mentionList2, 874647, 2, 1345, false, true, true);
 //        List<HomePaperGetDto> paperList = new ArrayList<>();
 //        paperList.add(paper1);
 //        paperList.add(paper2);
@@ -275,19 +201,16 @@ public class ThreadController {
 //    @GetMapping("/desk")
 //    public ResponseEntity<?> getMyAllThread(@PageableDefault(page = 0, size = 10) Pageable page) {
 //
+//
 //        MemberInfoDto member1 = new MemberInfoDto(1L, "wnsgh", "안녕하세요 최준호입니다", "123123");
 //        MemberInfoDto member2 = new MemberInfoDto(2L, "aksrl", "안녕하세요 서만기입니다", "666666");
 //        MemberInfoDto member3 = new MemberInfoDto(3L, "gPtjs", "안녕하세요 박혜선입니다", "145643");
 //        MemberInfoDto member4 = new MemberInfoDto(4L, "thdud", "안녕하세요 최소영입니다", "000000");
 //
-//        MemberGetDto memberdetail1 = new MemberGetDto(1L, "wndgh@ssafy.com", "최준호", "wnsgh", "안녕하세요 최준호입니다", "123123", true,
-//                                                      true);
-//        MemberGetDto memberdetail2 = new MemberGetDto(2L, "aksrl@ssafy.com", "서만기", "aksrl", "안녕하세요 서만기입니다", "666666", true,
-//                                                      true);
-//        MemberGetDto memberdetail3 = new MemberGetDto(3L, "gPtjs@ssafy.com", "박헤선", "gPtjs", "안녕하세요 박혜선입니다", "145643", true,
-//                                                      true);
-//        MemberGetDto memberdetail4 = new MemberGetDto(4L, "thdud@ssafy.com", "최소영", "thdud", "안녕하세요 최소영입니다", "000000", true,
-//                                                      true);
+//        MemberGetDto memberdetail1 = new MemberGetDto(1L, "wndgh@ssafy.com", "최준호", "wnsgh", "안녕하세요 최준호입니다", "123123", true, true);
+//        MemberGetDto memberdetail2 = new MemberGetDto(2L, "aksrl@ssafy.com", "서만기", "aksrl", "안녕하세요 서만기입니다", "666666", true, true);
+//        MemberGetDto memberdetail3 = new MemberGetDto(3L, "gPtjs@ssafy.com", "박헤선", "gPtjs", "안녕하세요 박혜선입니다", "145643", true, true);
+//        MemberGetDto memberdetail4 = new MemberGetDto(4L, "thdud@ssafy.com", "최소영", "thdud", "안녕하세요 최소영입니다", "000000", true, true);
 //
 //        List<String> tagList1 = new ArrayList<>();
 //        tagList1.add("여행");
@@ -310,10 +233,9 @@ public class ThreadController {
 //        mentionList2.add(memberdetail3);
 //        mentionList2.add(memberdetail4);
 //
-//        PaperGetDto paper1 = new PaperGetDto(1L, "2023-09-06", 8, "내용1", "내용2", "123", "123", "123", "123", "000", "000", "000",
-//                                             "000", tagList1, mentionList1, 1344563, 10, 34213, true);
-//        PaperGetDto paper2 = new PaperGetDto(2L, "2023-09-06", 2, "내용1", "내용2", "123", "123", "123", "123", "000", "000", "000",
-//                                             "000", tagList2, mentionList2, 874647, 2, 1345, false);
+//
+//        PaperGetDto paper1 = new PaperGetDto(1L, "2023-09-06", 8, "내용1", "내용2", "123", "123", "123", "123", "000", "000", "000", "000", tagList1, mentionList1, 1344563, 10, 34213, true);
+//        PaperGetDto paper2 = new PaperGetDto(2L, "2023-09-06", 2, "내용1", "내용2", "123", "123", "123", "123", "000", "000", "000", "000", tagList2, mentionList2, 874647, 2, 1345, false);
 //
 //        List<PaperGetDto> paperList = new ArrayList<>();
 //        paperList.add(paper1);
@@ -342,21 +264,17 @@ public class ThreadController {
 //    @Operation(summary = "특정 회원의 쓰레드 조회", description = "회원 아이디를 통한 특정 회원의 마이브러리 책상에서의 쓰레드 목록 조회")
 //    @GetMapping("/{id}/desk")
 //    public ResponseEntity<?> getOtherAllThread(@PathVariable(name = "id") Long mybraryId,
-//                                               @PageableDefault(page = 0, size = 10) Pageable page) {
+//                                                @PageableDefault(page = 0, size = 10) Pageable page) {
 //
 //        MemberInfoDto member1 = new MemberInfoDto(1L, "wnsgh", "안녕하세요 최준호입니다", "123123");
 //        MemberInfoDto member2 = new MemberInfoDto(2L, "aksrl", "안녕하세요 서만기입니다", "666666");
 //        MemberInfoDto member3 = new MemberInfoDto(3L, "gPtjs", "안녕하세요 박혜선입니다", "145643");
 //        MemberInfoDto member4 = new MemberInfoDto(4L, "thdud", "안녕하세요 최소영입니다", "000000");
 //
-//        MemberGetDto memberdetail1 = new MemberGetDto(1L, "wndgh@ssafy.com", "최준호", "wnsgh", "안녕하세요 최준호입니다", "123123", true,
-//                                                      true);
-//        MemberGetDto memberdetail2 = new MemberGetDto(2L, "aksrl@ssafy.com", "서만기", "aksrl", "안녕하세요 서만기입니다", "666666", true,
-//                                                      true);
-//        MemberGetDto memberdetail3 = new MemberGetDto(3L, "gPtjs@ssafy.com", "박헤선", "gPtjs", "안녕하세요 박혜선입니다", "145643", true,
-//                                                      true);
-//        MemberGetDto memberdetail4 = new MemberGetDto(4L, "thdud@ssafy.com", "최소영", "thdud", "안녕하세요 최소영입니다", "000000", true,
-//                                                      true);
+//        MemberGetDto memberdetail1 = new MemberGetDto(1L, "wndgh@ssafy.com", "최준호", "wnsgh", "안녕하세요 최준호입니다", "123123", true, true);
+//        MemberGetDto memberdetail2 = new MemberGetDto(2L, "aksrl@ssafy.com", "서만기", "aksrl", "안녕하세요 서만기입니다", "666666", true, true);
+//        MemberGetDto memberdetail3 = new MemberGetDto(3L, "gPtjs@ssafy.com", "박헤선", "gPtjs", "안녕하세요 박혜선입니다", "145643", true, true);
+//        MemberGetDto memberdetail4 = new MemberGetDto(4L, "thdud@ssafy.com", "최소영", "thdud", "안녕하세요 최소영입니다", "000000", true, true);
 //
 //        List<String> tagList1 = new ArrayList<>();
 //        tagList1.add("여행");
@@ -379,10 +297,9 @@ public class ThreadController {
 //        mentionList2.add(memberdetail3);
 //        mentionList2.add(memberdetail4);
 //
-//        HomePaperGetDto paper1 = new HomePaperGetDto(1L, "2023-09-06", 8, "내용1", "내용2", "123", "123", "123", "123", "000", "000",
-//                                                     "000", "000", tagList1, mentionList1, 1344563, 10, 34213, true, true, true);
-//        HomePaperGetDto paper2 = new HomePaperGetDto(2L, "2023-09-06", 2, "내용1", "내용2", "123", "123", "123", "123", "000", "000",
-//                                                     "000", "000", tagList2, mentionList2, 874647, 2, 1345, false, true, true);
+//
+//        HomePaperGetDto paper1 = new HomePaperGetDto(1L, "2023-09-06", 8, "내용1", "내용2", "123", "123", "123", "123", "000", "000", "000", "000", tagList1, mentionList1, 1344563, 10, 34213, true, true, true);
+//        HomePaperGetDto paper2 = new HomePaperGetDto(2L, "2023-09-06", 2, "내용1", "내용2", "123", "123", "123", "123", "000", "000", "000", "000", tagList2, mentionList2, 874647, 2, 1345, false, true, true);
 //        List<HomePaperGetDto> paperList = new ArrayList<>();
 //        paperList.add(paper1);
 //        paperList.add(paper2);
