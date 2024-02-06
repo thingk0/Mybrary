@@ -9,6 +9,8 @@ import org.springframework.data.domain.Pageable;
 
 public interface ThreadRepositoryCustom {
 
+    Optional<Integer> countMyThread(Long myId);
+
     Optional<Thread> findByThreadId(Long threadId);
 
     /* 나를 포함하여 내가 팔로잉중인 회원들의 쓰레드 n개 조회  */

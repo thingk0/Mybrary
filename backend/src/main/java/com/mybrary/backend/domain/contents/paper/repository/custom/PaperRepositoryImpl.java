@@ -9,6 +9,9 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import java.util.List;
+import static com.mybrary.backend.domain.contents.paper.entity.QPaper.paper;
+import static com.mybrary.backend.domain.contents.thread.entity.QThread.thread;
 
 @RequiredArgsConstructor
 @Repository
@@ -34,6 +37,7 @@ public class PaperRepositoryImpl implements PaperRepositoryCustom {
                     .where(thread.id.eq(threadId))
                     .groupBy(thread)
                     .fetch();
+
     }
 
     @Override

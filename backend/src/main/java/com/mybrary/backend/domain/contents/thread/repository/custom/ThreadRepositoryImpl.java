@@ -27,6 +27,15 @@ public class ThreadRepositoryImpl implements ThreadRepositoryCustom {
     private final JPAQueryFactory query;
 
     @Override
+    public Optional<Integer> countMyThread(Long mybraryId) {
+        return Optional.ofNullable(query.select(thread.count().intValue())
+            .from(thread)
+            .where(thread.mybrary.id.eq(mybraryId))
+            .fetchOne());
+
+    }
+
+    @Override
     public Optional<Thread> findByThreadId(Long threadId) {
         return Optional.ofNullable(query.selectFrom(thread)
             .where(thread.id.eq(threadId))
