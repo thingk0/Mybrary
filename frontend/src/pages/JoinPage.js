@@ -37,7 +37,7 @@ export default function JoinPage() {
                 </div>
                 <div className={styles.midright}>
                   <div className={styles.midrightmain}>
-                    {pageremote && <SignUpForm />}
+                    {pageremote && <SignUpForm setPageremote={setPageremote} />}
                     {!pageremote && (
                       <>
                         <div className={styles.rightheader}>

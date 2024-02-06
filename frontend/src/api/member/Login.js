@@ -1,3 +1,5 @@
+import axios from "axios";
+
 //로그인요청
 export async function login(user) {
   try {
@@ -18,6 +20,16 @@ export async function login(user) {
     return data;
   } catch (error) {
     console.log(error);
+    throw error;
+  }
+}
+
+/* 소셜 로그인 */
+export async function socialLogin(object) {
+  try {
+    const response = await axios.post("/api/v1/member/login/social", object);
+    return response.data;
+  } catch (error) {
     throw error;
   }
 }

@@ -9,13 +9,13 @@ const useStompStore = create((set) => ({
   connect: (email, setNewNotification) => {
     let socket = null;
     try {
-      socket = new SockJS("http://localhost:8080/ws");
+      socket = new SockJS("http://thingk0.duckdns.org:8080/ws");
     } catch (e) {
       console.log("여기옴?");
     }
 
     const client = new Client({
-      brokerURL: "ws://localhost:8080/ws", // brokerURL이 http 일경우 ws를 https일 경우 wss를 붙여서 사용
+      brokerURL: "ws://thingk0.duckdns.org:8080/ws", // brokerURL이 http 일경우 ws를 https일 경우 wss를 붙여서 사용
       webSocketFactory: () => socket, // 웹소켓 인스턴스를 반환하는 팩토리 함수, sockJS를 사용할 경우 팩토리 함수를 지정해야 함.
     });
 
