@@ -25,40 +25,40 @@
   overflow: hidden;
   animation: fadeInAnimation 0.4s ease-in-out;
 }
-.bg01 {
-  background-image: url("../../assets/mybrary_01.png");
+.bg1 {
+  background-image: url("../../assets/mybrary_1.png");
   background-color: #e9a0b5;
 }
-.bg02 {
-  background-image: url("../../assets/mybrary_02.png");
+.bg2 {
+  background-image: url("../../assets/mybrary_2.png");
   background-color: #fffdde;
 }
-.bg03 {
-  background-image: url("../../assets/mybrary_03.png");
+.bg3 {
+  background-image: url("../../assets/mybrary_3.png");
   background-color: #ffeeee;
 }
-.bg04 {
-  background-image: url("../../assets/mybrary_04.png");
+.bg4 {
+  background-image: url("../../assets/mybrary_4.png");
   background-color: #cac8ea;
 }
-.bg05 {
-  background-image: url("../../assets/mybrary_05.png");
+.bg5 {
+  background-image: url("../../assets/mybrary_5.png");
   background-color: #ffddf0;
 }
-.bg06 {
-  background-image: url("../../assets/mybrary_06.png");
+.bg6 {
+  background-image: url("../../assets/mybrary_6.png");
   background-color: #fae6e2;
 }
-.bg07 {
-  background-image: url("../../assets/mybrary_07.png");
+.bg7 {
+  background-image: url("../../assets/mybrary_7.png");
   background-color: #ffdeb7;
 }
-.bg08 {
-  background-image: url("../../assets/mybrary_08.png");
+.bg8 {
+  background-image: url("../../assets/mybrary_8.png");
   background-color: #ffdeb7;
 }
-.bg09 {
-  background-image: url("../../assets/mybrary_09.png");
+.bg9 {
+  background-image: url("../../assets/mybrary_9.png");
   background-color: #c5caeb;
 }
 .bg10 {
