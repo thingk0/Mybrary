@@ -9,11 +9,50 @@ import { useNavigate } from "react-router-dom";
 export default function SearchPage() {
   const [searchtext, setSearchtext] = useState("");
   const [animateOut, setAnimateOut] = useState(false);
+  const [recentSearches, setRecentSearches] = useState([]);
   const navigate = useNavigate();
+
+  const handleRecentSearchClick = (search) => {
+    setAnimateOut(true);
+    if (search.trim()) {
+      setRecentSearches((prevSearches) => {
+        const updatedSearches = [...prevSearches];
+        if (updatedSearches.includes(search)) {
+          updatedSearches.splice(updatedSearches.indexOf(search), 1);
+        }
+        updatedSearches.unshift(search); // 클릭된 단어를 앞에 추가
+        const newSearches = updatedSearches.slice(0, 5); // 최대 5개의 검색어만 유지
+
+        // localStorage에 저장
+        localStorage.setItem("recentSearches", JSON.stringify(newSearches));
+
+        return newSearches;
+      });
+    }
+    setTimeout(() => {
+      setSearchtext(search);
+      setAnimateOut(false);
+      navigate(`/search/${search}`); // 페이지 전환
+    }, 500);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (searchtext.trim()) {
+      setRecentSearches((prevSearches) => {
+        const updatedSearches = [...prevSearches];
+        if (updatedSearches.includes(searchtext)) {
+          updatedSearches.splice(updatedSearches.indexOf(searchtext), 1);
+        }
+        updatedSearches.unshift(searchtext); // 새 검색어를 앞에 추가
+        const newSearches = updatedSearches.slice(0, 5); // 최대 5개의 검색어만 유지
 
+        // localStorage에 저장
+        localStorage.setItem("recentSearches", JSON.stringify(newSearches));
+
+        return newSearches;
+      });
+    }
     // 검색 결과 페이지로 이동 navigate(`/search/${d.text}`)
     setAnimateOut(true); // fadeOut 애니메이션 시작
     // 애니메이션이 끝난 후 페이지 전환
@@ -21,6 +60,13 @@ export default function SearchPage() {
       navigate(`/search/${searchtext}`); // 페이지 전환
     }, 500);
   };
+  useEffect(() => {
+    // 컴포넌트 마운트 시 localStorage에서 최근 검색어 불러오기
+    const savedSearches = JSON.parse(localStorage.getItem("recentSearches"));
+    if (savedSearches) {
+      setRecentSearches(savedSearches);
+    }
+  }, []);
   useEffect(() => {
     // 여기에 단어 구름 데이터를 배열로 정의합니다.
     const data = [
@@ -84,7 +130,7 @@ export default function SearchPage() {
       .fontSize(function (d) {
         return d.size;
       })
-      .rotate(30)
+      .rotate(90)
       .spiral(customSpiral) // 이 부분을 추가하세요
       .on("end", draw)
       .start();
@@ -157,10 +203,26 @@ export default function SearchPage() {
           .style("z-index", "1");
       });
       textElements.on("click", function (event, d) {
-        setAnimateOut(true); // fadeOut 애니메이션 시작
-        // 애니메이션이 끝난 후 페이지 전환
+        if (d.text.trim()) {
+          setRecentSearches((prevSearches) => {
+            const updatedSearches = [...prevSearches];
+            if (updatedSearches.includes(d.text)) {
+              updatedSearches.splice(updatedSearches.indexOf(d.text), 1);
+            }
+            updatedSearches.unshift(d.text); // 클릭된 단어를 앞에 추가
+            const newSearches = updatedSearches.slice(0, 5); // 최대 5개의 검색어만 유지
+
+            // localStorage에 저장
+            localStorage.setItem("recentSearches", JSON.stringify(newSearches));
+
+            return newSearches;
+          });
+        }
+
+        // 나머지 애니메이션 및 페이지 전환 로직
+        setAnimateOut(true);
         setTimeout(() => {
-          navigate(`/search/${d.text}`); // 페이지 전환
+          navigate(`/search/${d.text}`);
         }, 500);
       });
     }
@@ -202,11 +264,15 @@ export default function SearchPage() {
               <span>최근검색어</span>
               <div>
                 <div className={styles.최근검색어박스}>
-                  <div className={styles.box}>
-                    <span>박혜선</span>
-                  </div>
-                  <div className={styles.box}>박혜썬</div>
-                  <div className={styles.box}>박혜썬</div>
+                  {recentSearches.map((search, index) => (
+                    <div
+                      key={index}
+                      className={styles.box}
+                      onClick={() => handleRecentSearchClick(search)}
+                    >
+                      {search}
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
