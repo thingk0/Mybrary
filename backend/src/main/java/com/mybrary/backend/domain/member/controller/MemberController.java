@@ -140,8 +140,9 @@ public class MemberController {
 
     @Operation(summary = "로그아웃", description = "로그아웃")
     @PostMapping("/logout")
-    public ResponseEntity<?> logout() {
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<?> logout(@Parameter(hidden = true) Authentication authentication,
+                                    HttpServletResponse servletResponse) {
+        return response.success(ResponseCode.LOGOUT_SUCCESS, memberService.logout(authentication.getName(), servletResponse));
     }
 
     @Operation(summary = "나의 팔로잉 리스트", description = "나의 팔로잉 리스트")
@@ -210,7 +211,6 @@ public class MemberController {
     }
 
     /* 설정페이지에 필요한 API */
-
     @Operation(summary = "회원 정보 수정", description = "닉네임, 프로필이미지, 소개,  수정")
     @PutMapping("/profile")
     public ResponseEntity<?> updateProfile(@Parameter(hidden = true) Authentication authentication, @RequestBody MemberUpdateDto member, @RequestParam

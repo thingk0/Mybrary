@@ -42,4 +42,6 @@ public interface MemberService {
     void secession(SecessionRequestDto secession);
 
     boolean checkNicknameDuplication(String nickname);
+
+    String logout(String email, HttpServletResponse servletResponse);
 }

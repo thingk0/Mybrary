@@ -217,6 +217,15 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.isNicknameDuplicate(nickname);
     }
 
+    @Override
+    @Transactional
+    public String logout(String email, HttpServletResponse servletResponse) {
+        cookieUtil.removeCookie("RefreshToken", servletResponse);
+        refreshTokenRepository.findById(email)
+                              .ifPresent(refreshTokenRepository::delete);
+        return email;
+    }
+
     private Member findMemberByEmail(String email) {
         Member member = memberRepository.findByEmail(email)
                                         .orElseThrow(EmailNotFoundException::new);
