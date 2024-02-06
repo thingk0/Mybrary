@@ -1,5 +1,9 @@
 package com.mybrary.backend.domain.member.service.impl;
 
+import com.mybrary.backend.domain.bookshelf.entity.Bookshelf;
+import com.mybrary.backend.domain.bookshelf.repository.BookShelfRepository;
+import com.mybrary.backend.domain.category.entity.Category;
+import com.mybrary.backend.domain.category.repository.CategoryRepository;
 import com.mybrary.backend.domain.follow.entity.Follow;
 import com.mybrary.backend.domain.follow.repository.FollowRepository;
 import com.mybrary.backend.domain.member.dto.FollowerDto;
@@ -16,6 +20,10 @@ import com.mybrary.backend.domain.member.dto.login.MemberInfo;
 import com.mybrary.backend.domain.member.entity.Member;
 import com.mybrary.backend.domain.member.repository.MemberRepository;
 import com.mybrary.backend.domain.member.service.MemberService;
+import com.mybrary.backend.domain.mybrary.entity.Mybrary;
+import com.mybrary.backend.domain.mybrary.repository.MybraryRepository;
+import com.mybrary.backend.domain.rollingpaper.entity.RollingPaper;
+import com.mybrary.backend.domain.rollingpaper.repository.RollingPaperRepository;
 import com.mybrary.backend.global.exception.member.DuplicateEmailException;
 import com.mybrary.backend.global.exception.member.EmailNotFoundException;
 import com.mybrary.backend.global.exception.member.InvalidLoginAttemptException;
@@ -47,6 +55,10 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
     private final FollowRepository followRepository;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final MybraryRepository mybraryRepository;
+    private final BookShelfRepository bookShelfRepository;
+    private final CategoryRepository categoryRepository;
+    private final RollingPaperRepository rollingPaperRepository;
 
     @Transactional
     @Override
@@ -59,8 +71,44 @@ public class MemberServiceImpl implements MemberService {
         memberRepository.findByEmail(requestDto.getEmail())
                         .ifPresent(this::throwDuplicateEmailException);
 
+        /* 회원 생성 */
         Member member = Member.of(requestDto, passwordEncoder.encode(requestDto.getPassword()));
         memberRepository.save(member);
+
+        /* 마이브러리 생성 */
+        Mybrary mybrary = Mybrary.builder()
+            .member(member)
+            .backgroundColor(1)
+            .deskColor(1)
+            .bookshelfColor(1)
+            .deskColor(1)
+            .build();
+        mybraryRepository.save(mybrary);
+
+        /* 책장 생성 */
+        Bookshelf bookshelf = Bookshelf.builder()
+            .mybrary(mybrary)
+            .build();
+        bookShelfRepository.save(bookshelf);
+
+        /* 기본 카테고리 3개 생성 */
+        for(int i = 1;i<=3;i++){
+            Category category = Category.builder()
+                .bookshelf(bookshelf)
+                .categoryName("기본" + i)
+                .categorySeq(i)
+                .build();
+            categoryRepository.save(category);
+        }
+
+        /* 롤링페이퍼 생성 */
+        RollingPaper rollingPaper = RollingPaper.builder()
+            .mybrary(mybrary)
+            .build();
+        // 이건 롤링페이퍼 이미지 바로 참조해야할 것 같다
+        // 수정 꼭 하자
+        rollingPaperRepository.save(rollingPaper);
+
         return member.getId();
     }
 
