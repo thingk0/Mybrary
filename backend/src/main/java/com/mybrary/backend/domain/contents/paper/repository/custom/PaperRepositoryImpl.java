@@ -37,7 +37,6 @@ public class PaperRepositoryImpl implements PaperRepositoryCustom {
                     .where(thread.id.eq(threadId))
                     .groupBy(thread)
                     .fetch();
-
     }
 
     @Override
