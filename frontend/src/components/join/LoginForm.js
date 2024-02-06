@@ -46,10 +46,12 @@ function LoginForm() {
     e.preventDefault();
     try {
       // 로그인 요청 보내기
+
       const data = await login(formData);
+      console.log(data);
       if (data.status === "SUCCESS") {
         // useStore에 data안에 들어있는 기본 정보들을 저장해라
-        localStorage.setItem("accessToken", data.data);
+        localStorage.setItem("accessToken", data.data.token);
         localStorage.setItem("tokenTimestamp", Date.now());
         await setUser({
           email: formData.email,
@@ -68,9 +70,9 @@ function LoginForm() {
           }
         }
         await socketConnect();
-
-        navigate(`/mybrary/${data.memberId}`);
-        navigate(`/mybrary/userid`);
+        console.log(data.data.memberInfo.memberId);
+        navigate(`/mybrary/${data.data.memberInfo.memberId}`);
+        // navigate(`/mybrary/userid`);
       } else {
         // 이메일, 비밀번호 불일치
         setIsLoginFail(true);

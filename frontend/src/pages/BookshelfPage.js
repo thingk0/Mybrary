@@ -4,66 +4,48 @@ import Container from "../components/frame/Container";
 import CategoryEditModal from "../components/bookshelf/CategoryEditModal";
 import BookshelfHeader from "../components/bookshelf/BookshelfHeader";
 import Bookshelf from "../components/bookshelf/Bookshelf";
+import {
+  getCategoryList,
+  updateCategory,
+  createCategory,
+  getBookList,
+  deleteCategory,
+} from "../api/category/Category.js";
+
+import { useParams, Params } from "react-router-dom";
 // import { useNavigate } from "react-router-dom";
 
 export default function BookshelfPage() {
   const [categoryList, setCategoryList] = useState([]);
-
+  const [fetchedData, setFetchedData] = useState([]);
+  const { bookShelfId } = useParams(); // URL에서 bookshelfId 추출
   useEffect(() => {
-    const fetchedData = {
-      bookShelfId: "123",
-      categoryList: [
-        { categoryId: "1", categoryName: "문학", categorySeq: 1, bookCount: 1 },
-        {
-          categoryId: "2",
-          categoryName: "역사",
-          categorySeq: 2,
-          bookCount: 10,
-        },
-        { categoryId: "3", categoryName: "과학", categorySeq: 3, bookCount: 8 },
-        {
-          categoryId: "4",
-          categoryName: "예술",
-          categorySeq: 4,
-          bookCount: 12,
-        },
-        {
-          categoryId: "5",
-          categoryName: "여행",
-          categorySeq: 5,
-          bookCount: 11,
-        },
-        { categoryId: "6", categoryName: "요리", categorySeq: 6, bookCount: 2 },
-        {
-          categoryId: "7",
-          categoryName: "만화",
-          categorySeq: 7,
-          bookCount: 12,
-        },
-        {
-          categoryId: "8",
-          categoryName: "연애",
-          categorySeq: 8,
-          bookCount: 16,
-        },
-        { categoryId: "9", categoryName: "사랑", categorySeq: 9, bookCount: 5 },
-      ],
-    };
+    async function fetchbookshelfData() {
+      console.log(bookShelfId);
+      try {
+        // bookshelfId를 이용하여 서버에 요청
+        const response = await getCategoryList(bookShelfId);
+        setFetchedData(response);
+        console.log(response);
 
-    //책의 개수가 홀수일 때 한칸을 채워주도록
-    if (fetchedData.categoryList.length % 2 !== 0) {
-      fetchedData.categoryList.push({
-        categoryId: "empty",
-        // categorySeq: fetchedData.categoryList.length + 1,
-      });
+        // 책장 카테고리 정렬 및 홀수 개수 처리
+        const newCategoryList = [...response.data];
+        if (newCategoryList.length % 2 !== 0) {
+          newCategoryList.push({
+            categoryId: "empty",
+          });
+        }
+        const sortedCategoryList = newCategoryList.sort(
+          (a, b) => a.seq - b.seq
+        );
+        setCategoryList(sortedCategoryList);
+      } catch (error) {
+        console.error("데이터를 가져오는 데 실패했습니다:", error);
+      }
     }
 
-    const sortedCategoryList = fetchedData.categoryList.sort(
-      (a, b) => a.categorySeq - b.categorySeq
-    );
-    // setBookShelfId(fetchedData.bookShelfId);
-    setCategoryList(sortedCategoryList);
-  }, []);
+    fetchbookshelfData();
+  }, [bookShelfId]); // bookshelfId를 의존성 배열에 추가
 
   return (
     <>
