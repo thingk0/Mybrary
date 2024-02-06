@@ -1,7 +1,7 @@
 {
   "name": "mybraryfront",
   "version": "0.1.0",
-  "proxy": "http://localhost:8080",
+  "proxy": "http://thingk0.duckdns.org:8080",
   "private": true,
   "dependencies": {
     "@looop/quill-image-resize-module-react": "^3.1.5",
@@ -9,6 +9,8 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.6.7",
+    "axois": "^0.0.1-security",
     "classnames": "^2.5.1",
     "d3": "^7.8.5",
     "d3-cloud": "^1.2.5",

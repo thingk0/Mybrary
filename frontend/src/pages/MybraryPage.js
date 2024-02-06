@@ -27,31 +27,56 @@ import { useNavigate } from "react-router-dom";
 import useUserStore from "../store/useUserStore";
 import useStompStore from "../store/useStompStore";
 import 혜선누나 from "../assets/혜선누나.jpg";
+import { getMyMybrary } from "../api/mybrary/Mybrary.js";
+import axios from "axios";
 
 export default function MybraryPage() {
   const navigate = useNavigate();
   const [edit, setEdit] = useState(false);
-  const [bgColor, setBgColor] = useState("01");
+  const [bgColor, setBgColor] = useState("1");
   const [esColor, setEsColor] = useState(easel1);
   const [tbColor, setTbColor] = useState(table1);
   const [bsColor, setBsColor] = useState(shelf1);
   const user = useUserStore((state) => state.user);
   const client = useStompStore((state) => state.stompClient);
+  const [testuser, setTestuser] = useState({
+    data: {
+      member: {},
+      bookCount: 0,
+      threadCount: 0,
+      followerCount: 0,
+      followingCount: 0,
+    },
+  });
 
   useEffect(() => {
-    console.log(user);
-  }, [user]);
+    async function fetchMybraryData() {
+      try {
+        const response = await getMyMybrary();
+        console.log(response);
+        setTestuser(response);
+        // setBgColor(response.data.backgroundColor.toString());
+        // setEsColor(easelImgs[response.data.easelColor - 1]);
+        // setTbColor(tableImgs[response.data.deskColor - 1]);
+        // setBsColor(bookshelfImgs[response.data.bookshelfColor - 1]);
+      } catch (error) {
+        console.error("데이터를 가져오는 데 실패했습니다:", error);
+      }
+    }
+
+    fetchMybraryData();
+  }, []);
 
   const color = [
-    "01",
-    "02",
-    "03",
-    "04",
-    "05",
-    "06",
-    "07",
-    "08",
-    "09",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
     "10",
     "11",
     "12",
@@ -87,7 +112,7 @@ export default function MybraryPage() {
           <div
             key={index}
             className={s(styles.color, styles[`color${index + 1}`])}
-            onClick={() => setColor(colornum)}
+            onClick={() => setColor(colornum, console.log(tbColor))}
           >
             {color === colornum && <div className={styles.select}></div>}
           </div>
@@ -103,7 +128,7 @@ export default function MybraryPage() {
           <div
             key={index}
             className={s(styles.color, styles[`bgColor${index + 1}`])}
-            onClick={() => setColor(colornum)}
+            onClick={() => setColor(colornum, console.log(`${index + 1}`))}
           >
             {color === colornum && <div className={styles.select}></div>}
           </div>
@@ -219,27 +244,27 @@ export default function MybraryPage() {
             <div className={styles.profile}>
               <div>이미지</div>
               <div>
-                <div>닉네임</div>
-                <div>이름</div>
+                <div>{testuser.data.member.nickname}</div>
+                <div>{testuser.data.member.name}</div>
               </div>
               <div>
-                <div>300</div>
+                <div>{testuser.data.bookCount}</div>
                 <div>앨범</div>
               </div>
               <div>
-                <div>300</div>
+                <div>{testuser.data.threadCount}</div>
                 <div>게시글</div>
               </div>
               <div>
-                <div>300</div>
+                <div>{testuser.data.followerCount}</div>
                 <div>팔로워</div>
               </div>
               <div>
-                <div>300</div>
+                <div>{testuser.data.followingCount}</div>
                 <div>팔로우</div>
               </div>
             </div>
-            <div>한줄소개가 들어가는 부분이빈다.</div>
+            <div>{testuser.data.member.intro}</div>
           </div>
           <div>
             <div className={styles.editButton} onClick={() => setEdit(true)}>
