@@ -62,7 +62,6 @@ public class SecurityConfig {
                     "/api/v1/member",
                     "/api/v1/member/social",
                     "/api/v1/member/login/**",
-                    "/api/v1/member/logout",
                     "/api/v1/member/nickname/**",
                     "/api/v1/member/email/**",
                     "/api/v1/member/password-reset"
@@ -98,7 +97,8 @@ public class SecurityConfig {
 
     private CorsConfiguration getCorsConfiguration() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(Collections.singletonList(CORS_ALLOWED_URL));
+//        config.setAllowedOrigins(Collections.singletonList(CORS_ALLOWED_URL));
+        config.setAllowedOrigins(Collections.singletonList("*"));
         config.setAllowedMethods(Collections.singletonList("*"));
         config.setAllowedHeaders(Collections.singletonList("*"));
         config.setAllowCredentials(true);
