@@ -132,17 +132,17 @@ public class MemberController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @Operation(summary = "비밀번호 재설정(비번찾기)", description = "비밀번호를 잃어버렸을 때 비밀번호 재설정")
-    @PutMapping("/password-reset")
-    public ResponseEntity<?> resetPassword(@RequestBody PasswordUpdateDto password) {
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
     @Operation(summary = "로그아웃", description = "로그아웃")
     @PostMapping("/logout")
     public ResponseEntity<?> logout(@Parameter(hidden = true) Authentication authentication,
                                     HttpServletResponse servletResponse) {
         return response.success(ResponseCode.LOGOUT_SUCCESS, memberService.logout(authentication.getName(), servletResponse));
+    }
+
+    @Operation(summary = "비밀번호 재설정(비번찾기)", description = "비밀번호를 잃어버렸을 때 비밀번호 재설정")
+    @PutMapping("/password-reset")
+    public ResponseEntity<?> resetPassword(@RequestBody PasswordUpdateDto password) {
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Operation(summary = "나의 팔로잉 리스트", description = "나의 팔로잉 리스트")
@@ -185,7 +185,8 @@ public class MemberController {
 
     @Operation(summary = "팔로우하기", description = "특정회원을 팔로우하기")
     @PostMapping("/{id}/follow")
-    public ResponseEntity<?> follow(@Parameter(hidden = true) Authentication authentication, @PathVariable(name = "id") Long memberId) {
+    public ResponseEntity<?> follow(@Parameter(hidden = true) Authentication authentication,
+                                    @PathVariable(name = "id") Long memberId) {
         Member me = memberService.findMember(authentication.getName());
         Long myId = me.getId();
         memberService.follow(myId, memberId);
@@ -194,7 +195,8 @@ public class MemberController {
 
     @Operation(summary = "언팔로우하기", description = "특정회원을 언팔로우하기")
     @DeleteMapping("/{id}/unfollow")
-    public ResponseEntity<?> unfollow(@Parameter(hidden = true) Authentication authentication, @PathVariable(name = "id") Long memberId) {
+    public ResponseEntity<?> unfollow(@Parameter(hidden = true) Authentication authentication,
+                                      @PathVariable(name = "id") Long memberId) {
         Member me = memberService.findMember(authentication.getName());
         Long myId = me.getId();
         memberService.unfollow(myId, memberId);
@@ -203,7 +205,8 @@ public class MemberController {
 
     @Operation(summary = "팔로워끊기", description = "특정회원이 나를 팔로우한 것을 끊기")
     @DeleteMapping("/{id}/follower")
-    public ResponseEntity<?> deleteFollower(@Parameter(hidden = true) Authentication authentication, @PathVariable(name = "id") Long memberId) {
+    public ResponseEntity<?> deleteFollower(@Parameter(hidden = true) Authentication authentication,
+                                            @PathVariable(name = "id") Long memberId) {
         Member me = memberService.findMember(authentication.getName());
         Long myId = me.getId();
         memberService.deleteFollower(myId, memberId);
@@ -213,15 +216,17 @@ public class MemberController {
     /* 설정페이지에 필요한 API */
     @Operation(summary = "회원 정보 수정", description = "닉네임, 프로필이미지, 소개,  수정")
     @PutMapping("/profile")
-    public ResponseEntity<?> updateProfile(@Parameter(hidden = true) Authentication authentication, @RequestBody MemberUpdateDto member, @RequestParam
-    MultipartFile multipartFile) {
+    public ResponseEntity<?> updateProfile(@Parameter(hidden = true) Authentication authentication,
+                                           @RequestBody MemberUpdateDto member, @RequestParam
+                                           MultipartFile multipartFile) {
         memberService.updateProfile(member);
         return response.success(ResponseCode.MEMBER_INFO_UPDATE_SUCCESS.getMessage());
     }
 
     @Operation(summary = "비밀번호 재설정(로그인후)", description = "로그인 후 비밀번호 재설정")
     @PutMapping("/password-update")
-    public ResponseEntity<?> updatePassword(@Parameter(hidden = true) Authentication authentication, @RequestBody PasswordUpdateDto password) {
+    public ResponseEntity<?> updatePassword(@Parameter(hidden = true) Authentication authentication,
+                                            @RequestBody PasswordUpdateDto password) {
         Member me = memberService.findMember(authentication.getName());
         Long myId = me.getId();
         memberService.updatePassword(myId, password);
@@ -230,7 +235,8 @@ public class MemberController {
 
     @Operation(summary = "계정 탈퇴", description = "계정 탈퇴 (삭제처리)")
     @DeleteMapping("/secession")
-    public ResponseEntity<?> secession(@Parameter(hidden = true) Authentication authentication, @RequestBody SecessionRequestDto secession) {
+    public ResponseEntity<?> secession(@Parameter(hidden = true) Authentication authentication,
+                                       @RequestBody SecessionRequestDto secession) {
         memberService.secession(secession);
         return response.success(ResponseCode.ACCOUNT_SECESSION_SUCCESS.getMessage());
     }
