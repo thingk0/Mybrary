@@ -3,11 +3,13 @@ import s from "classnames";
 import styles from "./style/ThreadCreatePage.module.css";
 import Layout from "../components/threadcreate/Layout";
 import Edit from "../components/threadcreate/Edit";
-import { EditorState, convertToRaw } from "draft-js";
-import draftToHtml from "draftjs-to-html";
 import Tag from "../components/threadcreate/Tag";
 import Header from "../components/threadcreate/Header";
-
+import { EditorState, convertToRaw } from "draft-js";
+import draftToHtml from "draftjs-to-html";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import BigModal from "../components/common/BigModal";
+import BookCreate from "../components/common/BookCreate";
 const initialPaper = () => ({
   layoutType: 1101,
   editorState: EditorState.createEmpty(),
@@ -24,6 +26,7 @@ export default function ThreadCreatePage() {
   const [paperPublic, setPaperPublic] = useState(true);
   const [scarpEnable, setScarpEnable] = useState(true);
   const [currentPage, setCurrentPage] = useState(0);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const layouts = [
     1101, 1102, 1103, 1201, 1202, 1203, 1204, 1205, 1301, 1302, 1303, 1304,
@@ -32,7 +35,7 @@ export default function ThreadCreatePage() {
     2551,
   ];
 
-  const [bookId, setBookId] = useState(0); // 책 ID 상태 추가
+  const [bookId, setBookId] = useState(1); // 책 ID 상태 추가
   const saveContent = () => {
     const paperList = papers.map((paper) => {
       return {
@@ -161,6 +164,9 @@ export default function ThreadCreatePage() {
             </button>
           </div>
 
+          <button onClick={() => setModalIsOpen(true)}>
+            책 만들기 모달열기
+          </button>
           <div className={styles.postButtons}>
             <button className={styles.postButton} onClick={() => saveContent()}>
               게시
@@ -168,6 +174,14 @@ export default function ThreadCreatePage() {
           </div>
         </div>
       </div>
+      <BigModal
+        modalIsOpen={modalIsOpen}
+        setModalIsOpen={setModalIsOpen}
+        width="1200px"
+        height="800px"
+      >
+        <BookCreate />
+      </BigModal>
     </>
   );
 }
