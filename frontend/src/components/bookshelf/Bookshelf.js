@@ -23,11 +23,11 @@ export default function Bookshelf({ category, categoryName, sort }) {
         {category && category.categoryId !== "empty" && (
           <>
             <div className={s(categoryName, styles.categoryName)}>
-              {category.categoryName}
+              {category.name}
             </div>
             <div className={s(sort, styles.books)}>
               <div className={styles.categoryNameOnHover}>
-                {category.bookCount}권의 "{category.categoryName}"책 보러가기
+                {category.bookCount}권의 "{category.name}"책 보러가기
               </div>
               <BookAlbum category={category} />
             </div>

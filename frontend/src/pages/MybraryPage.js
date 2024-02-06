@@ -27,7 +27,7 @@ import { useNavigate } from "react-router-dom";
 import useUserStore from "../store/useUserStore";
 import useStompStore from "../store/useStompStore";
 import 혜선누나 from "../assets/혜선누나.jpg";
-import { getMyMybrary } from "../api/mybrary/Mybrary";
+import { getMyMybrary, updateMybrary } from "../api/mybrary/Mybrary";
 
 export default function MybraryPage() {
   const navigate = useNavigate();
@@ -38,6 +38,10 @@ export default function MybraryPage() {
   const [bsColor, setBsColor] = useState(shelf1);
   const user = useUserStore((state) => state.user);
   const client = useStompStore((state) => state.stompClient);
+  const [tablenum, setTablenum] = useState("1");
+  const [easelnum, setEaselnum] = useState("1");
+  const [bookshelfnum, setBookshelfnum] = useState("1");
+
   const [testuser, setTestuser] = useState({
     data: {
       member: {},
@@ -54,10 +58,13 @@ export default function MybraryPage() {
         const response = await getMyMybrary();
         console.log(response);
         setTestuser(response);
-        // setBgColor(response.data.backgroundColor.toString());
-        // setEsColor(easelImgs[response.data.easelColor - 1]);
-        // setTbColor(tableImgs[response.data.deskColor - 1]);
-        // setBsColor(bookshelfImgs[response.data.bookshelfColor - 1]);
+        setBgColor(response.data.backgroundColor.toString());
+        setEsColor(easelImgs[response.data.easelColor - 1]);
+        setEaselnum(response.data.easelColor);
+        setTbColor(tableImgs[response.data.deskColor - 1]);
+        setTablenum(response.data.deskColor);
+        setBsColor(bookshelfImgs[response.data.bookshelfColor - 1]);
+        setBookshelfnum(response.data.bookshelfColor - 1);
       } catch (error) {
         console.error("데이터를 가져오는 데 실패했습니다:", error);
       }
@@ -86,32 +93,63 @@ export default function MybraryPage() {
   const bookshelfImgs = [shelf1, shelf2, shelf3, shelf4, shelf5, shelf6];
 
   //완료버튼을 눌렀을때 실행하는 함수
-  const handleSelect = () => {
+  const handleSelect = async () => {
+    // 요청 객체 생성
+    const updateData = {
+      mybraryId: testuser.data.mybraryId, // 여기서는 예시로 `testuser.data.mybraryId`를 사용합니다.
+      frameImage: {
+        // frameImage에 필요한 데이터를 적절히 채워 넣으세요.
+        name: "string",
+        originName: "string",
+        url: "string",
+        thumbnailUrl: "string",
+        format: "string",
+        size: "string",
+      },
+      backgroundColor: parseInt(bgColor, 10),
+      deskColor: parseInt(tablenum, 10),
+      bookshelfColor: parseInt(bookshelfnum, 10),
+      easelColor: parseInt(easelnum, 10),
+    };
+
+    try {
+      // updateMybrary 함수를 호출하여 데이터 업데이트
+      const response = await updateMybrary(updateData);
+      console.log("업데이트 성공:", response);
+
+      toast.success("변경이 완료 되었습니다.", {
+        style: {
+          border: "1px solid #713200",
+          padding: "16px",
+          color: "#713200",
+          zIndex: "100",
+        },
+        iconTheme: {
+          primary: "#713200",
+          secondary: "#FFFAEE",
+        },
+        position: "top-center",
+      });
+    } catch (error) {
+      console.error("업데이트 실패:", error);
+      toast.error("변경 실패: " + error.message);
+    }
+
     setEdit(false);
-    toast.success("변경이 완료 되었습니다.", {
-      style: {
-        border: "1px solid #713200",
-        padding: "16px",
-        color: "#713200",
-        zIndex: "100",
-      },
-      iconTheme: {
-        primary: "#713200",
-        secondary: "#FFFAEE",
-      },
-      position: "top-center",
-    });
   };
 
   //색을 고르는 컴포넌트
-  function ColorSelector({ color, setColor, Colors }) {
+  function ColorSelector({ color, setColor, Colors, setNum }) {
     return (
       <>
         {Colors.map((colornum, index) => (
           <div
             key={index}
             className={s(styles.color, styles[`color${index + 1}`])}
-            onClick={() => setColor(colornum, console.log(tbColor))}
+            onClick={() => {
+              setColor(colornum);
+              setNum(index + 1);
+            }}
           >
             {color === colornum && <div className={styles.select}></div>}
           </div>
@@ -127,7 +165,7 @@ export default function MybraryPage() {
           <div
             key={index}
             className={s(styles.color, styles[`bgColor${index + 1}`])}
-            onClick={() => setColor(colornum, console.log(`${index + 1}`))}
+            onClick={() => setColor(colornum)}
           >
             {color === colornum && <div className={styles.select}></div>}
           </div>
@@ -144,7 +182,7 @@ export default function MybraryPage() {
             src={bsColor}
             alt=""
             className={s(styles.bookshelf, !edit && styles.img)}
-            onClick={() => !edit && navigate("bookshelf")}
+            onClick={() => !edit && navigate(`${testuser.data.bookShelfId}`)}
           />
           <img
             src={tbColor}
@@ -183,6 +221,7 @@ export default function MybraryPage() {
                   color={esColor}
                   setColor={setEsColor}
                   Colors={easelImgs}
+                  setNum={setEaselnum}
                 />
               </div>
               <div className={s(styles.edit, styles.tableColor)}>
@@ -191,6 +230,7 @@ export default function MybraryPage() {
                   color={tbColor}
                   setColor={setTbColor}
                   Colors={tableImgs}
+                  setNum={setTablenum}
                 />
               </div>
               <div className={s(styles.edit, styles.bookshelfColor)}>
@@ -199,6 +239,7 @@ export default function MybraryPage() {
                   color={bsColor}
                   setColor={setBsColor}
                   Colors={bookshelfImgs}
+                  setNum={setBookshelfnum}
                 />
               </div>
             </div>

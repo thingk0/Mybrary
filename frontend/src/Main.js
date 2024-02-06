@@ -31,11 +31,11 @@ function Main() {
           {/*이거 나중에 동적처리 :userid를 쓰는 이유는 오로지 구별용이다. url로 접근했을때 원하는 페이지로 가기 위함*/}
           <Route path="test" element={<ImageTestPage />}></Route>
           <Route path="error" element={<ErrorPage />}></Route>
-          <Route path="mybrary/userid">
+          <Route path="mybrary/:userid">
             <Route index element={<MybraryPage />} />
             <Route path="threads" element={<ThreadsPage />} />
             <Route path="rollingpaper" element={<RollingpaperPage />} />
-            <Route path="bookshelf">
+            <Route path=":bookShelfId">
               <Route index element={<BookshelfPage />} />
               {/*이거 나중에 동적처리 */}
               <Route path="categoryid">

@@ -1,12 +1,14 @@
 import axios from "axios";
 
 /* 카테고리 조회 */
+const BASE_URL = "/api/v1/category";
+
 export async function getCategoryList(id) {
   const params = {
     bookshelfId: id,
   };
   try {
-    const response = await axios.get("/api/v1/category", { params });
+    const response = await axios.get(BASE_URL, { params });
     return response.data;
   } catch (error) {
     throw error;
@@ -16,7 +18,7 @@ export async function getCategoryList(id) {
 /* 카테고리 수정 */
 export async function updateCategory(object) {
   try {
-    const response = await axios.put("/api/v1/category", object);
+    const response = await axios.put(BASE_URL + object);
     return response.data;
   } catch (error) {
     throw error;
@@ -26,7 +28,7 @@ export async function updateCategory(object) {
 /* 카테고리 생성 */
 export async function createCategory(object) {
   try {
-    const response = await axios.put("/api/v1/category", object);
+    const response = await axios.put(BASE_URL + object);
     return response.data;
   } catch (error) {
     throw error;

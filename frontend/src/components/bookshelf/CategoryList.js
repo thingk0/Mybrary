@@ -86,9 +86,7 @@ export default function CategoryList({ categoryList, setCategoryList }) {
                 </>
               ) : (
                 <>
-                  <div className={styles.categoryItem}>
-                    {category.categoryName}
-                  </div>
+                  <div className={styles.categoryItem}>{category.name}</div>
                   <div onClick={() => handleEditCategory(category.categoryId)}>
                     수정
                   </div>
