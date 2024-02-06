@@ -10,20 +10,20 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 @Entity
-@Getter @Setter
+@Getter
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
-@Where(clause = "is_deleted <> true")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Where(clause = "is_deleted = false")
 @SQLDelete(sql = "UPDATE paper SET is_deleted = TRUE WHERE paper_id = ?")
 public class Paper extends BaseEntity {
 
@@ -40,23 +40,31 @@ public class Paper extends BaseEntity {
     @JoinColumn(name = "threads_id")
     private Thread thread;
 
+    @Column(name = "content1")
     private String content1;
 
+    @Column(name = "content2")
     private String content2;
 
     @Builder.Default()
+    @Column(name = "layout_type")
     private int layoutType = 1;
 
+    @Column(name = "scrap_count")
     private int scrapCount;
 
+    @Column(name = "comment_count")
     private int commentCount;
 
+    @Column(name = "like_count")
     private int likeCount;
 
     @Builder.Default()
+    @Column(name = "is_scrap_enabled")
     private boolean isScrapEnabled = true;
 
     @Builder.Default()
+    @Column(name = "is_paper_public")
     private boolean isPaperPublic = true;
 
 }
