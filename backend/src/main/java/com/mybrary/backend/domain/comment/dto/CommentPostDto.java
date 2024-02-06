@@ -19,10 +19,10 @@ public class CommentPostDto {
      *  대댓글 아니면 parentCommentId는 null
      */
 
+    private Long memberid;
     private Long paperId;
     private Long parentCommentId;
     private String content;
     private int colorCode;
-    private List<Long> mentionIdList;
 
 }

@@ -1,14 +1,14 @@
 package com.mybrary.backend.domain.contents.paper.repository.custom;
 
-import static com.mybrary.backend.domain.contents.paper.entity.QPaper.paper;
-import static com.mybrary.backend.domain.contents.thread.entity.QThread.thread;
-
 import com.mybrary.backend.domain.contents.paper.dto.GetFollowingPaperDto;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import static com.mybrary.backend.domain.contents.paper.entity.QPaper.paper;
+import static com.mybrary.backend.domain.contents.thread.entity.QThreads.threads;
 
 @RequiredArgsConstructor
 @Repository
@@ -16,7 +16,7 @@ public class PaperRepositoryImpl implements PaperRepositoryCustom {
 
     private final JPAQueryFactory query;
 
-    public List<GetFollowingPaperDto> getFollowingPaperDtoResults(Long threadId) {
+    public List<GetFollowingPaperDto> getFollowingPaperDtoResults(Long threadsId) {
         /* 썸네일주소 1, 2를 바로 받을수 있는 방법? */
         return query.select(
                 Projections.fields(GetFollowingPaperDto.class,
@@ -30,17 +30,17 @@ public class PaperRepositoryImpl implements PaperRepositoryCustom {
                     paper.isScrapEnabled.as("isScrapEnabled")
                 ))
             .from(paper)
-            .leftJoin(thread).on(paper.thread.id.eq(thread.id))
-            .where(thread.id.eq(threadId))
-            .groupBy(thread)
+            .leftJoin(threads).on(paper.thread.id.eq(threads.id))
+            .where(threads.id.eq(threadsId))
+            .groupBy(threads)
             .fetch();
     }
 
     @Override
-    public Long deletePapersByThreadId(Long threadId) {
+    public Long deletePaperByThreadsId(Long threadsId) {
         return query
             .delete(paper)
-            .where(paper.thread.id.eq(threadId))
+            .where(paper.thread.id.eq(threadsId))
             .execute();
     }
 

@@ -281,7 +281,7 @@ public class ThreadServiceImpl implements ThreadService {
         /* 삭제된 페이퍼 개수와 threadId 반환 */
         DeleteThreadDto deleteThreadDto = new DeleteThreadDto();
         deleteThreadDto.setThreadId(threadId);
-        deleteThreadDto.setPaperCount(paperRepository.deletePapersByThreadId(threadId));
+        deleteThreadDto.setPaperCount(paperRepository.deletePaperByThreadsId(threadId));
         return deleteThreadDto;
     }
 }
