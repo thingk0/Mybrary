@@ -1,503 +1,99 @@
-.메인 {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-}
-.페이지 {
-  padding-top: 30px;
-  width: 100%;
-  height: 3%;
+.container {
+  margin: 0 auto;
+  width: 82vi;
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 1vi;
+  height: 100vh;
 }
-.페이지사이즈조정 {
-  width: 100%;
-  height: 100%;
+.header {
+  width: 5vi;
+  height: 46vi;
+}
+.main {
+  width: 55vi;
+  height: 46vi;
   display: flex;
-  align-items: center;
-}
-.페이지작성 {
-  font-size: 28px;
-  width: 160px;
-}
-.페이지만들기 {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
-}
-.페이지만들기헤더 {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  height: 7%;
+  gap: 1vi;
   justify-content: center;
-}
-.헤더사이즈조정 {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 93%;
-}
-.페이지버튼모음 {
-  position: relative;
-  display: flex;
-  width: 100%;
-  gap: 20px;
-}
-.페이지삭제버튼 {
-  position: absolute;
-  right: 10px;
-  border: 2px solid rgb(255, 168, 168);
-  background-color: #fff9f6;
-  border-radius: 10px;
-  padding: 8px;
-  color: red;
-}
-.페이지삭제버튼:hover {
-  background-color: #f8b9b2;
-  transition: 0.3s;
-  border: 2px solid rgb(255, 95, 95);
-}
-
-.페이지버튼 {
-  border: 0px;
-  background-color: #bfa6a2;
-  padding: 5px 10px 5px 10px;
-  color: #57423f;
-  border-radius: 3px;
-}
-.새페이지버튼 {
-  border: 2px solid rgb(168, 220, 255);
-  background-color: #fff9f6;
-  border-radius: 10px;
-  padding: 8px;
-  color: rgb(0, 110, 255);
-}
-.새페이지버튼:hover {
-  background-color: #c3ccff;
-  transition: 0.3s;
-  border: 2px solid rgb(69, 87, 245);
-}
-.현재페이지버튼 {
-  /* 강조 스타일 */
-  background-color: #57423f;
-  color: #bfa6a2;
-  border-radius: 3px;
-}
-.페이지버튼:hover {
-  background-color: #e9bab4;
-  color: #57423f;
-  transition: 0.3s;
-}
-.버튼들 {
-  display: flex;
-  gap: 15px;
-  align-items: center;
-}
-.버튼들 span {
-  font-size: 20px;
-}
-.버튼들 button {
-  width: 30px;
-  height: 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #fff9f6;
-  border: solid 1px rgb(180, 180, 180);
-}
-.페이지제거버튼 {
-  width: 100px;
-  height: 30px;
-  border: 0px;
-  color: rgb(255, 115, 115);
-  background-color: rgb(255, 255, 255);
-}
-
-.페이지만들기미드 {
-  display: flex;
   overflow: hidden;
-  align-content: center;
-  width: 100%;
-  max-width: 100%;
-  height: 85vh;
-  background-color: rgb(255, 244, 230);
-  justify-content: center;
-  box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.25);
-  border-radius: 5px;
-}
-.미드왼쪽 {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 43%;
-  height: 100%;
-}
-.미드왼쪽사이즈조정 {
-  width: 95%;
-  height: 98%;
-  background-color: #fffaf8;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  display: flex;
-  gap: 10%;
-  border-radius: 5px;
-}
-.선택된페이지 {
-  background-color: rgb(224, 150, 52);
 }
 
-.왼쪽헤더 {
+.main_left,
+.main_right {
+  width: 18.8vi;
+  height: 100%;
   position: relative;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-  height: 10%;
-}
-.왼쪽헤더사이즈조정 {
-  width: 94%;
-  display: flex;
-  justify-content: space-between;
-  /* background-color: brown; */
-}
-.왼쪽미드 {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  /* background-color: blue; */
-  height: 50%;
-}
-.다음버튼 {
-  width: 85%;
-  height: 40px;
-  background-color: #57423f;
-  color: rgb(255, 255, 255);
-  font-size: 16px;
-  border-radius: 5px;
-  border: 0px;
-}
-.레이아웃글자 {
-  font-size: 19px;
-}
-.레이아웃버튼 {
-  display: flex;
-  gap: 13px;
-}
-.레이아웃버튼 button {
-  padding: 12px;
-  width: 67px;
-  height: 12px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #ffeee6;
-  border: solid 1px rgb(255, 255, 255);
-}
-.왼쪽미드레이아웃 {
-  width: 85%;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6%;
-}
-.레이아웃이미지 {
-  height: 130px;
-  width: 110px;
-  margin-top: 14px;
-}
-.미드중앙 {
-  width: 57%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  /* background-color: darkkhaki; */
-}
-.미드중앙사이즈조정 {
-  position: relative;
-  width: 95%;
-  height: 98%;
-  /* background-color: #fffafa; */
-  border-radius: 5px;
-}
-.이미지업로드부분 {
-  position: absolute;
-  top: 95px;
-  left: 5px;
-  width: 310px;
-  height: 420px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  /* border: 1px solid black; */
-}
-.이미지업로드버튼 {
-  background-color: #57423f;
-  width: 40px;
-  height: 40px;
-  font-size: 27px;
-  border: 1px solid;
-  color: #ffffff;
-}
-.업로드이미지 {
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  width: 100%;
-  height: 100%;
-  border-radius: 10px;
-}
-.미드오른쪽 {
-  width: 43%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  /* background-color: rgb(255, 201, 170); */
-}
-.오른쪽크기조정 {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 95%;
-  height: 95%;
-  gap: 30px;
-  /* background-color: rgb(255, 233, 211); */
-}
-/* 
-
-
-
-
-*/
-.searchInput1 {
-  height: 100%;
-  width: 60%;
-  padding: 10px;
-  background-color: #bfa6a2;
-  border: 0px;
-  color: #fff9f6;
-}
-.searchInput2 {
-  height: 100%;
-  width: 60%;
-  padding: 10px;
-  background-color: #f5998f;
-  border: 0px;
-  color: #fff9f6;
-}
-
-.x버튼 {
-  margin-left: 4px;
-  border: 0px;
-  font-size: 12px;
-  padding-bottom: 2px;
-  padding-right: 7px;
-  padding-left: 7px;
-  display: flex;
-  align-items: center;
-}
-.추가된태그들 {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  padding: 10px; /* 필요에 따라 조절 */
-  overflow-y: auto;
-  /* height: 90%; 제거하거나 조정 */
-  align-items: flex-start; /* 아이템들을 컨테이너의 위쪽에 정렬 */
-}
-
-.글자태그 {
-  display: flex;
-  width: auto;
-  align-items: center;
-  background-color: #bfa6a2;
-  margin-top: 5px; /* 상단 마진 조정 */
-  margin-bottom: 5px; /* 하단 마진 조정 */
-  padding-left: 7px;
-  padding-right: 3px;
-  padding-top: 3px;
-  padding-bottom: 2px;
-  /* padding: 2px 4px 0px 4px; 패딩을 간소화 */
-  height: 20px;
-  border-radius: 10px;
-}
-.친구태그 {
-  display: flex;
-  width: auto;
-  align-items: center;
-  background-color: #f5998f;
-  margin-top: 5px; /* 상단 마진 조정 */
-  margin-bottom: 5px; /* 하단 마진 조정 */
-  padding-top: 3px;
-  padding-bottom: 2px;
-  padding-right: 3px;
-  padding-left: 5px;
-  /* padding: 2px 4px 0px 4px; 패딩을 간소화 */
-  height: 20px;
-  border-radius: 10px;
-}
-
-.태그추가부분,
-.친구태그부분,
-.레아수정 {
-  width: 100%;
-}
-.레이아웃수정버튼 {
-  width: 45%;
-  border-radius: 10px;
-  border: 0px;
-  padding: 10px;
-  font-size: 18px;
-  background-color: #bfa6a2;
-}
-/* 
-
-
-
-*/
-.미드왼쪽,
-.미드중앙,
-.미드오른쪽 {
   flex-shrink: 0;
-  /* ... 기존 스타일 ... */
-  /* position: absolute; 부모 요소에 대해 절대적 위치 설정 */
-  /* width: 100%; */
-  transition: transform 0.5s ease; /* 부드러운 전환 효과 */
-}
-.showLeftCenter .미드왼쪽 {
-  transform: translateX(50%); /* 원래 위치로 */
-}
-.showLeftCenter .미드중앙 {
-  transform: translateX(38%);
-}
-.showLeftCenter .미드오른쪽 {
-  transform: translateX(150%); /* 더 오른쪽으로 이동 */
-}
-/* 중앙과 오른쪽 섹션을 보여주는 스타일 */
-.showCenterRight .미드왼쪽 {
-  transform: translateX(-150%); /* 왼쪽으로 이동 */
-}
-.showCenterRight .미드중앙 {
-  transform: translateX(-38%);
-}
-.showCenterRight .미드오른쪽 {
-  transform: translateX(-50%); /* 오른쪽으로 이동 */
+  transition: transform 0.5s ease;
 }
 
-.태그추가부분,
-.친구태그부분 {
-  height: 43%;
+.main_center {
+  width: 35.2vi;
   display: flex;
-  flex-direction: column;
-  gap: 20px;
+  align-items: flex-end;
+  flex-shrink: 0;
+  transition: transform 0.5s ease;
 }
 
-.태그span {
-  font-size: 21px;
+.showLeftCenter .main_left {
+  transform: translateX(9.8vi);
 }
-.레아수정 {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.showLeftCenter .main_center {
+  transform: translateX(9.4vi);
+}
+.showLeftCenter .main_right {
+  transform: translateX(30vi);
 }
 
-.페이지만들기푸터 {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  gap: 30px;
-  margin-top: 20px;
+.showCenterRight .main_left {
+  transform: translateX(-30vi);
 }
-.푸터 {
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
+.showCenterRight .main_center {
+  transform: translateX(-9.4vi);
 }
-.푸터인포 {
-  display: flex;
-  flex-direction: column;
+.showCenterRight .main_right {
+  transform: translateX(-9.8vi);
 }
-.게시 {
-  width: 100%;
+
+.setting {
+  width: 20vi;
+  height: 46vi;
+}
+
+.prevButton,
+.nextButton {
+  font-size: 1.2vi;
+  width: 16.8vi;
+  height: 2vi;
+  background-color: var(--main2);
+  color: var(--main4);
+  border-radius: 5px;
+  border: 0px;
+  cursor: pointer;
+  margin: 1vi;
+}
+
+.title {
+  padding: 1vi 1vi 0 1vi;
+  height: 2vi;
+  font-size: 1.2vi;
+}
+.subtitle {
+  padding-left: 1vi;
+  font-size: 0.8vi;
+  color: var(--main5);
+}
+.settingButtons {
   display: flex;
   justify-content: flex-end;
+  margin: 1vi 1vi 3vi;
 }
-.버튼게시 {
-  width: 30%;
-}
-/* 
-
-
- */
-
-/* 
- 
- 
-
- /* 
- 
- */
-
-/*  */
-.wrapperClass {
-  width: 50%;
-  margin: 0 auto;
-}
-.wrapperClass2 {
-  width: 100%;
-  margin: 0 auto;
-}
-.editorClass {
-  border: 2px solid rgb(110, 110, 110);
-  border-radius: 2px;
-  position: absolute;
-  padding: 4px 0px 0px 4px;
-  top: 100px;
-  right: 0px;
-  width: 50%;
-  height: auto; /* 높이 자동 조절 */
-  min-height: 400px; /* 최소 높이 설정 */
-  max-height: 400px; /* 최대 높이 설정, 이를 초과하면 스크롤바 표시 */
-  overflow: auto; /* 내용이 넘칠 때만 스크롤바 표시 */
-}
-.editorClass2 {
-  border: 2px solid rgb(110, 110, 110);
-  border-radius: 2px;
-  /* padding-top: 5px; */
-  padding-left: 7px;
-  padding-right: 7px;
-  position: absolute;
-  top: 520px;
-  right: 0px;
-  width: 98%;
-  height: auto; /* 높이 자동 조절 */
-  min-height: 270px; /* 최소 높이 설정 */
-  max-height: 270px; /* 최대 높이 설정, 이를 초과하면 스크롤바 표시 */
-  overflow: auto; /* 내용이 넘칠 때만 스크롤바 표시 */
-}
-/* 이거는 공용임둘다 이클레스이름임 */
-.toolbarClass {
-  margin: 0;
-  padding: 0;
-  position: absolute;
-  height: 75px;
-  top: 0px;
-  left: 0px;
-  right: 0px;
-  z-index: 4;
-  background-color: #fff9f6;
-}
-
-.toolbarClass div {
-  margin: 0px 3px 0px 3px;
+.postButtons {
+  height: 14vi;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  margin: 5vi auto;
 }
