@@ -82,6 +82,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-mail'
     // Configuration-Processor
     implementation 'org.springframework.boot:spring-boot-configuration-processor'
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.1.RELEASE'
+
 }
 
 def generated = 'src/main/generated'

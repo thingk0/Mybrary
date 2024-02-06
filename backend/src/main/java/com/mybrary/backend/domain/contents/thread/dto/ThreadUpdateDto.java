@@ -1,6 +1,7 @@
 package com.mybrary.backend.domain.contents.thread.dto;
 
 import com.mybrary.backend.domain.contents.paper.dto.PaperPostDto;
+import com.mybrary.backend.domain.contents.paper.dto.PaperUpdateDto;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,10 +20,8 @@ public class ThreadUpdateDto {
      *
      */
 
+    private Long memberId;
     private Long threadId;
-    private Long bookId;
-    private List<PaperPostDto> paperList;
-    private boolean isPaperPublic;
-    private boolean isScarpEnable;
+    private List<PaperUpdateDto> paperList;
 
 }

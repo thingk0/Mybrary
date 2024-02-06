@@ -1,7 +1,7 @@
 package com.mybrary.backend.domain.contents.paper.entity;
 
 import com.mybrary.backend.domain.base.BaseEntity;
-import com.mybrary.backend.domain.contents.thread.entity.Threads;
+import com.mybrary.backend.domain.contents.thread.entity.Thread;
 import com.mybrary.backend.domain.member.entity.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,20 +10,20 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 @Entity
-@Getter
+@Getter @Setter
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Where(clause = "is_deleted = false")
+@NoArgsConstructor
+@Where(clause = "is_deleted <> true")
 @SQLDelete(sql = "UPDATE paper SET is_deleted = TRUE WHERE paper_id = ?")
 public class Paper extends BaseEntity {
 
@@ -38,33 +38,25 @@ public class Paper extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "threads_id")
-    private Threads threads;
+    private Thread thread;
 
-    @Column(name = "content1")
     private String content1;
 
-    @Column(name = "content2")
     private String content2;
 
-    @Column(name = "scrap_count")
+    @Builder.Default()
+    private int layoutType = 1;
+
     private int scrapCount;
 
-    @Column(name = "comment_count")
     private int commentCount;
 
-    @Column(name = "likes_count")
     private int likeCount;
 
     @Builder.Default()
-    @Column(name = "layout_type")
-    private int layoutType = 1;
-
-    @Builder.Default()
-    @Column(name = "is_scrap_enabled")
     private boolean isScrapEnabled = true;
 
     @Builder.Default()
-    @Column(name = "is_paper_public")
     private boolean isPaperPublic = true;
 
 }

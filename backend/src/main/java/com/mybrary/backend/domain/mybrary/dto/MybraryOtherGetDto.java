@@ -26,18 +26,12 @@ public class MybraryOtherGetDto {
     private int deskColor;
     private int bookshelfColor;
     private int easelColor;
-    private Long memberId;
-    private String email;
-    private String nickname;
-    private String intro;
-    private String profileImageUrl;
-    private boolean isNotifyEnable;
-    private boolean isProfilePublic;
+    private MemberGetDto member;
     private int threadCount;
     private int bookCount;
     private int followerCount;
     private int followingCount;
-    private boolean isFollowed = false;
+    private boolean isFollowed;
     private Long bookShelfId;
     private Long rollingPaperId;
 

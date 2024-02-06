@@ -16,7 +16,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -38,24 +37,19 @@ public class Mybrary extends BaseEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @Setter
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "photo_frame_image_id")
     private Image photoFrameImage;
 
-    @Setter
     @Column(name = "background_color")
     private int backgroundColor;
 
-    @Setter
     @Column(name = "desk_color")
     private int deskColor;
 
-    @Setter
     @Column(name = "bookshelf_color")
     private int bookshelfColor;
 
-    @Setter
     @Column(name = "easel_color")
     private int easelColor;
 

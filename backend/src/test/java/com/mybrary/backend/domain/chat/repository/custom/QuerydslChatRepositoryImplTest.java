@@ -27,9 +27,9 @@ class QuerydslChatRepositoryImplTest {
 
         Image.builder()
              .name("image")
-            .originUr1l("originUrl")
-            .thumbnailUrl("thumbNailUrl")
-            .originName("originName")
+            .url("originUrl")
+//            .thumbnailUrl("thumbNailUrl")
+//            .originName("originName")
 
              .build();
 

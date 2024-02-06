@@ -5,6 +5,7 @@ spring:
       - jwt
       - mail
       - filter
+      - aws
 
   jpa:
     open-in-view: false
