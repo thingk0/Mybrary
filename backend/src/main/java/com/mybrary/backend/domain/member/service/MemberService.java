@@ -9,6 +9,7 @@ import com.mybrary.backend.domain.member.dto.MyFollowingDto;
 import com.mybrary.backend.domain.member.dto.PasswordUpdateDto;
 import com.mybrary.backend.domain.member.dto.SecessionRequestDto;
 import com.mybrary.backend.domain.member.dto.SignupRequestDto;
+import com.mybrary.backend.domain.member.dto.login.LoginResponseDto;
 import com.mybrary.backend.domain.member.entity.Member;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -17,7 +18,7 @@ public interface MemberService {
 
     Long create(SignupRequestDto requestDto);
 
-    String login(LoginRequestDto requestDto, HttpServletResponse httpServletResponse);
+    LoginResponseDto login(LoginRequestDto requestDto, HttpServletResponse httpServletResponse);
 
     Member findMember(String email);
 

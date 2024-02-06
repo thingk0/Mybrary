@@ -11,6 +11,8 @@ import com.mybrary.backend.domain.member.dto.MyFollowingDto;
 import com.mybrary.backend.domain.member.dto.PasswordUpdateDto;
 import com.mybrary.backend.domain.member.dto.SecessionRequestDto;
 import com.mybrary.backend.domain.member.dto.SignupRequestDto;
+import com.mybrary.backend.domain.member.dto.login.LoginResponseDto;
+import com.mybrary.backend.domain.member.dto.login.MemberInfo;
 import com.mybrary.backend.domain.member.entity.Member;
 import com.mybrary.backend.domain.member.repository.MemberRepository;
 import com.mybrary.backend.domain.member.service.MemberService;
@@ -64,7 +66,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Transactional
     @Override
-    public String login(LoginRequestDto requestDto, HttpServletResponse response) {
+    public LoginResponseDto login(LoginRequestDto requestDto, HttpServletResponse response) {
         log.info("event=LoginAttempt, email={}", requestDto.getEmail());
 
         Member member = findMemberByEmail(requestDto.getEmail());
@@ -74,7 +76,17 @@ public class MemberServiceImpl implements MemberService {
         TokenInfo tokenInfo = tokenProvider.generateTokenInfo(member.getEmail());
         tokenService.saveToken(tokenInfo);
         cookieUtil.addCookie("RefreshToken", tokenInfo.getRefreshToken(), tokenProvider.getREFRESH_TOKEN_TIME(), response);
-        return tokenInfo.getAccessToken();
+
+        return LoginResponseDto.builder()
+                               .token(tokenInfo.getAccessToken())
+                               .memberInfo(MemberInfo.builder()
+                                                     .memberId(member.getId())
+                                                     .email(member.getEmail())
+                                                     .nickname(member.getNickname())
+                                                     .profileImageUrl(member.getProfileImage() == null ? ""
+                                                                          : member.getProfileImage().getUrl())
+                                                     .build())
+                               .build();
     }
 
     @Override
