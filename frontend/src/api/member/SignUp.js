@@ -48,3 +48,13 @@ export async function checkNickName(nickname) {
     throw error;
   }
 }
+
+/* 소셜 회원가입 */
+export async function socialSignUp(object) {
+  try {
+    const response = await axios.post("/api/v1/member/social", object);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}

@@ -1,0 +1,51 @@
+import axios from "axios";
+
+/* 채팅방 내 메시지 리스트 조회 */
+export async function getMessageList(roomid) {
+  try {
+    const response = await axios.get(`/api/v1/chat/${roomid}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+/* 자신의 채팅방 리스트 조회 */
+export async function getChatList() {
+  try {
+    const response = await axios.get("/api/v1/chat");
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+/* 회원정보에서 채팅 시작 */
+export async function getFirstChat() {
+  try {
+    const response = await axios.get(`/api/v1/chat/message`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+/* 채팅 메시지 보내기 */
+export async function sendMessage(roomid, object) {
+  try {
+    const response = await axios.post(`/api/v1/chat/${roomid}/message`, object);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+/* 채팅방 나가기 */
+export async function deleteChatRoom(roomid) {
+  try {
+    const response = await axios.delete(`/api/v1/chat/${roomid}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}

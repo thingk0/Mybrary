@@ -11,11 +11,14 @@ export async function renewToken(accessToken) {
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
-
     const data = await response.json();
-    return data.data;
+    if (data.status === "SUCCESS") {
+      return data.data;
+    } else {
+      throw new Error();
+    }
   } catch (e) {
-    console.log(e);
+    throw e;
   }
 }
 
@@ -26,7 +29,6 @@ export function isTokenExpired() {
   const now = Date.now();
   const timeElapsed = (now - tokenTimestamp) / 1000; // 분 단위로 변환
 
-  console.log(timeElapsed);
   // 14분이 지났으면 갱신 필요
   return timeElapsed > 840;
 }
