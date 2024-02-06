@@ -1,0 +1,1615 @@
+.position {
+  position: relative;
+  width: 35.2vi;
+  height: 41.6vi;
+}
+.position div {
+  margin: 0;
+}
+
+.text1_1101 {
+  position: absolute;
+  overflow-y: auto;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  max-height: 21.3vi;
+}
+.text2_1101 {
+  position: absolute;
+  overflow-y: auto;
+  opacity: 0;
+}
+.img1_1101 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 19.8vi;
+}
+.img2_1101 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  opacity: 0;
+}
+
+/* 레이아웃 1102 = 9:16사진 1개 */
+.text1_1102 {
+  position: absolute;
+  overflow-y: auto;
+  top: 0;
+  left: 0;
+  width: 100%;
+  max-height: 10.4vi;
+}
+.text2_1102 {
+  position: absolute;
+  overflow-y: auto;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  max-height: 10.4vi;
+}
+.img1_1102 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  top: 10.9vi;
+  left: 0;
+  width: 100%;
+  height: 19.8vi;
+}
+.img2_1102 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  opacity: 0;
+}
+
+/* 레이아웃 1103 = 9:16사진 1개 */
+.text1_1103 {
+  position: absolute;
+  overflow-y: auto;
+  top: 0;
+  left: 0;
+  width: 100%;
+  max-height: 21.3vi;
+}
+.text2_1103 {
+  position: absolute;
+  overflow-y: auto;
+  opacity: 0;
+}
+.img1_1103 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 19.8vi;
+}
+.img2_1103 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  opacity: 0;
+}
+
+/* 레이아웃 1201 = 3:4사진 1개 */
+.text1_1201 {
+  position: absolute;
+  overflow-y: auto;
+  right: 0;
+  top: 0;
+  width: 17.35vi;
+  max-height: 13.0125vi;
+}
+.text2_1201 {
+  position: absolute;
+  overflow-y: auto;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  max-height: 28.0875vi;
+}
+.img1_1201 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  left: 0;
+  top: 0;
+  width: 17.35vi;
+  height: 13.0125vi;
+}
+.img2_1201 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  opacity: 0;
+}
+
+/* 레이아웃 1202 = 3:4사진 1개 */
+.text1_1202 {
+  position: absolute;
+  overflow-y: auto;
+  top: 0;
+  left: 0;
+  width: 100%;
+  max-height: 28.0875vi;
+}
+.text2_1202 {
+  position: absolute;
+  overflow-y: auto;
+  left: 0;
+  bottom: 0;
+  width: 17.35vi;
+  max-height: 13.0125vi;
+}
+.img1_1202 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  right: 0;
+  bottom: 0;
+  width: 17.35vi;
+  height: 13.0125vi;
+}
+.img2_1202 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  opacity: 0;
+}
+
+/* 레이아웃 1203 = 3:4사진 1개 */
+.text1_1203 {
+  position: absolute;
+  overflow-y: auto;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  max-height: 14.7vi;
+}
+.text2_1203 {
+  position: absolute;
+  overflow-y: auto;
+  opacity: 0;
+}
+.img1_1203 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 26.4vi;
+}
+.img2_1203 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  opacity: 0;
+}
+
+/* 레이아웃 1204 = 3:4사진 1개 */
+.text1_1204 {
+  position: absolute;
+  overflow-y: auto;
+  top: 0;
+  left: 0;
+  width: 35.2vi;
+  max-height: 7.1vi;
+}
+.text2_1204 {
+  position: absolute;
+  overflow-y: auto;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  max-height: 7.1vi;
+}
+.img1_1204 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  top: 7.6vi;
+  left: 0;
+  width: 35.2vi;
+  height: 26.4vi;
+}
+.img2_1204 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  opacity: 0;
+}
+
+/* 레이아웃 1205 = 3:4사진 1개 */
+.text1_1205 {
+  position: absolute;
+  overflow-y: auto;
+  top: 0;
+  left: 0;
+  width: 100%;
+  max-height: 14.7vi;
+}
+.text2_1205 {
+  position: absolute;
+  overflow-y: auto;
+  opacity: 0;
+}
+.img1_1205 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 26.4vi;
+}
+.img2_1205 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  opacity: 0;
+}
+
+/* 레이아웃 1301 = 1:1사진 1개 */
+.text1_1301 {
+  position: absolute;
+  overflow-y: auto;
+  right: 0;
+  top: 0;
+  width: 17.35vi;
+  max-height: 17.35vi;
+}
+.text2_1301 {
+  position: absolute;
+  overflow-y: auto;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  max-height: 23.75vi;
+}
+.img1_1301 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  left: 0;
+  top: 0;
+  width: 17.35vi;
+  height: 17.35vi;
+}
+.img2_1301 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  left: 0;
+  top: 0;
+  opacity: 0;
+}
+
+/* 레이아웃 1302 = 1:1사진 1개 */
+.text1_1302 {
+  position: absolute;
+  overflow-y: auto;
+  top: 0;
+  left: 0;
+  width: 100%;
+  max-height: 23.75vi;
+}
+.text2_1302 {
+  position: absolute;
+  overflow-y: auto;
+  left: 0;
+  bottom: 0;
+  width: 17.35vi;
+  max-height: 17.35vi;
+}
+.img1_1302 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  right: 0;
+  bottom: 0;
+  width: 17.35vi;
+  height: 17.35vi;
+}
+.img2_1302 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  left: 0;
+  top: 0;
+  opacity: 0;
+}
+
+/* 레이아웃 1303 = 1:1사진 1개 */
+.text1_1303 {
+  position: absolute;
+  overflow-y: auto;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  max-height: 5.9vi;
+}
+.text2_1303 {
+  position: absolute;
+  overflow-y: auto;
+  opacity: 0;
+}
+.img1_1303 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 35.2vi;
+}
+.img2_1303 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  opacity: 0;
+}
+
+/* 레이아웃 1304 = 1:1사진 1개 */
+.text1_1304 {
+  position: absolute;
+  overflow-y: auto;
+  top: 0;
+  left: 0;
+  width: 100%;
+  max-height: 5.9vi;
+}
+.text2_1304 {
+  position: absolute;
+  overflow-y: auto;
+  opacity: 0;
+}
+.img1_1304 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 35.2vi;
+}
+.img2_1304 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  opacity: 0;
+}
+
+/* 레이아웃 1401 = 4:3사진 1개 */
+.text1_1401 {
+  position: absolute;
+  overflow-y: auto;
+  right: 0;
+  top: 0;
+  width: 17.35vi;
+  max-height: 23.1333333vi;
+}
+.text2_1401 {
+  position: absolute;
+  overflow-y: auto;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  max-height: 17.9666666vi;
+}
+.img1_1401 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  left: 0;
+  top: 0;
+  width: 17.35vi;
+  height: 23.1333333vi;
+}
+.img2_1401 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  left: 0;
+  top: 0;
+  opacity: 0;
+}
+
+/* 레이아웃 1402 = 4:3사진 1개 */
+.text1_1402 {
+  position: absolute;
+  overflow-y: auto;
+  top: 0;
+  left: 0;
+  width: 100%;
+  max-height: 17.9666666vi;
+}
+.text2_1402 {
+  position: absolute;
+  overflow-y: auto;
+  left: 0;
+  bottom: 0;
+  width: 17.35vi;
+  max-height: 23.1333333vi;
+}
+.img1_1402 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  right: 0;
+  bottom: 0;
+  width: 17.35vi;
+  height: 23.1333333vi;
+}
+.img2_1402 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  left: 0;
+  top: 0;
+  opacity: 0;
+}
+
+/* 레이아웃 1501 = 16:9사진 1개 */
+.text1_1501 {
+  position: absolute;
+  overflow-y: auto;
+  right: 0;
+  top: 0;
+  width: 17.35vi;
+  max-height: 30.8444444vi;
+}
+.text2_1501 {
+  position: absolute;
+  overflow-y: auto;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  max-height: 10.2555555vi;
+}
+.img1_1501 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  left: 0;
+  top: 0;
+  width: 17.35vi;
+  height: 30.8444444vi;
+}
+.img2_1501 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  left: 0;
+  top: 0;
+  opacity: 0;
+}
+
+/* 레이아웃 1502 = 16:9사진 1개 */
+.text1_1502 {
+  position: absolute;
+  overflow-y: auto;
+  top: 0;
+  left: 0;
+  width: 100%;
+  max-height: 10.2555555vi;
+}
+.text2_1502 {
+  position: absolute;
+  overflow-y: auto;
+  left: 0;
+  bottom: 0;
+  width: 17.35vi;
+  max-height: 30.8444444vi;
+}
+.img1_1502 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  right: 0;
+  bottom: 0;
+  width: 17.35vi;
+  height: 30.8444444vi;
+}
+.img2_1502 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  left: 0;
+  top: 0;
+  opacity: 0;
+}
+
+/* 레이아웃 1503 = 16:9사진 1개 */
+.text1_1503 {
+  position: absolute;
+  overflow-y: auto;
+  top: 0;
+  left: 0;
+  width: 11.3vi;
+  max-height: 100%;
+}
+.text2_1503 {
+  position: absolute;
+  overflow-y: auto;
+  top: 0;
+  left: 0;
+  opacity: 0;
+}
+.img1_1503 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  right: 0;
+  top: 0;
+  width: 23.4vi;
+  height: 100%;
+}
+.img2_1503 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  top: 0;
+  left: 0;
+  opacity: 0;
+}
+
+/* 레이아웃 1504 = 16:9사진 1개 */
+.text1_1504 {
+  position: absolute;
+  overflow-y: auto;
+  top: 0;
+  right: 0;
+  width: 11.3vi;
+  max-height: 100%;
+}
+.text2_1504 {
+  position: absolute;
+  overflow-y: auto;
+  top: 0;
+  left: 0;
+  opacity: 0;
+}
+.img1_1504 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  left: 0;
+  top: 0;
+  width: 23.4vi;
+  height: 100%;
+}
+.img2_1504 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  top: 0;
+  left: 0;
+  opacity: 0;
+}
+
+/* 레이아웃 2111 = 9:16사진 2개 */
+.text1_2111 {
+  position: absolute;
+  overflow-y: auto;
+  top: 0;
+  right: 0;
+  width: 17.35vi;
+  max-height: 9.759375vi;
+}
+.text2_2111 {
+  position: absolute;
+  overflow-y: auto;
+  top: 10.259375vi;
+  right: 0;
+  width: 100%;
+  max-height: 11.040625vi;
+}
+.img1_2111 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  top: 0;
+  left: 0;
+  width: 17.35vi;
+  height: 9.759375vi;
+}
+.img2_2111 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 19.8vi;
+}
+
+/* 레이아웃 2112 = 9:16사진 2개 */
+.text1_2112 {
+  position: absolute;
+  overflow-y: auto;
+  bottom: 10.259375vi;
+  right: 0;
+  width: 100%;
+  max-height: 11.040625vi;
+}
+.text2_2112 {
+  position: absolute;
+  overflow-y: auto;
+  bottom: 0;
+  left: 0;
+  width: 17.35vi;
+  max-height: 9.759375vi;
+}
+.img1_2112 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 19.8vi;
+}
+.img2_2112 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  bottom: 0;
+  right: 0;
+  width: 17.35vi;
+  height: 9.759375vi;
+}
+
+/* 레이아웃 2141 = 9:16사진 1개 4:3사진 1개 */
+.text1_2141 {
+  position: absolute;
+  overflow-y: auto;
+  bottom: 0;
+  right: 0;
+  width: 18.725vi;
+  max-height: 21.3vi;
+}
+.text2_2141 {
+  position: absolute;
+  overflow-y: auto;
+  opacity: 0;
+}
+.img1_2141 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 19.8vi;
+}
+.img2_2141 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  bottom: 0;
+  left: 0;
+  width: 15.975vi;
+  height: 21.3vi;
+}
+
+/* 레이아웃 2411 = 9:16사진 1개 4:3사진 1개 */
+.text1_2411 {
+  position: absolute;
+  overflow-y: auto;
+  top: 0;
+  right: 0;
+  width: 18.725vi;
+  max-height: 21.3vi;
+}
+.text2_2411 {
+  position: absolute;
+  overflow-y: auto;
+  opacity: 0;
+}
+.img1_2411 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  top: 0;
+  left: 0;
+  width: 15.975vi;
+  height: 21.3vi;
+}
+.img2_2411 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 19.8vi;
+}
+
+/* 레이아웃 2151 = 9:16사진 1개 16:9사진 1개 */
+.text1_2151 {
+  position: absolute;
+  overflow-y: auto;
+  bottom: 0;
+  right: 0;
+  width: 22.71875vi;
+  max-height: 21.3vi;
+}
+.text2_2151 {
+  position: absolute;
+  overflow-y: auto;
+  opacity: 0;
+}
+.img1_2151 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 19.8vi;
+}
+.img2_2151 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  bottom: 0;
+  left: 0;
+  width: 11.98125vi;
+  height: 21.3vi;
+}
+
+/* 레이아웃 2511 = 9:16사진 1개 16:9사진 1개 */
+.text1_2511 {
+  position: absolute;
+  overflow-y: auto;
+  top: 0;
+  right: 0;
+  width: 22.71875vi;
+  max-height: 21.3vi;
+}
+.text2_2511 {
+  position: absolute;
+  overflow-y: auto;
+  opacity: 0;
+}
+.img1_2511 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  top: 0;
+  left: 0;
+  width: 11.98125vi;
+  height: 21.3vi;
+}
+.img2_2511 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 19.8vi;
+}
+
+/* 레이아웃 2221 = 3:4사진 2개 */
+.text1_2221 {
+  position: absolute;
+  overflow-y: auto;
+  top: 0;
+  right: 0;
+  width: 7.3vi;
+  max-height: 20.55vi;
+}
+.text2_2221 {
+  position: absolute;
+  overflow-y: auto;
+  bottom: 0;
+  left: 0;
+  width: 7.3vi;
+  max-height: 20.55vi;
+}
+.img1_2221 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  top: 0;
+  left: 0;
+  width: 27.4vi;
+  height: 20.55vi;
+}
+.img2_2221 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  bottom: 0;
+  right: 0;
+  width: 27.4vi;
+  height: 20.55vi;
+}
+
+/* 레이아웃 2231 = 3:4사진 1개 1:1사진 1개 */
+.text1_2231 {
+  position: absolute;
+  overflow-y: auto;
+  bottom: 0;
+  right: 0;
+  width: 20vi;
+  max-height: 14.7vi;
+}
+.text2_2231 {
+  position: absolute;
+  overflow-y: auto;
+  opacity: 0;
+}
+.img1_2231 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 26.4vi;
+}
+.img2_2231 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  bottom: 0;
+  left: 0;
+  width: 14.7vi;
+  height: 14.7vi;
+}
+
+/* 레이아웃 2321 = 3:4사진 1개 1:1사진 1개 */
+.text1_2321 {
+  position: absolute;
+  overflow-y: auto;
+  top: 0;
+  right: 0;
+  width: 20vi;
+  max-height: 14.7vi;
+}
+.text2_2321 {
+  position: absolute;
+  overflow-y: auto;
+  opacity: 0;
+}
+.img1_2321 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  top: 0;
+  left: 0;
+  width: 14.7vi;
+  height: 14.7vi;
+}
+.img2_2321 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 26.4vi;
+}
+
+/* 레이아웃 2331 = 1:1사진 2개 */
+.text1_2331 {
+  position: absolute;
+  overflow-y: auto;
+  top: 0;
+  right: 0;
+  width: 14.15vi;
+  max-height: 20.55vi;
+}
+.text2_2331 {
+  position: absolute;
+  overflow-y: auto;
+  bottom: 0;
+  left: 0;
+  width: 14.15vi;
+  max-height: 20.55vi;
+}
+.img1_2331 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  top: 0;
+  left: 0;
+  width: 20.55vi;
+  height: 20.55vi;
+}
+.img2_2331 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  bottom: 0;
+  right: 0;
+  width: 20.55vi;
+  height: 20.55vi;
+}
+
+/* 레이아웃 2332 = 1:1사진 2개 */
+.text1_2332 {
+  position: absolute;
+  overflow-y: auto;
+  bottom: 0;
+  right: 0;
+  width: 28.8vi;
+  max-height: 5.9vi;
+}
+.text2_2332 {
+  position: absolute;
+  overflow-y: auto;
+  opacity: 0;
+}
+.img1_2332 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 35.2vi;
+}
+.img2_2332 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  bottom: 0;
+  left: 0;
+  width: 5.9vi;
+  height: 5.9vi;
+}
+
+/* 레이아웃 2333 = 1:1사진 2개 */
+.text1_2333 {
+  position: absolute;
+  overflow-y: auto;
+  top: 0;
+  right: 0;
+  width: 28.8vi;
+  max-height: 5.9vi;
+}
+.text2_2333 {
+  position: absolute;
+  overflow-y: auto;
+  opacity: 0;
+}
+.img1_2333 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  top: 0;
+  left: 0;
+  width: 5.9vi;
+  height: 5.9vi;
+}
+.img2_2333 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 35.2vi;
+}
+
+/* 레이아웃 2322 = 1:1사진 1개 3:4사진 1개 */
+.text1_2322 {
+  position: absolute;
+  overflow-y: auto;
+  bottom: 0;
+  right: 0;
+  width: 26.8333333vi;
+  max-height: 5.9vi;
+}
+.text2_2322 {
+  position: absolute;
+  overflow-y: auto;
+  opacity: 0;
+}
+.img1_2322 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 35.2vi;
+}
+.img2_2322 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  bottom: 0;
+  left: 0;
+  width: 7.86666666vi;
+  height: 5.9vi;
+}
+
+/* 레이아웃 2232 = 1:1사진 1개 3:4사진 1개 */
+.text1_2232 {
+  position: absolute;
+  overflow-y: auto;
+  top: 0;
+  right: 0;
+  width: 26.8333333vi;
+  max-height: 5.9vi;
+}
+.text2_2232 {
+  position: absolute;
+  overflow-y: auto;
+  opacity: 0;
+}
+.img1_2232 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  top: 0;
+  left: 0;
+  width: 7.86666666vi;
+  height: 5.9vi;
+}
+.img2_2232 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 35.2vi;
+}
+
+/* 레이아웃 2311 = 1:1사진 1개 9:16사진 1개 */
+.text1_2311 {
+  position: absolute;
+  overflow-y: auto;
+  bottom: 0;
+  right: 0;
+  width: 24.2111111vi;
+  max-height: 5.9vi;
+}
+.text2_2311 {
+  position: absolute;
+  overflow-y: auto;
+  opacity: 0;
+}
+.img1_2311 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 35.2vi;
+}
+.img2_2311 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  bottom: 0;
+  left: 0;
+  width: 10.4888888vi;
+  height: 5.9vi;
+}
+
+/* 레이아웃 2131 = 1:1사진 1개 9:16사진 1개 */
+.text1_2131 {
+  position: absolute;
+  overflow-y: auto;
+  top: 0;
+  right: 0;
+  width: 24.2111111vi;
+  max-height: 5.9vi;
+}
+.text2_2131 {
+  position: absolute;
+  overflow-y: auto;
+  opacity: 0;
+}
+.img1_2131 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  top: 0;
+  left: 0;
+  width: 10.4888888vi;
+  height: 5.9vi;
+}
+.img2_2131 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 35.2vi;
+}
+
+/* 레이아웃 2441 = 4:3사진 2개 */
+.text1_2441 {
+  position: absolute;
+  overflow-y: auto;
+  top: 0;
+  right: 0;
+  width: 17.35vi;
+  max-height: 17.9666667vi;
+}
+.text2_2441 {
+  position: absolute;
+  overflow-y: auto;
+  bottom: 0;
+  left: 0;
+  width: 17.35vi;
+  max-height: 17.9666667vi;
+}
+.img1_2441 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  top: 0;
+  left: 0;
+  width: 17.35vi;
+  height: 23.1333333vi;
+}
+.img2_2441 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  bottom: 0;
+  right: 0;
+  width: 17.35vi;
+  height: 23.1333333vi;
+}
+
+/* 레이아웃 2442 = 4:3사진 2개 */
+.text1_2442 {
+  position: absolute;
+  overflow-y: auto;
+  top: 0;
+  right: 0;
+  width: 19.2875vi;
+  max-height: 20.55vi;
+}
+.text2_2442 {
+  position: absolute;
+  overflow-y: auto;
+  bottom: 0;
+  left: 0;
+  width: 19.2875vi;
+  max-height: 20.55vi;
+}
+.img1_2442 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  top: 0;
+  left: 0;
+  width: 15.4125vi;
+  height: 20.55vi;
+}
+.img2_2442 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  bottom: 0;
+  right: 0;
+  width: 15.4125vi;
+  height: 20.55vi;
+}
+
+/* 레이아웃 2551 = 16:9사진 2개 */
+.text1_2551 {
+  position: absolute;
+  overflow-y: auto;
+  top: 0;
+  right: 0;
+  width: 17.35vi;
+  max-height: 10.2555555vi;
+}
+.text2_2551 {
+  position: absolute;
+  overflow-y: auto;
+  bottom: 0;
+  left: 0;
+  width: 17.35vi;
+  max-height: 10.2555555vi;
+}
+.img1_2551 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  top: 0;
+  left: 0;
+  width: 17.35vi;
+  height: 30.8444444vi;
+}
+.img2_2551 {
+  background-color: var(--blur2);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  object-position: center;
+  object-fit: cover;
+  bottom: 0;
+  right: 0;
+  width: 17.35vi;
+  height: 30.8444444vi;
+}

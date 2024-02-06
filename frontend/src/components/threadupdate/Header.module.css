@@ -1,0 +1,56 @@
+.header_container {
+  height: 46vi;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+}
+
+.title {
+  margin-top: 20px;
+  font-size: 1.8vi;
+}
+.buttons {
+  padding-top: 20px;
+  height: 100%;
+  position: relative;
+  text-align: center;
+}
+.buttons > div {
+  margin-top: 20px;
+  width: 80px;
+  padding: 10px 8px;
+  border-radius: 5px;
+  transition: 0.3s;
+  box-shadow: 0 0 10px 0 var(--main2);
+}
+
+.page {
+  background-color: var(--main3);
+  color: var(--main2);
+}
+.page:hover {
+  background-color: var(--main2);
+  color: var(--main3);
+}
+.currentPage {
+  background-color: var(--main2);
+  color: var(--main3);
+}
+
+.newPage {
+  background-color: var(--gomin3);
+  color: var(--main4);
+}
+.newPage:hover {
+  background-color: #acbee6;
+}
+
+.deletePage {
+  background-color: var(--gomin5);
+  color: var(--main4);
+  position: absolute;
+  bottom: 20px;
+}
+.deletePage:hover {
+  background-color: #eeb8c7;
+}
