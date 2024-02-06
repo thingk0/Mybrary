@@ -52,6 +52,7 @@ public class CommentServiceImpl implements CommentService {
         return commentId;
     }
 
+    /* */
     @Override
     public CommentGetAllDto getAllComment(Long memberId, Long paperId) {
 //        - 페이퍼ID(paperId)

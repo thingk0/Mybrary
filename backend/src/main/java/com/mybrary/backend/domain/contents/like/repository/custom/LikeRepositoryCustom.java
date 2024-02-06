@@ -4,5 +4,6 @@ import com.mybrary.backend.domain.contents.like.entity.Like;
 import java.util.Optional;
 
 public interface LikeRepositoryCustom {
-    Optional<Like> isLikedPaper(Long paperId, Long memberId);
+    Optional<Like> isLikedPaper(Long memberId, Long paperId);
+
 }

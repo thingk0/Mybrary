@@ -162,7 +162,6 @@ public class ChatController {
     public ResponseEntity<?> createChat(@Parameter(hidden = true) Authentication authentication,
                                         @PathVariable("id") Long chatRoomId,
                                         @RequestBody ChatMessagePostDto message) {
-        // TODO: 기존 코드에 @PathVariable("id") Long chatRoomId 이 빠져있었음. 해당 파라미터도 포함해서 로직 완성 !
         Member me = memberService.findMember(authentication.getName());
         Long myId = me.getId();
         chatService.createChat(myId, message);

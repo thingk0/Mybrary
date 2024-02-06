@@ -8,4 +8,7 @@ public interface PaperService {
     Long scrapPaper(PaperScrapDto paperScrapDto);
 
     Long sharePaper(PaperShareDto share);
+
+    boolean toggleLike(Long memberId, Long paperId);
+    /* dto로 반환하도록 수정할것 */
 }

@@ -21,11 +21,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 @Tag(name = "Mybrary 컨트롤러", description = "Mybrary Controller API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/mybrary")
+
 public class MybraryController {
 
     private final ApiResponse response;
