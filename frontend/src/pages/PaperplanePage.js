@@ -6,7 +6,8 @@ import 종이비행기 from "../assets/종이비행기.png";
 import { useEffect, useState } from "react";
 import useStompStore from "../store/useStompStore";
 import useUserStore from "../store/useUserStore";
-import { getChatList } from "../api/chat/Chat.js";
+import { getChatList } from "../api/Chat/Chat.js";
+import gomimg from "../assets/곰탱이.png";
 
 export default function PaperplanePage() {
   const [chatRoomList, setChatRoomList] = useState({});
@@ -206,7 +207,11 @@ export default function PaperplanePage() {
                     >
                       <div className={styles.유저이미지}>
                         {/* 여기에 실제 이미지 URL을 사용하거나, 상대방 프로필 이미지를 배경으로 설정 */}
-                        <img src={list.joinMember.url} alt="프로필 이미지" />
+                        <img
+                          className={styles.곰탱이}
+                          src={list.joinMember.url || gomimg}
+                          alt="프로필 이미지"
+                        />
                       </div>
                       <div className={styles.유저정보}>
                         <div>{list.joinMember.nickname}</div>

@@ -28,6 +28,7 @@ import useUserStore from "../store/useUserStore";
 import useStompStore from "../store/useStompStore";
 import 혜선누나 from "../assets/혜선누나.jpg";
 import { getMyMybrary, updateMybrary } from "../api/mybrary/Mybrary";
+import gomimg from "../assets/곰탱이.png";
 
 export default function MybraryPage() {
   const navigate = useNavigate();
@@ -249,29 +250,35 @@ export default function MybraryPage() {
         <div className={s(edit ? styles.active : styles.container)}>
           <div className={styles.profileContainer}>
             <div className={styles.profile}>
-              <div>이미지</div>
-              <div>
+              <div className={styles.프로필박스2}>
+                <img
+                  className={styles.프로필이미지곰}
+                  src={testuser.data.url || gomimg}
+                  alt="대체 이미지"
+                />
+              </div>
+              <div className={styles.프로필박스}>
                 <div>{testuser.data.member.nickname}</div>
                 <div>{testuser.data.member.name}</div>
               </div>
-              <div>
+              <div className={styles.프로필박스}>
                 <div>{testuser.data.bookCount}</div>
                 <div>앨범</div>
               </div>
-              <div>
+              <div className={styles.프로필박스}>
                 <div>{testuser.data.threadCount}</div>
                 <div>게시글</div>
               </div>
-              <div>
+              <div className={styles.프로필박스}>
                 <div>{testuser.data.followerCount}</div>
                 <div>팔로워</div>
               </div>
-              <div>
+              <div className={styles.프로필박스}>
                 <div>{testuser.data.followingCount}</div>
                 <div>팔로우</div>
               </div>
             </div>
-            <div>{testuser.data.member.intro}</div>
+            <div className={styles.한줄소개}>{testuser.data.member.intro}</div>
           </div>
           <div>
             <div className={styles.editButton} onClick={() => setEdit(true)}>
