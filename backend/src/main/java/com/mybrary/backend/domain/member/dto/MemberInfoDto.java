@@ -21,6 +21,6 @@ public class MemberInfoDto {
     private Long memberId;
     private String nickname;
     private String intro;
-    private String profileImageUrl;
+    private String url;
 
 }

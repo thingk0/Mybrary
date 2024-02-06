@@ -1,6 +1,8 @@
 package com.mybrary.backend.domain.category.controller;
 
 import com.mybrary.backend.domain.book.dto.BookGetDto;
+import com.mybrary.backend.domain.book.repository.BookRepository;
+import com.mybrary.backend.domain.book.service.BookService;
 import com.mybrary.backend.domain.category.dto.CategoryGetDto;
 import com.mybrary.backend.domain.category.dto.CategoryPostDto;
 import com.mybrary.backend.domain.category.dto.CategoryUpdateDto;
@@ -32,6 +34,7 @@ public class CategoryController {
 
     private final ApiResponse response;
     private final CategoryService categoryService;
+    private final BookService bookService;
 
     @Operation(summary = "카테고리 조회", description = "책장 아이디를 통한 카테고리 목록 조회")
     @GetMapping
@@ -49,12 +52,14 @@ public class CategoryController {
         list.add(category3);
         list.add(category4);
 
-        return response.success(ResponseCode.CATEGORIES_FETCHED, list);
+
+        List<CategoryGetDto> result = categoryService.getAllCategory(bookshelfId);
+        return response.success(ResponseCode.CATEGORIES_FETCHED, result);
     }
 
     @Operation(summary = "카테고리 책 리스트 조회", description = "카테고리 아이디를 통한 책 목록 조회")
-    @GetMapping("/category/{categoryId}")
-    public ResponseEntity<?> getAllBookByCategoryId(@PathVariable Long categoryId) {
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getAllBookByCategoryId(@PathVariable(name = "id") Long categoryId) {
 
         MemberInfoDto writer1 = new MemberInfoDto(1L, "wnsgh", "안녕하세요 최준호입니다", "123123");
         MemberInfoDto writer2 = new MemberInfoDto(2L, "aksrl", "안녕하세요 서만기입니다", "666666");
@@ -72,19 +77,24 @@ public class CategoryController {
         list.add(book3);
         list.add(book4);
 
-        return response.success(ResponseCode.CATEGORY_BOOKS_FETCHED, list);
+        List<BookGetDto> result = bookService.getAllBookByCategoryId(categoryId);
+        return response.success(ResponseCode.CATEGORY_BOOKS_FETCHED, result);
     }
 
     @Operation(summary = "카테고리 생성", description = "카테고리 생성")
     @PostMapping
     public ResponseEntity<?> createCategory(@RequestBody CategoryPostDto category) {
 
-        return response.success(ResponseCode.CATEGORY_CREATED, category.getName());
+        Long categoryId = categoryService.createCategory(category);
+
+        return response.success(ResponseCode.CATEGORY_CREATED, categoryId);
     }
 
     @Operation(summary = "카테고리 수정", description = "카테고리 관련 정보 수정")
     @PutMapping
     public ResponseEntity<?> updateCategory(@RequestBody CategoryUpdateDto category) {
+
+        categoryService.updateCategory(category);
 
         return response.success(ResponseCode.CATEGORY_UPDATED, category.getBookShelfId());
     }
@@ -93,7 +103,8 @@ public class CategoryController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteCategory(@PathVariable(name = "id") Long categoryId) {
 
-        return response.success(ResponseCode.CATEGORY_DELETED, categoryId);
+        categoryService.deleteCategory(categoryId);
+        return response.success(ResponseCode.CATEGORY_DELETED);
     }
 
 

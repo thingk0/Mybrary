@@ -1,6 +1,5 @@
 package com.mybrary.backend.domain.follow.repository.custom;
 
-import static com.mybrary.backend.domain.contents.thread.entity.QThreads.threads;
 import static com.mybrary.backend.domain.follow.entity.QFollow.follow;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;

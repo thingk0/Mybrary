@@ -15,6 +15,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -36,9 +37,11 @@ public class Category extends BaseEntity {
     @JoinColumn(name = "bookshelf_id")
     private Bookshelf bookshelf;
 
+    @Setter
     @Column(name = "category_name")
     private String categoryName;
 
+    @Setter
     @Column(name = "category_seq")
     private int categorySeq;
 }
