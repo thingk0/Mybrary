@@ -1,0 +1,26 @@
+.modal {
+  width: 600px;
+  height: 400px;
+  margin: auto;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgb(255, 255, 255);
+  overflow: hidden;
+  border-radius: 10px;
+  outline: none;
+  padding: 20px;
+  z-index: 20;
+}
+.modalOverlay {
+  position: fixed;
+  overflow: hidden;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: #57423f97;
+  z-index: 19;
+}

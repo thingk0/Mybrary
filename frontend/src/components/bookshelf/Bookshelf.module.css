@@ -50,12 +50,6 @@
   gap: 5px;
   align-items: flex-end;
 }
-.leftBooks {
-  justify-content: flex-start;
-}
-.rightBooks {
-  justify-content: flex-end;
-}
 
 /* 호버했을때 보이는 부분 */
 .categoryNameOnHover {

@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Switch } from "react-router-dom";
 import ScrollToTop from "./components/common/ScrollToTop";
 import App from "./App";
 import BookPage from "./pages/BookPage";
@@ -60,6 +60,7 @@ function Main() {
           <Route path="threadUpdate" element={<ThreadUpdatePage />} />
           <Route path="account" element={<SettingPage />} />
         </Route>
+        <Route path="*" element={<ErrorPage />} />
       </Routes>
     </BrowserRouter>
   );
