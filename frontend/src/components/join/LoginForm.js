@@ -50,7 +50,7 @@ function LoginForm() {
       if (data.status === "SUCCESS") {
         // useStore에 data안에 들어있는 기본 정보들을 저장해라
         await setUser({
-          email: "dmdkvj369@naver.com",
+          email: formData.email,
           memberId: data.memberId,
           nickname: data.nickname,
         });
