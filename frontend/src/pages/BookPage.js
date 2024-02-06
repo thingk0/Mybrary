@@ -23,25 +23,22 @@ export default function BookPage() {
     }, 600); // 300ms는 애니메이션 시간과 일치해야 합니다.
   };
 
-  const handleWheel = useCallback(
-    (event) => {
-      const scrollAmount = event.deltaY;
+  const handleWheel = useCallback((event) => {
+    const scrollAmount = event.deltaY;
 
-      // 스크롤 방향에 따라 선택된 책의 인덱스를 변경
-      if (scrollAmount > 0) {
-        // 아래로 스크롤
-        setSelectedBookIndex((prevIndex) =>
-          prevIndex < bookList.length - 1 ? prevIndex + 1 : prevIndex
-        );
-      } else if (scrollAmount < 0) {
-        // 위로 스크롤
-        setSelectedBookIndex((prevIndex) =>
-          prevIndex > 0 ? prevIndex - 1 : prevIndex
-        );
-      }
-    },
-    [bookList]
-  ); // 'bookList'가 변경될 때만 실행되도록 의존성 배열 수정
+    // 스크롤 방향에 따라 선택된 책의 인덱스를 변경
+    if (scrollAmount > 0) {
+      // 아래로 스크롤
+      setSelectedBookIndex((prevIndex) =>
+        prevIndex < bookList.length - 1 ? prevIndex + 1 : prevIndex
+      );
+    } else if (scrollAmount < 0) {
+      // 위로 스크롤
+      setSelectedBookIndex((prevIndex) =>
+        prevIndex > 0 ? prevIndex - 1 : prevIndex
+      );
+    }
+  }, []); // 'bookList'가 변경될 때만 실행되도록 의존성 배열 수정
 
   useEffect(() => {
     setBookList([

@@ -38,7 +38,7 @@ function Main() {
             <Route path=":bookShelfId">
               <Route index element={<BookshelfPage />} />
               {/*이거 나중에 동적처리 */}
-              <Route path="categoryid">
+              <Route path=":categoryid">
                 <Route index element={<BookPage />} />
                 <Route path=":bookId" element={<BookDetailPage />} />
               </Route>
