@@ -27,8 +27,7 @@ import { useNavigate } from "react-router-dom";
 import useUserStore from "../store/useUserStore";
 import useStompStore from "../store/useStompStore";
 import 혜선누나 from "../assets/혜선누나.jpg";
-import { share } from "../api/paper/Paper";
-import { renewToken } from "../api/common/Token";
+import { getMyMybrary } from "../api/mybrary/Mybrary";
 
 export default function MybraryPage() {
   const navigate = useNavigate();
@@ -41,8 +40,20 @@ export default function MybraryPage() {
   const client = useStompStore((state) => state.stompClient);
 
   useEffect(() => {
-    console.log(user);
-  }, [user]);
+    async function fetchData() {
+      try {
+        const response = await getMyMybrary();
+        console.log(response); // 여기서 response는 response.data 값
+        console.log(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    fetchData();
+    console.log(localStorage.getItem("accessToken"));
+    console.log(localStorage.getItem("tokenTimestamp"));
+  }, []);
 
   const color = [
     "01",
@@ -114,36 +125,9 @@ export default function MybraryPage() {
     );
   }
 
-  const sendAlarm = async (e) => {
-    if (e.key === "Enter") {
-      console.log(e.target.value);
-      console.log(client);
-      // 여기에 알람 전송 요청 코드 작성
-      try {
-        const msg = {
-          sender: user.email,
-          receiver: e.target.value,
-        };
-
-        const data = await fetch("/api/v1/notification/test", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(msg),
-        });
-        console.log(data);
-      } catch (error) {
-        console.log(error);
-        throw error;
-      }
-    }
-  };
-
   return (
     <>
       <div className={s(`${styles.bg} ${styles[`bg${bgColor}`]}`)}>
-        <input onKeyDown={sendAlarm}></input>
         <div className={styles.center}>
           <img
             src={bsColor}
