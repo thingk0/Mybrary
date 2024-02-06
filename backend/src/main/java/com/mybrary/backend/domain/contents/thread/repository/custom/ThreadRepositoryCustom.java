@@ -3,7 +3,6 @@ package com.mybrary.backend.domain.contents.thread.repository.custom;
 import com.mybrary.backend.domain.contents.thread.dto.GetThreadDto;
 import com.mybrary.backend.domain.contents.thread.dto.ThreadInfoGetDto;
 import com.mybrary.backend.domain.contents.thread.entity.Thread;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Pageable;

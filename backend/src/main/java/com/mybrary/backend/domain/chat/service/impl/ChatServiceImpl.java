@@ -1,19 +1,25 @@
 package com.mybrary.backend.domain.chat.service.impl;
 
-import com.mybrary.backend.domain.chat.dto.*;
-import com.mybrary.backend.domain.chat.entity.*;
-import com.mybrary.backend.domain.chat.repository.*;
+import com.mybrary.backend.domain.chat.dto.ChatMessageGetDto;
+import com.mybrary.backend.domain.chat.dto.ChatMessagePostDto;
+import com.mybrary.backend.domain.chat.dto.ChatRoomGetDto;
+import com.mybrary.backend.domain.chat.entity.ChatJoin;
+import com.mybrary.backend.domain.chat.entity.ChatMessage;
+import com.mybrary.backend.domain.chat.entity.ChatRoom;
+import com.mybrary.backend.domain.chat.repository.ChatJoinRepository;
+import com.mybrary.backend.domain.chat.repository.ChatMessageRepository;
+import com.mybrary.backend.domain.chat.repository.ChatRoomRepository;
 import com.mybrary.backend.domain.chat.service.ChatService;
 import com.mybrary.backend.domain.contents.thread.dto.ThreadSimpleGetDto;
+import com.mybrary.backend.domain.contents.thread.entity.Thread;
+import com.mybrary.backend.domain.contents.thread.repository.ThreadRepository;
 import com.mybrary.backend.domain.member.dto.MemberInfoDto;
 import com.mybrary.backend.domain.member.entity.Member;
 import com.mybrary.backend.domain.member.repository.MemberRepository;
-import com.mybrary.backend.domain.member.service.MemberService;
-import org.springframework.data.domain.Pageable;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,7 +32,7 @@ public class ChatServiceImpl implements ChatService {
     private final ChatRoomRepository chatRoomRepository;
     private final ChatMessageRepository chatMessageRepository;
     private final MemberRepository memberRepository;
-    private final MemberService memberService;
+    private final ThreadRepository threadRepository;
 
 
     @Transactional(readOnly = true)
@@ -97,7 +103,7 @@ public class ChatServiceImpl implements ChatService {
 
             // 3. 스레드Id가 null이 아닐 때 스레드 조회
             ThreadSimpleGetDto thread = new ThreadSimpleGetDto();
-            if (chatMessage.getThreadId() != null) {
+            if (chatMessage.getThread() != null) {
                 /* 스레드 간단 조회하는 거 추가해야함 */
             }
 
@@ -168,7 +174,7 @@ public class ChatServiceImpl implements ChatService {
         ChatMessage newMessage = ChatMessage.builder()
                                             .chatRoom(chatRoom)
                                             .sender(me).receiver(receiver).message(message.getMessage())
-                                            .threadId(null).isRead(false).build();
+                                            .thread(null).isRead(false).build();
 
         ChatMessage savedMessage = chatMessageRepository.save(newMessage);
 
@@ -195,10 +201,14 @@ public class ChatServiceImpl implements ChatService {
         Member me = memberRepository.findById(myId).get();
         Member receiver = memberRepository.findById(message.getReceiverId()).get();
 
+        Thread findThread = threadRepository.findByThreadId(message.getThreadId()).orElseThrow(
+            IllegalArgumentException::new
+        );
+
         ChatMessage newMessage = ChatMessage.builder()
                                             .chatRoom(chatRoom)
                                             .sender(me).receiver(receiver).message(null)
-                                            .threadId(message.getThreadId()).isRead(false).build();
+                                            .thread(findThread).isRead(false).build();
 
         ChatMessage savedMessage = chatMessageRepository.save(newMessage);
     }

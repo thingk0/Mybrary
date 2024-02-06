@@ -1,7 +1,6 @@
 package com.mybrary.backend.domain.category.controller;
 
 import com.mybrary.backend.domain.book.dto.BookGetDto;
-import com.mybrary.backend.domain.book.repository.BookRepository;
 import com.mybrary.backend.domain.book.service.BookService;
 import com.mybrary.backend.domain.category.dto.CategoryGetDto;
 import com.mybrary.backend.domain.category.dto.CategoryPostDto;
@@ -39,7 +38,7 @@ public class CategoryController {
     @Operation(summary = "카테고리 조회", description = "책장 아이디를 통한 카테고리 목록 조회")
     @GetMapping
     public ResponseEntity<?> getAllCategoryById(
-        @RequestParam(name = "bookshelf-id") Long bookshelfId) {
+        @RequestParam(name = "bookshelfId") Long bookshelfId) {
 
         CategoryGetDto category1 = new CategoryGetDto(1L, "여행", 1, 5);
         CategoryGetDto category2 = new CategoryGetDto(2L, "공부", 3, 3);
@@ -51,7 +50,6 @@ public class CategoryController {
         list.add(category2);
         list.add(category3);
         list.add(category4);
-
 
         List<CategoryGetDto> result = categoryService.getAllCategory(bookshelfId);
         return response.success(ResponseCode.CATEGORIES_FETCHED, result);

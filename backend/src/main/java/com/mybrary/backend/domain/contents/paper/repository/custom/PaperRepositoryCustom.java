@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface PaperRepositoryCustom {
 
-    List<GetFollowingPaperDto> getFollowingPaperDtoResults(Long threadsId);
+    List<GetFollowingPaperDto> getFollowingPaperDtoResults(Long threadId);
 
-    Long deletePaperByThreadsId(Long threadsId);
+    Long deletePaperByThreadsId(Long threadId);
 }

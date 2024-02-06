@@ -5,18 +5,15 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
-@Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class ThreadSimpleGetDto {
 
     /**
-     *  스레드 검색 or pipi에서 공유해서 메세지로 간 스레드 에 사용
-     *  스레드의 썸네일과 좋아요, 댓글, 스크랩수만 보이는 간단한 조회
+     * 스레드 검색 or pipi에서 공유해서 메세지로 간 스레드 에 사용 스레드의 썸네일과 좋아요, 댓글, 스크랩수만 보이는 간단한 조회
      */
 
     private Long threadId;

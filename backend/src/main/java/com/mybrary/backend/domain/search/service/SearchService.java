@@ -6,6 +6,8 @@ import org.springframework.data.domain.Pageable;
 
 public interface SearchService {
 
+    List<String> listSuggestedTerms(String keyword);
+
     List<ThreadSimpleGetDto> searchThread(String keyword, Pageable page);
 
 }

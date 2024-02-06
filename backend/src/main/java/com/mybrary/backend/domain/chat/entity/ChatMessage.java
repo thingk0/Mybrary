@@ -1,6 +1,7 @@
 package com.mybrary.backend.domain.chat.entity;
 
 import com.mybrary.backend.domain.base.BaseEntity;
+import com.mybrary.backend.domain.contents.thread.entity.Thread;
 import com.mybrary.backend.domain.member.entity.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -48,8 +49,9 @@ public class ChatMessage extends BaseEntity {
     @Column(name = "message")
     private String message;
 
-    @Column(name = "thread_id")
-    private Long threadId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "thread_id")
+    private Thread thread;
 
     @Setter
     @Column(name = "is_read")
