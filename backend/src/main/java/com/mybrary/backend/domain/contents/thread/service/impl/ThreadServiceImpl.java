@@ -22,6 +22,7 @@ import com.mybrary.backend.domain.contents.thread.dto.ThreadUpdateDto;
 import com.mybrary.backend.domain.contents.thread.entity.Thread;
 import com.mybrary.backend.domain.contents.thread.repository.ThreadRepository;
 import com.mybrary.backend.domain.contents.thread.service.ThreadService;
+import com.mybrary.backend.domain.image.entity.Image;
 import com.mybrary.backend.domain.image.repository.ImageRepository;
 import com.mybrary.backend.domain.image.service.ImageService;
 import com.mybrary.backend.domain.member.entity.Member;
@@ -57,7 +58,7 @@ public class ThreadServiceImpl implements ThreadService {
     private final LikeService likeService;
     private final NotificationService notificationService;
 
-    /* 예외 처리는 아직 못했습니다,, */
+    /* 예외 처리 상황별로 추후 추가할예정 */
 
     @Transactional
     @Override
@@ -75,8 +76,7 @@ public class ThreadServiceImpl implements ThreadService {
         int imageSeq = 0;   //이미지리스트에서 얻어올 순서
 
         Member member = memberRepository.findById(threadPostDto.getMemberId())
-                                        /* 이거 다른걸로 교체해야함 */
-                                        .orElseThrow(EmailNotFoundException::new);
+                                        .orElseThrow(NullPointerException::new);
 
         for (PostPaperDto dto : postPaperDtoList) {
             /* paper 객체 생성 */
@@ -115,31 +115,37 @@ public class ThreadServiceImpl implements ThreadService {
 
             /* 여기서 페이퍼에 대한 멘션 알림 보내는 로직 */
             /* 쓰레드를 생성한 멤버가 sender, 멘션된 회원이 receiver, 알람타입은  */
-            List<Long> mentionedIdList = dto.getMentionList();
-            for(Long mentiondedId : mentionedIdList) {
-                NotificationPostDto mentionNotificationPostDto =
-                    NotificationPostDto.builder()
-                    .notifyType(2)
-                    .senderId(member.getId())
-                    .receiverId(mentiondedId)
-                    .build();
-                notificationService.saveNotification(mentionNotificationPostDto);
-            }
+//            List<Long> mentionedIdList = dto.getMentionList();
+//            for(Long mentiondedId : mentionedIdList) {
+//                NotificationPostDto mentionNotificationPostDto =
+//                    NotificationPostDto.builder()
+//                    .notifyType(2)
+//                    .senderId(member.getId())
+//                    .receiverId(mentiondedId)
+//                    .build();
+//                notificationService.saveNotification(mentionNotificationPostDto);
+//            }
 
             /* image 객체 두장 생성, paperImage 객체도 생성 */
 //            Long image1 = imageService.uploadImage(fileList.get(imageSeq));
 //            Long image2 = imageService.uploadImage(fileList.get(imageSeq + 1));
 
+            Long imageId1 = imageService.uploadImage();
+            Long imageId2 = imageService.uploadImage();
+
             /* paperImage 객체 생성 */
+            Image image1 = imageRepository.findById(imageId1).orElseThrow(NullPointerException::new);
+            Image image2 = imageRepository.findById(imageId2).orElseThrow(NullPointerException::new);
+
             PaperImage paperImage1 = PaperImage.builder()
                                                .paper(paper)
-//                                               .image(imageRepository.getById(image1))
+                                               .image(image1)
                                                .imageSeq(imageSeq)
                                                .build();
 
             PaperImage paperImage2 = PaperImage.builder()
                                                .paper(paper)
-//                                               .image(imageRepository.getById(image2))
+                                               .image(image2)
                                                .imageSeq(imageSeq + 1)
                                                .build();
 
@@ -193,19 +199,20 @@ public class ThreadServiceImpl implements ThreadService {
     @Override
     public List<ThreadInfoGetDto> getMyAllThread(Long memberId, Pageable pageable) {
         /* 나의 thread 정보들 가져와 dto 생성 */
-        List<ThreadInfoGetDto> threadDtoList = threadRepository.getSimpleThreadDtoResults(
-            memberId, pageable);
-        return threadDtoList;
 
+        Member member = memberRepository.findById(memberId).orElseThrow(NullPointerException::new);
+
+        return threadRepository.getSimpleThreadDtoResults(memberId, pageable);
     }
 
     /* 특정 member의 모든 thread들만 조회하기 */
     @Transactional
     @Override
     public List<ThreadInfoGetDto> getOtherAllThread(Long memberId, Pageable pageable) {
-        List<ThreadInfoGetDto> threadDtoList = threadRepository.getSimpleThreadDtoResults(
-            memberId, pageable);
-        return threadDtoList;
+
+        Member member = memberRepository.findById(memberId).orElseThrow(NullPointerException::new);
+
+        return threadRepository.getSimpleThreadDtoResults(memberId, pageable);
     }
 
 

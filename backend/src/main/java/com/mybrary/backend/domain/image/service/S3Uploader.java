@@ -33,17 +33,17 @@ public class S3Uploader {
         return UUID.randomUUID().toString() + "-" + file.getName();
     }
 
-    public Long uploadFile(MultipartFile file) throws IOException {
-        String fileName = generateFileName(file);
-        String bucketDir = bucketName + dir;
-        amazonS3.putObject(bucketDir, fileName, file.getInputStream(), getObjectMetadata(file));
-        String format = getObjectMetadata(file).getContentType();
-        double size = getObjectMetadata(file).getContentLength();
+    public Long uploadFile() throws IOException {
+//        String fileName = generateFileName(file);
+//        String bucketDir = bucketName + dir;
+//        amazonS3.putObject(bucketDir, fileName, file.getInputStream(), getObjectMetadata(file));
+//        String format = getObjectMetadata(file).getContentType();
+//        double size = getObjectMetadata(file).getContentLength();
         Image image = Image.builder()
-                           .name(fileName)
-                           .url(fileName)
-                           .format(format)
-                           .size(size)
+                           .name("test")
+                           .url("url")
+                           .format("format")
+//                           .size()
                            .build();
         imageRepository.save(image);
         return image.getId();
