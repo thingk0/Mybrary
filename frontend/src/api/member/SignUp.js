@@ -1,12 +1,12 @@
 import axios from "axios";
-// const BASE_URL = "http://thingk0.duckdns.org:8080"; proxy 설정 해놔서 안해도 됨.
+const BASE_URL = "http://thingk0.duckdns.org:8080/api/v1/";
 
 // 일반 회원가입
 
 export async function signup(user) {
   try {
-    const response = await axios.post("/api/v1/member", user);
-
+    const response = await axios.post(BASE_URL + "member", user);
+    console.log(response.data);
     return response.data;
   } catch (error) {
     throw error;
@@ -16,7 +16,7 @@ export async function signup(user) {
 // 이메일 인증 요청
 export async function verifyEmail(email) {
   try {
-    const response = await axios.post("/api/v1/member/email/verification", {
+    const response = await axios.post(BASE_URL + "member/email/verification", {
       email: email,
     });
     return response.data;
@@ -28,7 +28,7 @@ export async function verifyEmail(email) {
 // 인증번호 검사
 export async function verifyCode(email, code) {
   try {
-    const response = await axios.post("/api/v1/member/email/verify", {
+    const response = await axios.post(BASE_URL + "member/email/verify", {
       email: email,
       authNum: code,
     });
@@ -41,7 +41,7 @@ export async function verifyCode(email, code) {
 export async function checkNickName(nickname) {
   try {
     const response = await axios.get(
-      `/api/v1/member/nickname/${nickname}/exists`
+      BASE_URL + `member/nickname/${nickname}/exists`
     );
     return response.data;
   } catch (error) {
@@ -52,7 +52,7 @@ export async function checkNickName(nickname) {
 /* 소셜 회원가입 */
 export async function socialSignUp(object) {
   try {
-    const response = await axios.post("/api/v1/member/social", object);
+    const response = await axios.post(BASE_URL + "member/social", object);
     return response.data;
   } catch (error) {
     throw error;

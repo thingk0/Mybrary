@@ -5,9 +5,10 @@ const useUserStore = create(
   persist(
     (set) => ({
       user: {
-        email: "",
         memberId: "",
+        email: "",
         nickname: "",
+        profileImageUrl: "",
       },
       setUser: (userInfo) => {
         set({ user: userInfo });
