@@ -32,6 +32,7 @@ public class CategoryRepositoryImpl implements CategoryRepositoryCustom {
                     )
                     .from(category)
                     .leftJoin(pickBook).on(pickBook.category.id.eq(category.id))
+                    .where(category.bookshelf.id.eq(bookshelfId))
                     .groupBy(category.id)
                     .orderBy(category.categorySeq.asc())
                     .fetch();
