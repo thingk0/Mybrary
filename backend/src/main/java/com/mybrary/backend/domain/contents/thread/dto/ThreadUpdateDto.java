@@ -19,6 +19,8 @@ public class ThreadUpdateDto {
 
     private Long memberId;
     private Long threadId;
+    private boolean isPaperPublic;
+    private boolean isScrapEnable;
     private List<PaperUpdateDto> paperList;
 
 }

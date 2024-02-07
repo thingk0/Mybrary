@@ -68,4 +68,25 @@ public class Paper extends BaseEntity {
     @Column(name = "is_paper_public")
     private boolean isPaperPublic = true;
 
+
+    /* 스레드 수정에 사용 */
+    public void updateLayoutType(int type){
+        layoutType = type;
+    }
+
+    public void updateContent1(String content){
+        content1 = content;
+    }
+
+    public void updateContent2(String content){
+        content2 = content;
+    }
+
+    public void updateScrapEnabled(boolean enabled){
+        isScrapEnabled = enabled;
+    }
+    public void updatePaperPublic(boolean enabled){
+        isPaperPublic = enabled;
+    }
+
 }
