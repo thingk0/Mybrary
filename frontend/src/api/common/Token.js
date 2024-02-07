@@ -30,5 +30,5 @@ export function isTokenExpired() {
   const timeElapsed = (now - tokenTimestamp) / 1000; // 분 단위로 변환
 
   // 14분이 지났으면 갱신 필요
-  return timeElapsed > 20;
+  return timeElapsed > 840;
 }
