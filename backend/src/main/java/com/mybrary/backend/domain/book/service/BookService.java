@@ -2,6 +2,7 @@ package com.mybrary.backend.domain.book.service;
 
 import com.mybrary.backend.domain.book.dto.BookGetDto;
 import com.mybrary.backend.domain.book.dto.BookListGetDto;
+import com.mybrary.backend.domain.book.dto.BookListGetFromPaperDto;
 import com.mybrary.backend.domain.book.dto.BookPostDto;
 import com.mybrary.backend.domain.book.dto.BookSubscribeDto;
 import com.mybrary.backend.domain.book.dto.BookUpdateDto;

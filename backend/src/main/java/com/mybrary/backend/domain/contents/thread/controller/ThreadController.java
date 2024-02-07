@@ -39,11 +39,11 @@ public class ThreadController {
     @Operation(summary = "쓰레드 생성", description = "쓰레드 생성")
     @PostMapping
     public ResponseEntity<?> createThread(@Parameter(hidden = true) Authentication authentication,
-        @RequestParam(required = false) List<MultipartFile> files,
+//        @RequestParam(required = false) List<MultipartFile> files,
         @RequestBody ThreadPostDto threadPostDto )
         throws IOException {
         return response.success(ResponseCode.THREAD_CREATED,
-            threadService.createThread(files, threadPostDto));
+            threadService.createThread(threadPostDto));
     }
     @Operation(summary = "메인홈 쓰레드 조회", description = "메인홈에서의 쓰레드 목록 조회")
     @GetMapping("/home")

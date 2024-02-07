@@ -2,6 +2,7 @@ package com.mybrary.backend.domain.book.service.impl;
 
 import com.mybrary.backend.domain.book.dto.BookGetDto;
 import com.mybrary.backend.domain.book.dto.BookListGetDto;
+import com.mybrary.backend.domain.book.dto.BookListGetFromPaperDto;
 import com.mybrary.backend.domain.book.dto.BookPostDto;
 import com.mybrary.backend.domain.book.dto.BookSubscribeDto;
 import com.mybrary.backend.domain.book.dto.BookUpdateDto;
@@ -55,6 +56,16 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<BookGetDto> getAllBookByCategoryId(Long categoryId) {
         return bookRepository.getAllBookByCategoryId(categoryId);
+    }
+
+    @Override
+    public Long deletePaperFromBook(Long bookId, List<Long> paperIdList) {
+        return null;
+    }
+
+    @Override
+    public List<BookListGetFromPaperDto> getBookListFromPaper(Long paperId) {
+        return null;
     }
 
 }

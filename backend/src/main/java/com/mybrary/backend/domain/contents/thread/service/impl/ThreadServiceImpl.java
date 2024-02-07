@@ -61,7 +61,7 @@ public class ThreadServiceImpl implements ThreadService {
 
     @Transactional
     @Override
-    public Long createThread(List<MultipartFile> fileList, ThreadPostDto threadPostDto)
+    public Long createThread(ThreadPostDto threadPostDto)
         throws IOException {
         Thread thread = Thread.builder()
                               .mybrary(mybraryRepository.findByMemberId(threadPostDto.getMemberId()))
@@ -127,20 +127,19 @@ public class ThreadServiceImpl implements ThreadService {
             }
 
             /* image 객체 두장 생성, paperImage 객체도 생성 */
-            Long image1 = imageService.uploadImage(fileList.get(imageSeq));
-            Long image2 = imageService.uploadImage(fileList.get(imageSeq + 1));
-
+//            Long image1 = imageService.uploadImage(fileList.get(imageSeq));
+//            Long image2 = imageService.uploadImage(fileList.get(imageSeq + 1));
 
             /* paperImage 객체 생성 */
             PaperImage paperImage1 = PaperImage.builder()
                                                .paper(paper)
-                                               .image(imageRepository.getById(image1))
+//                                               .image(imageRepository.getById(image1))
                                                .imageSeq(imageSeq)
                                                .build();
 
             PaperImage paperImage2 = PaperImage.builder()
                                                .paper(paper)
-                                               .image(imageRepository.getById(image2))
+//                                               .image(imageRepository.getById(image2))
                                                .imageSeq(imageSeq + 1)
                                                .build();
 

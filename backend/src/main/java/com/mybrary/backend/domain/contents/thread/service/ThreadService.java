@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface ThreadService {
 
-    Long createThread(List<MultipartFile> fileList, ThreadPostDto threadPostDto) throws IOException;
+    Long createThread(ThreadPostDto threadPostDto) throws IOException;
 
     Long updateThread(ThreadUpdateDto threadUpdateDto);
 
