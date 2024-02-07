@@ -1,16 +1,16 @@
 package com.mybrary.backend.domain.book.service;
 
 import com.mybrary.backend.domain.book.dto.BookGetDto;
-import com.mybrary.backend.domain.book.dto.BookListGetDto;
 import com.mybrary.backend.domain.book.dto.BookListGetFromPaperDto;
 import com.mybrary.backend.domain.book.dto.BookPostDto;
 import com.mybrary.backend.domain.book.dto.BookSubscribeDto;
 import com.mybrary.backend.domain.book.dto.BookUpdateDto;
+import com.mybrary.backend.domain.category.dto.MyCategoryGetDto;
 import java.util.List;
 
 public interface BookService {
 
-    BookListGetDto getBookList(Long memberId);
+    List<MyCategoryGetDto> getMyBookList(Long memberId);
 
     Long createBook(BookPostDto bookPostDto);
 

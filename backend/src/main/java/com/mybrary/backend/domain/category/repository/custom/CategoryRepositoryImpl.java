@@ -2,15 +2,11 @@ package com.mybrary.backend.domain.category.repository.custom;
 
 import static com.mybrary.backend.domain.bookshelf.entity.QBookshelf.bookshelf;
 import static com.mybrary.backend.domain.category.entity.QCategory.category;
-import static com.mybrary.backend.domain.image.entity.QImage.image;
-import static com.mybrary.backend.domain.member.entity.QMember.member;
 import static com.mybrary.backend.domain.mybrary.entity.QMybrary.mybrary;
 import static com.mybrary.backend.domain.pickbook.entity.QPickBook.pickBook;
-import static com.mybrary.backend.domain.rollingpaper.entity.QRollingPaper.rollingPaper;
 
 import com.mybrary.backend.domain.category.dto.CategoryGetDto;
-import com.mybrary.backend.domain.mybrary.dto.MybraryGetDto;
-import com.mybrary.backend.domain.mybrary.dto.MybraryOtherGetDto;
+import com.mybrary.backend.domain.category.dto.MyCategoryGetDto;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
@@ -46,4 +42,23 @@ public class CategoryRepositoryImpl implements CategoryRepositoryCustom {
                                         .where(category.bookshelf.id.eq(bookShelfId))
                                         .fetchOne());
     }
+
+    @Override
+    public Optional<List<MyCategoryGetDto>> getMyAllCategory(Long memberId) {
+        return Optional.ofNullable(query.select(
+                        Projections.constructor(MyCategoryGetDto.class, category.id, category.categoryName)
+                    )
+                    .from(category)
+                    .where(category.bookshelf.id.eq(
+                        query.select(mybrary.id)
+                            .from(bookshelf)
+                            .join(mybrary).on(bookshelf.mybrary.id.eq(mybrary.id))
+                            .where(mybrary.member.id.eq(memberId))
+                    ))
+                    .orderBy(category.categorySeq.asc())
+                    .fetch());
+
+    }
+
+
 }

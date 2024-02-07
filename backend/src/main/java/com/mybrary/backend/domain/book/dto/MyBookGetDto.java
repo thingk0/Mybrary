@@ -21,6 +21,6 @@ public class MyBookGetDto {
 
     private Long bookId;
     private String title;
-    private int paperCount;
+    private Long paperCount;
 
 }

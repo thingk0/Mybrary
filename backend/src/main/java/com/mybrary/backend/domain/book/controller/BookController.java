@@ -3,22 +3,14 @@ package com.mybrary.backend.domain.book.controller;
 import com.mybrary.backend.domain.book.dto.BookPostDto;
 import com.mybrary.backend.domain.book.dto.BookSubscribeDto;
 import com.mybrary.backend.domain.book.dto.BookUpdateDto;
-import com.mybrary.backend.domain.book.dto.MyBookGetDto;
 import com.mybrary.backend.domain.book.service.BookService;
-import com.mybrary.backend.domain.bookmarker.dto.BookMarkerPostDto;
-import com.mybrary.backend.domain.category.dto.MyCategoryGetDto;
-import com.mybrary.backend.domain.contents.paper.dto.PaperInBookGetDto;
-import com.mybrary.backend.domain.member.dto.MemberInfoDto;
 import com.mybrary.backend.global.format.code.ApiResponse;
 import com.mybrary.backend.global.format.response.ResponseCode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -41,10 +33,10 @@ public class BookController {
 
     @Operation(summary = "나의 책 목록 조회", description = "나의 책 목록 조회")
     @GetMapping("/my")
-    public ResponseEntity<?> getBookList(
+    public ResponseEntity<?> getMyBookList(
         @Parameter(hidden = true) Authentication authentication,
         @RequestBody Long memberId) {
-        return response.success(ResponseCode.BOOK_LIST_FETCHED, bookService.getBookList(memberId));
+        return response.success(ResponseCode.BOOK_LIST_FETCHED, bookService.getMyBookList(memberId));
     }
 
     @Operation(summary = "책 생성", description = "책 생성")

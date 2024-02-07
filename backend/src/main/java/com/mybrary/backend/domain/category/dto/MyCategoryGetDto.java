@@ -3,16 +3,12 @@ package com.mybrary.backend.domain.category.dto;
 import com.mybrary.backend.domain.book.dto.MyBookGetDto;
 import java.util.List;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class MyCategoryGetDto {
 
     /**
@@ -24,5 +20,9 @@ public class MyCategoryGetDto {
     private Long categoryId;
     private String categoryName;
     private List<MyBookGetDto> bookList;
+
+    public void setBookList(List<MyBookGetDto> myBookGetDtoList){
+        this.bookList = myBookGetDtoList;
+    }
 
 }
