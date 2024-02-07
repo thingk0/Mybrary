@@ -181,7 +181,8 @@ export default function MybraryPage() {
     );
   }
   const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
+    console.log(e.target.files);
+    setFile(e.target.files);
     if (file) {
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -196,6 +197,7 @@ export default function MybraryPage() {
       // 예: 서버에 파일을 업로드하고, 응답으로 받은 이미지 URL을 저장
       const formData = new FormData();
       formData.append("image", file[0]);
+      console.log(file[0]);
       const result = await axios.post("/upload-single", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
