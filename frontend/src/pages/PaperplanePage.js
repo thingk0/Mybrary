@@ -6,7 +6,7 @@ import 종이비행기 from "../assets/종이비행기.png";
 import { useEffect, useState } from "react";
 import useStompStore from "../store/useStompStore";
 import useUserStore from "../store/useUserStore";
-import { getChatList } from "../api/chat/Chat.js";
+import { getChatList } from "../api/Chat/Chat.js";
 import gomimg from "../assets/곰탱이.png";
 
 export default function PaperplanePage() {
