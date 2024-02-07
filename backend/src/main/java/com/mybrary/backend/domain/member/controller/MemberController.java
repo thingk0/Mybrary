@@ -187,9 +187,7 @@ public class MemberController {
     @PostMapping("/{id}/follow")
     public ResponseEntity<?> follow(@Parameter(hidden = true) Authentication authentication,
                                     @PathVariable(name = "id") Long memberId) {
-        Member me = memberService.findMember(authentication.getName());
-        Long myId = me.getId();
-        memberService.follow(myId, memberId);
+        memberService.follow(authentication.getName(), memberId, false);
         return response.success(ResponseCode.FOLLOW_SUCCESS.getMessage());
     }
 
@@ -211,6 +209,16 @@ public class MemberController {
         Long myId = me.getId();
         memberService.deleteFollower(myId, memberId);
         return response.success(ResponseCode.FOLLOWER_DELETE_SUCCESS.getMessage());
+    }
+
+    @Operation(summary = "팔로우요청 취소", description = "내가 어떤 회원을 팔로우요청 보냈는데(상대방이 계정 비공개라 팔로우를 요청함) 취소하고 싶을 때")
+    @PostMapping("/{id}/follow/cancel")
+    public ResponseEntity<?> followCancel(@Parameter(hidden = true) Authentication authentication,
+                                            @PathVariable(name = "id") Long memberId) {
+
+        memberService.followCancel(authentication.getName(), memberId);
+
+        return response.success(ResponseCode.FOLLOW_CANCEL_SUCCESS.getMessage());
     }
 
     /* 설정페이지에 필요한 API */

@@ -21,7 +21,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "Notification 컨트롤러", description = "Notification Controller API")
@@ -84,6 +86,27 @@ public class NotificationController {
 
         notificationService.deleteAllNotification(myId);
         return response.success(ResponseCode.NOTIFICATION_DELETED);
+    }
+
+    @Operation(summary = "팔로우요청 수락", description = "어떤 회원이 나에게 팔로우 요청 보냈는데(내 계정 비공개라 팔로우를 요청함) 수락하고 싶을 때")
+    @DeleteMapping("/{id}/accept")
+    public ResponseEntity<?> followAccept(@Parameter(hidden = true) Authentication authentication,
+                                          @PathVariable(name = "id") Long notificationId) {
+
+        String followerEmail = notificationService.findFollower(notificationId); // sender
+        Long followingId = notificationService.findFollowing(notificationId); // receiver
+        memberService.follow(followerEmail, followingId, true);
+        return response.success(ResponseCode.FOLLOWER_DELETE_SUCCESS.getMessage());
+
+    }
+
+    @Operation(summary = "팔로우요청 거절", description = "어떤 회원이 나에게 팔로우 요청 보냈는데(내 계정 비공개라 팔로우를 요청함) 거절하고 싶을 때")
+    @DeleteMapping("/{id}/refuse")
+    public ResponseEntity<?> followRefuse(@Parameter(hidden = true) Authentication authentication,
+                                          @PathVariable(name = "id") Long notificationId) {
+
+        notificationService.followRefuse(notificationId);
+        return response.success(ResponseCode.FOLLOWER_DELETE_SUCCESS.getMessage());
     }
 
 }

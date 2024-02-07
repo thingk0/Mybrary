@@ -14,4 +14,10 @@ public interface NotificationService {
     void deleteAllNotification(Long myId);
 
     void saveNotification(NotificationPostDto notification);
+
+    String findFollower(Long notificationId);
+
+    Long findFollowing(Long notificationId);
+
+    void followRefuse(Long notificationId);
 }

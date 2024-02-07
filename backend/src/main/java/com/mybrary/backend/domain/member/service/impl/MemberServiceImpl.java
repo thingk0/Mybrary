@@ -22,6 +22,8 @@ import com.mybrary.backend.domain.member.repository.MemberRepository;
 import com.mybrary.backend.domain.member.service.MemberService;
 import com.mybrary.backend.domain.mybrary.entity.Mybrary;
 import com.mybrary.backend.domain.mybrary.repository.MybraryRepository;
+import com.mybrary.backend.domain.notification.entity.Notification;
+import com.mybrary.backend.domain.notification.repository.NotificationRepository;
 import com.mybrary.backend.domain.rollingpaper.entity.RollingPaper;
 import com.mybrary.backend.domain.rollingpaper.repository.RollingPaperRepository;
 import com.mybrary.backend.global.exception.member.DuplicateEmailException;
@@ -59,6 +61,7 @@ public class MemberServiceImpl implements MemberService {
     private final BookShelfRepository bookShelfRepository;
     private final CategoryRepository categoryRepository;
     private final RollingPaperRepository rollingPaperRepository;
+    private final NotificationRepository notificationRepository;
 
     @Transactional
     @Override
@@ -211,14 +214,29 @@ public class MemberServiceImpl implements MemberService {
 
     @Transactional
     @Override
-    public void follow(Long myId, Long memberId) {
-        Member me = memberRepository.findById(myId).get();
+    public void follow(String email, Long memberId, boolean accept) {
+
+        Member me = findMember(email);
         Member you = memberRepository.findById(memberId).get();
-        Follow follow = Follow.builder()
-                              .following(you)
-                              .follower(me)
-                              .build();
-        followRepository.save(follow);
+
+        // 팔로우를 하려는 상대방의 계정이 공개일 때 -> 바로 팔로우
+        // or 요청을 수락했을 때 -> 팔로우
+        if(you.isProfilePublic() || accept){
+            Follow follow = Follow.builder()
+                                  .following(you)
+                                  .follower(me)
+                                  .build();
+            followRepository.save(follow);
+        }
+        // 비공개일 때 -> 팔로우 요청을 보내기
+        // 그사람에게 보내는 알림이 곧 요청
+
+        /* 알림 저장하는 로직 추가 */
+        // 공개여서 바로 팔로우 했을 때만 알림 보내기
+        if(you.isProfilePublic()){
+
+        }
+
     }
 
     @Transactional
@@ -233,6 +251,16 @@ public class MemberServiceImpl implements MemberService {
     public void deleteFollower(Long myId, Long memberId) {
         Follow follow = followRepository.findFollow(memberId, myId);
         followRepository.delete(follow);
+    }
+
+    @Transactional
+    @Override
+    public void followCancel(String email, Long memberId) {
+
+        Member me = findMember(email);
+        Notification notification = notificationRepository.getForFollowCancel(me.getId(), memberId);
+        notificationRepository.delete(notification);
+
     }
 
     @Transactional

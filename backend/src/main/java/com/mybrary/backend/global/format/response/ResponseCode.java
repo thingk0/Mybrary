@@ -22,6 +22,7 @@ public enum ResponseCode {
     FOLLOW_SUCCESS(HttpStatus.OK, "팔로우가 성공적으로 이루어졌습니다."),
     UNFOLLOW_SUCCESS(HttpStatus.OK, "언팔로우가 성공적으로 이루어졌습니다."),
     FOLLOWER_DELETE_SUCCESS(HttpStatus.OK, "팔로워가 성공적으로 삭제되었습니다."),
+    FOLLOW_CANCEL_SUCCESS(HttpStatus.OK, "팔로우를 성공적으로 취소했습니다."),
     ACCOUNT_SECESSION_SUCCESS(HttpStatus.OK, "계정 탈퇴가 성공적으로 이루어졌습니다."),
     PRIVACY_SETTING_UPDATED(HttpStatus.OK, "계정 공개여부가 성공적으로 설정되었습니다."),
     NOTIFICATION_SETTING_UPDATED(HttpStatus.OK, "알림 설정이 성공적으로 업데이트되었습니다."),

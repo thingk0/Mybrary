@@ -106,4 +106,22 @@ public class NotificationServiceImpl implements NotificationService {
 
     }
 
+    @Override
+    public String findFollower(Long notificationId) {
+        Notification notification = notificationRepository.findById(notificationId).get();
+        return notification.getSender().getEmail();
+    }
+
+    @Override
+    public Long findFollowing(Long notificationId) {
+        Notification notification = notificationRepository.findById(notificationId).get();
+        return notification.getReceiver().getId();
+    }
+
+    @Override
+    public void followRefuse(Long notificationId) {
+        Notification notification = notificationRepository.findById(notificationId).get();
+        notificationRepository.delete(notification);
+    }
+
 }

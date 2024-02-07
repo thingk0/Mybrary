@@ -30,11 +30,13 @@ public interface MemberService {
 
     List<FollowerDto> getAllFollower(Long myId, Long memberId);
 
-    void follow(Long myId, Long memberId);
+    void follow(String email, Long memberId, boolean accept);
 
     void unfollow(Long myId, Long memberId);
 
     void deleteFollower(Long myId, Long memberId);
+
+    void followCancel(String email, Long memberId);
 
     void updateProfile(MemberUpdateDto member);
 
@@ -45,4 +47,5 @@ public interface MemberService {
     boolean checkNicknameDuplication(String nickname);
 
     String logout(String email, HttpServletResponse servletResponse);
+
 }
