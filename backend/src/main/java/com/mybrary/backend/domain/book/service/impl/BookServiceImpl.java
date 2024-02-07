@@ -1,6 +1,10 @@
 package com.mybrary.backend.domain.book.service.impl;
 
 import com.mybrary.backend.domain.book.dto.BookGetDto;
+import com.mybrary.backend.domain.book.dto.BookListGetDto;
+import com.mybrary.backend.domain.book.dto.BookPostDto;
+import com.mybrary.backend.domain.book.dto.BookSubscribeDto;
+import com.mybrary.backend.domain.book.dto.BookUpdateDto;
 import com.mybrary.backend.domain.book.repository.BookRepository;
 import com.mybrary.backend.domain.book.service.BookService;
 import java.util.List;
@@ -12,8 +16,45 @@ import org.springframework.stereotype.Service;
 public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
+
+    @Override
+    public BookListGetDto getBookList(Long memberId) {
+        return null;
+    }
+
+    @Override
+    public Long createBook(BookPostDto bookPostDto) {
+        return null;
+    }
+
+    @Override
+    public BookGetDto getBookInfo(Long bookId) {
+        return null;
+    }
+
+    @Override
+    public Object updateBook(BookUpdateDto bookUpdateDto) {
+        return null;
+    }
+
+    @Override
+    public Object deleteBook(Long bookId) {
+        return null;
+    }
+
+    @Override
+    public Object subscribeBook(BookSubscribeDto bookSubscribeDto) {
+        return null;
+    }
+
+    @Override
+    public Object unsubscribeBook(Long bookId) {
+        return null;
+    }
+
     @Override
     public List<BookGetDto> getAllBookByCategoryId(Long categoryId) {
         return bookRepository.getAllBookByCategoryId(categoryId);
     }
+
 }
