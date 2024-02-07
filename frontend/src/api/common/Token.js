@@ -1,6 +1,7 @@
+const BASE_URL = "http://thingk0.duckdns.org:8080/api/v1/";
 export async function renewToken(accessToken) {
   try {
-    const response = await fetch("/api/v1/member", {
+    const response = await fetch(BASE_URL + "member", {
       method: "PUT", // 요청 방식
       headers: {
         "Content-Type": "application/json",

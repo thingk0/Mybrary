@@ -1,9 +1,9 @@
 import axios from "axios";
-
+const BASE_URL = "http://thingk0.duckdns.org:8080/api/v1/";
 /* 쓰레드 생성 */
 export async function createThread(object) {
   try {
-    const response = await axios.post("/api/vi/thread", object);
+    const response = await axios.post(BASE_URL + "thread", object);
     return response.data;
   } catch (error) {
     throw error;
@@ -13,7 +13,7 @@ export async function createThread(object) {
 /* 쓰레드 수정 */
 export async function updateThread(object) {
   try {
-    const response = await axios.put("/api/vi/thread", object);
+    const response = await axios.put(BASE_URL + "thread", object);
     return response.data;
   } catch (error) {
     throw error;
@@ -23,7 +23,7 @@ export async function updateThread(object) {
 /* 쓰레드 단건 조회 */
 export async function getThread(threadid) {
   try {
-    const response = await axios.get(`/api/vi/thread/${threadid}`);
+    const response = await axios.get(BASE_URL + `thread/${threadid}`);
     return response.data;
   } catch (error) {
     throw error;
@@ -33,7 +33,7 @@ export async function getThread(threadid) {
 /* 쓰레드 삭제 */
 export async function deleteThread(threadid) {
   try {
-    const response = await axios.delete(`/api/vi/thread/${threadid}`);
+    const response = await axios.delete(BASE_URL + `thread/${threadid}`);
     return response.data;
   } catch (error) {
     throw error;
@@ -43,7 +43,7 @@ export async function deleteThread(threadid) {
 /* 특정 회원의 쓰레드(나의게시물) 조회 */
 export async function getDeskThread(memberid, pagingObject) {
   try {
-    const response = await axios.get(`/api/vi/thread/${memberid}/desk`, {
+    const response = await axios.get(BASE_URL + `thread/${memberid}/desk`, {
       pagingObject,
     });
     return response.data;
@@ -55,7 +55,7 @@ export async function getDeskThread(memberid, pagingObject) {
 /* 메인피드 쓰레드 조회 */
 export async function getThreadList(pagingObject) {
   try {
-    const response = await axios.get(`/api/vi/thread/home`, {
+    const response = await axios.get(BASE_URL + `thread/home`, {
       pagingObject,
     });
     return response.data;
@@ -67,7 +67,7 @@ export async function getThreadList(pagingObject) {
 /* 나의 쓰레드 조회 */
 export async function getMyThreadList(pagingObject) {
   try {
-    const response = await axios.get(`/api/vi/thread/desk`, {
+    const response = await axios.get(BASE_URL + `thread/desk`, {
       pagingObject,
     });
     return response.data;
