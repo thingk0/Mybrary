@@ -3,11 +3,14 @@ import s from "classnames";
 import styles from "./style/ThreadCreatePage.module.css";
 import Layout from "../components/threadcreate/Layout";
 import Edit from "../components/threadcreate/Edit";
-import { EditorState, convertToRaw } from "draft-js";
-import draftToHtml from "draftjs-to-html";
 import Tag from "../components/threadcreate/Tag";
 import Header from "../components/threadcreate/Header";
-
+import { EditorState, convertToRaw } from "draft-js";
+import draftToHtml from "draftjs-to-html";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import BigModal from "../components/common/BigModal";
+import BookCreate from "../components/common/BookCreate";
+import { getMYBooks } from "../api/book/Book";
 const initialPaper = () => ({
   layoutType: 1101,
   editorState: EditorState.createEmpty(),
@@ -24,6 +27,8 @@ export default function ThreadCreatePage() {
   const [paperPublic, setPaperPublic] = useState(true);
   const [scarpEnable, setScarpEnable] = useState(true);
   const [currentPage, setCurrentPage] = useState(0);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [modalIsOpen2, setModalIsOpen2] = useState(false);
 
   const layouts = [
     1101, 1102, 1103, 1201, 1202, 1203, 1204, 1205, 1301, 1302, 1303, 1304,
@@ -32,7 +37,9 @@ export default function ThreadCreatePage() {
     2551,
   ];
 
-  const [bookId, setBookId] = useState(0); // 책 ID 상태 추가
+  const [booklist, setBookList] = useState([]);
+  const [book, setBook] = useState({}); // 책선택
+  const [bookId, setBookId] = useState(-1); // 책 ID 상태 추가
   const saveContent = () => {
     const paperList = papers.map((paper) => {
       return {
@@ -74,6 +81,12 @@ export default function ThreadCreatePage() {
     setSectionVisible("left-center");
   };
 
+  const handleOpenBookList = async () => {
+    const booklists = await getMYBooks();
+    console.log(booklists.data);
+    setBookList(booklists.data);
+    setModalIsOpen2(true);
+  };
   return (
     <>
       <div className={styles.container}>
@@ -138,7 +151,9 @@ export default function ThreadCreatePage() {
             쓰레드를 끼워넣을 책을 선택하세요
           </div>
           <div className={styles.settingButtons}>
-            <button>선택되지않음</button>
+            <button onClick={() => handleOpenBookList()}>
+              {bookId !== -1 ? book.title : "선택되지않음"}
+            </button>
           </div>
 
           <div className={styles.title}>공개설정</div>
@@ -168,6 +183,48 @@ export default function ThreadCreatePage() {
           </div>
         </div>
       </div>
+      <BigModal
+        modalIsOpen={modalIsOpen2}
+        setModalIsOpen={setModalIsOpen2}
+        width="800px"
+        height="600px"
+      >
+        <div>
+          {booklist.map((category) => (
+            <div>
+              <div key={category.categoryId}>{category.categoryName}</div>
+              {category.bookList.map((book) => (
+                <div onClick={() => setBook(book)}>
+                  <div>{book.title}</div>
+                  <div>{book.paperCount}</div>
+                </div>
+              ))}
+            </div>
+          ))}
+          <div
+            onClick={() => {
+              setBookId(book.bookId);
+              setModalIsOpen2(false);
+            }}
+          >
+            {book.title &&
+              `"${papers.length}"개의 페이퍼를 "${book.title}"책에 담기`}
+          </div>
+
+          <button onClick={() => setModalIsOpen(true)}>
+            책 만들기 모달 열기
+          </button>
+        </div>
+      </BigModal>
+      <BigModal
+        modalIsOpen={modalIsOpen}
+        setModalIsOpen={setModalIsOpen}
+        width="1200px"
+        height="800px"
+        background="var(--main4)"
+      >
+        <BookCreate />
+      </BigModal>
     </>
   );
 }

@@ -1,6 +1,5 @@
 import axios from "axios";
 const BASE_URL = "http://thingk0.duckdns.org:8080/api/v1/";
-
 //로그인요청
 export async function login(user) {
   try {

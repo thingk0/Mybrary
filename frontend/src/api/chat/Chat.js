@@ -1,9 +1,9 @@
 import axios from "axios";
-
+const BASE_URL = "http://thingk0.duckdns.org:8080/api/v1/";
 /* 채팅방 내 메시지 리스트 조회 */
 export async function getMessageList(roomid) {
   try {
-    const response = await axios.get(`/api/v1/chat/${roomid}`);
+    const response = await axios.get(BASE_URL + `chat/${roomid}`);
     return response.data;
   } catch (error) {
     throw error;
@@ -13,7 +13,7 @@ export async function getMessageList(roomid) {
 /* 자신의 채팅방 리스트 조회 */
 export async function getChatList() {
   try {
-    const response = await axios.get("/api/v1/chat");
+    const response = await axios.get(BASE_URL + "chat");
     return response.data;
   } catch (error) {
     throw error;
@@ -23,7 +23,7 @@ export async function getChatList() {
 /* 회원정보에서 채팅 시작 */
 export async function getFirstChat() {
   try {
-    const response = await axios.get(`/api/v1/chat/message`);
+    const response = await axios.get(BASE_URL + `chat/message`);
     return response.data;
   } catch (error) {
     throw error;
@@ -33,7 +33,10 @@ export async function getFirstChat() {
 /* 채팅 메시지 보내기 */
 export async function sendMessage(roomid, object) {
   try {
-    const response = await axios.post(`/api/v1/chat/${roomid}/message`, object);
+    const response = await axios.post(
+      BASE_URL + `/chat/${roomid}/message`,
+      object
+    );
     return response.data;
   } catch (error) {
     throw error;

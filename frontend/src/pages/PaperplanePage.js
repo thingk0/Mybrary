@@ -6,9 +6,11 @@ import 종이비행기 from "../assets/종이비행기.png";
 import { useEffect, useState } from "react";
 import useStompStore from "../store/useStompStore";
 import useUserStore from "../store/useUserStore";
+import { getChatList } from "../api/Chat/Chat.js";
+import gomimg from "../assets/곰탱이.png";
 
 export default function PaperplanePage() {
-  // const [chatRoomList, setChatRoomList] = useState([]);
+  const [chatRoomList, setChatRoomList] = useState({});
   // 현재 내가 보고 있는 채팅방의 아이디
   const [chatRoomId, setChatRoomId] = useState();
 
@@ -17,6 +19,21 @@ export default function PaperplanePage() {
   /* 웹소켓: 채팅용 주소를 구독 */
   const stompClient = useStompStore((state) => state.stompClient);
   const user = useUserStore((state) => state.user);
+  // const [chatlist, setChatlist] = useState({});
+
+  useEffect(() => {
+    async function fetchChatData() {
+      try {
+        const response = await getChatList();
+        console.log(response.data);
+        setChatRoomList(response.data);
+      } catch (error) {
+        console.error("데이터를 가져오는 데 실패했습니다:", error);
+      }
+    }
+
+    fetchChatData();
+  }, []);
 
   useEffect(() => {
     console.log(stompClient);
@@ -30,42 +47,42 @@ export default function PaperplanePage() {
     }
   }, [stompClient]);
 
-  const chatRoomList = [
-    {
-      chatRoomId: "room1",
-      member: {
-        memberId: "member1",
-        name: "John Doe",
-        nickname: "Johnny",
-        memberImageUrl: "https://example.com/path/to/image1.jpg",
-      },
-      recentMessage: "안녕하세요, 어제 보내신 메시지 잘 받았습니다.",
-      messagesCount: 2,
-    },
-    {
-      chatRoomId: "room2",
-      member: {
-        memberId: "member2",
-        name: "Jane Smith",
-        nickname: "Janey",
-        memberImageUrl: "https://example.com/path/to/image2.jpg",
-      },
-      recentMessage: "프로젝트 관련 회의 언제 하면 좋을까요?",
-      messagesCount: 5,
-    },
-    {
-      chatRoomId: "room3",
-      member: {
-        memberId: "member3",
-        name: "Alice Johnson",
-        nickname: "Alice",
-        memberImageUrl: "https://example.com/path/to/image3.jpg",
-      },
-      recentMessage: "내일 저녁에 시간 어때요?",
-      messagesCount: 1,
-    },
-    // ... 더 많은 채팅방 데이터를 추가할 수 있습니다
-  ];
+  // const chatRoomList = [
+  //   {
+  //     chatRoomId: "room1",
+  //     member: {
+  //       memberId: "member1",
+  //       name: "John Doe",
+  //       nickname: "Johnny",
+  //       memberImageUrl: "https://example.com/path/to/image1.jpg",
+  //     },
+  //     recentMessage: "안녕하세요, 어제 보내신 메시지 잘 받았습니다.",
+  //     messagesCount: 2,
+  //   },
+  //   {
+  //     chatRoomId: "room2",
+  //     member: {
+  //       memberId: "member2",
+  //       name: "Jane Smith",
+  //       nickname: "Janey",
+  //       memberImageUrl: "https://example.com/path/to/image2.jpg",
+  //     },
+  //     recentMessage: "프로젝트 관련 회의 언제 하면 좋을까요?",
+  //     messagesCount: 5,
+  //   },
+  //   {
+  //     chatRoomId: "room3",
+  //     member: {
+  //       memberId: "member3",
+  //       name: "Alice Johnson",
+  //       nickname: "Alice",
+  //       memberImageUrl: "https://example.com/path/to/image3.jpg",
+  //     },
+  //     recentMessage: "내일 저녁에 시간 어때요?",
+  //     messagesCount: 1,
+  //   },
+  //   // ... 더 많은 채팅방 데이터를 추가할 수 있습니다
+  // ];
 
   const charMessageList = [
     {
@@ -191,14 +208,16 @@ export default function PaperplanePage() {
                       <div className={styles.유저이미지}>
                         {/* 여기에 실제 이미지 URL을 사용하거나, 상대방 프로필 이미지를 배경으로 설정 */}
                         <img
-                          src={list.member.memberImageUrl}
+                          className={styles.곰탱이}
+                          src={list.joinMember.url || gomimg}
                           alt="프로필 이미지"
                         />
                       </div>
                       <div className={styles.유저정보}>
-                        <div>{list.member.nickname}</div>
+                        <div>{list.joinMember.nickname}</div>
                         <div>{list.recentMessage}</div>
                       </div>
+                      <div>{list.newMessageCount}</div>
                       <div className={styles.유저점점점}>. . .</div>
                     </div>
                   ))

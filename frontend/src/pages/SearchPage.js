@@ -66,6 +66,7 @@ export default function SearchPage() {
       navigate(`/search/${searchtext}`); // 페이지 전환
     }, 500);
   };
+
   useEffect(() => {
     const test = async () => {
       const res1 = await getPopularList(); // data로 아무것도 안넘어옴
@@ -94,6 +95,7 @@ export default function SearchPage() {
       setRecentSearches(savedSearches);
     }
   }, []);
+
   useEffect(() => {
     // 여기에 단어 구름 데이터를 배열로 정의합니다.
     const data = [

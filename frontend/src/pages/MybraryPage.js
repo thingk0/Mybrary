@@ -27,7 +27,10 @@ import { useNavigate } from "react-router-dom";
 import useUserStore from "../store/useUserStore";
 import useStompStore from "../store/useStompStore";
 import 혜선누나 from "../assets/혜선누나.jpg";
-import { getMyMybrary } from "../api/mybrary/Mybrary";
+import { getMyMybrary, updateMybrary } from "../api/mybrary/Mybrary";
+import gomimg from "../assets/곰탱이.png";
+import BigModal from "../components/common/BigModal";
+import axios from "axios";
 
 export default function MybraryPage() {
   const navigate = useNavigate();
@@ -38,6 +41,13 @@ export default function MybraryPage() {
   const [bsColor, setBsColor] = useState(shelf1);
   const user = useUserStore((state) => state.user);
   const client = useStompStore((state) => state.stompClient);
+  const [tablenum, setTablenum] = useState("1");
+  const [easelnum, setEaselnum] = useState("1");
+  const [bookshelfnum, setBookshelfnum] = useState("1");
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [frameimgurl, setFrameimgurl] = useState();
+  const [file, setFile] = useState();
+
   const [testuser, setTestuser] = useState({
     data: {
       member: {},
@@ -54,10 +64,14 @@ export default function MybraryPage() {
         const response = await getMyMybrary();
         console.log(response);
         setTestuser(response);
-        // setBgColor(response.data.backgroundColor.toString());
-        // setEsColor(easelImgs[response.data.easelColor - 1]);
-        // setTbColor(tableImgs[response.data.deskColor - 1]);
-        // setBsColor(bookshelfImgs[response.data.bookshelfColor - 1]);
+        setBgColor(response.data.backgroundColor.toString());
+        setEsColor(easelImgs[response.data.easelColor - 1]);
+        setEaselnum(response.data.easelColor);
+        setTbColor(tableImgs[response.data.deskColor - 1]);
+        setTablenum(response.data.deskColor);
+        setBsColor(bookshelfImgs[response.data.bookshelfColor - 1]);
+        setBookshelfnum(response.data.bookshelfColor - 1);
+        setFrameimgurl(response.data.frameImageUrl);
       } catch (error) {
         console.error("데이터를 가져오는 데 실패했습니다:", error);
       }
@@ -86,32 +100,63 @@ export default function MybraryPage() {
   const bookshelfImgs = [shelf1, shelf2, shelf3, shelf4, shelf5, shelf6];
 
   //완료버튼을 눌렀을때 실행하는 함수
-  const handleSelect = () => {
+  const handleSelect = async () => {
+    // 요청 객체 생성
+    const updateData = {
+      mybraryId: testuser.data.mybraryId, // 여기서는 예시로 `testuser.data.mybraryId`를 사용합니다.
+      frameImage: {
+        // frameImage에 필요한 데이터를 적절히 채워 넣으세요.
+        name: "string",
+        originName: "string",
+        url: "string",
+        thumbnailUrl: "string",
+        format: "string",
+        size: "string",
+      },
+      backgroundColor: parseInt(bgColor, 10),
+      deskColor: parseInt(tablenum, 10),
+      bookshelfColor: parseInt(bookshelfnum, 10),
+      easelColor: parseInt(easelnum, 10),
+    };
+
+    try {
+      // updateMybrary 함수를 호출하여 데이터 업데이트
+      const response = await updateMybrary(updateData);
+      console.log("업데이트 성공:", response);
+
+      toast.success("변경이 완료 되었습니다.", {
+        style: {
+          border: "1px solid #713200",
+          padding: "16px",
+          color: "#713200",
+          zIndex: "100",
+        },
+        iconTheme: {
+          primary: "#713200",
+          secondary: "#FFFAEE",
+        },
+        position: "top-center",
+      });
+    } catch (error) {
+      console.error("업데이트 실패:", error);
+      toast.error("변경 실패: " + error.message);
+    }
+
     setEdit(false);
-    toast.success("변경이 완료 되었습니다.", {
-      style: {
-        border: "1px solid #713200",
-        padding: "16px",
-        color: "#713200",
-        zIndex: "100",
-      },
-      iconTheme: {
-        primary: "#713200",
-        secondary: "#FFFAEE",
-      },
-      position: "top-center",
-    });
   };
 
   //색을 고르는 컴포넌트
-  function ColorSelector({ color, setColor, Colors }) {
+  function ColorSelector({ color, setColor, Colors, setNum }) {
     return (
       <>
         {Colors.map((colornum, index) => (
           <div
             key={index}
             className={s(styles.color, styles[`color${index + 1}`])}
-            onClick={() => setColor(colornum, console.log(tbColor))}
+            onClick={() => {
+              setColor(colornum);
+              setNum(index + 1);
+            }}
           >
             {color === colornum && <div className={styles.select}></div>}
           </div>
@@ -127,7 +172,7 @@ export default function MybraryPage() {
           <div
             key={index}
             className={s(styles.color, styles[`bgColor${index + 1}`])}
-            onClick={() => setColor(colornum, console.log(`${index + 1}`))}
+            onClick={() => setColor(colornum)}
           >
             {color === colornum && <div className={styles.select}></div>}
           </div>
@@ -135,6 +180,34 @@ export default function MybraryPage() {
       </>
     );
   }
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setFrameimgurl(e.target.result); // 이 부분에서 미리보기 URL을 설정
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+  const handleFileUpload = async () => {
+    if (file) {
+      // 파일 업로드 로직 구현
+      // 예: 서버에 파일을 업로드하고, 응답으로 받은 이미지 URL을 저장
+      const formData = new FormData();
+      formData.append("image", file[0]);
+      const result = await axios.post("/upload-single", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      console.log(result);
+      // try {
+      //   setFrameimgurl(file); // 업로드된 이미지 URL을 상태에 저장
+      // } catch (error) {
+      //   console.error("파일 업로드 중 오류 발생:", error);
+      //   // 오류 처리 로직
+      // }
+    }
+  };
 
   return (
     <>
@@ -144,7 +217,7 @@ export default function MybraryPage() {
             src={bsColor}
             alt=""
             className={s(styles.bookshelf, !edit && styles.img)}
-            onClick={() => !edit && navigate("bookshelf")}
+            onClick={() => !edit && navigate(`${testuser.data.bookShelfId}`)}
           />
           <img
             src={tbColor}
@@ -159,7 +232,11 @@ export default function MybraryPage() {
             onClick={() => !edit && navigate("rollingpaper")}
           />
           <div className={s(styles.frame, !edit && styles.img)}>
-            <img src={혜선누나} alt="" className={styles.trapezoid} />
+            <img
+              src={testuser.data.frameImageUrl || 혜선누나}
+              alt=""
+              className={styles.trapezoid}
+            />
             <img src={frame} alt="" className={styles.frameimg} />
           </div>
 
@@ -177,12 +254,48 @@ export default function MybraryPage() {
           />
           {edit && (
             <div>
+              <div
+                onClick={() => setModalIsOpen(true)}
+                className={s(styles.edit, styles.이젤이미지변경)}
+              >
+                이젤이미지변경하기
+                <BigModal
+                  modalIsOpen={modalIsOpen}
+                  setModalIsOpen={setModalIsOpen}
+                  width="800px"
+                  height="600px"
+                  background="var(--main4)"
+                >
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setModalIsOpen(false);
+                    }}
+                  >
+                    x
+                  </button>
+                  <div>
+                    <div>현재 이미지</div>
+                    {frameimgurl && (
+                      <img
+                        className={styles.선택이미지}
+                        src={frameimgurl}
+                        alt="미리보기 이미지"
+                      />
+                    )}
+                    {/* 파일 업로드 input */}
+                    <input type="file" onChange={handleFileChange} />
+                    <button onClick={() => handleFileUpload()}>저장</button>
+                  </div>
+                </BigModal>
+              </div>
               <div className={s(styles.edit, styles.easelColor)}>
                 <div className={styles.colorTitle}>이젤색</div>
                 <ColorSelector
                   color={esColor}
                   setColor={setEsColor}
                   Colors={easelImgs}
+                  setNum={setEaselnum}
                 />
               </div>
               <div className={s(styles.edit, styles.tableColor)}>
@@ -191,6 +304,7 @@ export default function MybraryPage() {
                   color={tbColor}
                   setColor={setTbColor}
                   Colors={tableImgs}
+                  setNum={setTablenum}
                 />
               </div>
               <div className={s(styles.edit, styles.bookshelfColor)}>
@@ -199,6 +313,7 @@ export default function MybraryPage() {
                   color={bsColor}
                   setColor={setBsColor}
                   Colors={bookshelfImgs}
+                  setNum={setBookshelfnum}
                 />
               </div>
             </div>
@@ -208,29 +323,35 @@ export default function MybraryPage() {
         <div className={s(edit ? styles.active : styles.container)}>
           <div className={styles.profileContainer}>
             <div className={styles.profile}>
-              <div>이미지</div>
-              <div>
+              <div className={styles.프로필박스2}>
+                <img
+                  className={styles.프로필이미지곰}
+                  src={testuser.data.url || gomimg}
+                  alt="대체 이미지"
+                />
+              </div>
+              <div className={styles.프로필박스}>
                 <div>{testuser.data.member.nickname}</div>
                 <div>{testuser.data.member.name}</div>
               </div>
-              <div>
+              <div className={styles.프로필박스}>
                 <div>{testuser.data.bookCount}</div>
                 <div>앨범</div>
               </div>
-              <div>
+              <div className={styles.프로필박스}>
                 <div>{testuser.data.threadCount}</div>
                 <div>게시글</div>
               </div>
-              <div>
+              <div className={styles.프로필박스}>
                 <div>{testuser.data.followerCount}</div>
                 <div>팔로워</div>
               </div>
-              <div>
+              <div className={styles.프로필박스}>
                 <div>{testuser.data.followingCount}</div>
                 <div>팔로우</div>
               </div>
             </div>
-            <div>{testuser.data.member.intro}</div>
+            <div className={styles.한줄소개}>{testuser.data.member.intro}</div>
           </div>
           <div>
             <div className={styles.editButton} onClick={() => setEdit(true)}>

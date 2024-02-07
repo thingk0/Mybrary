@@ -78,3 +78,9 @@
   background-color: var(--main1);
   box-shadow: 0 0 5px 1px var(--main2);
 }
+
+.modal {
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+}

@@ -23,3 +23,15 @@
   display: flex;
   gap: 20px;
 }
+.leftCategoryName {
+  right: 10px;
+}
+.rightCategoryName {
+  left: 10px;
+}
+.leftBooks {
+  justify-content: flex-start;
+}
+.rightBooks {
+  justify-content: flex-end;
+}

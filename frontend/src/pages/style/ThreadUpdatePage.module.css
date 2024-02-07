@@ -1,0 +1,99 @@
+.container {
+  margin: 0 auto;
+  width: 82vi;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1vi;
+  height: 100vh;
+}
+.header {
+  width: 5vi;
+  height: 46vi;
+}
+.main {
+  width: 55vi;
+  height: 46vi;
+  display: flex;
+  gap: 1vi;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.main_left,
+.main_right {
+  width: 18.8vi;
+  height: 100%;
+  position: relative;
+  flex-shrink: 0;
+  transition: transform 0.5s ease;
+}
+
+.main_center {
+  width: 35.2vi;
+  display: flex;
+  align-items: flex-end;
+  flex-shrink: 0;
+  transition: transform 0.5s ease;
+}
+
+.showLeftCenter .main_left {
+  transform: translateX(9.8vi);
+}
+.showLeftCenter .main_center {
+  transform: translateX(9.4vi);
+}
+.showLeftCenter .main_right {
+  transform: translateX(30vi);
+}
+
+.showCenterRight .main_left {
+  transform: translateX(-30vi);
+}
+.showCenterRight .main_center {
+  transform: translateX(-9.4vi);
+}
+.showCenterRight .main_right {
+  transform: translateX(-9.8vi);
+}
+
+.setting {
+  width: 20vi;
+  height: 46vi;
+}
+
+.prevButton,
+.nextButton {
+  font-size: 1.2vi;
+  width: 16.8vi;
+  height: 2vi;
+  background-color: var(--main2);
+  color: var(--main4);
+  border-radius: 5px;
+  border: 0px;
+  cursor: pointer;
+  margin: 1vi;
+}
+
+.title {
+  padding: 1vi 1vi 0 1vi;
+  height: 2vi;
+  font-size: 1.2vi;
+}
+.subtitle {
+  padding-left: 1vi;
+  font-size: 0.8vi;
+  color: var(--main5);
+}
+.settingButtons {
+  display: flex;
+  justify-content: flex-end;
+  margin: 1vi 1vi 3vi;
+}
+.postButtons {
+  height: 14vi;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  margin: 5vi auto;
+}

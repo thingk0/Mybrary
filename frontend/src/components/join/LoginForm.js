@@ -5,6 +5,7 @@ import useUserStore from "../../store/useUserStore";
 import useStompStore from "../../store/useStompStore";
 import useNotificationStore from "../../store/useNotificationStore";
 import styles from "./LoginForm.module.css";
+import Loading from "../common/Loading";
 
 function LoginForm() {
   /* 로그인하고 바로 stompClient 초기화. */
@@ -15,6 +16,8 @@ function LoginForm() {
   const navigateToErrorPage = () => {
     navigate("/error");
   };
+  const [isLoading, setIsLoading] = useState(false);
+
   // 유저상태 전역 관리를 위한 코드
   const setUser = useUserStore((state) => state.setUser);
 
@@ -44,9 +47,12 @@ function LoginForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     try {
       // 로그인 요청 보내기
+
       const data = await login(formData);
+      console.log(data);
       if (data.status === "SUCCESS") {
         // useStore에 data안에 들어있는 기본 정보들을 저장해라
         localStorage.setItem("accessToken", data.data.token);
@@ -68,9 +74,10 @@ function LoginForm() {
           }
         }
         await socketConnect();
-
-        navigate(`/mybrary/${data.memberId}`);
-        navigate(`/mybrary/userid`);
+        console.log(data.data.memberInfo.memberId);
+        setIsLoading(false);
+        navigate(`/mybrary/${data.data.memberInfo.memberId}`);
+        // navigate(`/mybrary/userid`);
       } else {
         // 이메일, 비밀번호 불일치
         setIsLoginFail(true);
@@ -101,7 +108,6 @@ function LoginForm() {
                 />
               </div>
             </div>
-
             <div>
               <label>비밀번호</label>
               <div className={styles.각각의폼디브}>
@@ -128,6 +134,10 @@ function LoginForm() {
           </form>
         </div>
       </div>
+      {/* <> */}
+      {/* {isLoading && <Loading />} */}
+      {/* 로그인 폼 및 기타 컴포넌트 */}
+      {/* </> */}
     </>
   );
 }

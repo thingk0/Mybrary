@@ -45,7 +45,7 @@
 
 html {
   font-family: var(--noto-sans);
-  font-size: 1vi;
+  font-size: 16px;
   font-weight: 400;
 }
 
@@ -58,8 +58,31 @@ h1,
 h2,
 h3,
 h4,
+h5,
+h6,
 button {
   font-family: var(--gmarket-sans);
   font-weight: 400;
+  margin: 0;
+  padding: 0;
   color: var(--main2);
+}
+
+h1 {
+  font-size: 2.4vi;
+}
+h2 {
+  font-size: 2vi;
+}
+h3 {
+  font-size: 1.8vi;
+}
+h4 {
+  font-size: 1.6vi;
+}
+h5 {
+  font-size: 1.3vi;
+}
+h6 {
+  font-size: 1vi;
 }
