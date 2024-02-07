@@ -18,7 +18,7 @@ public class ThreadPostDto {
      */
 
     private Long memberId;
-    private Long bookId;
+//    private Long bookId;
     private List<PostPaperDto> postPaperDto;
 
 //    private boolean isPaperPublic;

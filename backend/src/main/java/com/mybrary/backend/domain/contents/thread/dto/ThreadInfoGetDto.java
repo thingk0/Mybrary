@@ -20,4 +20,6 @@ public class ThreadInfoGetDto {
     private int likesCount;
     private int commentCount;
     private int scrapCount;
+    private boolean isPaperPublic;
+    private boolean isScrapEnable;
 }
