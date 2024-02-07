@@ -34,7 +34,7 @@ public class ThreadController {
 
     private final ApiResponse response;
     private final ThreadService threadService;
-    /**/
+
 
     @Operation(summary = "쓰레드 생성", description = "쓰레드 생성")
     @PostMapping

@@ -20,7 +20,6 @@ public class PaperRepositoryImpl implements PaperRepositoryCustom {
     private final JPAQueryFactory query;
 
     public List<GetFollowingPaperDto> getFollowingPaperDtoResults(Long threadId) {
-        /* 썸네일주소 1, 2를 바로 받을수 있는 방법? */
         return query.select(
                         Projections.fields(GetFollowingPaperDto.class,
                                            paper.id.as("id"),
@@ -30,7 +29,8 @@ public class PaperRepositoryImpl implements PaperRepositoryCustom {
                                            paper.likeCount.as("likeCount"),
                                            paper.commentCount.as("commentCount"),
                                            paper.scrapCount.as("scrapCount"),
-                                           paper.isScrapEnabled.as("isScrapEnabled")
+                                           paper.isScrapEnabled.as("isScrapEnabled"),
+                                           paper.isPaperPublic.as("isPaperPublic")
                         ))
                     .from(paper)
                     .leftJoin(thread).on(paper.thread.id.eq(thread.id))

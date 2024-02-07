@@ -2,6 +2,7 @@ package com.mybrary.backend.domain.contents.paper.service;
 
 import com.mybrary.backend.domain.contents.paper.dto.PaperScrapDto;
 import com.mybrary.backend.domain.contents.paper.dto.PaperShareDto;
+import com.mybrary.backend.domain.contents.paper.dto.ToggleLikeResult;
 
 public interface PaperService {
 
@@ -9,6 +10,6 @@ public interface PaperService {
 
     Long sharePaper(PaperShareDto share);
 
-    boolean toggleLike(Long memberId, Long paperId);
-    /* dto로 반환하도록 수정할것 */
+    ToggleLikeResult toggleLike(Long memberId, Long paperId);
+
 }

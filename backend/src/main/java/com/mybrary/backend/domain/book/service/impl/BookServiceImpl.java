@@ -33,22 +33,22 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Object updateBook(BookUpdateDto bookUpdateDto) {
+    public Long updateBook(BookUpdateDto bookUpdateDto) {
         return null;
     }
 
     @Override
-    public Object deleteBook(Long bookId) {
+    public Long deleteBook(Long bookId) {
         return null;
     }
 
     @Override
-    public Object subscribeBook(BookSubscribeDto bookSubscribeDto) {
+    public Long subscribeBook(BookSubscribeDto bookSubscribeDto) {
         return null;
     }
 
     @Override
-    public Object unsubscribeBook(Long bookId) {
+    public Long unsubscribeBook(Long bookId) {
         return null;
     }
 

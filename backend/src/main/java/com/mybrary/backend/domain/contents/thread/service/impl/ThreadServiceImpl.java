@@ -27,6 +27,8 @@ import com.mybrary.backend.domain.image.service.ImageService;
 import com.mybrary.backend.domain.member.entity.Member;
 import com.mybrary.backend.domain.member.repository.MemberRepository;
 import com.mybrary.backend.domain.mybrary.repository.MybraryRepository;
+import com.mybrary.backend.domain.notification.dto.NotificationPostDto;
+import com.mybrary.backend.domain.notification.service.NotificationService;
 import com.mybrary.backend.global.exception.member.EmailNotFoundException;
 import jakarta.transaction.Transactional;
 import java.io.IOException;
@@ -53,7 +55,7 @@ public class ThreadServiceImpl implements ThreadService {
     private final BookRepository bookRepository;
     private final ScrapRepository scrapRepository;
     private final LikeService likeService;
-
+    private final NotificationService notificationService;
 
     /* 예외 처리는 아직 못했습니다,, */
 
@@ -111,6 +113,19 @@ public class ThreadServiceImpl implements ThreadService {
             }
             tagRepository.saveAll(tagEntityList);
 
+            /* 여기서 페이퍼에 대한 멘션 알림 보내는 로직 */
+            /* 쓰레드를 생성한 멤버가 sender, 멘션된 회원이 receiver, 알람타입은  */
+            List<Long> mentionedIdList = dto.getMentionList();
+            for(Long mentiondedId : mentionedIdList) {
+                NotificationPostDto mentionNotificationPostDto =
+                    NotificationPostDto.builder()
+                    .notifyType(2)
+                    .senderId(member.getId())
+                    .receiverId(mentiondedId)
+                    .build();
+                notificationService.saveNotification(mentionNotificationPostDto);
+            }
+
             /* image 객체 두장 생성, paperImage 객체도 생성 */
             Long image1 = imageService.uploadImage(fileList.get(imageSeq));
             Long image2 = imageService.uploadImage(fileList.get(imageSeq + 1));
@@ -160,6 +175,7 @@ public class ThreadServiceImpl implements ThreadService {
                 /* 좋아요 여부 판단 */
                 boolean isLiked = likeService.checkIsLiked(paperDto.getId(), memberId);
                 paperDto.setLiked(isLiked);
+
                 /* 태그목록 포함 처리 */
                 paperDto.setTagList(tagService.getTagNameList(paperDto.getId()));
                 /* 이미지 url들 포함 처리 */
@@ -282,4 +298,3 @@ public class ThreadServiceImpl implements ThreadService {
         return deleteThreadDto;
     }
 }
-

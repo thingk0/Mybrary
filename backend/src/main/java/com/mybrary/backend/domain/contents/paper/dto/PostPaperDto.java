@@ -21,4 +21,5 @@ public class PostPaperDto {
     private boolean isPaperPublic;
     private boolean isScrapEnable;
     private List<String> tagList;
+    private List<Long> mentionList;
 }

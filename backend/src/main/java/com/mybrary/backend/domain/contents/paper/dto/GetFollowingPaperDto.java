@@ -31,6 +31,8 @@ public class GetFollowingPaperDto {
 
     private boolean isScrapEnabled;
 
+    private boolean isPaperPublic;
+
     private String imageUrl1;
     private String imageUrl2;
     private boolean isLiked;
@@ -38,7 +40,7 @@ public class GetFollowingPaperDto {
 
     @QueryProjection
     public GetFollowingPaperDto(Long paperId, int layoutType, String content1, String content2,
-        int likesCount, int commentCount, int scrapCount, boolean isScrapEnabled) {
+        int likesCount, int commentCount, int scrapCount, boolean isScrapEnabled, boolean isPaperPublic) {
         this.id = paperId;
         this.layoutType = layoutType;
         this.content1 = content1;
@@ -47,6 +49,7 @@ public class GetFollowingPaperDto {
         this.commentCount = commentCount;
         this.scrapCount = scrapCount;
         this.isScrapEnabled = isScrapEnabled;
+        this.isPaperPublic = isPaperPublic;
     }
 
 }

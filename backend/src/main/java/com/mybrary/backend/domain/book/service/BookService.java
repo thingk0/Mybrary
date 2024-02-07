@@ -15,13 +15,17 @@ public interface BookService {
 
     BookGetDto getBookInfo(Long bookId);
 
-    Object updateBook(BookUpdateDto bookUpdateDto);
+    Long updateBook(BookUpdateDto bookUpdateDto);
 
-    Object deleteBook(Long bookId);
+    Long deleteBook(Long bookId);
 
-    Object subscribeBook(BookSubscribeDto bookSubscribeDto);
+    Long subscribeBook(BookSubscribeDto bookSubscribeDto);
 
-    Object unsubscribeBook(Long bookId);
+    Long unsubscribeBook(Long bookId);
 
     List<BookGetDto> getAllBookByCategoryId(Long categoryId);
+
+    Long deletePaperFromBook(Long bookId, List<Long> paperIdList);
+
+    List<BookListGetFromPaperDto> getBookListFromPaper(Long paperId);
 }

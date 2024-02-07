@@ -86,6 +86,19 @@ public class BookController {
         return response.success(ResponseCode.BOOK_UNSUBSCRIBED, bookService.unsubscribeBook(bookId));
     }
 
+    @Operation(summary = "책에 들어있는 페이퍼 삭제", description = "책에 포함된 페이퍼를 삭제, 책에서 제거할뿐 페이퍼 자체 삭제는 아님")
+    @DeleteMapping("/{id}/delete-paper")
+    public ResponseEntity<?> deletePaperFromBook(@PathVariable(name = "id") Long bookId, List<Long> paperIdList) {
+        return response.success(ResponseCode.BOOK_UNSUBSCRIBED, bookService.deletePaperFromBook(bookId, paperIdList));
+    }
+
+    @Operation(summary = "페이퍼가 포함된 책 목록 조회", description = "해당 페이퍼가 들어있는 책 정보 목록을 반환")
+    @DeleteMapping("/list/{id}")
+    public ResponseEntity<?> getBookListFromPaper(@PathVariable(name = "id") Long paperId) {
+        return response.success(ResponseCode.BOOK_UNSUBSCRIBED, bookService.getBookListFromPaper(paperId));
+    }
+
+
     /* 북마크는 일단 보류 */
 //    @Operation(summary = "북마크 생성", description = "책에 대한 북마크 정보 생성 or 수정")
 //    @PostMapping("/bookmark")
