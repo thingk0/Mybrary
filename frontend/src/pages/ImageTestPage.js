@@ -10,11 +10,10 @@ export default function ImageTestPage() {
     const formData = new FormData();
     formData.append("image", file[0]);
 
-    const result = await axios.post(
-      "http://localhost:5000/upload-single",
-      formData,
-      { headers: { "Content-Type": "multipart/form-data" } }
-    );
+    const result = await axios.post("/upload-single", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    console.log(result);
 
     setImageName(result.data.imageName);
   };

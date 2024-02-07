@@ -45,11 +45,11 @@ const uploadStorage = multer({
 app.post(
   "/upload-single", // 포스트 요청을 처리
   uploadStorage.single("image"), // 단일 이미지 파일 업로드 (single 메소드는 한 번에 하나의 파일만 업로드 허용)
-  (req, res, error) => {
-    if (error) {
-      console.log("Error: " + error);
-      return;
-    }
+  (req, res) => {
+    // if (next) {
+    //   console.log("Error: " + next);
+    //   return;
+    // }
 
     console.log(req.file); // 업로드한 파일에 대한 정보
     res.send("file Uploaded");

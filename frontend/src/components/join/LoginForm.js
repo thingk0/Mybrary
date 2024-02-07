@@ -49,7 +49,7 @@ function LoginForm() {
       const data = await login(formData);
       if (data.status === "SUCCESS") {
         // useStore에 data안에 들어있는 기본 정보들을 저장해라
-        localStorage.setItem("accessToken", data.data);
+        localStorage.setItem("accessToken", data.data.token);
         localStorage.setItem("tokenTimestamp", Date.now());
         await setUser({
           email: formData.email,

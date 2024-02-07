@@ -1,9 +1,10 @@
 import axios from "axios";
+const BASE_URL = "http://thingk0.duckdns.org:8080/api/v1/";
 
 //로그인요청
 export async function login(user) {
   try {
-    const response = await fetch("/api/v1/member/login", {
+    const response = await fetch(BASE_URL + "member/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -27,7 +28,7 @@ export async function login(user) {
 /* 소셜 로그인 */
 export async function socialLogin(object) {
   try {
-    const response = await axios.post("/api/v1/member/login/social", object);
+    const response = await axios.post(BASE_URL + "member/login/social", object);
     return response.data;
   } catch (error) {
     throw error;
