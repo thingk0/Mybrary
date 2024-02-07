@@ -1,6 +1,5 @@
 package com.mybrary.backend.domain.chat.dto;
 
-import com.mybrary.backend.domain.contents.thread.dto.ThreadSimpleGetDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

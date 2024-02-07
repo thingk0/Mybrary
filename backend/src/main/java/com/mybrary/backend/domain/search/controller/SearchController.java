@@ -1,7 +1,7 @@
 package com.mybrary.backend.domain.search.controller;
 
 import com.mybrary.backend.domain.book.dto.BookGetDto;
-import com.mybrary.backend.domain.contents.thread.dto.ThreadSimpleGetDto;
+import com.mybrary.backend.domain.contents.thread.dto.ThreadSearchGetDto;
 import com.mybrary.backend.domain.member.dto.MemberGetDto;
 import com.mybrary.backend.domain.member.dto.MemberInfoDto;
 import com.mybrary.backend.global.format.code.ApiResponse;
@@ -47,23 +47,23 @@ public class SearchController {
         MemberInfoDto writer4 = new MemberInfoDto(4L, "thdud", "안녕하세요 최소영입니다", "000000");
 
 
-        ThreadSimpleGetDto thread1 = new ThreadSimpleGetDto(1L, writer1, "썸네일url", 3132143, 12343, 13134);
-        ThreadSimpleGetDto thread2 = new ThreadSimpleGetDto(2L, writer2, "썸네일url", 3443, 96354, 999);
-        ThreadSimpleGetDto thread3 = new ThreadSimpleGetDto(3L, writer4, "썸네일url", 55225, 34534, 433);
-        ThreadSimpleGetDto thread4 = new ThreadSimpleGetDto(4L, writer1, "썸네일url", 342434, 44554, 22);
-        ThreadSimpleGetDto thread5 = new ThreadSimpleGetDto(5L, writer3, "썸네일url", 858, 222, 232);
-        ThreadSimpleGetDto thread6 = new ThreadSimpleGetDto(6L, writer1, "썸네일url", 321323, 4534, 23425);
-        ThreadSimpleGetDto thread7 = new ThreadSimpleGetDto(7L, writer2, "썸네일url", 23443, 12343, 42);
+//        ThreadSimpleGetDto thread1 = new ThreadSimpleGetDto(1L, writer1, "썸네일url", 3132143, 12343, 13134);
+//        ThreadSimpleGetDto thread2 = new ThreadSimpleGetDto(2L, writer2, "썸네일url", 3443, 96354, 999);
+//        ThreadSimpleGetDto thread3 = new ThreadSimpleGetDto(3L, writer4, "썸네일url", 55225, 34534, 433);
+//        ThreadSimpleGetDto thread4 = new ThreadSimpleGetDto(4L, writer1, "썸네일url", 342434, 44554, 22);
+//        ThreadSimpleGetDto thread5 = new ThreadSimpleGetDto(5L, writer3, "썸네일url", 858, 222, 232);
+//        ThreadSimpleGetDto thread6 = new ThreadSimpleGetDto(6L, writer1, "썸네일url", 321323, 4534, 23425);
+//        ThreadSimpleGetDto thread7 = new ThreadSimpleGetDto(7L, writer2, "썸네일url", 23443, 12343, 42);
 
 
-        List<ThreadSimpleGetDto> list = new ArrayList<>();
-        list.add(thread1);
-        list.add(thread2);
-        list.add(thread3);
-        list.add(thread4);
-        list.add(thread5);
-        list.add(thread6);
-        list.add(thread7);
+        List<ThreadSearchGetDto> list = new ArrayList<>();
+//        list.add(thread1);
+//        list.add(thread2);
+//        list.add(thread3);
+//        list.add(thread4);
+//        list.add(thread5);
+//        list.add(thread6);
+//        list.add(thread7);
 
         HashMap<String, Object> map = new HashMap<>();
         map.put("threadList", list);

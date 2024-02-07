@@ -1,5 +1,6 @@
 package com.mybrary.backend.domain.chat.dto;
 
+import com.mybrary.backend.domain.contents.thread.dto.ThreadShareGetDto;
 import com.mybrary.backend.domain.member.dto.MemberInfoDto;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
@@ -7,14 +8,13 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.domain.Page;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ChatMessageGetDto {
+public class TChatMessageWebSocketGetDto {
 
     /**
      *  채팅메세지 조회
@@ -22,14 +22,16 @@ public class ChatMessageGetDto {
      */
 
     private Long chatId;
+
     private MemberInfoDto sender;
+
     private String message;
-    private Long threadId;
-    private String threadImageUrl;
-    private Long writerId;
-    private String writerNickname;
-    private String writerImageUrl;
+
+    private ThreadShareGetDto thread;
+
     private boolean isRead;
     private LocalDateTime createdAt;
+
+
 
 }

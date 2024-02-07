@@ -1,6 +1,6 @@
 package com.mybrary.backend.domain.search.service.impl;
 
-import com.mybrary.backend.domain.contents.thread.dto.ThreadSimpleGetDto;
+import com.mybrary.backend.domain.contents.thread.dto.ThreadSearchGetDto;
 import com.mybrary.backend.domain.search.service.SearchService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,7 @@ public class SearchServiceImpl implements SearchService {
 
 
     @Override
-    public List<ThreadSimpleGetDto> searchThread(String keyword, Pageable page) {
+    public List<ThreadSearchGetDto> searchThread(String keyword, Pageable page) {
 
         // 1. keyword가 포함되어있는 태그 리스트 조회 (페이퍼Id가 중복되면 하나만 가져오기)
 

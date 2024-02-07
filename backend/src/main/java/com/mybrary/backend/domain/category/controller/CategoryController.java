@@ -39,7 +39,7 @@ public class CategoryController {
     @Operation(summary = "카테고리 조회", description = "책장 아이디를 통한 카테고리 목록 조회")
     @GetMapping
     public ResponseEntity<?> getAllCategoryById(
-        @RequestParam(name = "bookshelf-id") Long bookshelfId) {
+        @RequestParam(name = "bookshelfId") Long bookshelfId) {
 
         CategoryGetDto category1 = new CategoryGetDto(1L, "여행", 1, 5);
         CategoryGetDto category2 = new CategoryGetDto(2L, "공부", 3, 3);

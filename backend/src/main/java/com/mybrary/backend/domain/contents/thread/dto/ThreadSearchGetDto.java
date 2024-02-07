@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ThreadSimpleGetDto {
+public class ThreadSearchGetDto {
 
     /**
      *  스레드 검색 or pipi에서 공유해서 메세지로 간 스레드 에 사용

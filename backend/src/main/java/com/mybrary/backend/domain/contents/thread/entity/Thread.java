@@ -27,14 +27,14 @@ import org.hibernate.annotations.Where;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "threads")
+@Table(name = "thread")
 @Where(clause = "is_deleted = false")
 @SQLDelete(sql = "UPDATE threads SET is_deleted = TRUE WHERE threads_id = ?")
 public class Thread extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "threads_id")
+    @Column(name = "thread_id")
     private Long id;
 
     @ManyToOne

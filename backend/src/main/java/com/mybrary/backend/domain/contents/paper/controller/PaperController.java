@@ -45,8 +45,8 @@ public class PaperController {
 
         Member member = memberService.findMember(authentication.getName());
         Long myId = member.getId();
-        chatService.threadShare(myId, thread);
-        return response.success(ResponseCode.PAPER_SHARED.getMessage());
+        Long messageId = chatService.threadShare(authentication.getName(), thread);
+        return response.success(ResponseCode.PAPER_SHARED, messageId);
 
     }
 

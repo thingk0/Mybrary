@@ -23,4 +23,7 @@ public class MemberInfoDto {
     private String intro;
     private String url;
 
+    public MemberInfoDto(Long memberId) {
+        this.memberId = memberId;
+    }
 }

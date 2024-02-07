@@ -37,7 +37,7 @@ public class Paper extends BaseEntity {
     private Member member;
 
     @ManyToOne
-    @JoinColumn(name = "threads_id")
+    @JoinColumn(name = "thread_id")
     private Thread thread;
 
     @Column(name = "content1")

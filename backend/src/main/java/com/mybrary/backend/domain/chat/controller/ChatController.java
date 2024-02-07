@@ -3,6 +3,7 @@ package com.mybrary.backend.domain.chat.controller;
 import com.mybrary.backend.domain.chat.dto.ChatMessageGetDto;
 import com.mybrary.backend.domain.chat.dto.ChatMessagePostDto;
 import com.mybrary.backend.domain.chat.dto.ChatRoomGetDto;
+import com.mybrary.backend.domain.chat.dto.TChatMessageGetDto;
 import com.mybrary.backend.domain.chat.service.ChatService;
 import com.mybrary.backend.domain.contents.paper.dto.PaperShareDto;
 import com.mybrary.backend.domain.member.dto.MemberInfoDto;
@@ -18,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -43,7 +45,7 @@ public class ChatController {
     @Operation(summary = "채팅방 리스트 조회", description = "자신의 채팅방 리스트 조회")
     @GetMapping
     public ResponseEntity<?> getAllChatRoom(
-        @Parameter(hidden = true) Authentication authentication) {
+        @Parameter(hidden = true) Authentication authentication, @PageableDefault(page = 0, size = 20) Pageable page) {
 
         MemberInfoDto joinMember1 = new MemberInfoDto(1L, "wnsgh", "안녕하세요 최준호입니다", "123123");
         MemberInfoDto joinMember2 = new MemberInfoDto(2L, "aksrl", "안녕하세요 서만기입니다", "666666");
@@ -61,9 +63,7 @@ public class ChatController {
         list.add(chatRoom3);
         list.add(chatRoom4);
 
-        Member me = memberService.findMember(authentication.getName());
-        Long myId = me.getId();
-        List<ChatRoomGetDto> result = chatService.getAllChatRoom(myId);
+        List<ChatRoomGetDto> result = chatService.getAllChatRoom(authentication.getName(), page);
 
         return response.success(ResponseCode.CHATROOM_LIST_FETCHED, result);
     }
@@ -73,9 +73,7 @@ public class ChatController {
     public ResponseEntity<?> deleteChatRoom(@Parameter(hidden = true) Authentication authentication,
                                             @PathVariable(name = "id") Long chatRoomId) {
 
-        Member me = memberService.findMember(authentication.getName());
-        Long myId = me.getId();
-        chatService.deleteChatRoom(myId, chatRoomId);
+        chatService.deleteChatRoom(authentication.getName(), chatRoomId);
         return response.success(ResponseCode.CHATROOM_EXITED, chatRoomId);
     }
 
@@ -84,33 +82,31 @@ public class ChatController {
     public ResponseEntity<?> getAllChatByChatRoomId(
         @Parameter(hidden = true) Authentication authentication,
         @PathVariable(name = "id") Long chatRoomId,
-        @PageableDefault(page = 0, size = 10) Pageable page) {
+        @PageableDefault(page = 0, size = 20, sort = "createdAt", direction = Direction.DESC) Pageable page) {
 
-        MemberInfoDto sender1 = new MemberInfoDto(1L, "wnsgh", "안녕하세요 최준호입니다", "123123");
-        MemberInfoDto sender2 = new MemberInfoDto(2L, "audtjd", "안녕하세요 고명성입니다", "123123");
+//        MemberInfoDto sender1 = new MemberInfoDto(1L, "wnsgh", "안녕하세요 최준호입니다", "123123");
+//        MemberInfoDto sender2 = new MemberInfoDto(2L, "audtjd", "안녕하세요 고명성입니다", "123123");
+//
+//        ChatMessageGetDto message1 = new ChatMessageGetDto(1L, sender1, "명성아 넌 천재야", null, false,
+//                                                           null);
+//        ChatMessageGetDto message2 = new ChatMessageGetDto(2L, sender1, "인프라 대장 고명성", null, false,
+//                                                           null);
+//        ChatMessageGetDto message3 = new ChatMessageGetDto(3L, sender2, "나 인프라 끝냈어", null, true,
+//                                                           null);
+//        ChatMessageGetDto message4 = new ChatMessageGetDto(4L, sender2, "아직 인프라중", null, true,
+//                                                           null);
+//        ChatMessageGetDto message5 = new ChatMessageGetDto(5L, sender2, "젠킨스 해야해..", null, true,
+//                                                           null);
+//
+//        List<ChatMessageGetDto> list = new ArrayList<>();
+//        list.add(message1);
+//        list.add(message2);
+//        list.add(message3);
+//        list.add(message4);
+//        list.add(message5);
 
-        ChatMessageGetDto message1 = new ChatMessageGetDto(1L, sender1, "명성아 넌 천재야", null, false,
-                                                           null);
-        ChatMessageGetDto message2 = new ChatMessageGetDto(2L, sender1, "인프라 대장 고명성", null, false,
-                                                           null);
-        ChatMessageGetDto message3 = new ChatMessageGetDto(3L, sender2, "나 인프라 끝냈어", null, true,
-                                                           null);
-        ChatMessageGetDto message4 = new ChatMessageGetDto(4L, sender2, "아직 인프라중", null, true,
-                                                           null);
-        ChatMessageGetDto message5 = new ChatMessageGetDto(5L, sender2, "젠킨스 해야해..", null, true,
-                                                           null);
-
-        List<ChatMessageGetDto> list = new ArrayList<>();
-        list.add(message1);
-        list.add(message2);
-        list.add(message3);
-        list.add(message4);
-        list.add(message5);
-
-        Member me = memberService.findMember(authentication.getName());
-        Long myId = me.getId();
-        List<ChatMessageGetDto> result = chatService.getAllChatByChatRoomId(myId,
-                                                                            chatRoomId, page);
+        List<TChatMessageGetDto> result = chatService.getAllChatByChatRoomId(authentication.getName(),
+                                                                             chatRoomId, page);
 
         HashMap<String, Object> map = new HashMap<>();
         map.put("chatMessageList", result);
@@ -123,32 +119,33 @@ public class ChatController {
     @GetMapping("/message")
     public ResponseEntity<?> getAllChatByMemberId(
         @Parameter(hidden = true) Authentication authentication, @RequestParam Long memberId,
-        @PageableDefault(page = 0, size = 10) Pageable page) {
-        MemberInfoDto sender1 = new MemberInfoDto(1L, "wnsgh", "안녕하세요 최준호입니다", "123123");
-        MemberInfoDto sender2 = new MemberInfoDto(2L, "audtjd", "안녕하세요 고명성입니다", "123123");
+        @PageableDefault(page = 0, size = 20, sort = "createdAt", direction = Direction.DESC) Pageable page) {
+//        MemberInfoDto sender1 = new MemberInfoDto(1L, "wnsgh", "안녕하세요 최준호입니다", "123123");
+//        MemberInfoDto sender2 = new MemberInfoDto(2L, "audtjd", "안녕하세요 고명성입니다", "123123");
+//
+//        ChatMessageGetDto message1 = new ChatMessageGetDto(1L, sender1, "명성아 넌 천재야", null, false,
+//                                                           null);
+//        ChatMessageGetDto message2 = new ChatMessageGetDto(2L, sender1, "인프라 대장 고명성", null, false,
+//                                                           null);
+//        ChatMessageGetDto message3 = new ChatMessageGetDto(3L, sender2, "나 인프라 끝냈어", null, true,
+//                                                           null);
+//        ChatMessageGetDto message4 = new ChatMessageGetDto(4L, sender2, "아직 인프라중", null, true,
+//                                                           null);
+//        ChatMessageGetDto message5 = new ChatMessageGetDto(5L, sender2, "젠킨스 해야해..", null, true,
+//                                                           null);
+//
+//        List<ChatMessageGetDto> list = new ArrayList<>();
+//        list.add(message1);
+//        list.add(message2);
+//        list.add(message3);
+//        list.add(message4);
+//        list.add(message5);
+//
+//        List<ChatMessageGetDto> emptyList = new ArrayList<>();
+//        Member me = memberService.findMember(authentication.getName());
+//        Long myId = me.getId();
 
-        ChatMessageGetDto message1 = new ChatMessageGetDto(1L, sender1, "명성아 넌 천재야", null, false,
-                                                           null);
-        ChatMessageGetDto message2 = new ChatMessageGetDto(2L, sender1, "인프라 대장 고명성", null, false,
-                                                           null);
-        ChatMessageGetDto message3 = new ChatMessageGetDto(3L, sender2, "나 인프라 끝냈어", null, true,
-                                                           null);
-        ChatMessageGetDto message4 = new ChatMessageGetDto(4L, sender2, "아직 인프라중", null, true,
-                                                           null);
-        ChatMessageGetDto message5 = new ChatMessageGetDto(5L, sender2, "젠킨스 해야해..", null, true,
-                                                           null);
-
-        List<ChatMessageGetDto> list = new ArrayList<>();
-        list.add(message1);
-        list.add(message2);
-        list.add(message3);
-        list.add(message4);
-        list.add(message5);
-
-        List<ChatMessageGetDto> emptyList = new ArrayList<>();
-        Member me = memberService.findMember(authentication.getName());
-        Long myId = me.getId();
-        List<ChatMessageGetDto> result = chatService.getAllChatByMemberId(myId, memberId, page);
+        List<TChatMessageGetDto> result = chatService.getAllChatByMemberId(authentication.getName(), memberId, page);
 
         HashMap<String, Object> map = new HashMap<>();
         map.put("chatMessageList", result);
@@ -163,10 +160,9 @@ public class ChatController {
                                         @PathVariable("id") Long chatRoomId,
                                         @RequestBody ChatMessagePostDto message) {
         // TODO: 기존 코드에 @PathVariable("id") Long chatRoomId 이 빠져있었음. 해당 파라미터도 포함해서 로직 완성 !
-        Member me = memberService.findMember(authentication.getName());
-        Long myId = me.getId();
-        chatService.createChat(myId, message);
-        return response.success(ResponseCode.CHAT_MESSAGE_SENT);
+
+        Long chatId = chatService.createChat(authentication.getName(), message);
+        return response.success(ResponseCode.CHAT_MESSAGE_SENT, chatId);
     }
 
 }
