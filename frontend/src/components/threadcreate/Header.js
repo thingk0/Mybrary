@@ -1,5 +1,6 @@
 import styles from "./Header.module.css";
 import s from "classnames";
+import toast from "react-hot-toast";
 
 export default function Header({
   papers,
@@ -7,10 +8,24 @@ export default function Header({
   currentPage,
   setCurrentPage,
   initialPaper,
+  setBookId,
+  bookId,
 }) {
   const addPaper = () => {
     setPapers([...papers, initialPaper()]);
     setCurrentPage(papers.length);
+    if (bookId !== -1) {
+      toast("책선택이 초기화되었습니다", {
+        icon: "🤔",
+        style: {
+          borderRadius: "10px",
+          background: "#333",
+          color: "#fff",
+        },
+        position: "top-center",
+      });
+      setBookId(-1);
+    }
   };
   const removePaper = (pageIndex) => {
     const updatedPapers = papers.filter((_, index) => index !== pageIndex);
@@ -43,7 +58,7 @@ export default function Header({
           </div>
         ))}
         {papers.length < 5 && (
-          <div className={styles.newPage} onClick={addPaper}>
+          <div className={styles.newPage} onClick={() => addPaper()}>
             새로운
             <br />
             페이퍼

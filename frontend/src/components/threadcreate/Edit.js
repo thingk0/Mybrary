@@ -126,7 +126,12 @@ export default function Edit({ currentPage, papers, setPapers }) {
         onBlur={handleBlur}
       />
 
-      <div className={item[`img1_${papers[currentPage].layoutType}`]}>
+      <div
+        className={
+          !papers[currentPage].image1 &&
+          item[`img1_${papers[currentPage].layoutType}`]
+        }
+      >
         <input
           ref={inputRef}
           type="file"
@@ -142,10 +147,12 @@ export default function Edit({ currentPage, papers, setPapers }) {
             alt="이미지1"
           />
         )}
-        <div>
-          {persent[Math.floor((papers[currentPage].layoutType % 1000) / 100)]}
-          사진 추가
-        </div>
+        {!papers[currentPage].image1 && (
+          <div>
+            {persent[Math.floor((papers[currentPage].layoutType % 1000) / 100)]}
+            사진 추가
+          </div>
+        )}
       </div>
       <div className={item[`img2_${papers[currentPage].layoutType}`]}>
         <input

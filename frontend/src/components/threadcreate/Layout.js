@@ -1,6 +1,7 @@
 import lo from "./Layouts.module.css";
 import styles from "./Layout.module.css";
 import s from "classnames";
+import { useState } from "react";
 
 export default function Layout({
   papers,
@@ -9,7 +10,17 @@ export default function Layout({
   layouts,
   children,
 }) {
+  const [filter, setFilter] = useState("1CUT"); // 필터 상태 추가
+
   const persent = ["", "9:16", "3:4", "1:1", "4:3", "16:9"];
+
+  const handleFilter = (filterType) => {
+    setFilter(filterType);
+    if (filterType === "1CUT") {
+      papers[currentPage].image2 = null;
+    }
+  };
+
   const handleSelect = (los) => {
     setPapers((prevPapers) => {
       const updatedPapers = [...prevPapers];
@@ -18,18 +29,39 @@ export default function Layout({
     });
   };
 
+  const filteredLayouts = layouts.filter((los) => {
+    if (filter === "1CUT" && Math.floor(los / 1000) === 1) return true;
+    if (filter === "2CUT" && Math.floor(los / 1000) === 2) return true;
+    return false;
+  });
+
   return (
     <div className={styles.미드왼쪽사이즈조정}>
       <div className={styles.왼쪽헤더}>
         <span className={styles.레이아웃글자}>레이아웃</span>
         <div className={styles.레이아웃버튼}>
-          <button>ALL</button>
-          <button>1CUT</button>
-          <button>2CUT</button>
+          <div
+            className={s(
+              styles.cutButton,
+              filter === "1CUT" && styles.selectCutButton
+            )}
+            onClick={() => handleFilter("1CUT")}
+          >
+            1CUT
+          </div>
+          <div
+            className={s(
+              styles.cutButton,
+              filter === "2CUT" && styles.selectCutButton
+            )}
+            onClick={() => handleFilter("2CUT")}
+          >
+            2CUT
+          </div>
         </div>
       </div>
       <div className={styles.왼쪽미드레이아웃}>
-        {layouts.map((los, index) => (
+        {filteredLayouts.map((los, index) => (
           <div
             key={index}
             className={s(

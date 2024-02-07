@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import s from "classnames";
 import styles from "./style/ThreadCreatePage.module.css";
 import Layout from "../components/threadcreate/Layout";
@@ -11,6 +11,7 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import BigModal from "../components/common/BigModal";
 import BookCreate from "../components/common/BookCreate";
 import { getMYBooks } from "../api/book/Book";
+import BookSelect from "../components/threadcreate/BookSelect";
 const initialPaper = () => ({
   layoutType: 1101,
   editorState: EditorState.createEmpty(),
@@ -87,6 +88,13 @@ export default function ThreadCreatePage() {
     setBookList(booklists.data);
     setModalIsOpen2(true);
   };
+
+  useEffect(() => {
+    if (!modalIsOpen2 && bookId === -1) {
+      setBook({});
+    }
+  }, [setBook, modalIsOpen2, bookId]);
+
   return (
     <>
       <div className={styles.container}>
@@ -97,6 +105,8 @@ export default function ThreadCreatePage() {
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
             initialPaper={initialPaper}
+            setBookId={setBookId}
+            bookId={bookId}
           />
         </div>
         <div
@@ -147,9 +157,7 @@ export default function ThreadCreatePage() {
         </div>
         <div className={styles.setting}>
           <div className={styles.title}>책선택</div>
-          <div className={styles.subtitle}>
-            쓰레드를 끼워넣을 책을 선택하세요
-          </div>
+          <div className={styles.subtitle}>스레드를 담을 책을 선택하세요.</div>
           <div className={styles.settingButtons}>
             <button onClick={() => handleOpenBookList()}>
               {bookId !== -1 ? book.title : "선택되지않음"}
@@ -158,28 +166,53 @@ export default function ThreadCreatePage() {
 
           <div className={styles.title}>공개설정</div>
           <div className={styles.subtitle}>
-            나만보기일 경우 남에게 보여지지 않습니다
+            나만보기일 경우 스레드가 남에게 보여지지 않습니다.
           </div>
           <div className={styles.settingButtons}>
-            <button onClick={() => setPaperPublic(!paperPublic)}>
-              {paperPublic ? "공개" : "나만보기"}
-            </button>
+            <div
+              className={paperPublic ? styles.select : styles.button}
+              onClick={() => setPaperPublic(true)}
+            >
+              공개
+            </div>
+
+            <div
+              className={!paperPublic ? styles.select : styles.button}
+              onClick={() => {
+                setPaperPublic(false);
+                setScarpEnable(false);
+              }}
+            >
+              나만보기
+            </div>
           </div>
 
           <div className={styles.title}>스크랩허용</div>
           <div className={styles.subtitle}>
-            나만보기일 경우 스크랩허용을 할 수 없습니다
+            나만보기일 경우 스크랩허용을 할 수 없습니다.
           </div>
           <div className={styles.settingButtons}>
-            <button onClick={() => setScarpEnable(!scarpEnable)}>
-              {scarpEnable ? "스크랩 허용" : "스크랩 비허용"}
-            </button>
+            {paperPublic && (
+              <div
+                className={scarpEnable ? styles.select : styles.button}
+                onClick={() => setScarpEnable(true)}
+              >
+                스크랩 허용
+              </div>
+            )}
+
+            <div
+              className={!scarpEnable ? styles.select : styles.button}
+              onClick={() => setScarpEnable(false)}
+            >
+              스크랩 비허용
+            </div>
           </div>
 
           <div className={styles.postButtons}>
-            <button className={styles.postButton} onClick={() => saveContent()}>
+            <div className={s(styles.postButton)} onClick={() => saveContent()}>
               게시
-            </button>
+            </div>
           </div>
         </div>
       </div>
@@ -189,32 +222,15 @@ export default function ThreadCreatePage() {
         width="800px"
         height="600px"
       >
-        <div>
-          {booklist.map((category) => (
-            <div>
-              <div key={category.categoryId}>{category.categoryName}</div>
-              {category.bookList.map((book) => (
-                <div onClick={() => setBook(book)}>
-                  <div>{book.title}</div>
-                  <div>{book.paperCount}</div>
-                </div>
-              ))}
-            </div>
-          ))}
-          <div
-            onClick={() => {
-              setBookId(book.bookId);
-              setModalIsOpen2(false);
-            }}
-          >
-            {book.title &&
-              `"${papers.length}"개의 페이퍼를 "${book.title}"책에 담기`}
-          </div>
-
-          <button onClick={() => setModalIsOpen(true)}>
-            책 만들기 모달 열기
-          </button>
-        </div>
+        <BookSelect
+          setModalIsOpen={setModalIsOpen}
+          setModalIsOpen2={setModalIsOpen2}
+          papers={papers}
+          booklist={booklist}
+          setBook={setBook}
+          book={book}
+          setBookId={setBookId}
+        />
       </BigModal>
       <BigModal
         modalIsOpen={modalIsOpen}
