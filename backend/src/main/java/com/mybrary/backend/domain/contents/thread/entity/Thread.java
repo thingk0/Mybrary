@@ -27,9 +27,8 @@ import org.hibernate.annotations.Where;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "thread")
 @Where(clause = "is_deleted = false")
-@SQLDelete(sql = "UPDATE threads SET is_deleted = TRUE WHERE threads_id = ?")
+@SQLDelete(sql = "UPDATE thread SET is_deleted = TRUE WHERE thread_id = ?")
 public class Thread extends BaseEntity {
 
     @Id

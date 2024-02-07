@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,21 +34,30 @@ public class PaperController {
 
     @Operation(summary = "페이퍼 스크랩", description = "페이퍼 스크랩")
     @PostMapping("/scrap")
-    public ResponseEntity<?> scrapPaper(@RequestBody PaperScrapDto scrap) {
-
-        return response.success(ResponseCode.PAPER_SCRAPPED, scrap.getBookId());
+    public ResponseEntity<?> scrapPaper(@Parameter(hidden = true) Authentication authentication,
+        @RequestBody PaperScrapDto scrap) {
+        return response.success(ResponseCode.PAPER_SCRAPPED, paperService.scrapPaper(scrap));
     }
 
     @Operation(summary = "페이퍼 공유", description = "페이퍼 다른 사용자에게 공유")
     @PostMapping("/share")
     public ResponseEntity<?> sharePaper(@Parameter(hidden = true) Authentication authentication,
-                                        @RequestBody ChatMessagePostDto thread) {
+        @RequestBody ChatMessagePostDto thread) {
 
         Member member = memberService.findMember(authentication.getName());
         Long myId = member.getId();
         Long messageId = chatService.threadShare(authentication.getName(), thread);
         return response.success(ResponseCode.PAPER_SHARED, messageId);
 
+    }
+
+    @Operation(summary = "페이퍼 좋아요", description = "페이퍼 좋아요 또는 좋아요 취소 요청")
+    @PostMapping("{id}/toggle-like")
+    public ResponseEntity<?> toggleLike(@Parameter(hidden = true) Authentication authentication,
+        @PathVariable(name = "id") Long paperId,
+        @RequestBody Long memberId) {
+        /* responseCode 수정해야함 */
+        return response.success(ResponseCode.PAPER_SCRAPPED, paperService.toggleLike(memberId, paperId));
     }
 
 }

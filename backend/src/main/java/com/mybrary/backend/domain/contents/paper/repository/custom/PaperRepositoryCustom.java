@@ -7,5 +7,5 @@ public interface PaperRepositoryCustom {
 
     List<GetFollowingPaperDto> getFollowingPaperDtoResults(Long threadId);
 
-    Long deletePapersByThreadId(Long threadId);
+    Long deletePaperByThreadsId(Long threadId);
 }

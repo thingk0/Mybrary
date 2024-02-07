@@ -4,17 +4,16 @@ import com.mybrary.backend.domain.contents.paper.dto.GetFollowingPaperDto;
 import com.querydsl.core.annotations.QueryProjection;
 import java.time.LocalDateTime;
 import java.util.List;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class GetThreadDto {
 
     /* 쓰레드 관련 정보 */
@@ -22,7 +21,7 @@ public class GetThreadDto {
 
     private Long threadId;
 
-    private LocalDateTime threadsCreatedAt;
+    private LocalDateTime threadCreatedAt;
 
     /* 작성자 member 관련 정보 */
     private Long memberId;
@@ -37,11 +36,11 @@ public class GetThreadDto {
     private List<GetFollowingPaperDto> paperList;
 
     @QueryProjection
-    public GetThreadDto(Long bookId, Long threadId, LocalDateTime threadsCreatedAt,
-        Long memberId, String memberName, String nickname, String profileUrl) {
+    public GetThreadDto(Long bookId, Long threadId, LocalDateTime threadCreatedAt,
+                        Long memberId, String memberName, String nickname, String profileUrl) {
         this.bookId = bookId;
         this.threadId = threadId;
-        this.threadsCreatedAt = threadsCreatedAt;
+        this.threadCreatedAt = threadCreatedAt;
         this.memberId = memberId;
         this.memberName = memberName;
         this.nickname = nickname;

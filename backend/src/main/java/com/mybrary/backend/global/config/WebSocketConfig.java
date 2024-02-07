@@ -2,10 +2,11 @@ package com.mybrary.backend.global.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.socket.config.annotation.*;
+import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
+import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
+import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
+import org.springframework.web.socket.config.annotation.WebSocketTransportRegistration;
 import org.springframework.web.socket.server.standard.ServletServerContainerFactoryBean;
-
-
 
 
 @Configuration
@@ -19,14 +20,12 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     }
 
 
-
     @Override
     public void configureWebSocketTransport(WebSocketTransportRegistration registry) {
         registry.setMessageSizeLimit(2048 * 2048);
         registry.setSendBufferSizeLimit(2048 * 2048);
         registry.setSendTimeLimit(2048 * 2048);
     }
-
 
 
     @Bean

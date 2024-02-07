@@ -17,6 +17,4 @@ public class LikeRepositoryImpl implements LikeRepositoryCustom {
             .where(like.member.id.eq(memberId).and(like.paper.id.eq(paperId)))
             .fetchOne());
     }
-
-    ;
 }

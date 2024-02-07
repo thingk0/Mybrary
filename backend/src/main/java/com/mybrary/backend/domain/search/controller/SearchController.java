@@ -69,7 +69,7 @@ public class SearchController {
         map.put("threadList", list);
         map.put("page", page);
 
-        return response.success(ResponseCode.THREADS_SEARCHED, map);
+        return response.success(ResponseCode.THREAD_SEARCHED, map);
     }
 
     @Operation(summary = "책 검색", description = "책 제목 기반 검색")
@@ -106,10 +106,14 @@ public class SearchController {
     public ResponseEntity<?> searchByAccount(@RequestParam(name = "keyword") String keyword,
                                              @PageableDefault(page = 0, size = 10) Pageable page) {
 
-        MemberGetDto memberdetail1 = new MemberGetDto(1L, "wndgh@ssafy.com", "최준호", "wnsgh", "안녕하세요 최준호입니다", "123123", true, true);
-        MemberGetDto memberdetail2 = new MemberGetDto(2L, "aksrl@ssafy.com", "서만기", "aksrl", "안녕하세요 서만기입니다", "666666", true, true);
-        MemberGetDto memberdetail3 = new MemberGetDto(3L, "gPtjs@ssafy.com", "박헤선", "gPtjs", "안녕하세요 박혜선입니다", "145643", true, true);
-        MemberGetDto memberdetail4 = new MemberGetDto(4L, "thdud@ssafy.com", "최소영", "thdud", "안녕하세요 최소영입니다", "000000", true, true);
+        MemberGetDto memberdetail1 = new MemberGetDto(1L, "wndgh@ssafy.com", "최준호", "wnsgh", "안녕하세요 최준호입니다", "123123", true,
+                                                      true);
+        MemberGetDto memberdetail2 = new MemberGetDto(2L, "aksrl@ssafy.com", "서만기", "aksrl", "안녕하세요 서만기입니다", "666666", true,
+                                                      true);
+        MemberGetDto memberdetail3 = new MemberGetDto(3L, "gPtjs@ssafy.com", "박헤선", "gPtjs", "안녕하세요 박혜선입니다", "145643", true,
+                                                      true);
+        MemberGetDto memberdetail4 = new MemberGetDto(4L, "thdud@ssafy.com", "최소영", "thdud", "안녕하세요 최소영입니다", "000000", true,
+                                                      true);
 
         List<MemberGetDto> list = new ArrayList<>();
         list.add(memberdetail1);
@@ -130,10 +134,14 @@ public class SearchController {
         @RequestParam(name = "keyword") String keyword,
         @PageableDefault(page = 0, size = 10) Pageable page) {
 
-        MemberGetDto memberdetail1 = new MemberGetDto(1L, "wndgh@ssafy.com", "최준호", "wnsgh", "안녕하세요 최준호입니다", "123123", true, true);
-        MemberGetDto memberdetail2 = new MemberGetDto(2L, "aksrl@ssafy.com", "서만기", "aksrl", "안녕하세요 서만기입니다", "666666", true, true);
-        MemberGetDto memberdetail3 = new MemberGetDto(3L, "gPtjs@ssafy.com", "박헤선", "gPtjs", "안녕하세요 박혜선입니다", "145643", true, true);
-        MemberGetDto memberdetail4 = new MemberGetDto(4L, "thdud@ssafy.com", "최소영", "thdud", "안녕하세요 최소영입니다", "000000", true, true);
+        MemberGetDto memberdetail1 = new MemberGetDto(1L, "wndgh@ssafy.com", "최준호", "wnsgh", "안녕하세요 최준호입니다", "123123", true,
+                                                      true);
+        MemberGetDto memberdetail2 = new MemberGetDto(2L, "aksrl@ssafy.com", "서만기", "aksrl", "안녕하세요 서만기입니다", "666666", true,
+                                                      true);
+        MemberGetDto memberdetail3 = new MemberGetDto(3L, "gPtjs@ssafy.com", "박헤선", "gPtjs", "안녕하세요 박혜선입니다", "145643", true,
+                                                      true);
+        MemberGetDto memberdetail4 = new MemberGetDto(4L, "thdud@ssafy.com", "최소영", "thdud", "안녕하세요 최소영입니다", "000000", true,
+                                                      true);
 
         List<MemberGetDto> list = new ArrayList<>();
         list.add(memberdetail1);
