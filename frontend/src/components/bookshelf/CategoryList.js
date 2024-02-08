@@ -4,6 +4,7 @@
 import styles from "./CategoryList.module.css";
 import { useEffect, useState } from "react";
 import Sortable from "sortablejs";
+import { deleteCategory } from "../../api/category/Category";
 
 export default function CategoryList({ categoryList, setCategoryList }) {
   useEffect(() => {
@@ -59,7 +60,7 @@ export default function CategoryList({ categoryList, setCategoryList }) {
     const updatedCategoryList = categoryList.filter(
       (category) => category.categoryId !== categoryId
     );
-
+    deleteCategory(categoryId);
     setCategoryList(updatedCategoryList);
   };
 
@@ -68,7 +69,10 @@ export default function CategoryList({ categoryList, setCategoryList }) {
       {categoryList
         .filter((category) => category.categoryId !== "empty")
         .map((category) => (
-          <div key={category.categoryId} data-category-id={category.categoryId}>
+          <div
+            key={category.categoryName}
+            data-category-id={category.categoryId}
+          >
             <div className={styles.category}>
               {editingCategoryId === category.categoryId ? (
                 <>
@@ -86,7 +90,9 @@ export default function CategoryList({ categoryList, setCategoryList }) {
                 </>
               ) : (
                 <>
-                  <div className={styles.categoryItem}>{category.name}</div>
+                  <div className={styles.categoryItem}>
+                    {category.categoryName}
+                  </div>
                   <div onClick={() => handleEditCategory(category.categoryId)}>
                     수정
                   </div>

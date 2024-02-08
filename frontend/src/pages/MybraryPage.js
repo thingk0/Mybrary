@@ -31,8 +31,10 @@ import { getMyMybrary, updateMybrary } from "../api/mybrary/Mybrary";
 import gomimg from "../assets/곰탱이.png";
 import BigModal from "../components/common/BigModal";
 import axios from "axios";
+import Loading from "../components/common/Loading";
 
 export default function MybraryPage() {
+  const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
   const navigate = useNavigate();
   const Params = useParams();
   const nowuser = Params.userid;
@@ -51,6 +53,12 @@ export default function MybraryPage() {
   const [frameimgurl, setFrameimgurl] = useState();
   const [file, setFile] = useState();
   const [checkme, setCheckme] = useState(false);
+  const [showModalBookshelf, setShowModalBookshelf] = useState(false);
+  const [showModalTable, setShowModalTable] = useState(false);
+  const [showModalEasel, setShowModalEasel] = useState(false);
+  const [showModalFrame, setShowModalFrame] = useState(false);
+  const [showModalDoor, setShowModalDoor] = useState(false);
+  const [showModalPost, setShowModalPost] = useState(false);
 
   const [testuser, setTestuser] = useState({
     data: {},
@@ -76,6 +84,7 @@ export default function MybraryPage() {
           setBsColor(bookshelfImgs[response.data.bookshelfColor - 1]);
           setBookshelfnum(response.data.bookshelfColor - 1);
           setFrameimgurl(response.data.frameImageUrl);
+          setIsLoading(false);
         } else {
           const response = await getMyMybrary(nowuser);
           console.log("상대방의라이브러리입니다");
@@ -88,14 +97,20 @@ export default function MybraryPage() {
           setBsColor(bookshelfImgs[response.data.bookshelfColor - 1]);
           setBookshelfnum(response.data.bookshelfColor - 1);
           setFrameimgurl(response.data.frameImageUrl);
+          setIsLoading(false);
         }
       } catch (error) {
         console.error("데이터를 가져오는 데 실패했습니다:", error);
+        setIsLoading(false);
       }
     }
 
     fetchMybraryData();
   }, []);
+
+  if (isLoading) {
+    return <Loading></Loading>; // 로딩 중일 때 보여줄 컴포넌트 또는 메시지
+  }
 
   const color = [
     "1",
@@ -218,6 +233,13 @@ export default function MybraryPage() {
       // }
     }
   };
+  function handlePostboxClick() {
+    if (user.memberId === nowuser) {
+      navigate("/paperplane");
+    } else {
+      navigate("/paperplane");
+    }
+  }
 
   return (
     <>
@@ -228,40 +250,80 @@ export default function MybraryPage() {
             alt=""
             className={s(styles.bookshelf, !edit && styles.img)}
             onClick={() => !edit && navigate(`${testuser.data.bookShelfId}`)}
+            onMouseEnter={() => setShowModalBookshelf(true)}
+            onMouseLeave={() => setShowModalBookshelf(false)}
           />
+          <>
+            {showModalBookshelf && (
+              <span className={styles.책장가자}>{user.nickname}님의 책장</span>
+            )}
+          </>
           <img
             src={tbColor}
             alt=""
             className={s(styles.table, !edit && styles.img)}
             onClick={() => !edit && navigate("threads")}
+            onMouseEnter={() => setShowModalTable(true)}
+            onMouseLeave={() => setShowModalTable(false)}
           />
+          {showModalTable && (
+            <span className={styles.테이블가자}>
+              {user.nickname}님의 쓰레드
+            </span>
+          )}
           <img
             src={esColor}
             alt=""
             className={s(styles.easel, !edit && styles.img)}
             onClick={() => !edit && navigate("rollingpaper")}
+            onMouseEnter={() => setShowModalEasel(true)}
+            onMouseLeave={() => setShowModalEasel(false)}
           />
+          {showModalEasel && (
+            <span className={styles.이젤가자}>
+              {user.nickname}님의 롤링페이퍼
+            </span>
+          )}
           <div className={s(styles.frame, !edit && styles.img)}>
             <img
               src={testuser.data.frameImageUrl || 혜선누나}
               alt=""
               className={styles.trapezoid}
             />
-            <img src={frame} alt="" className={styles.frameimg} />
+            <img
+              src={frame}
+              alt=""
+              className={styles.frameimg}
+              onMouseEnter={() => setShowModalFrame(true)}
+              onMouseLeave={() => setShowModalFrame(false)}
+            />
           </div>
+          {showModalFrame && (
+            <span className={styles.액자가자}>{user.nickname}님의 액자</span>
+          )}
 
           <img
             src={door}
             alt=""
             className={s(styles.door, !edit && styles.img)}
             onClick={() => !edit && navigate("/feed")}
+            onMouseEnter={() => setShowModalDoor(true)}
+            onMouseLeave={() => setShowModalDoor(false)}
           />
+          {showModalDoor && (
+            <span className={styles.문가자}>피드페이지로 가기</span>
+          )}
           <img
             src={postbox}
             alt=""
             className={s(styles.postbox, !edit && styles.img)}
-            onClick={() => !edit && navigate("/paperplane")}
+            onClick={() => handlePostboxClick()}
+            onMouseEnter={() => setShowModalPost(true)}
+            onMouseLeave={() => setShowModalPost(false)}
           />
+          {showModalPost && (
+            <span className={styles.알림가자}>메시지가기!</span>
+          )}
           {edit && (
             <div>
               <div
@@ -330,6 +392,11 @@ export default function MybraryPage() {
           )}
         </div>
         {/* <div className={styles.trapezoid}></div> */}
+        {checkme && (
+          <div className={styles.editButton} onClick={() => setEdit(true)}>
+            프로필 편집
+          </div>
+        )}
         <div className={s(edit ? styles.active : styles.container)}>
           <div className={styles.profileContainer}>
             <div className={styles.profile}>

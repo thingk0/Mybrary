@@ -15,13 +15,15 @@ import useUserStore from "../../store/useUserStore";
 import BigModal from "../common/BigModal";
 
 export default function Nav() {
-  const [active, setActive] = useState([false, true, false, false]);
+  const user = useUserStore((state) => state.user);
+  const [active, setActive] = useState([true, false, false, false]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const hasNewNotification = useNotificationStore(
     (state) => state.hasNewNotification
   );
   const navigate = useNavigate();
   const { setUser } = useUserStore();
+  console.log(user);
   const { setNewNotification } = useNotificationStore();
 
   const handleOffAlarm = () => {
@@ -76,7 +78,7 @@ export default function Nav() {
             )}
             onClick={() => {
               setActive([true, false, false, false]);
-              navigate("mybrary/:userid");
+              navigate(`mybrary/${user.memberId}`);
             }}
           >
             {active[0] ? <div>마이</div> : <div></div>}

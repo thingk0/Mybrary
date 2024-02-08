@@ -18,7 +18,7 @@ export async function getCategoryList(id) {
 /* 카테고리 수정 */
 export async function updateCategory(object) {
   try {
-    const response = await axios.put(BASE_URL + object);
+    const response = await axios.put(BASE_URL, object);
     return response.data;
   } catch (error) {
     throw error;
@@ -26,19 +26,20 @@ export async function updateCategory(object) {
 }
 
 /* 카테고리 생성 */
-export async function createCategory(object) {
+export async function createCategory(newCategory) {
   try {
-    const response = await axios.put(BASE_URL + object);
+    const response = await axios.post(BASE_URL, newCategory);
+
     return response.data;
-  } catch (error) {
-    throw error;
+  } catch (e) {
+    console.log(e);
   }
 }
 
 /* 카테고리 기반 책 조회 */
 export async function getBookList(categoryid) {
   try {
-    const response = await axios.get(BASE_URL + `${categoryid}`);
+    const response = await axios.get(BASE_URL, `${categoryid}`);
     return response.data;
   } catch (error) {
     throw error;
@@ -46,6 +47,7 @@ export async function getBookList(categoryid) {
 }
 
 /* 카테고리 삭제 */
+// 썼음 카테고리리스트.js
 export async function deleteCategory(categoryid) {
   try {
     const response = await axios.delete(BASE_URL + `/${categoryid}`);

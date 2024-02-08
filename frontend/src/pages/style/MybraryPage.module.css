@@ -128,7 +128,19 @@
   top: 50vh;
   left: 50vw;
 }
-
+.책장가자 {
+  position: absolute;
+  bottom: 10.4vi;
+  left: 22vi;
+  font-size: 21px;
+  width: max-content;
+  padding: 10px 15px 10px 15px;
+  border-radius: 5px;
+  background-color: var(--blur1);
+  backdrop-filter: blur(12.5px);
+  box-shadow: 0 0 25px 0 #00000036;
+  text-align: center;
+}
 .bookshelf {
   position: absolute;
   bottom: -8.4vi;
@@ -146,6 +158,19 @@
   left: -13.2vi;
   width: 20vw;
 }
+.테이블가자 {
+  position: absolute;
+  bottom: -19.4vi;
+  left: 2vi;
+  font-size: 21px;
+  width: max-content;
+  padding: 10px 15px 10px 15px;
+  border-radius: 5px;
+  background-color: var(--blur1);
+  backdrop-filter: blur(12.5px);
+  box-shadow: 0 0 25px 0 #00000036;
+  text-align: center;
+}
 .tableColor {
   bottom: -20vi;
   left: 5vi;
@@ -156,6 +181,19 @@
   bottom: -19.4vi;
   left: -40.2vi;
   width: 12vw;
+}
+.이젤가자 {
+  position: absolute;
+  bottom: -10vi;
+  left: -28vi;
+  font-size: 21px;
+  width: max-content;
+  padding: 10px 15px 10px 15px;
+  border-radius: 5px;
+  background-color: var(--blur1);
+  backdrop-filter: blur(12.5px);
+  box-shadow: 0 0 25px 0 #00000036;
+  text-align: center;
 }
 .easelColor {
   bottom: 2vi;
@@ -171,6 +209,19 @@
   bottom: 0vi;
   left: -30.2vi;
   width: 12vw;
+}
+.액자가자 {
+  position: absolute;
+  bottom: 13vi;
+  left: -41vi;
+  font-size: 21px;
+  width: max-content;
+  padding: 10px 15px 10px 15px;
+  border-radius: 5px;
+  background-color: var(--blur1);
+  backdrop-filter: blur(12.5px);
+  box-shadow: 0 0 25px 0 #00000036;
+  text-align: center;
 }
 /* 
 
@@ -201,11 +252,37 @@
   left: -10.2vi;
   width: 8vw;
 }
+.문가자 {
+  position: absolute;
+  bottom: 1.3vi;
+  left: -22vi;
+  font-size: 21px;
+  width: max-content;
+  padding: 10px 15px 10px 15px;
+  border-radius: 5px;
+  background-color: var(--blur1);
+  backdrop-filter: blur(12.5px);
+  box-shadow: 0 0 25px 0 #00000036;
+  text-align: center;
+}
 .postbox {
   position: absolute;
   bottom: -20.4vi;
-  left: 22.2vi;
+  left: 25.2vi;
   width: 10vw;
+}
+.알림가자 {
+  position: absolute;
+  bottom: -2vi;
+  left: 27vi;
+  font-size: 21px;
+  width: max-content;
+  padding: 10px 15px 10px 15px;
+  border-radius: 5px;
+  background-color: var(--blur1);
+  backdrop-filter: blur(12.5px);
+  box-shadow: 0 0 25px 0 #00000036;
+  text-align: center;
 }
 .img {
   transition: transform 0.3s ease;
