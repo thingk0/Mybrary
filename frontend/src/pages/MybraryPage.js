@@ -43,6 +43,7 @@ export default function MybraryPage() {
   const [tbColor, setTbColor] = useState(table1);
   const [bsColor, setBsColor] = useState(shelf1);
   const user = useUserStore((state) => state.user);
+  const setUser = useUserStore((state) => state.setUser);
   const client = useStompStore((state) => state.stompClient);
   const [tablenum, setTablenum] = useState("1");
   const [easelnum, setEaselnum] = useState("1");
@@ -76,6 +77,14 @@ export default function MybraryPage() {
           setBsColor(bookshelfImgs[response.data.bookshelfColor - 1]);
           setBookshelfnum(response.data.bookshelfColor - 1);
           setFrameimgurl(response.data.frameImageUrl);
+          if (user.bookshelfId === 0) {
+            await setUser({
+              email: user.email,
+              memberId: user.memberId,
+              nickname: user.nickname,
+              bookshelfId: response.data.bookShelfId,
+            });
+          }
         } else {
           const response = await getMyMybrary(nowuser);
           console.log("상대방의라이브러리입니다");

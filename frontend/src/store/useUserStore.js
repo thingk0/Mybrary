@@ -8,6 +8,7 @@ const useUserStore = create(
         email: "",
         memberId: "",
         nickname: "",
+        bookshelfId: 0,
       },
       setUser: (userInfo) => {
         set({ user: userInfo });

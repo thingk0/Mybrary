@@ -1,9 +1,5 @@
 .FileInput {
-  position: relative;
-  width: 100%;
-  height: 120px;
-  border-radius: 10px;
-  overflow: hidden;
+  position: absolute;
 }
 .info {
   width: 300px;
@@ -17,6 +13,7 @@
   height: 100%;
   object-position: center;
   object-fit: cover;
+  border-radius: 5px;
 }
 
 .FileInput-preview.selected {
@@ -44,4 +41,82 @@
   border-radius: 10px;
   cursor: pointer;
   background-color: rgba(0, 0, 0, 0.4);
+}
+
+.layText1 {
+  top: 10%;
+  left: 25%;
+  width: 50%;
+  height: 20%;
+}
+.layImg1 {
+  position: absolute;
+  top: 35%;
+  left: 12.5%;
+  width: 75%;
+  height: 55%;
+}
+.layText2 {
+  top: 70%;
+  left: 25%;
+  width: 50%;
+  height: 20%;
+}
+.layImg2 {
+  position: absolute;
+  top: 10%;
+  left: 12.5%;
+  width: 75%;
+  height: 55%;
+}
+.layText3 {
+  top: 10%;
+  left: 65%;
+  width: 25%;
+  height: 30%;
+}
+.layImg3 {
+  position: absolute;
+  top: 10%;
+  left: 10%;
+  width: 50%;
+  height: 80%;
+}
+.layText4 {
+  top: 10%;
+  left: 10%;
+  width: 25%;
+  height: 30%;
+}
+.layImg4 {
+  position: absolute;
+  top: 10%;
+  left: 40%;
+  width: 50%;
+  height: 80%;
+}
+.layText5 {
+  top: 70%;
+  left: 40%;
+  width: 50%;
+  height: 20%;
+}
+.layImg5 {
+  position: absolute;
+  top: 10%;
+  left: 10%;
+  width: 60%;
+  height: 55%;
+}
+.layText6 {
+  top: 10%;
+  left: 10%;
+  width: 50%;
+  height: 20%;
+}
+.layImg6 {
+  top: 35%;
+  left: 30%;
+  width: 60%;
+  height: 55%;
 }

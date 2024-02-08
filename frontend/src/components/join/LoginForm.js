@@ -61,6 +61,7 @@ function LoginForm() {
           email: formData.email,
           memberId: data.data.memberInfo.memberId,
           nickname: data.data.memberInfo.nickname,
+          bookshelfId: 0,
         });
 
         async function socketConnect() {

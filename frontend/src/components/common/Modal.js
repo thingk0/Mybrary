@@ -3,7 +3,16 @@ import styles from "./Modal.module.css";
 import { useRef, useState } from "react";
 import useOnClickOutside from "./useOnClickOutside";
 
-export default function Modal({ children, width = "300px", height, title }) {
+export default function Modal({
+  children,
+  width = "300px",
+  height,
+  title,
+  right,
+  left,
+  top,
+  bottom,
+}) {
   const ref = useRef();
   const [isModalOpen, setIsModalOpen] = useState(false);
   useOnClickOutside(ref, () => setIsModalOpen(false));
@@ -15,14 +24,22 @@ export default function Modal({ children, width = "300px", height, title }) {
         <div
           ref={ref}
           className={styles.modal}
-          style={{ width: width, height: height }}
+          style={{
+            width: width,
+            height: height,
+            top: top,
+            bottom: bottom,
+            left: left,
+            right: right,
+          }}
         >
-          <div className="modal-top">
-            <span className="modal-close" onClick={() => setIsModalOpen(false)}>
-              X
-            </span>
-            {children}
+          <div
+            className={styles.modalClose}
+            onClick={() => setIsModalOpen(false)}
+          >
+            닫기
           </div>
+          {children}
         </div>
       )}
     </div>
