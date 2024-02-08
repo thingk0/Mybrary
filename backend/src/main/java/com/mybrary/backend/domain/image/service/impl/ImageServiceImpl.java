@@ -21,14 +21,15 @@ public class ImageServiceImpl implements ImageService {
         return imageRepository.save(image).getId();
     }
 
-//    @Override
-//    public Long uploadImage(MultipartFile file) throws IOException {
-//        return s3Uploader.uploadFile(file);
-//    }
-
     @Override
     public Long uploadImage() throws IOException {
         return s3Uploader.uploadFile();
     }
+
+//    @Override
+//    public Long uploadImage(MultipartFile file) throws IOException {
+//        return s3Uploader.uploadFile(file);
+
+//    }
 
 }

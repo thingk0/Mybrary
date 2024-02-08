@@ -18,7 +18,6 @@ public class ThreadUpdateDto {
      * 스레드 수정 요청
      */
 
-    private Long memberId;
     private Long threadId;
     private boolean isPaperPublic;
     private boolean isScrapEnable;

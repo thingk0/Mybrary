@@ -18,8 +18,7 @@ public class ThreadPostDto {
      * 스레드 저장 요청 페이퍼 리스트와 공개여부, 스크랩 허용여부 받기 -> 페이퍼 저장 때 페이퍼마다 적용해야함
      */
 
-    private Long memberId;
-//    private Long bookId;
+    private Long bookId;
     private List<PostPaperDto> postPaperDto;
 
 //    private boolean isPaperPublic;

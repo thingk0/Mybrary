@@ -3,6 +3,8 @@ package com.mybrary.backend.domain.contents.thread.controller;
 import com.mybrary.backend.domain.contents.thread.requestDto.ThreadPostDto;
 import com.mybrary.backend.domain.contents.thread.requestDto.ThreadUpdateDto;
 import com.mybrary.backend.domain.contents.thread.service.ThreadService;
+import com.mybrary.backend.domain.member.entity.Member;
+import com.mybrary.backend.domain.member.service.MemberService;
 import com.mybrary.backend.global.format.code.ApiResponse;
 import com.mybrary.backend.global.format.response.ResponseCode;
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,128 +31,85 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/thread")
 public class ThreadController {
+    
+    private final ApiResponse response;
+    private final ThreadService threadService;
+    private final MemberService memberService;
 
-      private final ApiResponse response;
-      private final ThreadService threadService;
+    @Operation(summary = "쓰레드 생성", description = "쓰레드 생성")
+    @PostMapping
+    public ResponseEntity<?> createThread(@Parameter(hidden = true) Authentication authentication,
+//        @RequestParam(required = false) List<MultipartFile> files,
+        @RequestBody ThreadPostDto threadPostDto )
+        throws IOException {
+        Member me = memberService.findMember(authentication.getName());
+        Long myId = me.getId();
+        return response.success(ResponseCode.THREAD_CREATED,
+            threadService.createThread(myId, threadPostDto));
+    }
+    @Operation(summary = "메인홈 쓰레드 조회", description = "메인홈에서의 쓰레드 목록 조회")
+    @GetMapping("/home")
+    public ResponseEntity<?> getMainAllThread(
+        @Parameter(hidden = true) Authentication authentication,
+        @RequestParam(name = "page") int number,
+        @RequestBody Long memberId,
+        @PageableDefault(page = 0, size = 10) Pageable pageable) {
+        Member me = memberService.findMember(authentication.getName());
+        Long myId = me.getId();
+        return response.success(ResponseCode.MAIN_THREAD_LIST_FETCHED,
+            threadService.getMainAllThread(myId, pageable));
+    }
+    @Operation(summary = "나의 쓰레드 조회", description = "나의 마이브러리 책상에서의 쓰레드 목록 조회")
+    @GetMapping("/desk")
+    public ResponseEntity<?> getMyAllThread(
+        @Parameter(hidden = true) Authentication authentication,
+        @RequestBody Long memberId,
+        @PageableDefault(page = 0, size = 10) Pageable page) {
+        Member me = memberService.findMember(authentication.getName());
+        Long myId = me.getId();
+        return response.success(ResponseCode.MY_THREAD_LIST_FETCHED,
+            threadService.getMyAllThread(myId, page));
+    }
+    @Operation(summary = "특정 회원의 쓰레드 조회", description = "회원 아이디를 통한 특정 회원의 마이브러리 책상에서의 쓰레드 목록 조회")
+    @GetMapping("/{id}/desk")
+    public ResponseEntity<?> getOtherAllThread(
+        @Parameter(hidden = true) Authentication authentication,
+        @RequestBody Long memberId,
+        @PageableDefault(page = 0, size = 10) Pageable page) {
+        Member me = memberService.findMember(authentication.getName());
+        Long myId = me.getId();
+        return response.success(ResponseCode.MY_THREAD_LIST_FETCHED,
+            threadService.getOtherAllThread(memberId, page));
+    }
+    @Operation(summary = "쓰레드 수정", description = "쓰레드 수정")
+    @PutMapping
+    public ResponseEntity<?> updateThread(@Parameter(hidden = true) Authentication authentication,
+        @RequestBody ThreadUpdateDto threadUpdateDto) {
+        Member me = memberService.findMember(authentication.getName());
+        Long myId = me.getId();
+        return response.success(ResponseCode.THREAD_UPDATED, threadService.updateThread(myId, threadUpdateDto));
+    }
+    @Operation(summary = "쓰레드 삭제", description = "쓰레드 아이디를 통한 쓰레드 삭제")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteThread(@Parameter(hidden = true) Authentication authentication,
+        @PathVariable(name = "id") Long threadId) {
+        Member me = memberService.findMember(authentication.getName());
+        Long myId = me.getId();
+        return response.success(ResponseCode.THREAD_DELETED,
+            threadService.deleteThread(myId, threadId));
+    }
 
+    @Operation(summary = "쓰레드 단건 조회", description = "쓰레드 아이디를 통한 쓰레드 조회")
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getThread(
+        @Parameter(hidden = true) Authentication authentication,
+        @RequestBody Long memberId,
+        @PathVariable(name = "id") Long threadId) {
+        return response.success(ResponseCode.THREAD_DELETED,
+                                threadService.getThread(memberId, threadId));
 
+    }
 
-      @Operation(summary = "쓰레드 생성", description = "쓰레드 생성")
-      @PostMapping
-      public ResponseEntity<?> createThread(@Parameter(hidden = true) Authentication authentication,
-          @RequestBody ThreadPostDto threadPostDto)
-          throws IOException {
-            return response.success(ResponseCode.THREAD_CREATED,
-                threadService.createThread(threadPostDto));
-      }
-
-//    @Operation(summary = "메인홈 쓰레드 조회", description = "메인홈에서의 쓰레드 목록 조회")
-//    @GetMapping("/home")
-//    public ResponseEntity<?> getMainAllThread(
-//        @Parameter(hidden = true) Authentication authentication,
-//        @RequestParam(name = "page") int number,
-//        @RequestBody Long memberId,
-//        @PageableDefault(page = 0, size = 10) Pageable pageable) {
-//        return response.success(ResponseCode.MAIN_THREAD_LIST_FETCHED,
-//            threadService.getMainAllThread(memberId, pageable));
-//    }
-//    @Operation(summary = "나의 쓰레드 조회", description = "나의 마이브러리 책상에서의 쓰레드 목록 조회")
-//    @GetMapping("/desk")
-//    public ResponseEntity<?> getMyAllThread(
-//        @Parameter(hidden = true) Authentication authentication,
-//        @RequestBody Long memberId,
-//        @PageableDefault(page = 0, size = 10) Pageable page) {
-//        return response.success(ResponseCode.MY_THREAD_LIST_FETCHED,
-//            threadService.getMyAllThread(memberId, page));
-//    }
-//    @Operation(summary = "특정 회원의 쓰레드 조회", description = "회원 아이디를 통한 특정 회원의 마이브러리 책상에서의 쓰레드 목록 조회")
-//    @GetMapping("/{id}/desk")
-//    public ResponseEntity<?> getOtherAllThread(
-//        @Parameter(hidden = true) Authentication authentication,
-//        @RequestBody Long memberId,
-//        @PageableDefault(page = 0, size = 10) Pageable page) {
-//        return response.success(ResponseCode.MY_THREAD_LIST_FETCHED,
-//            threadService.getOtherAllThread(memberId, page));
-//    }
-//    @Operation(summary = "쓰레드 수정", description = "쓰레드 수정")
-//    @PutMapping
-//    public ResponseEntity<?> updateThread(@Parameter(hidden = true) Authentication authentication,
-//        @RequestBody ThreadUpdateDto threadUpdateDto) {
-//        return response.success(ResponseCode.THREAD_UPDATED, threadService.updateThread(threadUpdateDto));
-//    }
-//    @Operation(summary = "쓰레드 삭제", description = "쓰레드 아이디를 통한 쓰레드 삭제")
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<?> deleteThread(@Parameter(hidden = true) Authentication authentication,
-//        @PathVariable(name = "id") Long threadId) {
-//        return response.success(ResponseCode.THREAD_DELETED,
-//            threadService.deleteThread(threadId));
-//    }
-
-      @Operation(summary = "메인홈 쓰레드 조회", description = "메인홈에서의 쓰레드 목록 조회")
-      @GetMapping("/home")
-      public ResponseEntity<?> getMainAllThread(
-          @Parameter(hidden = true) Authentication authentication,
-          @RequestParam(name = "page") int number,
-          @RequestBody Long memberId,
-          @PageableDefault(page = 0, size = 10) Pageable pageable) {
-            return response.success(ResponseCode.MAIN_THREAD_LIST_FETCHED,
-                threadService.getMainAllThread(memberId, pageable));
-      }
-
-      @Operation(summary = "나의 쓰레드 조회", description = "나의 마이브러리 책상에서의 쓰레드 목록 조회")
-      @GetMapping("/desk")
-      public ResponseEntity<?> getMyAllThread(
-          @Parameter(hidden = true) Authentication authentication,
-          @RequestBody Long memberId,
-          @PageableDefault(page = 0, size = 10) Pageable page) {
-            return response.success(ResponseCode.MY_THREAD_LIST_FETCHED,
-                threadService.getMyAllThread(memberId, page));
-      }
-
-      @Operation(summary = "특정 회원의 쓰레드 조회", description = "회원 아이디를 통한 특정 회원의 마이브러리 책상에서의 쓰레드 목록 조회")
-      @GetMapping("/{id}/desk")
-      public ResponseEntity<?> getOtherAllThread(
-          @Parameter(hidden = true) Authentication authentication,
-          @RequestBody Long memberId,
-          @PageableDefault(page = 0, size = 10) Pageable page) {
-            return response.success(ResponseCode.MY_THREAD_LIST_FETCHED,
-                threadService.getOtherAllThread(memberId, page));
-      }
-
-      @Operation(summary = "쓰레드 수정", description = "쓰레드 수정")
-      @PutMapping
-      public ResponseEntity<?> updateThread(@Parameter(hidden = true) Authentication authentication,
-          @RequestBody ThreadUpdateDto threadUpdateDto) {
-            return response.success(ResponseCode.THREAD_UPDATED,
-                threadService.updateThread(threadUpdateDto));
-      }
-
-      @Operation(summary = "쓰레드 삭제", description = "쓰레드 아이디를 통한 쓰레드 삭제")
-      @DeleteMapping("/{id}")
-      public ResponseEntity<?> deleteThread(@Parameter(hidden = true) Authentication authentication,
-          @PathVariable(name = "id") Long threadId) {
-            return response.success(ResponseCode.THREAD_DELETED,
-                threadService.deleteThread(threadId));
-      }
-
-//      @Operation(summary = "쓰레드 생성", description = "쓰레드 생성")
-//      @PostMapping
-//      public ResponseEntity<?> createThread()
-//          throws IOException {
-//            List<PostPaperDto> postPaperDtoList = new ArrayList<>();
-////            private String content1;
-////            private String content2;
-////            private int layoutType;
-////            private Long bookId;
-////            private boolean isPaperPublic;
-////            private boolean isScrapEnable;
-////            private List<String> tagList;
-////            private List<Long> mentionList;
-//            PostPaperDto paper1 = new PostPaperDto("content1테스트", "content2테스트", 1, 8, )
-//            ThreadPostDto threadPostDto = new ThreadPostDto(8L, )
-//            return response.success(ResponseCode.THREAD_CREATED,
-//                threadService.createThread(threadPostDto));
-//      }
 
 //    @Operation(summary = "쓰레드 단건 조회", description = "쓰레드 아이디를 통한 쓰레드 조회")
 //    @GetMapping("/{id}")
