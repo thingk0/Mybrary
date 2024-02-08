@@ -70,29 +70,29 @@ export default function MybraryPage() {
         console.log(user.nickname);
         if (memberId == nowuser) {
           const response = await getMyMybrary();
-          console.log("내라이브러리입니다");
+          console.log(response);
           setCheckme(true);
           setTestuser(response);
-          setBgColor(response.data.backgroundColor.toString());
-          setEsColor(easelImgs[response.data.easelColor - 1]);
-          setEaselnum(response.data.easelColor);
-          setTbColor(tableImgs[response.data.deskColor - 1]);
-          setTablenum(response.data.deskColor);
-          setBsColor(bookshelfImgs[response.data.bookshelfColor - 1]);
-          setBookshelfnum(response.data.bookshelfColor - 1);
-          setFrameimgurl(response.data.frameImageUrl);
+          // setBgColor(response.data.backgroundColor.toString());
+          // setEsColor(easelImgs[response.data.easelColor - 1]);
+          // setEaselnum(response.data.easelColor);
+          // setTbColor(tableImgs[response.data.deskColor - 1]);
+          // setTablenum(response.data.deskColor);
+          // setBsColor(bookshelfImgs[response.data.bookshelfColor - 1]);
+          // setBookshelfnum(response.data.bookshelfColor - 1);
+          // setFrameimgurl(response.data.frameImageUrl);
         } else {
           const response = await getMyMybrary(nowuser);
-          console.log("상대방의라이브러리입니다");
+          console.log(response);
           setTestuser(response);
-          setBgColor(response.data.backgroundColor.toString());
-          setEsColor(easelImgs[response.data.easelColor - 1]);
-          setEaselnum(response.data.easelColor);
-          setTbColor(tableImgs[response.data.deskColor - 1]);
-          setTablenum(response.data.deskColor);
-          setBsColor(bookshelfImgs[response.data.bookshelfColor - 1]);
-          setBookshelfnum(response.data.bookshelfColor - 1);
-          setFrameimgurl(response.data.frameImageUrl);
+          // setBgColor(response.data.backgroundColor.toString());
+          // setEsColor(easelImgs[response.data.easelColor - 1]);
+          // setEaselnum(response.data.easelColor);
+          // setTbColor(tableImgs[response.data.deskColor - 1]);
+          // setTablenum(response.data.deskColor);
+          // setBsColor(bookshelfImgs[response.data.bookshelfColor - 1]);
+          // setBookshelfnum(response.data.bookshelfColor - 1);
+          // setFrameimgurl(response.data.frameImageUrl);
         }
       } catch (error) {
         console.error("데이터를 가져오는 데 실패했습니다:", error);
@@ -254,11 +254,7 @@ export default function MybraryPage() {
             onClick={() => !edit && navigate("rollingpaper")}
           />
           <div className={s(styles.frame, !edit && styles.img)}>
-            <img
-              src={testuser.data.frameImageUrl || 혜선누나}
-              alt=""
-              className={styles.trapezoid}
-            />
+            <img src={혜선누나} alt="" className={styles.trapezoid} />
             <img src={frame} alt="" className={styles.frameimg} />
           </div>
 
@@ -348,7 +344,7 @@ export default function MybraryPage() {
               <div className={styles.프로필박스2}>
                 <img
                   className={styles.프로필이미지곰}
-                  src={testuser.data.url || gomimg}
+                  src={gomimg}
                   alt="대체 이미지"
                 />
               </div>
