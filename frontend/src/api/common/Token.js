@@ -1,4 +1,5 @@
 const BASE_URL = "http://thingk0.duckdns.org:8080/api/v1/";
+
 export async function renewToken(accessToken) {
   try {
     const response = await fetch(BASE_URL + "member", {
@@ -14,12 +15,13 @@ export async function renewToken(accessToken) {
     }
     const data = await response.json();
     if (data.status === "SUCCESS") {
+      console.log("갱신성공");
       return data.data;
     } else {
       throw new Error();
     }
   } catch (e) {
-    throw e;
+    console.log(e);
   }
 }
 

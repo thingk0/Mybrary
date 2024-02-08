@@ -40,8 +40,24 @@ export default function Layout({
       <div className={styles.왼쪽헤더}>
         <span className={styles.레이아웃글자}>레이아웃</span>
         <div className={styles.레이아웃버튼}>
-          <button onClick={() => handleFilter("1CUT")}>1CUT</button>
-          <button onClick={() => handleFilter("2CUT")}>2CUT</button>
+          <div
+            className={s(
+              styles.cutButton,
+              filter === "1CUT" && styles.selectCutButton
+            )}
+            onClick={() => handleFilter("1CUT")}
+          >
+            1CUT
+          </div>
+          <div
+            className={s(
+              styles.cutButton,
+              filter === "2CUT" && styles.selectCutButton
+            )}
+            onClick={() => handleFilter("2CUT")}
+          >
+            2CUT
+          </div>
         </div>
       </div>
       <div className={styles.왼쪽미드레이아웃}>
