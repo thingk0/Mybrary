@@ -29,6 +29,8 @@ import useStompStore from "../store/useStompStore";
 import 혜선누나 from "../assets/혜선누나.jpg";
 import { getMyMybrary, updateMybrary } from "../api/mybrary/Mybrary";
 import gomimg from "../assets/곰탱이.png";
+import BigModal from "../components/common/BigModal";
+import axios from "axios";
 
 export default function MybraryPage() {
   const navigate = useNavigate();
@@ -42,6 +44,9 @@ export default function MybraryPage() {
   const [tablenum, setTablenum] = useState("1");
   const [easelnum, setEaselnum] = useState("1");
   const [bookshelfnum, setBookshelfnum] = useState("1");
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [frameimgurl, setFrameimgurl] = useState();
+  const [file, setFile] = useState();
 
   const [testuser, setTestuser] = useState({
     data: {
@@ -66,6 +71,7 @@ export default function MybraryPage() {
         setTablenum(response.data.deskColor);
         setBsColor(bookshelfImgs[response.data.bookshelfColor - 1]);
         setBookshelfnum(response.data.bookshelfColor - 1);
+        setFrameimgurl(response.data.frameImageUrl);
       } catch (error) {
         console.error("데이터를 가져오는 데 실패했습니다:", error);
       }
@@ -174,6 +180,34 @@ export default function MybraryPage() {
       </>
     );
   }
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setFrameimgurl(e.target.result); // 이 부분에서 미리보기 URL을 설정
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+  const handleFileUpload = async () => {
+    if (file) {
+      // 파일 업로드 로직 구현
+      // 예: 서버에 파일을 업로드하고, 응답으로 받은 이미지 URL을 저장
+      const formData = new FormData();
+      formData.append("image", file[0]);
+      const result = await axios.post("/upload-single", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      console.log(result);
+      // try {
+      //   setFrameimgurl(file); // 업로드된 이미지 URL을 상태에 저장
+      // } catch (error) {
+      //   console.error("파일 업로드 중 오류 발생:", error);
+      //   // 오류 처리 로직
+      // }
+    }
+  };
 
   return (
     <>
@@ -198,7 +232,11 @@ export default function MybraryPage() {
             onClick={() => !edit && navigate("rollingpaper")}
           />
           <div className={s(styles.frame, !edit && styles.img)}>
-            <img src={혜선누나} alt="" className={styles.trapezoid} />
+            <img
+              src={testuser.data.frameImageUrl || 혜선누나}
+              alt=""
+              className={styles.trapezoid}
+            />
             <img src={frame} alt="" className={styles.frameimg} />
           </div>
 
@@ -216,6 +254,41 @@ export default function MybraryPage() {
           />
           {edit && (
             <div>
+              <div
+                onClick={() => setModalIsOpen(true)}
+                className={s(styles.edit, styles.이젤이미지변경)}
+              >
+                이젤이미지변경하기
+                <BigModal
+                  modalIsOpen={modalIsOpen}
+                  setModalIsOpen={setModalIsOpen}
+                  width="800px"
+                  height="600px"
+                  background="var(--main4)"
+                >
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setModalIsOpen(false);
+                    }}
+                  >
+                    x
+                  </button>
+                  <div>
+                    <div>현재 이미지</div>
+                    {frameimgurl && (
+                      <img
+                        className={styles.선택이미지}
+                        src={frameimgurl}
+                        alt="미리보기 이미지"
+                      />
+                    )}
+                    {/* 파일 업로드 input */}
+                    <input type="file" onChange={handleFileChange} />
+                    <button onClick={() => handleFileUpload()}>저장</button>
+                  </div>
+                </BigModal>
+              </div>
               <div className={s(styles.edit, styles.easelColor)}>
                 <div className={styles.colorTitle}>이젤색</div>
                 <ColorSelector
