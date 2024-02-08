@@ -76,4 +76,16 @@ public class BookRepositoryImpl implements BookRepositoryCustom {
       }
 
 
-}
+
+    }
+//    @Override
+//    public Optional<List<MyBookGetDto>> getAllMyBookList(Long memberId, Long categoryId) {
+//        return Optional.ofNullable(query.select(Projections.constructor(MyBookGetDto.class, book.id, book.coverTitle, scrap.count()))
+//                                        .from(book)
+//                                        .innerJoin(scrap).on(scrap.book.id.eq(book.id))
+//                                        .where(book.member.id.eq(memberId))
+//                                        .groupBy(book.id)
+//                                        .fetch());
+//    }
+
+

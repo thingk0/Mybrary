@@ -22,8 +22,10 @@ import com.mybrary.backend.domain.member.repository.MemberRepository;
 import com.mybrary.backend.domain.member.service.MemberService;
 import com.mybrary.backend.domain.mybrary.entity.Mybrary;
 import com.mybrary.backend.domain.mybrary.repository.MybraryRepository;
+import com.mybrary.backend.domain.notification.dto.NotificationPostDto;
 import com.mybrary.backend.domain.notification.entity.Notification;
 import com.mybrary.backend.domain.notification.repository.NotificationRepository;
+import com.mybrary.backend.domain.notification.service.NotificationService;
 import com.mybrary.backend.domain.rollingpaper.entity.RollingPaper;
 import com.mybrary.backend.domain.rollingpaper.repository.RollingPaperRepository;
 import com.mybrary.backend.global.exception.member.DuplicateEmailException;
@@ -62,6 +64,7 @@ public class MemberServiceImpl implements MemberService {
     private final CategoryRepository categoryRepository;
     private final RollingPaperRepository rollingPaperRepository;
     private final NotificationRepository notificationRepository;
+    private final NotificationService notificationService;
 
     @Transactional
     @Override
@@ -80,34 +83,34 @@ public class MemberServiceImpl implements MemberService {
 
         /* 마이브러리 생성 */
         Mybrary mybrary = Mybrary.builder()
-            .member(member)
-            .backgroundColor(1)
-            .deskColor(1)
-            .bookshelfColor(1)
-            .deskColor(1)
-            .build();
+                                 .member(member)
+                                 .backgroundColor(1)
+                                 .deskColor(1)
+                                 .bookshelfColor(1)
+                                 .deskColor(1)
+                                 .build();
         mybraryRepository.save(mybrary);
 
         /* 책장 생성 */
         Bookshelf bookshelf = Bookshelf.builder()
-            .mybrary(mybrary)
-            .build();
+                                       .mybrary(mybrary)
+                                       .build();
         bookShelfRepository.save(bookshelf);
 
         /* 기본 카테고리 3개 생성 */
-        for(int i = 1;i<=3;i++){
+        for (int i = 1; i <= 3; i++) {
             Category category = Category.builder()
-                .bookshelf(bookshelf)
-                .categoryName("기본" + i)
-                .categorySeq(i)
-                .build();
+                                        .bookshelf(bookshelf)
+                                        .categoryName("기본" + i)
+                                        .categorySeq(i)
+                                        .build();
             categoryRepository.save(category);
         }
 
         /* 롤링페이퍼 생성 */
         RollingPaper rollingPaper = RollingPaper.builder()
-            .mybrary(mybrary)
-            .build();
+                                                .mybrary(mybrary)
+                                                .build();
         // 이건 롤링페이퍼 이미지 바로 참조해야할 것 같다
         // 수정 꼭 하자
         rollingPaperRepository.save(rollingPaper);
@@ -221,20 +224,37 @@ public class MemberServiceImpl implements MemberService {
 
         // 팔로우를 하려는 상대방의 계정이 공개일 때 -> 바로 팔로우
         // or 요청을 수락했을 때 -> 팔로우
-        if(you.isProfilePublic() || accept){
+        if (you.isProfilePublic() || accept) {
             Follow follow = Follow.builder()
                                   .following(you)
                                   .follower(me)
                                   .build();
             followRepository.save(follow);
+        } else {
+
+            /*    웹소켓 코드    */
+
+            // 비공개일 때 -> 팔로우 요청을 보내기
+            // 팔로우 요청이 곧 알림이어서 type1 알림 보내기
+            NotificationPostDto notification = NotificationPostDto.builder()
+                                                                  .senderId(me.getId())
+                                                                  .receiverId(you.getId())
+                                                                  .notifyType(1)
+                                                                  .build();
+            notificationService.saveNotification(notification);
+
         }
-        // 비공개일 때 -> 팔로우 요청을 보내기
-        // 그사람에게 보내는 알림이 곧 요청
 
-        /* 알림 저장하는 로직 추가 */
-        // 공개여서 바로 팔로우 했을 때만 알림 보내기
-        if(you.isProfilePublic()){
+        /*    웹소켓 코드    */
 
+        // 공개여서 바로 팔로우 했을 때 type2 알림 보내기
+        if (you.isProfilePublic()) {
+            NotificationPostDto notification = NotificationPostDto.builder()
+                                                                  .senderId(me.getId())
+                                                                  .receiverId(you.getId())
+                                                                  .notifyType(2)
+                                                                  .build();
+            notificationService.saveNotification(notification);
         }
 
     }

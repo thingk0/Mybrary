@@ -46,17 +46,17 @@ public class CategoryRepositoryImpl implements CategoryRepositoryCustom {
     @Override
     public Optional<List<MyCategoryGetDto>> getMyAllCategory(Long memberId) {
         return Optional.ofNullable(query.select(
-                        Projections.constructor(MyCategoryGetDto.class, category.id, category.categoryName)
-                    )
-                    .from(category)
-                    .where(category.bookshelf.id.eq(
-                        query.select(mybrary.id)
-                            .from(bookshelf)
-                            .join(mybrary).on(bookshelf.mybrary.id.eq(mybrary.id))
-                            .where(mybrary.member.id.eq(memberId))
-                    ))
-                    .orderBy(category.categorySeq.asc())
-                    .fetch());
+                                            Projections.constructor(MyCategoryGetDto.class, category.id, category.categoryName)
+                                        )
+                                        .from(category)
+                                        .where(category.bookshelf.id.eq(
+                                            query.select(mybrary.id)
+                                                 .from(bookshelf)
+                                                 .join(mybrary).on(bookshelf.mybrary.id.eq(mybrary.id))
+                                                 .where(mybrary.member.id.eq(memberId))
+                                        ))
+                                        .orderBy(category.categorySeq.asc())
+                                        .fetch());
 
     }
 

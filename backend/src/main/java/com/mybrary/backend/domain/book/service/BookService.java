@@ -29,4 +29,5 @@ public interface BookService {
     Long deletePaperFromBook(Long bookId, List<Long> paperIdList);
 
     List<BookListGetFromPaperDto> getBookListFromPaper(Long paperId);
+
 }
