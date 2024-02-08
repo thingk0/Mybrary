@@ -1,0 +1,14 @@
+.test {
+  background: url("../../assets/book.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  width: calc(35.2vi * 1.045 * 0.8);
+  height: calc(48vi * 1.03 * 0.8);
+}
+.cover {
+  width: calc(35.2vi * 0.8);
+  height: calc(48vi * 0.8);
+  background-color: rgb(119, 236, 234);
+  border-radius: 0 5px 5px 0;
+}

@@ -1,11 +1,10 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import styles from "./Edit.module.css";
 import item from "./Item.module.css";
 import s from "classnames";
 import { Editor } from "react-draft-wysiwyg";
 
 export default function Edit({ currentPage, papers, setPapers }) {
-  const inputRef = useRef(null);
   const persent = ["", "9:16", "3:4", "1:1", "4:3", "16:9"];
 
   const [toolbarZIndex, setToolbarZIndex] = useState(1);
@@ -20,26 +19,6 @@ export default function Edit({ currentPage, papers, setPapers }) {
   const handleBlur = () => {
     setToolbarZIndex(1);
     setToolbarZIndex2(1);
-  };
-
-  const handleImageChange = (e, isImage1) => {
-    const file = e.target.files[0];
-    if (file && file.type.match("image.*")) {
-      const reader = new FileReader();
-      reader.onload = (readerEvent) => {
-        const imageSrc = readerEvent.target.result;
-        setPapers((prevPapers) => {
-          const updatedPapers = [...prevPapers];
-          const imageKey = isImage1 ? "image1" : "image2";
-          updatedPapers[currentPage][imageKey] = {
-            name: file.name,
-            url: imageSrc,
-          };
-          return updatedPapers;
-        });
-      };
-      reader.readAsDataURL(file);
-    }
   };
 
   const onEditorStateChange = (editorState) => {
@@ -127,46 +106,10 @@ export default function Edit({ currentPage, papers, setPapers }) {
       />
 
       <div className={item[`img1_${papers[currentPage].layoutType}`]}>
-        <input
-          ref={inputRef}
-          type="file"
-          accept="image/*"
-          capture="camera"
-          className={styles.FileInput_hidden_overlay}
-          onChange={(e) => handleImageChange(e, true)}
-        />
-        {papers[currentPage].image1 && (
-          <img
-            className={item[`img1_${papers[currentPage].layoutType}`]}
-            src={papers[currentPage].image1.url}
-            alt="이미지1"
-          />
-        )}
-        <div>
-          {persent[Math.floor((papers[currentPage].layoutType % 1000) / 100)]}
-          사진 추가
-        </div>
+        <img src={papers[currentPage].image1} alt="이미지1" />
       </div>
       <div className={item[`img2_${papers[currentPage].layoutType}`]}>
-        <input
-          ref={inputRef}
-          type="file"
-          accept="image/*"
-          capture="camera"
-          className={styles.FileInput_hidden_overlay}
-          onChange={(e) => handleImageChange(e, false)}
-        />
-        {papers[currentPage].image2 && (
-          <img
-            className={item[`img2_${papers[currentPage].layoutType}`]}
-            src={papers[currentPage].image2.url}
-            alt="이미지2"
-          />
-        )}
-        <div>
-          {persent[Math.floor((papers[currentPage].layoutType % 100) / 10)]}
-          사진 추가
-        </div>
+        <img src={papers[currentPage].image2} alt="이미지2" />
       </div>
     </div>
   );

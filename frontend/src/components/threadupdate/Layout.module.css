@@ -41,7 +41,6 @@
   padding: 1vi;
   height: 2vi;
   display: flex;
-  justify-content: space-between;
   align-items: center;
 }
 .레이아웃글자 {
@@ -51,15 +50,17 @@
   display: flex;
   gap: 0.5vi;
 }
-.레이아웃버튼 button {
-  padding: 1vi;
-  width: 67px;
-  height: 12px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.cutButton {
+  padding: 10px;
   background-color: #ffeee6;
-  border: solid 1px rgb(255, 255, 255);
+  transition: 0.3s;
+  border-radius: 5px;
+}
+.cutButton:hover {
+  background-color: var(--main3);
+}
+.selectCutButton {
+  background-color: var(--main3);
 }
 
 .왼쪽미드레이아웃 {
