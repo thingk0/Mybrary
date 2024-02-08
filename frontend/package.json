@@ -1,8 +1,8 @@
 {
   "name": "mybraryfront",
   "version": "0.1.0",
-  "proxy": "http://localhost:5000",
   "private": true,
+  "proxy": "http://localhost:5000",
   "dependencies": {
     "@looop/quill-image-resize-module-react": "^3.1.5",
     "@stomp/stompjs": "^7.0.0",
@@ -20,6 +20,7 @@
     "html-to-draftjs": "^1.5.0",
     "lottie-web": "^5.12.2",
     "multer": "^1.4.5-lts.1",
+    "mysql2": "^3.9.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-draft-wysiwyg": "^1.15.0",
@@ -29,9 +30,11 @@
     "react-quill": "^2.0.0",
     "react-router-dom": "^6.21.2",
     "react-scripts": "5.0.1",
+    "reflect-metadata": "^0.2.1",
     "sockjs-client": "^1.6.1",
     "sortablejs": "^1.15.2",
     "styled-components": "^6.1.8",
+    "typeorm": "^0.3.20",
     "web-vitals": "^2.1.4",
     "zustand": "^4.5.0"
   },
@@ -58,5 +61,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.16"
   }
 }
