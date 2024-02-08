@@ -41,4 +41,23 @@ public class MybraryOtherGetDto {
     private Long bookShelfId;
     private Long rollingPaperId;
 
+    public MybraryOtherGetDto(Long mybraryId, String frameImageUrl, int backgroundColor, int deskColor, int bookshelfColor,
+                         int easelColor, Long memberId, String email, String nickname, String intro, String profileImageUrl,
+                         boolean isNotifyEnable, boolean isProfilePublic, Long bookShelfId, Long rollingPaperId) {
+        this.mybraryId = mybraryId;
+        this.frameImageUrl = frameImageUrl;
+        this.backgroundColor = backgroundColor;
+        this.deskColor = deskColor;
+        this.bookshelfColor = bookshelfColor;
+        this.easelColor = easelColor;
+        this.memberId = memberId;
+        this.email = email;
+        this.nickname = nickname;
+        this.intro = intro;
+        this.profileImageUrl = profileImageUrl;
+        this.isNotifyEnable = isNotifyEnable;
+        this.isProfilePublic = isProfilePublic;
+        this.bookShelfId = bookShelfId;
+        this.rollingPaperId = rollingPaperId;
+    }
 }

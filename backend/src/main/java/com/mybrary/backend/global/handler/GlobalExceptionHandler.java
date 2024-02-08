@@ -1,5 +1,8 @@
 package com.mybrary.backend.global.handler;
 
+import com.mybrary.backend.global.exception.ImageNotFoundException;
+import com.mybrary.backend.global.exception.MybraryNotFoundException;
+import com.mybrary.backend.global.exception.NotMybraryException;
 import com.mybrary.backend.global.exception.email.FailedMessageTransmissionException;
 import com.mybrary.backend.global.exception.email.InvalidAuthCodeException;
 import com.mybrary.backend.global.exception.jwt.RefreshTokenNotFoundException;
@@ -82,6 +85,24 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(MissingPathVariableException.class)
     protected ResponseEntity<?> handle(MissingPathVariableException e) {
         log.error("MissingPathVariableException = {}", e.getErrorCode().getMessage());
+        return response.error(e.getErrorCode());
+    }
+
+    @ExceptionHandler(MybraryNotFoundException.class)
+    protected ResponseEntity<?> handle(MybraryNotFoundException e) {
+        log.error("MybraryNotFoundException = {}", e.getErrorCode().getMessage());
+        return response.error(e.getErrorCode());
+    }
+
+    @ExceptionHandler(NotMybraryException.class)
+    protected ResponseEntity<?> handle(NotMybraryException e) {
+        log.error("NotMybraryException = {}", e.getErrorCode().getMessage());
+        return response.error(e.getErrorCode());
+    }
+
+    @ExceptionHandler(ImageNotFoundException.class)
+    protected ResponseEntity<?> handle(ImageNotFoundException e) {
+        log.error("ImageNotFoundException = {}", e.getErrorCode().getMessage());
         return response.error(e.getErrorCode());
     }
 

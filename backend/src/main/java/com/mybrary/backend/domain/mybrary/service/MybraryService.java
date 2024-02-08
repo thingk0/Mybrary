@@ -6,5 +6,5 @@ import com.mybrary.backend.domain.mybrary.dto.MybraryUpdateDto;
 public interface MybraryService {
     MybraryGetDto getMybrary(String email);
     MybraryOtherGetDto getOtherMybrary(String myEmail, Long memberId);
-    void updateMybrary(MybraryUpdateDto mybrary);
+    void updateMybrary(String email, MybraryUpdateDto mybrary);
 }

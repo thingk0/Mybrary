@@ -21,7 +21,7 @@ public class MybraryUpdateDto {
      */
 
     private Long mybraryId;
-    private ImagePostDto frameImage;
+    private Long frameImageId;
     private int backgroundColor;
     private int deskColor;
     private int bookshelfColor;

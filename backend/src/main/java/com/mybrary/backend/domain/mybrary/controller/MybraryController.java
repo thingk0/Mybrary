@@ -58,8 +58,8 @@ public class MybraryController {
 
     @Operation(summary = "마이브러리 수정", description = "마이브러리 정보 수정")
     @PutMapping
-    public ResponseEntity<?> updateMybrary(@RequestBody MybraryUpdateDto mybrary) {
-        mybraryService.updateMybrary(mybrary);
+    public ResponseEntity<?> updateMybrary(@Parameter(hidden = true) Authentication authentication, @RequestBody MybraryUpdateDto mybrary) {
+        mybraryService.updateMybrary(authentication.getName(), mybrary);
         return response.success(ResponseCode.MYBRARY_UPDATED, mybrary.getMybraryId());
     }
 

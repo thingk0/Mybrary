@@ -7,6 +7,6 @@ import com.mybrary.backend.domain.mybrary.entity.Mybrary;
 import java.util.Optional;
 public interface MybraryRepositoryCustom {
     Mybrary findByMybraryId(Long mybraryId);
-    MybraryGetDto getMybrary(Long myId);
-    MybraryOtherGetDto getOtherMybrary(Long otherId);
+    Optional<MybraryGetDto> getMybrary(Long myId);
+    Optional<MybraryOtherGetDto> getOtherMybrary(Long otherId);
 }
