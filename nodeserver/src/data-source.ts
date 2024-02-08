@@ -4,12 +4,12 @@ import { Image } from "./entity/Image";
 
 export const AppDataSource = new DataSource({
   type: "mysql",
-  host: "i10b207.p.ssafy.io", // URL의 호스트 부분
+  host: "thingk0.duckdns.org", // URL의 호스트 부분
   port: 3306, // 포트 번호
   username: "chiakpeaches", // 사용자 이름
   password: "chiak1234", // 비밀번호
   database: "mybrary", // 데이터베이스 이름
-  synchronize: true, // 주의: 프로덕션 환경에서는 false로 설정하는 것이 좋습니다
+  synchronize: false, // 주의: 프로덕션 환경에서는 false로 설정하는 것이 좋습니다
   logging: false, // 로깅 여부
   entities: [Image], // 사용할 엔티티 배열
   migrations: [], // 사용할 마이그레이션 배열
