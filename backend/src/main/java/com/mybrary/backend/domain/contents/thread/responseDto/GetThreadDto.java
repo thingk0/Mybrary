@@ -1,4 +1,4 @@
-package com.mybrary.backend.domain.contents.thread.dto;
+package com.mybrary.backend.domain.contents.thread.responseDto;
 
 import com.mybrary.backend.domain.contents.paper.dto.GetFollowingPaperDto;
 import com.querydsl.core.annotations.QueryProjection;

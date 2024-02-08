@@ -1,4 +1,4 @@
-package com.mybrary.backend.domain.contents.thread.dto;
+package com.mybrary.backend.domain.contents.thread.responseDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

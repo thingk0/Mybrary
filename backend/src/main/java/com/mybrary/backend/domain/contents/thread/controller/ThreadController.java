@@ -1,7 +1,7 @@
 package com.mybrary.backend.domain.contents.thread.controller;
 
-import com.mybrary.backend.domain.contents.thread.dto.ThreadPostDto;
-import com.mybrary.backend.domain.contents.thread.dto.ThreadUpdateDto;
+import com.mybrary.backend.domain.contents.thread.requestDto.ThreadPostDto;
+import com.mybrary.backend.domain.contents.thread.requestDto.ThreadUpdateDto;
 import com.mybrary.backend.domain.contents.thread.service.ThreadService;
 import com.mybrary.backend.global.format.code.ApiResponse;
 import com.mybrary.backend.global.format.response.ResponseCode;
@@ -9,7 +9,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.io.IOException;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -24,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 @Tag(name = "Thread 컨트롤러", description = "Thread Controller API")
 @RestController

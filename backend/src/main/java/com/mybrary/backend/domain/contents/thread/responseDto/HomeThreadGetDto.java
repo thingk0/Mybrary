@@ -1,6 +1,6 @@
-package com.mybrary.backend.domain.contents.thread.dto;
+package com.mybrary.backend.domain.contents.thread.responseDto;
 
-import com.mybrary.backend.domain.contents.paper.dto.PaperGetDto;
+import com.mybrary.backend.domain.contents.paper.dto.HomePaperGetDto;
 import com.mybrary.backend.domain.member.dto.MemberInfoDto;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -14,15 +14,17 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ThreadGetDto {
+public class HomeThreadGetDto {
 
     /**
-     *  내 스레드 조회
-     *  내 페이퍼 조회 DTO를 포함
+     *  홈에서 스레드 조회
+     *  홈에서 페이퍼 조회 DTO를 포함
      */
 
     private Long threadId;
     private MemberInfoDto member;
-    private List<PaperGetDto> paperList;
+    private boolean isOwner;
+    private boolean isFollowed;
+    private List<HomePaperGetDto> paperList;
 
 }

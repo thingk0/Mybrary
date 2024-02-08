@@ -1,6 +1,6 @@
 package com.mybrary.backend.domain.search.service.impl;
 
-import com.mybrary.backend.domain.contents.thread.dto.ThreadSearchGetDto;
+import com.mybrary.backend.domain.contents.thread.responseDto.ThreadSearchGetDto;
 import com.mybrary.backend.domain.search.service.SearchService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

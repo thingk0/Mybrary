@@ -1,7 +1,7 @@
 package com.mybrary.backend.domain.search.controller;
 
 import com.mybrary.backend.domain.book.dto.BookGetDto;
-import com.mybrary.backend.domain.contents.thread.dto.ThreadSearchGetDto;
+import com.mybrary.backend.domain.contents.thread.responseDto.ThreadSearchGetDto;
 import com.mybrary.backend.domain.member.dto.MemberGetDto;
 import com.mybrary.backend.domain.member.dto.MemberInfoDto;
 import com.mybrary.backend.global.format.code.ApiResponse;

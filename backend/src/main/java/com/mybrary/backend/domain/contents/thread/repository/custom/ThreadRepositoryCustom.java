@@ -1,8 +1,8 @@
 package com.mybrary.backend.domain.contents.thread.repository.custom;
 
-import com.mybrary.backend.domain.contents.thread.dto.GetThreadDto;
-import com.mybrary.backend.domain.contents.thread.dto.ThreadInfoGetDto;
-import com.mybrary.backend.domain.contents.thread.dto.ThreadShareGetDto;
+import com.mybrary.backend.domain.contents.thread.responseDto.GetThreadDto;
+import com.mybrary.backend.domain.contents.thread.responseDto.ThreadInfoGetDto;
+import com.mybrary.backend.domain.contents.thread.responseDto.ThreadShareGetDto;
 import com.mybrary.backend.domain.contents.thread.entity.Thread;
 import java.util.List;
 import java.util.Optional;

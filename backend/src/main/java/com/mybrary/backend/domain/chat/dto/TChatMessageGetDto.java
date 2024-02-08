@@ -1,7 +1,6 @@
 package com.mybrary.backend.domain.chat.dto;
 
-import com.mybrary.backend.domain.contents.thread.dto.ThreadShareGetDto;
-import com.mybrary.backend.domain.member.dto.MemberInfoDto;
+import com.mybrary.backend.domain.contents.thread.responseDto.ThreadShareGetDto;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

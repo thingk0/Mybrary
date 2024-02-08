@@ -1,4 +1,4 @@
-package com.mybrary.backend.domain.contents.thread.dto;
+package com.mybrary.backend.domain.contents.thread.requestDto;
 
 import com.mybrary.backend.domain.contents.paper.dto.PostPaperDto;
 import java.util.List;
