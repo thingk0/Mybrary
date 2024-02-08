@@ -58,8 +58,8 @@
   width: calc(35.2vi * 0.2);
   height: calc(48vi * 0.2);
   border-radius: 5px;
-  background-color: #ff8077;
 }
+
 .colors {
   width: 520px;
   gap: 10px;

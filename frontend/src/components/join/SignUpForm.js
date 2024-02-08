@@ -164,7 +164,8 @@ function SignUpForm({ setPageremote }) {
     } else if (!regex.nickname.test(nname)) {
       setFormErrors((prevFormErrors) => ({
         ...prevFormErrors,
-        nickname: "유효한 닉네임을 입력해주세요",
+        nickname:
+          "닉네임은 영어, 숫자, 언더바만 사용하여 3~15자 입력해야 합니다.",
       }));
     } else {
       try {
@@ -198,15 +199,14 @@ function SignUpForm({ setPageremote }) {
     e.preventDefault(); // 원래 form 안에서 button 이 가지는 기본 기능을 막음
     const errors = validate(formData);
     if (Object.keys(errors).length === 0) {
-      console.log("Form submitted:", formData);
       // 여기에 폼 제출 로직을 추가하세요.
       // 여기서 회원가입 post 요청을 보내면 된다. 이 요청은 api 폴더에 있기 때문에 import 해온 것을 쓰면 된다.
       try {
         const data = await signup(formData);
-        console.log(data.status);
         if (data.status === "SUCCESS") {
           showToast("회원가입이 완료되었습니다.");
           setPageremote((prev) => !prev);
+          setFormData("");
         } else {
           setFormErrors((prevFormErrors) => ({
             ...prevFormErrors,
@@ -321,7 +321,7 @@ function SignUpForm({ setPageremote }) {
               <div className={styles.각각의폼디브}>
                 <input
                   className={styles.인풋창}
-                  type="text"
+                  type="password"
                   name="password"
                   placeholder="비밀번호를 입력하세요"
                   value={formData.password}
@@ -338,7 +338,7 @@ function SignUpForm({ setPageremote }) {
               <div className={styles.각각의폼디브}>
                 <input
                   className={styles.인풋창}
-                  type="text"
+                  type="password"
                   name="passwordConfirm"
                   placeholder="비밀번호 확인"
                   value={formData.passwordConfirm}

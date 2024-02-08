@@ -2,6 +2,8 @@ import styles from "./BookCreate.module.css";
 import three from "../../assets/three.png";
 
 export default function BookCreate() {
+  const layouts = [1, 2, 3, 4, 5, 6];
+
   return (
     <div className={styles.container}>
       <div className={styles.title}>새로운 책 만들기</div>
@@ -13,12 +15,12 @@ export default function BookCreate() {
         <div className={styles.main_right}>
           <div className={styles.subtitle}>책 레이아웃</div>
           <div className={styles.layouts}>
-            <div className={styles.layout}>레이아웃1</div>
-            <div className={styles.layout}>레이아웃2</div>
-            <div className={styles.layout}>레이아웃3</div>
-            <div className={styles.layout}>레이아웃4</div>
-            <div className={styles.layout}>레이아웃5</div>
-            <div className={styles.layout}>레이아웃6</div>
+            {layouts.map((lay) => (
+              <div className={styles.layout}>
+                <div className={styles[`layImg${lay}`]}>사진</div>
+                <div className={styles[`layImg${lay}`]}>글</div>
+              </div>
+            ))}
           </div>
           <div className={styles.subtitle}>책 커버 색상</div>
           <div className={styles.colors}>

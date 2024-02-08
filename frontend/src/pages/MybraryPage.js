@@ -53,13 +53,7 @@ export default function MybraryPage() {
   const [checkme, setCheckme] = useState(false);
 
   const [testuser, setTestuser] = useState({
-    data: {
-      member: {},
-      bookCount: 0,
-      threadCount: 0,
-      followerCount: 0,
-      followingCount: 0,
-    },
+    data: {},
   });
 
   useEffect(() => {
@@ -71,6 +65,7 @@ export default function MybraryPage() {
         if (memberId == nowuser) {
           const response = await getMyMybrary();
           console.log("내라이브러리입니다");
+          console.log(response);
           setCheckme(true);
           setTestuser(response);
           setBgColor(response.data.backgroundColor.toString());
@@ -353,8 +348,8 @@ export default function MybraryPage() {
                 />
               </div>
               <div className={styles.프로필박스}>
-                <div>{testuser.data.member.nickname}</div>
-                <div>{testuser.data.member.name}</div>
+                <div>{testuser.data.nickname}</div>
+                <div>{testuser.data.name}</div>
               </div>
               <div className={styles.프로필박스}>
                 <div>{testuser.data.bookCount}</div>
@@ -373,7 +368,7 @@ export default function MybraryPage() {
                 <div>팔로우</div>
               </div>
             </div>
-            <div className={styles.한줄소개}>{testuser.data.member.intro}</div>
+            <div className={styles.한줄소개}>{testuser.data.intro}</div>
           </div>
           <div>
             {checkme && (
