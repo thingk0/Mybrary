@@ -53,13 +53,7 @@ export default function MybraryPage() {
   const [checkme, setCheckme] = useState(false);
 
   const [testuser, setTestuser] = useState({
-    data: {
-      member: {},
-      bookCount: 0,
-      threadCount: 0,
-      followerCount: 0,
-      followingCount: 0,
-    },
+    data: {},
   });
 
   useEffect(() => {
@@ -71,9 +65,10 @@ export default function MybraryPage() {
         if (memberId == nowuser) {
           const response = await getMyMybrary();
           console.log("내라이브러리입니다");
+          console.log(response);
           setCheckme(true);
           setTestuser(response);
-          setBgColor(response.data.backgroundColor.toString());
+          setBgColor(response.data.backgroundColor);
           setEsColor(easelImgs[response.data.easelColor - 1]);
           setEaselnum(response.data.easelColor);
           setTbColor(tableImgs[response.data.deskColor - 1]);
@@ -85,7 +80,7 @@ export default function MybraryPage() {
           const response = await getMyMybrary(nowuser);
           console.log("상대방의라이브러리입니다");
           setTestuser(response);
-          setBgColor(response.data.backgroundColor.toString());
+          setBgColor(response.data.backgroundColor - 1);
           setEsColor(easelImgs[response.data.easelColor - 1]);
           setEaselnum(response.data.easelColor);
           setTbColor(tableImgs[response.data.deskColor - 1]);
@@ -123,18 +118,11 @@ export default function MybraryPage() {
 
   //완료버튼을 눌렀을때 실행하는 함수
   const handleSelect = async () => {
+    console.log(testuser.data.mybraryId);
     // 요청 객체 생성
     const updateData = {
       mybraryId: testuser.data.mybraryId, // 여기서는 예시로 `testuser.data.mybraryId`를 사용합니다.
-      frameImage: {
-        // frameImage에 필요한 데이터를 적절히 채워 넣으세요.
-        name: "string",
-        originName: "string",
-        url: "string",
-        thumbnailUrl: "string",
-        format: "string",
-        size: "string",
-      },
+      frameImageId: 18,
       backgroundColor: parseInt(bgColor, 10),
       deskColor: parseInt(tablenum, 10),
       bookshelfColor: parseInt(bookshelfnum, 10),
@@ -233,7 +221,7 @@ export default function MybraryPage() {
 
   return (
     <>
-      <div className={s(`${styles.bg} ${styles[`bg${bgColor}`]}`)}>
+      <div className={s(`${styles.bg} ${styles[`bg${color[bgColor - 1]}`]}`)}>
         <div className={styles.center}>
           <img
             src={bsColor}
@@ -353,8 +341,8 @@ export default function MybraryPage() {
                 />
               </div>
               <div className={styles.프로필박스}>
-                <div>{testuser.data.member.nickname}</div>
-                <div>{testuser.data.member.name}</div>
+                <div>{testuser.data.nickname}</div>
+                <div>{testuser.data.name}</div>
               </div>
               <div className={styles.프로필박스}>
                 <div>{testuser.data.bookCount}</div>
@@ -373,7 +361,7 @@ export default function MybraryPage() {
                 <div>팔로우</div>
               </div>
             </div>
-            <div className={styles.한줄소개}>{testuser.data.member.intro}</div>
+            <div className={styles.한줄소개}>{testuser.data.intro}</div>
           </div>
           <div>
             {checkme && (

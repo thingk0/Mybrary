@@ -76,7 +76,7 @@ export default function Nav() {
             )}
             onClick={() => {
               setActive([true, false, false, false]);
-              navigate("mybrary/userid");
+              navigate("mybrary/:userid");
             }}
           >
             {active[0] ? <div>마이</div> : <div></div>}
