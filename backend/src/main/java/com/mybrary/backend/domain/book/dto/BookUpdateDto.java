@@ -22,10 +22,12 @@ public class BookUpdateDto {
 
     private Long bookId;
     private String title;
-    private ImagePostDto coverImage;
     private int coverLayout;
     private int coverColorCode;
-    private Long categoryId;
-    private List<Long> paperIdList;
+    private Long beforeCategoryId;
+    private Long afterCategoryId;
+
+    // 보류
+//    private List<Long> paperIdList;
 
 }

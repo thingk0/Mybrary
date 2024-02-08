@@ -2,6 +2,7 @@ package com.mybrary.backend.domain.category.repository.custom;
 
 import static com.mybrary.backend.domain.bookshelf.entity.QBookshelf.bookshelf;
 import static com.mybrary.backend.domain.category.entity.QCategory.category;
+import static com.mybrary.backend.domain.member.entity.QMember.member;
 import static com.mybrary.backend.domain.mybrary.entity.QMybrary.mybrary;
 import static com.mybrary.backend.domain.pickbook.entity.QPickBook.pickBook;
 
@@ -58,6 +59,18 @@ public class CategoryRepositoryImpl implements CategoryRepositoryCustom {
                                         .orderBy(category.categorySeq.asc())
                                         .fetch());
 
+    }
+
+    @Override
+    public Optional<Long> findCategoryOwnerId(Long categoryId) {
+        return Optional.ofNullable(query.select(member.id)
+                                       .from(category)
+                                       .leftJoin(bookshelf).on(category.bookshelf.id.eq(bookshelf.id))
+                                       .leftJoin(mybrary).on(bookshelf.mybrary.id.eq(mybrary.id))
+                                       .leftJoin(member).on(mybrary.member.id.eq(member.id))
+                                       .where(category.id.eq(categoryId))
+                                       .fetchOne()
+        );
     }
 
 

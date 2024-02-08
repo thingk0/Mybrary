@@ -1,6 +1,7 @@
 package com.mybrary.backend.domain.book.repository.custom;
 
 import com.mybrary.backend.domain.book.dto.BookGetDto;
+import com.mybrary.backend.domain.book.dto.BookListGetFromPaperDto;
 import com.mybrary.backend.domain.book.dto.MyBookGetDto;
 import java.util.List;
 import java.util.Optional;
@@ -13,4 +14,6 @@ public interface BookRepositoryCustom {
     List<BookGetDto> getAllBookByCategoryId(Long categoryId);
 
     Optional<List<MyBookGetDto>> getAllMyBookList(Long memeberId, Long categoryId);
+
+    Optional<List<BookListGetFromPaperDto>> getBookListFromPaper(Long paperId);
 }

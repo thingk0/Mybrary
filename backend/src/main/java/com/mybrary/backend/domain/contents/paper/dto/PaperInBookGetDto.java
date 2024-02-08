@@ -2,6 +2,7 @@ package com.mybrary.backend.domain.contents.paper.dto;
 
 import com.mybrary.backend.domain.member.dto.MemberGetDto;
 import com.mybrary.backend.domain.member.dto.MemberInfoDto;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,25 +23,25 @@ public class PaperInBookGetDto {
      */
 
     private Long paperId;
-    private String createdAt;
+    private Long threadId;
+    private LocalDateTime createdAt;
     private MemberInfoDto writer;
     private int layoutType;
     private String content1;
     private String content2;
     private String image1Url;
     private String image2Url;
-    private String image3Url;
-    private String image4Url;
-    private String thumbnailImage1Url;
-    private String thumbnailImage2Url;
-    private String thumbnailImage3Url;
-    private String thumbnailImage4Url;
     private List<String> tagList;
-    private List<MemberInfoDto> mentionList;
     private int likeCount;
     private int commentCount;
     private int scrapCount;
     private boolean isLiked;
-    private boolean isOwner;
 
+    public PaperInBookGetDto(Long paperId, LocalDateTime createdAt, int layoutType, String content1, String content2) {
+        this.paperId = paperId;
+        this.createdAt = createdAt;
+        this.layoutType = layoutType;
+        this.content1 = content1;
+        this.content2 = content2;
+    }
 }

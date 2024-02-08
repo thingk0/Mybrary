@@ -2,7 +2,10 @@ package com.mybrary.backend.domain.contents.paper.repository.custom;
 
 import com.mybrary.backend.domain.contents.paper.dto.GetFollowingPaperDto;
 import com.mybrary.backend.domain.contents.paper.dto.PaperGetDto;
+import com.mybrary.backend.domain.contents.paper.dto.PaperInBookGetDto;
+import com.mybrary.backend.domain.member.dto.MemberInfoDto;
 import java.util.List;
+import java.util.Optional;
 
 public interface PaperRepositoryCustom {
 
@@ -10,4 +13,12 @@ public interface PaperRepositoryCustom {
 
     Long deletePaperByThreadsId(Long threadId);
     List<PaperGetDto> getPaperGetDto(Long threadId);
+
+    Optional<List<PaperInBookGetDto>> getPaperList(Long bookId);
+
+    Optional<MemberInfoDto> getWriter(Long paperId);
+
+    Optional<String> getImageUrl(Long paperId, int seq);
+
+    Optional<Long> getThreadIdByPaperId(Long paperId);
 }

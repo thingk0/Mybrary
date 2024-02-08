@@ -1,6 +1,7 @@
 package com.mybrary.backend.domain.comment.repository.custom;
 
 import static com.mybrary.backend.domain.comment.entity.QComment.comment;
+import static com.mybrary.backend.domain.contents.like.entity.QLike.like;
 import static com.mybrary.backend.domain.contents.paper.entity.QPaper.paper;
 import static com.mybrary.backend.domain.member.entity.QMember.member;
 import com.mybrary.backend.domain.comment.dto.CommentGetDto;
@@ -39,6 +40,15 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom {
             .leftJoin(paper).on(comment.paper.id.eq(paperId))
             .leftJoin(member).on(comment.member.id.eq(member.id))
             .fetch());
+    }
+
+    @Override
+    public Optional<Integer> getCommentCount(Long paperId) {
+        return Optional.ofNullable(query.select(comment.count().intValue())
+                                        .from(comment)
+                                        .where(comment.paper.id.eq(paperId))
+                                        .fetchOne()
+        );
     }
 
 }

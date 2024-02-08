@@ -6,4 +6,5 @@ import java.util.Optional;
 public interface LikeRepositoryCustom {
     Optional<Like> isLikedPaper(Long memberId, Long paperId);
 
+    Optional<Integer> getLikeCount(Long paperId);
 }

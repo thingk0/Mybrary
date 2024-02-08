@@ -17,6 +17,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -34,6 +35,7 @@ public class Book extends BaseEntity {
     @Column(name = "book_id")
     private Long id;
 
+    @Setter
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cover_image_id")
     private Image coverImage;
@@ -42,15 +44,19 @@ public class Book extends BaseEntity {
     @JoinColumn(name = "owner_id")
     private Member member;
 
+    @Setter
     @Column(name = "cover_font")
     private String coverFont;
 
+    @Setter
     @Column(name = "cover_title")
     private String coverTitle;
 
+    @Setter
     @Column(name = "cover_layout")
     private int coverLayout;
 
+    @Setter
     @Column(name = "cover_color")
     private int coverColor;
 

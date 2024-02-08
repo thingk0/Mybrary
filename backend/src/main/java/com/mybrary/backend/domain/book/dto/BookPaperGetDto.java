@@ -1,7 +1,8 @@
 package com.mybrary.backend.domain.book.dto;
 
+import com.mybrary.backend.domain.contents.paper.dto.PaperGetDto;
 import com.mybrary.backend.domain.contents.paper.dto.PaperInBookGetDto;
-import com.mybrary.backend.domain.image.dto.ImagePostDto;
+import com.mybrary.backend.domain.member.dto.MemberInfoDto;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,17 +15,16 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class BookPostDto {
+public class BookPaperGetDto {
 
     /**
-     *  책 생성
-     *
+     *  책의 표지만 있는 DTO
+     *  (내부 페이퍼에 대한 데이터는 없음)
      */
 
-    private String title;
-    private Long coverImageId;
-    private int coverLayout;
-    private int coverColorCode;
-    private Long categoryId;
+    private Long bookId;
+    private List<PaperInBookGetDto> paperList;
+
+
 
 }

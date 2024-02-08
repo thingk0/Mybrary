@@ -1,5 +1,6 @@
 package com.mybrary.backend.global.format.response;
 
+import co.elastic.clients.elasticsearch.nodes.Http;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -47,7 +48,38 @@ public enum ErrorCode {
 
     // 마이브러리 예외 처리
     MYBRARY_NOT_FOUND(HttpStatus.NOT_FOUND, "마이브러리를 찾을 수 없습니다."),
-    MYBRARY_MISMATCH(HttpStatus.BAD_REQUEST, "마이브러리 수정을 할 수 없습니다"),
+    MYBRARY_MISMATCH(HttpStatus.BAD_REQUEST, "마이브러리 수정을 할 수 없습니다."),
+
+    // 책 예외 처리
+    BOOK_CREATE_FAILED(HttpStatus.BAD_REQUEST, "책을 생성할 수 없습니다."),
+    BOOK_UPDATE_FAILED(HttpStatus.BAD_REQUEST, "책을 수정할 수 없습니다."),
+    BOOK_NOT_FOUND(HttpStatus.NOT_FOUND, "책을 찾을 수 없습니다."),
+    BOOK_DELETE_FAILED(HttpStatus.BAD_REQUEST, "책을 삭제할 수 없습니다."),
+    BOOK_SUBSCRIBE_FAILED(HttpStatus.BAD_REQUEST, "책을 구독할 수 없습니다."),
+    BOOK_ALREADY_SUBSCRIBE(HttpStatus.BAD_REQUEST, "책이 현재 카테고리에 이미 꽂혀있습니다."),
+    PAPER_DELETE_FAILED(HttpStatus.BAD_REQUEST, "본인이 만든 책이 아닙니다."),
+
+    // 픽북 예외 처리
+    PICKBOOK_NOT_FOUND(HttpStatus.NOT_FOUND, "픽북을 찾을 수 없습니다."),
+
+    // 카테고리 예외 처리
+    CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "카테고리를 찾을 수 없습니다."),
+    CATEGORY_OWNER_NOT_FOUND(HttpStatus.NOT_FOUND, "카테고리의 주인을 찾을 수 없습니다."),
+
+    // 스레드 예외 처리
+    THREADID_NOT_FOUND(HttpStatus.NOT_FOUND, "스레드 아이디를 찾을 수 없습니다."),
+
+    // 페이퍼 예외 처리
+    PAPERLIST_NOT_FOUND(HttpStatus.NOT_FOUND, "페이퍼리스트를 찾을 수 없습니다."),
+
+    // 스크랩 예외 처리
+    SCRAP_NOT_FOUND(HttpStatus.NOT_FOUND, "스크랩을 찾을 수 없습니다."),
+
+
+    // 태그 예외 처리
+    TAG_NOT_FOUND(HttpStatus.NOT_FOUND, "태그리스트를 찾을 수 없습니다."),
+
+    // 좋아요 예외 처리
 
     // 이미지 예외 처리
     IMAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "이미지를 찾을 수 없습니다."),

@@ -12,4 +12,6 @@ public interface CategoryRepositoryCustom {
     Optional<Integer> nextSeq(Long bookShelfId);
 
     Optional<List<MyCategoryGetDto>> getMyAllCategory(Long memberId);
+
+    Optional<Long> findCategoryOwnerId(Long categoryId);
 }

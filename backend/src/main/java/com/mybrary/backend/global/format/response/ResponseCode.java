@@ -43,6 +43,7 @@ public enum ResponseCode {
     BOOK_DELETED(HttpStatus.OK, "책이 성공적으로 삭제되었습니다."),
     BOOK_SUBSCRIBED(HttpStatus.CREATED, "책 구독이 성공적으로 이루어졌습니다."),
     BOOK_UNSUBSCRIBED(HttpStatus.OK, "책 구독이 성공적으로 취소되었습니다."),
+    BOOK_LIST_FROM_PAPER(HttpStatus.OK, "페이퍼가 포함된 책 목록이 성공적으로 조회되었습니다."),
 
     /* 카테고리(Category) */
     CATEGORIES_FETCHED(HttpStatus.OK, "카테고리 목록이 성공적으로 조회되었습니다."),
@@ -66,6 +67,7 @@ public enum ResponseCode {
     /* 페이퍼(Paper) */
     PAPER_SCRAPPED(HttpStatus.OK, "페이퍼가 성공적으로 스크랩되었습니다."),
     PAPER_SHARED(HttpStatus.OK, "페이퍼가 성공적으로 공유되었습니다."),
+    PAPER_DELETE(HttpStatus.OK, "책에서 페이지가 삭제되었습니다."),
 
     /* 쓰레드(Thread) */
     THREAD_FETCHED(HttpStatus.OK, "쓰레드가 성공적으로 조회되었습니다."),
