@@ -53,8 +53,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberServiceImpl implements MemberService {
 
     private final TokenProvider tokenProvider;
-    private final CookieUtil cookieUtil;
     private final TokenService tokenService;
+    private final CookieUtil cookieUtil;
     private final PasswordEncoder passwordEncoder;
     private final MemberRepository memberRepository;
     private final FollowRepository followRepository;

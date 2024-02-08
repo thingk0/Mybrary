@@ -28,9 +28,9 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+    private final CookieUtil cookieUtil;
     private final TokenService tokenService;
     private final TokenProvider tokenProvider;
-    private final CookieUtil cookieUtil;
     private final FilterResponse filterResponse;
     private final FilterUtil filterUtil;
 
