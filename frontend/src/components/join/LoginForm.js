@@ -59,8 +59,8 @@ function LoginForm() {
         localStorage.setItem("tokenTimestamp", Date.now());
         await setUser({
           email: formData.email,
-          memberId: data.memberId,
-          nickname: data.nickname,
+          memberId: data.data.memberInfo.memberId,
+          nickname: data.data.memberInfo.nickname,
         });
 
         async function socketConnect() {
