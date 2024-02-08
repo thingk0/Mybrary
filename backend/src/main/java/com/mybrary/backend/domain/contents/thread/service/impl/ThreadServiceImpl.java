@@ -341,7 +341,13 @@ public Long updateThread(Long myId, ThreadUpdateDto threadUpdateDto) {
       public Long updateThread(ThreadUpdateDto threadUpdateDto) {
 >>>>>>> BASE      (d980ce FIX: (merged) getter, thread 관련 문제 수정, thread dto 분리)
 
+<<<<<<< PATCH SET (c90827 FEAT: threadImpl 충돌 해결 2)
+    //test
+    // test!!!!!!
+
+=======
 <<<<<<< PATCH SET (240c18 FIX: (merge 2) getter, thread 관련 문제 수정, thread dto 분리)
+>>>>>>> BASE      (db9759 FIX: (merge 2) getter, thread 관련 문제 수정, thread dto 분리)
     @Transactional
     @Override
     public DeleteThreadDto deleteThread(Long myId, Long threadId) {
