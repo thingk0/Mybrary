@@ -1,5 +1,18 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: var(--main4);
+  background: linear-gradient(135deg, #fff4e8 0%, #ffe1e1 100%);
+  animation: gradientBG 7s ease infinite;
+  background-size: 400% 400%;
+}
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }

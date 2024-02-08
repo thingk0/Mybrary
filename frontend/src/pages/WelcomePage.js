@@ -5,13 +5,15 @@ export default function WelcomePage() {
   const navigate = useNavigate();
 
   const handleStart = () => {
-    navigate("mybrary/userid");
+    navigate("/join");
   };
 
   return (
     <>
       <div className={styles.container}>
-        <div>
+        <div className={styles.문구}>
+          <div>마이브러리에 오신것을 환영합니다</div>
+
           <div onClick={() => handleStart()}>입장하기</div>
         </div>
       </div>

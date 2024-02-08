@@ -21,6 +21,7 @@
     "lottie-web": "^5.12.2",
     "multer": "^1.4.5-lts.1",
     "mysql2": "^3.9.1",
+    "particles.js": "^2.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-draft-wysiwyg": "^1.15.0",
