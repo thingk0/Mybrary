@@ -23,7 +23,7 @@ import postbox from "../assets/postbox.png";
 import s from "classnames";
 import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useUserStore from "../store/useUserStore";
 import useStompStore from "../store/useStompStore";
 import 혜선누나 from "../assets/혜선누나.jpg";
@@ -34,6 +34,9 @@ import axios from "axios";
 
 export default function MybraryPage() {
   const navigate = useNavigate();
+  const Params = useParams();
+  const nowuser = Params.userid;
+  console.log(nowuser);
   const [edit, setEdit] = useState(false);
   const [bgColor, setBgColor] = useState("1");
   const [esColor, setEsColor] = useState(easel1);
@@ -47,6 +50,7 @@ export default function MybraryPage() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [frameimgurl, setFrameimgurl] = useState();
   const [file, setFile] = useState();
+  const [checkme, setCheckme] = useState(false);
 
   const [testuser, setTestuser] = useState({
     data: {
@@ -61,17 +65,35 @@ export default function MybraryPage() {
   useEffect(() => {
     async function fetchMybraryData() {
       try {
-        const response = await getMyMybrary();
-        console.log(response);
-        setTestuser(response);
-        setBgColor(response.data.backgroundColor.toString());
-        setEsColor(easelImgs[response.data.easelColor - 1]);
-        setEaselnum(response.data.easelColor);
-        setTbColor(tableImgs[response.data.deskColor - 1]);
-        setTablenum(response.data.deskColor);
-        setBsColor(bookshelfImgs[response.data.bookshelfColor - 1]);
-        setBookshelfnum(response.data.bookshelfColor - 1);
-        setFrameimgurl(response.data.frameImageUrl);
+        const memberId = user.memberId;
+        console.log(memberId);
+        console.log(user.nickname);
+        if (memberId == nowuser) {
+          const response = await getMyMybrary();
+          console.log("내라이브러리입니다");
+          setCheckme(true);
+          setTestuser(response);
+          setBgColor(response.data.backgroundColor.toString());
+          setEsColor(easelImgs[response.data.easelColor - 1]);
+          setEaselnum(response.data.easelColor);
+          setTbColor(tableImgs[response.data.deskColor - 1]);
+          setTablenum(response.data.deskColor);
+          setBsColor(bookshelfImgs[response.data.bookshelfColor - 1]);
+          setBookshelfnum(response.data.bookshelfColor - 1);
+          setFrameimgurl(response.data.frameImageUrl);
+        } else {
+          const response = await getMyMybrary(nowuser);
+          console.log("상대방의라이브러리입니다");
+          setTestuser(response);
+          setBgColor(response.data.backgroundColor.toString());
+          setEsColor(easelImgs[response.data.easelColor - 1]);
+          setEaselnum(response.data.easelColor);
+          setTbColor(tableImgs[response.data.deskColor - 1]);
+          setTablenum(response.data.deskColor);
+          setBsColor(bookshelfImgs[response.data.bookshelfColor - 1]);
+          setBookshelfnum(response.data.bookshelfColor - 1);
+          setFrameimgurl(response.data.frameImageUrl);
+        }
       } catch (error) {
         console.error("데이터를 가져오는 데 실패했습니다:", error);
       }
@@ -354,9 +376,11 @@ export default function MybraryPage() {
             <div className={styles.한줄소개}>{testuser.data.member.intro}</div>
           </div>
           <div>
-            <div className={styles.editButton} onClick={() => setEdit(true)}>
-              방 꾸미기
-            </div>
+            {checkme && (
+              <div className={styles.editButton} onClick={() => setEdit(true)}>
+                방 꾸미기
+              </div>
+            )}
             {/* <div className={styles.editButton}>방 꾸미기</div> */}
           </div>
         </div>
