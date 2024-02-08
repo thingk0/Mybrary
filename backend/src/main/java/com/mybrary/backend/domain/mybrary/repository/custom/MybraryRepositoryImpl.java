@@ -14,57 +14,63 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+
 @RequiredArgsConstructor
 public class MybraryRepositoryImpl implements MybraryRepositoryCustom {
+
     private final JPAQueryFactory query;
+
     @Override
     public Optional<MybraryGetDto> getMybrary(Long myId) {
 
         QImage profileImgae = new QImage("profileImage");
         QImage frameImgae = new QImage("frameImage");
 
-
         return Optional.ofNullable(query.select(
-                Projections.constructor(MybraryGetDto.class, mybrary.id, frameImgae.url,
-                    mybrary.backgroundColor, mybrary.deskColor, mybrary.bookshelfColor, mybrary.easelColor,
-                    member.id, member.email, member.nickname, member.intro, profileImgae.url, member.isNotifyEnabled,
-                    member.isProfilePublic, bookshelf.id, rollingPaper.id
-                )
-            ).from(mybrary)
-            .leftJoin(member).on(mybrary.member.id.eq(member.id))
-            .leftJoin(frameImgae).on(mybrary.photoFrameImage.id.eq(frameImgae.id))
-            .leftJoin(bookshelf).on(bookshelf.mybrary.id.eq(mybrary.id))
-            .leftJoin(rollingPaper).on(rollingPaper.mybrary.id.eq(mybrary.id))
-            .leftJoin(profileImgae).on(member.profileImage.id.eq(profileImgae.id))
-            .fetchFirst()
+                                            Projections.constructor(MybraryGetDto.class, mybrary.id, frameImgae.url,
+                                                                    mybrary.backgroundColor, mybrary.deskColor, mybrary.bookshelfColor, mybrary.easelColor,
+                                                                    member.id, member.email, member.nickname, member.intro, profileImgae.url,
+                                                                    member.isNotifyEnabled,
+                                                                    member.isProfilePublic, bookshelf.id, rollingPaper.id
+                                            )
+                                        ).from(mybrary)
+                                        .leftJoin(member).on(mybrary.member.id.eq(member.id))
+                                        .leftJoin(frameImgae).on(mybrary.photoFrameImage.id.eq(frameImgae.id))
+                                        .leftJoin(bookshelf).on(bookshelf.mybrary.id.eq(mybrary.id))
+                                        .leftJoin(rollingPaper).on(rollingPaper.mybrary.id.eq(mybrary.id))
+                                        .leftJoin(profileImgae).on(member.profileImage.id.eq(profileImgae.id))
+                                        .where(member.id.eq(myId))
+                                        .fetchFirst()
         );
     }
+
     @Override
     public Optional<MybraryOtherGetDto> getOtherMybrary(Long otherId) {
         QImage profileImgae = new QImage("profileImage");
         QImage frameImgae = new QImage("frameImage");
 
-
         return Optional.ofNullable(query.select(
-                        Projections.constructor(MybraryOtherGetDto.class, mybrary.id, frameImgae.url,
-                                                mybrary.backgroundColor, mybrary.deskColor, mybrary.bookshelfColor, mybrary.easelColor,
-                                                member.id, member.email, member.nickname, member.intro, profileImgae.url, member.isNotifyEnabled,
-                                                member.isProfilePublic, bookshelf.id, rollingPaper.id
-                        )
-                    ).from(mybrary)
-                    .leftJoin(member).on(mybrary.member.id.eq(member.id))
-                    .leftJoin(frameImgae).on(mybrary.photoFrameImage.id.eq(frameImgae.id))
-                    .leftJoin(bookshelf).on(bookshelf.mybrary.id.eq(mybrary.id))
-                    .leftJoin(rollingPaper).on(rollingPaper.mybrary.id.eq(mybrary.id))
-                    .leftJoin(profileImgae).on(member.profileImage.id.eq(profileImgae.id))
-                    .fetchFirst()
+                                            Projections.constructor(MybraryOtherGetDto.class, mybrary.id, frameImgae.url,
+                                                                    mybrary.backgroundColor, mybrary.deskColor, mybrary.bookshelfColor, mybrary.easelColor,
+                                                                    member.id, member.email, member.nickname, member.intro, profileImgae.url,
+                                                                    member.isNotifyEnabled,
+                                                                    member.isProfilePublic, bookshelf.id, rollingPaper.id
+                                            )
+                                        ).from(mybrary)
+                                        .leftJoin(member).on(mybrary.member.id.eq(member.id))
+                                        .leftJoin(frameImgae).on(mybrary.photoFrameImage.id.eq(frameImgae.id))
+                                        .leftJoin(bookshelf).on(bookshelf.mybrary.id.eq(mybrary.id))
+                                        .leftJoin(rollingPaper).on(rollingPaper.mybrary.id.eq(mybrary.id))
+                                        .leftJoin(profileImgae).on(member.profileImage.id.eq(profileImgae.id))
+                                        .where(member.id.eq(otherId))
+                                        .fetchFirst()
         );
     }
 
     @Override
     public Mybrary findByMybraryId(Long mybraryId) {
         return query.selectFrom(mybrary)
-            .where(mybrary.id.eq(mybraryId))
-            .fetchFirst();
+                    .where(mybrary.id.eq(mybraryId))
+                    .fetchFirst();
     }
 }
