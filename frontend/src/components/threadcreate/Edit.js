@@ -72,10 +72,10 @@ export default function Edit({ currentPage, papers, setPapers }) {
         toolbar={{
           options: [
             "inline",
-            "blockType",
-            "colorPicker",
             "emoji",
             "link",
+            "colorPicker",
+            "blockType",
             "textAlign",
             "history",
           ],
@@ -108,10 +108,10 @@ export default function Edit({ currentPage, papers, setPapers }) {
         toolbar={{
           options: [
             "inline",
-            "blockType",
-            "colorPicker",
             "emoji",
             "link",
+            "colorPicker",
+            "blockType",
             "textAlign",
             "history",
           ],
