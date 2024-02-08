@@ -62,45 +62,45 @@ export default function MybraryPage() {
     },
   });
 
-  useEffect(() => {
-    async function fetchMybraryData() {
-      try {
-        const memberId = user.memberId;
-        console.log(memberId);
-        console.log(user.nickname);
-        if (memberId == nowuser) {
-          const response = await getMyMybrary();
-          console.log("내라이브러리입니다");
-          setCheckme(true);
-          setTestuser(response);
-          setBgColor(response.data.backgroundColor.toString());
-          setEsColor(easelImgs[response.data.easelColor - 1]);
-          setEaselnum(response.data.easelColor);
-          setTbColor(tableImgs[response.data.deskColor - 1]);
-          setTablenum(response.data.deskColor);
-          setBsColor(bookshelfImgs[response.data.bookshelfColor - 1]);
-          setBookshelfnum(response.data.bookshelfColor - 1);
-          setFrameimgurl(response.data.frameImageUrl);
-        } else {
-          const response = await getMyMybrary(nowuser);
-          console.log("상대방의라이브러리입니다");
-          setTestuser(response);
-          setBgColor(response.data.backgroundColor.toString());
-          setEsColor(easelImgs[response.data.easelColor - 1]);
-          setEaselnum(response.data.easelColor);
-          setTbColor(tableImgs[response.data.deskColor - 1]);
-          setTablenum(response.data.deskColor);
-          setBsColor(bookshelfImgs[response.data.bookshelfColor - 1]);
-          setBookshelfnum(response.data.bookshelfColor - 1);
-          setFrameimgurl(response.data.frameImageUrl);
-        }
-      } catch (error) {
-        console.error("데이터를 가져오는 데 실패했습니다:", error);
-      }
-    }
+  // useEffect(() => {
+  //   async function fetchMybraryData() {
+  //     try {
+  //       const memberId = user.memberId;
+  //       console.log(memberId);
+  //       console.log(user.nickname);
+  //       if (memberId == nowuser) {
+  //         const response = await getMyMybrary();
+  //         console.log("내라이브러리입니다");
+  //         setCheckme(true);
+  //         setTestuser(response);
+  //         setBgColor(response.data.backgroundColor.toString());
+  //         setEsColor(easelImgs[response.data.easelColor - 1]);
+  //         setEaselnum(response.data.easelColor);
+  //         setTbColor(tableImgs[response.data.deskColor - 1]);
+  //         setTablenum(response.data.deskColor);
+  //         setBsColor(bookshelfImgs[response.data.bookshelfColor - 1]);
+  //         setBookshelfnum(response.data.bookshelfColor - 1);
+  //         setFrameimgurl(response.data.frameImageUrl);
+  //       } else {
+  //         const response = await getMyMybrary(nowuser);
+  //         console.log("상대방의라이브러리입니다");
+  //         setTestuser(response);
+  //         setBgColor(response.data.backgroundColor.toString());
+  //         setEsColor(easelImgs[response.data.easelColor - 1]);
+  //         setEaselnum(response.data.easelColor);
+  //         setTbColor(tableImgs[response.data.deskColor - 1]);
+  //         setTablenum(response.data.deskColor);
+  //         setBsColor(bookshelfImgs[response.data.bookshelfColor - 1]);
+  //         setBookshelfnum(response.data.bookshelfColor - 1);
+  //         setFrameimgurl(response.data.frameImageUrl);
+  //       }
+  //     } catch (error) {
+  //       console.error("데이터를 가져오는 데 실패했습니다:", error);
+  //     }
+  //   }
 
-    fetchMybraryData();
-  }, []);
+  //   fetchMybraryData();
+  // }, []);
 
   const color = [
     "1",

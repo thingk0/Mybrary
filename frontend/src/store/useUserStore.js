@@ -22,6 +22,6 @@ const useUserStore = create(
 
 export default useUserStore;
 
-/* 꺼내서 쓰는 코드 
- const memberId = useUserStore(state => state.user.memberId);
-*/
+/* 꺼내서 쓰는 코드
+ */
+//  const memberId = useUserStore(state => state.user.memberId);

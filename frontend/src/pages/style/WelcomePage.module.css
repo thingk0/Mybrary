@@ -1,5 +1,46 @@
 .container {
-  width: 100vi;
-  margin: 20px auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #e0c3ff 0%, #ffed95 100%);
+  background-size: 400% 400%;
+  animation: gradientBG 7s ease infinite;
+}
+
+.문구 {
   text-align: center;
+  color: white;
+}
+
+.문구 > div:first-child {
+  margin-bottom: 20px;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.문구 > div:last-child {
+  cursor: pointer;
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: rgba(255, 255, 255, 0.4);
+  border-radius: 20px;
+  font-size: 1.5rem;
+  transition: background-color 0.3s ease;
+}
+
+.문구 > div:last-child:hover {
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
