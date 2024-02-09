@@ -3,10 +3,10 @@ package com.mybrary.backend.domain.contents.thread.service.impl;
 import com.mybrary.backend.domain.book.entity.Book;
 import com.mybrary.backend.domain.book.repository.BookRepository;
 import com.mybrary.backend.domain.contents.like.service.LikeService;
-import com.mybrary.backend.domain.contents.paper.dto.GetFollowingPaperDto;
-import com.mybrary.backend.domain.contents.paper.dto.PaperGetDto;
-import com.mybrary.backend.domain.contents.paper.dto.PaperUpdateDto;
-import com.mybrary.backend.domain.contents.paper.dto.PostPaperDto;
+import com.mybrary.backend.domain.contents.paper.dto.requestDto.PaperUpdateDto;
+import com.mybrary.backend.domain.contents.paper.dto.requestDto.PostPaperDto;
+import com.mybrary.backend.domain.contents.paper.dto.responseDto.GetFollowingPaperDto;
+import com.mybrary.backend.domain.contents.paper.dto.responseDto.PaperGetDto;
 import com.mybrary.backend.domain.contents.paper.entity.Paper;
 import com.mybrary.backend.domain.contents.paper.repository.PaperRepository;
 import com.mybrary.backend.domain.contents.paper_image.repository.PaperImageRepository;
@@ -15,17 +15,17 @@ import com.mybrary.backend.domain.contents.scrap.repository.ScrapRepository;
 import com.mybrary.backend.domain.contents.tag.entity.Tag;
 import com.mybrary.backend.domain.contents.tag.repository.TagRepository;
 import com.mybrary.backend.domain.contents.tag.service.TagService;
+import com.mybrary.backend.domain.contents.thread.dto.requestDto.ThreadPostDto;
+import com.mybrary.backend.domain.contents.thread.dto.requestDto.ThreadUpdateDto;
+import com.mybrary.backend.domain.contents.thread.dto.responseDto.GetThreadDto;
+import com.mybrary.backend.domain.contents.thread.dto.responseDto.ThreadGetDto;
+import com.mybrary.backend.domain.contents.thread.dto.responseDto.ThreadInfoGetDto;
 import com.mybrary.backend.domain.contents.thread.entity.Thread;
 import com.mybrary.backend.domain.contents.thread.repository.ThreadRepository;
-import com.mybrary.backend.domain.contents.thread.requestDto.ThreadPostDto;
-import com.mybrary.backend.domain.contents.thread.requestDto.ThreadUpdateDto;
-import com.mybrary.backend.domain.contents.thread.responseDto.GetThreadDto;
-import com.mybrary.backend.domain.contents.thread.responseDto.ThreadGetDto;
-import com.mybrary.backend.domain.contents.thread.responseDto.ThreadInfoGetDto;
 import com.mybrary.backend.domain.contents.thread.service.ThreadService;
 import com.mybrary.backend.domain.image.repository.ImageRepository;
 import com.mybrary.backend.domain.image.service.ImageService;
-import com.mybrary.backend.domain.member.dto.MemberInfoDto;
+import com.mybrary.backend.domain.member.dto.responseDto.MemberInfoDto;
 import com.mybrary.backend.domain.member.entity.Member;
 import com.mybrary.backend.domain.member.repository.MemberRepository;
 import com.mybrary.backend.domain.mybrary.repository.MybraryRepository;
@@ -78,7 +78,9 @@ public class ThreadServiceImpl implements ThreadService {
 
             Member member = memberRepository.findById(myId)
                                             .orElseThrow(NullPointerException::new);
+
             log.info("memberId = {} / email = {} / nickname = {}", member.getId(), member.getEmail(), member.getNickname());
+
             for (PostPaperDto dto : postPaperDtoList) {
                   /* paper 객체 생성 */
                   Paper paper = Paper.builder()
@@ -175,7 +177,8 @@ public class ThreadServiceImpl implements ThreadService {
                 .getFollowingThreadDtoResults(myId, pageable);
             /* following중이지 않은 멤버의 쓰레드 최대 10개 조회와 관련 정보 dto 생성*/
             int getRandomCount = 10 - threadDtoList.size();
-            threadDtoList.addAll(threadRepository.getRandomThreadDtoResults(myId, pageable, getRandomCount));
+            threadDtoList.addAll(
+                threadRepository.getRandomThreadDtoResults(myId, pageable, getRandomCount));
             /* list 내에서 무작위로 순서 배정 */
             Collections.shuffle(threadDtoList);
 
@@ -209,7 +212,8 @@ public class ThreadServiceImpl implements ThreadService {
       public List<ThreadInfoGetDto> getMyAllThread(Long myId, Pageable pageable) {
             /* 나의 thread 정보들 가져와 dto 생성 */
 
-            Member member = memberRepository.findById(myId).orElseThrow(NullPointerException::new);
+            Member member = memberRepository.findById(myId)
+                                            .orElseThrow(NullPointerException::new);
 
             return threadRepository.getSimpleThreadDtoResults(myId, pageable);
       }
@@ -223,6 +227,7 @@ public class ThreadServiceImpl implements ThreadService {
             Member member = memberRepository.findById(memberId)
                                             .orElseThrow(NullPointerException::new);
             log.info("memeberId:" + memberId);
+
             List<ThreadInfoGetDto> list = threadRepository.getSimpleThreadDtoResults(memberId, pageable);
             return threadRepository.getSimpleThreadDtoResults(memberId, pageable);
       }
@@ -231,28 +236,38 @@ public class ThreadServiceImpl implements ThreadService {
       @Override
       public ThreadGetDto getThread(Long memberId, Long threadId) {
 
-            ThreadGetDto threadGetDto = new ThreadGetDto();
-            threadGetDto.setThreadId(threadId);
-
-            Member member = memberRepository.findById(memberId).orElseThrow(NullPointerException::new);
-            MemberInfoDto memberInfoDto = memberRepository.getMemberInfo(memberId);
-            log.info("1");
-            /* isLiked 따로 처리로 */
+            /* paperGetDtoList 정보 조회 및 생성 */
             List<PaperGetDto> paperGetDtoList = paperRepository.getPaperGetDto(threadId);
+            /**/
             log.info("2");
+
             for (PaperGetDto paperGetDto : paperGetDtoList) {
                   paperGetDto.setLiked(likeService.checkIsLiked(paperGetDto.getPaperId(), memberId));
-                  List<Tag> tagList = tagRepository.getTagsByPaperId(paperGetDto.getPaperId()).orElse(Collections.emptyList());
+                  List<Tag> tagList = tagRepository.getTagsByPaperId(paperGetDto.getPaperId())
+                                                   .orElse(Collections.emptyList());
+                  /**/
                   log.info("3");
-                  List<String> tagNameList = tagList.stream() // tagList를 스트림으로 변환
-                                                    .map(Tag::getTagName) // 각 Tag 객체에서 getName 메소드를 호출하여 이름을 추출
-                                                    .toList(); // 결과를 새로운 List<String>
+                  List<String> tagNameList = tagList.stream()
+                                                    .map(Tag::getTagName)
+                                                    .toList();
                   paperGetDto.setTagList(tagNameList);
             }
+            /**/
             log.info("4");
-            threadGetDto.setThreadId(threadId);
-            threadGetDto.setMember(memberInfoDto);
-            threadGetDto.setPaperList(paperGetDtoList);
+
+            /* ThreadGetDto 생성 */
+
+            Paper firstPaper = paperRepository.findById(paperGetDtoList.get(0).getPaperId())
+                                              .orElseThrow(NullPointerException::new);
+            MemberInfoDto memberInfoDto = memberRepository.getMemberInfo(memberId);
+
+            ThreadGetDto threadGetDto = ThreadGetDto.builder()
+                                                    .threadId(threadId)
+                                                    .member(memberInfoDto)
+                                                    .paperList(paperGetDtoList)
+                                                    .build();
+            threadGetDto.updateIsPublicEnable(firstPaper.isPaperPublic());
+            threadGetDto.updateIsScrapEnable(firstPaper.isScrapEnabled());
 
             return threadGetDto;
       }
@@ -298,8 +313,10 @@ public class ThreadServiceImpl implements ThreadService {
       @Override
       public int deleteThread(Long myId, Long threadId) {
             /* 삭제된 페이퍼 개수 반환 */
-            Thread thread = threadRepository.findById(threadId).orElseThrow(NullPointerException::new);
+            Thread thread = threadRepository.findById(threadId)
+                                            .orElseThrow(NullPointerException::new);
             int count = thread.getPaperList().size();
+
             paperRepository.deleteAll(thread.getPaperList());
             threadRepository.delete(thread);
 

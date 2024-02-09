@@ -1,9 +1,9 @@
 package com.mybrary.backend.domain.contents.thread.service;
 
-import com.mybrary.backend.domain.contents.thread.requestDto.ThreadPostDto;
-import com.mybrary.backend.domain.contents.thread.requestDto.ThreadUpdateDto;
-import com.mybrary.backend.domain.contents.thread.responseDto.GetThreadDto;
-import com.mybrary.backend.domain.contents.thread.responseDto.ThreadInfoGetDto;
+import com.mybrary.backend.domain.contents.thread.dto.requestDto.ThreadPostDto;
+import com.mybrary.backend.domain.contents.thread.dto.requestDto.ThreadUpdateDto;
+import com.mybrary.backend.domain.contents.thread.dto.responseDto.GetThreadDto;
+import com.mybrary.backend.domain.contents.thread.dto.responseDto.ThreadInfoGetDto;
 import java.util.List;
 import org.springframework.data.domain.Pageable;
 

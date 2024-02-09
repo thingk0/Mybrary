@@ -10,10 +10,10 @@ import static com.mybrary.backend.domain.member.entity.QMember.member;
 import static com.mybrary.backend.domain.mybrary.entity.QMybrary.mybrary;
 import static com.querydsl.jpa.JPAExpressions.select;
 
+import com.mybrary.backend.domain.contents.thread.dto.responseDto.GetThreadDto;
+import com.mybrary.backend.domain.contents.thread.dto.responseDto.ThreadInfoGetDto;
+import com.mybrary.backend.domain.contents.thread.dto.responseDto.ThreadShareGetDto;
 import com.mybrary.backend.domain.contents.thread.entity.Thread;
-import com.mybrary.backend.domain.contents.thread.responseDto.GetThreadDto;
-import com.mybrary.backend.domain.contents.thread.responseDto.ThreadInfoGetDto;
-import com.mybrary.backend.domain.contents.thread.responseDto.ThreadShareGetDto;
 import com.mybrary.backend.domain.image.entity.QImage;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -54,7 +54,7 @@ public class ThreadRepositoryImpl implements ThreadRepositoryCustom {
             return query.select(
                             Projections.constructor(GetThreadDto.class, scrap.book.id, thread.id,
                                 thread.createdAt, member.id, member.name, member.nickname,
-                                member.profileImage.url))
+                                member.profileImage.url, paper.isScrapEnabled, paper.isPaperPublic))
                         .from(thread)
                         .leftJoin(paper)
                         .on(paper.thread.id.eq(thread.id))

@@ -8,10 +8,10 @@ import static com.mybrary.backend.domain.contents.thread.entity.QThread.thread;
 import static com.mybrary.backend.domain.image.entity.QImage.image;
 import static com.mybrary.backend.domain.member.entity.QMember.member;
 
-import com.mybrary.backend.domain.contents.paper.dto.GetFollowingPaperDto;
-import com.mybrary.backend.domain.contents.paper.dto.PaperGetDto;
-import com.mybrary.backend.domain.contents.paper.dto.PaperInBookGetDto;
-import com.mybrary.backend.domain.member.dto.MemberInfoDto;
+import com.mybrary.backend.domain.contents.paper.dto.responseDto.GetFollowingPaperDto;
+import com.mybrary.backend.domain.contents.paper.dto.responseDto.PaperGetDto;
+import com.mybrary.backend.domain.contents.paper.dto.responseDto.PaperInBookGetDto;
+import com.mybrary.backend.domain.member.dto.responseDto.MemberInfoDto;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
@@ -34,9 +34,7 @@ public class PaperRepositoryImpl implements PaperRepositoryCustom {
                                            paper.content2.as("content2"),
                                            paper.likeCount.as("likeCount"),
                                            paper.commentCount.as("commentCount"),
-                                           paper.scrapCount.as("scrapCount"),
-                                           paper.isScrapEnabled.as("isScrapEnabled"),
-                                           paper.isPaperPublic.as("isPaperPublic")
+                                           paper.scrapCount.as("scrapCount")
                         ))
                     .from(paper)
                     .leftJoin(thread).on(paper.thread.id.eq(threadId))
@@ -95,19 +93,6 @@ public class PaperRepositoryImpl implements PaperRepositoryCustom {
         );
     }
 
-//    private Long paperId;
-//    private String createdAt;
-//    private int layoutType;
-//    private String content1;
-//    private String content2;
-//    private String image1Url;
-//    private String image2Url;
-//    private int likeCount;
-//    private int commentCount;
-//    private int scrapCount;
-//    private boolean isLiked;
-//    boolean isScrapEnabled;
-//    boolean isPaperPublic;
     @Override
     public List<PaperGetDto> getPaperGetDto(Long threadId) {
         return query.select(
@@ -121,9 +106,7 @@ public class PaperRepositoryImpl implements PaperRepositoryCustom {
                                            image.url.as("image2Url"),
                                            paper.likeCount.as("likeCount"),
                                            paper.commentCount.as("commentCount"),
-                                           paper.scrapCount.as("scrapCount"),
-                                           paper.isScrapEnabled.as("isScrapEnabled"),
-                                           paper.isPaperPublic.as("isPaperPublic")
+                                           paper.scrapCount.as("scrapCount")
                         ))
                     .from(paper)
                     .leftJoin(paperImage).on(paperImage.paper.id.eq(paper.id).and(thread.id.eq(threadId)))
