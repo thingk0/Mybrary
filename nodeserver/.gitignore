@@ -5,4 +5,5 @@ build/
 tmp/
 temp/
 data-source.ts
+data-source.js
 .env
