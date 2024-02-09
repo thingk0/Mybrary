@@ -1,16 +1,20 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import styles from "./Edit.module.css";
 import item from "./Item.module.css";
 import s from "classnames";
 import { Editor } from "react-draft-wysiwyg";
+import FileInput from "../common/FileInput";
 
-export default function Edit({ currentPage, papers, setPapers }) {
+export default function Edit({
+  currentPage,
+  papers,
+  setPapers,
+  setPostPossible,
+}) {
   const inputRef = useRef(null);
   const persent = ["", "9:16", "3:4", "1:1", "4:3", "16:9"];
-
   const [toolbarZIndex, setToolbarZIndex] = useState(1);
   const [toolbarZIndex2, setToolbarZIndex2] = useState(1);
-
   const handleFocus1 = () => {
     setToolbarZIndex(4);
   };
@@ -22,24 +26,27 @@ export default function Edit({ currentPage, papers, setPapers }) {
     setToolbarZIndex2(1);
   };
 
-  const handleImageChange = (e, isImage1) => {
-    const file = e.target.files[0];
-    if (file && file.type.match("image.*")) {
-      const reader = new FileReader();
-      reader.onload = (readerEvent) => {
-        const imageSrc = readerEvent.target.result;
-        setPapers((prevPapers) => {
-          const updatedPapers = [...prevPapers];
-          const imageKey = isImage1 ? "image1" : "image2";
-          updatedPapers[currentPage][imageKey] = {
-            name: file.name,
-            url: imageSrc,
-          };
-          return updatedPapers;
-        });
-      };
-      reader.readAsDataURL(file);
-    }
+  const [value, setValue] = useState({
+    image1: null,
+    image2: null,
+  });
+  const handleChange1 = (name, valu) => {
+    setValue((prevValue) => ({
+      ...prevValue,
+      [name]: valu,
+    }));
+    const updatedPapers = [...papers];
+    updatedPapers[currentPage].image1 = value.valu;
+    setPapers(updatedPapers);
+  };
+  const handleChange2 = (name, valu) => {
+    setValue((prevValue) => ({
+      ...prevValue,
+      [name]: valu,
+    }));
+    const updatedPapers = [...papers];
+    updatedPapers[currentPage].image2 = value.valu;
+    setPapers(updatedPapers);
   };
 
   const onEditorStateChange = (editorState) => {
@@ -52,6 +59,20 @@ export default function Edit({ currentPage, papers, setPapers }) {
     updatedPapers[currentPage].editorState2 = editorState2;
     setPapers(updatedPapers);
   };
+
+  useEffect(() => {
+    if (Math.floor(papers[currentPage].layoutType / 1000) === 1) {
+      papers[currentPage].image1 === null
+        ? setPostPossible(false)
+        : setPostPossible(true);
+    } else {
+      papers[currentPage].image1 === null
+        ? setPostPossible(false)
+        : papers[currentPage].image2 === null
+        ? setPostPossible(false)
+        : setPostPossible(true);
+    }
+  });
 
   return (
     <div className={s(styles.미드중앙사이즈조정, item.position)}>
@@ -126,55 +147,19 @@ export default function Edit({ currentPage, papers, setPapers }) {
         onBlur={handleBlur}
       />
 
-      <div
-        className={
-          !papers[currentPage].image1 &&
-          item[`img1_${papers[currentPage].layoutType}`]
-        }
-      >
-        <input
-          ref={inputRef}
-          type="file"
-          accept="image/*"
-          capture="camera"
-          className={styles.FileInput_hidden_overlay}
-          onChange={(e) => handleImageChange(e, true)}
-        />
-        {papers[currentPage].image1 && (
-          <img
-            className={item[`img1_${papers[currentPage].layoutType}`]}
-            src={papers[currentPage].image1.url}
-            alt="이미지1"
-          />
-        )}
-        {!papers[currentPage].image1 && (
-          <div>
-            {persent[Math.floor((papers[currentPage].layoutType % 1000) / 100)]}
-            사진 추가
-          </div>
-        )}
-      </div>
-      <div className={item[`img2_${papers[currentPage].layoutType}`]}>
-        <input
-          ref={inputRef}
-          type="file"
-          accept="image/*"
-          capture="camera"
-          className={styles.FileInput_hidden_overlay}
-          onChange={(e) => handleImageChange(e, false)}
-        />
-        {papers[currentPage].image2 && (
-          <img
-            className={item[`img2_${papers[currentPage].layoutType}`]}
-            src={papers[currentPage].image2.url}
-            alt="이미지2"
-          />
-        )}
-        <div>
-          {persent[Math.floor((papers[currentPage].layoutType % 100) / 10)]}
-          사진 추가
-        </div>
-      </div>
+      <FileInput
+        className={item[`img2_${papers[currentPage].layoutType}`]}
+        name="image2"
+        value={value.image2}
+        onChange={handleChange2}
+      />
+
+      <FileInput
+        className={item[`img1_${papers[currentPage].layoutType}`]}
+        name="image1"
+        value={value.image1}
+        onChange={handleChange1}
+      />
     </div>
   );
 }

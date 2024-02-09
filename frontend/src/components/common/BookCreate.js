@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import Modal from "./Modal";
 import { getCategoryList } from "../../api/category/Category";
 import useUserStore from "../../store/useUserStore";
+import { uplodaImage } from "../../api/image/Image";
+import { createBook } from "../../api/book/Book";
 
 export default function BookCreate({ booklist }) {
   const layouts = [1, 2, 3, 4, 5, 6];
@@ -48,6 +50,22 @@ export default function BookCreate({ booklist }) {
     setTitle(category.name);
     setOpen(false);
   };
+
+  const handleSubmit = async () => {
+    const formData = new FormData();
+    formData.append("images", value.coverImage);
+    const coverImageId = await uplodaImage(formData);
+    console.log(coverImageId);
+    const bookid = await createBook({
+      title: value.title,
+      coverImageId: coverImageId.imageIds[0],
+      coverLayout: value.coverLayout,
+      coverColorCode: value.coverColorCode,
+      categoryId: value.categoryId,
+    });
+    console.log(bookid);
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.title}>새로운 책 만들기</div>
@@ -143,7 +161,9 @@ export default function BookCreate({ booklist }) {
           </div>
         </div>
       </div>
-      <div className={s(styles.bookCreate)}>생성</div>
+      <div className={s(styles.bookCreate)} onClick={() => handleSubmit()}>
+        생성
+      </div>
     </div>
   );
 }

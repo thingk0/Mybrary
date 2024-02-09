@@ -14,7 +14,7 @@ export async function updateBook(object) {
 export async function createBook(object) {
   try {
     const response = await axios.post(BASE_URL + "book", object);
-    return response.data;
+    return response.data.data;
   } catch (error) {
     throw error;
   }

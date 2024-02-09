@@ -12,6 +12,8 @@ import BigModal from "../components/common/BigModal";
 import BookCreate from "../components/common/BookCreate";
 import { getMYBooks } from "../api/book/Book";
 import BookSelect from "../components/threadcreate/BookSelect";
+import { uplodaImage } from "../api/image/Image";
+import toast from "react-hot-toast";
 const initialPaper = () => ({
   layoutType: 1101,
   editorState: EditorState.createEmpty(),
@@ -30,6 +32,7 @@ export default function ThreadCreatePage() {
   const [currentPage, setCurrentPage] = useState(0);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [modalIsOpen2, setModalIsOpen2] = useState(false);
+  const [postPossible, setPostPossible] = useState(false);
 
   const layouts = [
     1101, 1102, 1103, 1201, 1202, 1203, 1204, 1205, 1301, 1302, 1303, 1304,
@@ -41,7 +44,19 @@ export default function ThreadCreatePage() {
   const [booklist, setBookList] = useState([]);
   const [book, setBook] = useState({}); // 책선택
   const [bookId, setBookId] = useState(-1); // 책 ID 상태 추가
-  const saveContent = () => {
+  const saveContent = async () => {
+    let a = 0;
+    const formData = new FormData();
+    for (let paper of papers) {
+      if (Math.floor(paper.layoutType / 1000) === 1) {
+        formData.append("images", paper.image1);
+      } else if (Math.floor(paper.layoutType / 1000) === 2) {
+        formData.append("images", paper.image1);
+        formData.append("images", paper.image2);
+      }
+    }
+    const coverImageId = await uplodaImage(formData);
+
     const paperList = papers.map((paper) => {
       return {
         layoutType: paper.layoutType,
@@ -51,23 +66,29 @@ export default function ThreadCreatePage() {
         content2: draftToHtml(
           convertToRaw(paper.editorState2.getCurrentContent())
         ),
-        image1: paper.image1,
-        image2: paper.image2,
+        image1: coverImageId.imageIds[a++],
+        image2:
+          Math.floor(paper.layoutType / 1000) === 1
+            ? -1
+            : coverImageId.imageIds[a++],
         tagList: paper.tagList,
         mentionIdList: paper.mentionIdList,
       };
     });
 
-    const payload = {
+    const Thread = {
       bookId,
       paperList,
       paperPublic,
       scarpEnable,
     };
 
-    console.log(payload);
-    // 백엔드에 payload 전송 로직
-    // 예: axios.post('/api/savePaper', payload);
+    console.log(Thread);
+  };
+  const noneImg = () => {
+    toast.error("이미지를 전부 채워주세요", {
+      position: "top-center",
+    });
   };
 
   const [sectionVisible, setSectionVisible] = useState("left-center"); // 상태 변수 추가
@@ -134,6 +155,7 @@ export default function ThreadCreatePage() {
               currentPage={currentPage}
               papers={papers}
               setPapers={setPapers}
+              setPostPossible={setPostPossible}
             />
           </div>
           <div className={styles.main_right}>
@@ -213,8 +235,7 @@ export default function ThreadCreatePage() {
             <div
               className={s(styles.postButton)}
               onClick={() => {
-                saveContent();
-                setModalIsOpen(true);
+                postPossible ? saveContent() : noneImg();
               }}
             >
               게시

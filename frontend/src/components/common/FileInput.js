@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import placeholderImg from "../../assets/img.png";
-import resetImg from "../../assets/easel_01.png";
 import "./FileInput.css";
 
 /**
