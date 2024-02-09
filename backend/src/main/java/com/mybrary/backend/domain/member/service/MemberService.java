@@ -38,9 +38,9 @@ public interface MemberService {
 
     void followCancel(String email, Long memberId);
 
-    void updateProfile(MemberUpdateDto member);
+    void updateProfile(String email, MemberUpdateDto member);
 
-    void updatePassword(Long myId, PasswordUpdateDto password);
+    void updatePassword(String email, PasswordUpdateDto password);
 
     void secession(SecessionRequestDto secession);
 

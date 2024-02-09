@@ -45,6 +45,8 @@ public enum ErrorCode {
     EMAIL_SEND_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "인증 이메일 전송에 실패했습니다."),
     AUTH_CODE_INVALID(HttpStatus.BAD_REQUEST, "인증 코드가 유효하지 않습니다."),
 
+    PROFILE_UPDATE_FAILED(HttpStatus.BAD_REQUEST, "회원정보를 수정할 수 없습니다."),
+
 
     // 마이브러리 예외 처리
     MYBRARY_NOT_FOUND(HttpStatus.NOT_FOUND, "마이브러리를 찾을 수 없습니다."),

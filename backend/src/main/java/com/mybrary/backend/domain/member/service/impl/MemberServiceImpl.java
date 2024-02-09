@@ -6,6 +6,8 @@ import com.mybrary.backend.domain.category.entity.Category;
 import com.mybrary.backend.domain.category.repository.CategoryRepository;
 import com.mybrary.backend.domain.follow.entity.Follow;
 import com.mybrary.backend.domain.follow.repository.FollowRepository;
+import com.mybrary.backend.domain.image.entity.Image;
+import com.mybrary.backend.domain.image.repository.ImageRepository;
 import com.mybrary.backend.domain.member.dto.FollowerDto;
 import com.mybrary.backend.domain.member.dto.FollowingDto;
 import com.mybrary.backend.domain.member.dto.LoginRequestDto;
@@ -28,10 +30,12 @@ import com.mybrary.backend.domain.notification.repository.NotificationRepository
 import com.mybrary.backend.domain.notification.service.NotificationService;
 import com.mybrary.backend.domain.rollingpaper.entity.RollingPaper;
 import com.mybrary.backend.domain.rollingpaper.repository.RollingPaperRepository;
+import com.mybrary.backend.global.exception.ImageNotFoundException;
 import com.mybrary.backend.global.exception.member.DuplicateEmailException;
 import com.mybrary.backend.global.exception.member.EmailNotFoundException;
 import com.mybrary.backend.global.exception.member.InvalidLoginAttemptException;
 import com.mybrary.backend.global.exception.member.PasswordMismatchException;
+import com.mybrary.backend.global.exception.member.ProfileUpdateException;
 import com.mybrary.backend.global.jwt.TokenInfo;
 import com.mybrary.backend.global.jwt.provider.TokenProvider;
 import com.mybrary.backend.global.jwt.repository.RefreshTokenRepository;
@@ -65,6 +69,7 @@ public class MemberServiceImpl implements MemberService {
     private final RollingPaperRepository rollingPaperRepository;
     private final NotificationRepository notificationRepository;
     private final NotificationService notificationService;
+    private final ImageRepository imageRepository;
 
     @Transactional
     @Override
@@ -285,25 +290,34 @@ public class MemberServiceImpl implements MemberService {
 
     @Transactional
     @Override
-    public void updateProfile(MemberUpdateDto member) {
-        Member me = memberRepository.findById(member.getMemberId()).get();
+    public void updateProfile(String email, MemberUpdateDto member) {
+
+        Member me = findMember(email);
+
+        if(!me.getId().equals(member.getMemberId())){
+            throw new ProfileUpdateException();
+        }
+
+        Image image = imageRepository.findById(member.getProfileImageId()).orElseThrow(ImageNotFoundException::new);
+
+        me.uploadProfileImage(image);
         me.updateNickname(member.getNickname());
         me.updateIntro(member.getIntro());
         me.updateIsProfilePublic(member.isProfilePublic());
         me.updateIsNotifyEnable(member.isNotifyEnable());
-        /* 프로필이미지 처리 작성해야함 */
+
     }
 
     @Transactional
     @Override
-    public void updatePassword(Long myId, PasswordUpdateDto password) {
+    public void updatePassword(String email, PasswordUpdateDto password) {
 
         /* 비밀번호 불일치 */
         if (!password.getPassword().equals(password.getPasswordConfirm())) {
             throw new PasswordMismatchException();
         }
 
-        Member me = memberRepository.findById(myId).get();
+        Member me = findMember(email);
         me.updatePassword(passwordEncoder.encode(password.getPassword()));
 
     }

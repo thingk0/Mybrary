@@ -60,12 +60,12 @@ public class MybraryServiceImpl implements MybraryService {
     public void updateMybrary(String email, MybraryUpdateDto mybrary) {
 
         Member member = memberService.findMember(email);
-//        if(!mybrary.getMybraryId().equals(member.getId())){
-//            throw new NotMybraryException();
-//        }
+        Mybrary oldMybrary = mybraryRepository.findById(mybrary.getMybraryId()).orElseThrow(MybraryNotFoundException::new);
+        if(!oldMybrary.getMember().getId().equals(member.getId())){
+            throw new NotMybraryException();
+        }
 
         Image image = imageRepository.findById(mybrary.getFrameImageId()).orElseThrow(ImageNotFoundException::new);
-        Mybrary oldMybrary = mybraryRepository.findById(mybrary.getMybraryId()).orElseThrow(MybraryNotFoundException::new);
 
         oldMybrary.setPhotoFrameImage(image);
         oldMybrary.setBackgroundColor(mybrary.getBackgroundColor());

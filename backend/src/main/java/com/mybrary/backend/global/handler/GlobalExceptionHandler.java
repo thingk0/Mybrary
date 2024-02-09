@@ -22,6 +22,7 @@ import com.mybrary.backend.global.exception.member.InvalidLoginAttemptException;
 import com.mybrary.backend.global.exception.member.InvalidNicknameException;
 import com.mybrary.backend.global.exception.member.MissingPathVariableException;
 import com.mybrary.backend.global.exception.member.PasswordMismatchException;
+import com.mybrary.backend.global.exception.member.ProfileUpdateException;
 import com.mybrary.backend.global.exception.scrap.ScrapNotFoundException;
 import com.mybrary.backend.global.exception.tag.TagNotFoundException;
 import com.mybrary.backend.global.exception.thread.ThreadIdNotFoundException;
@@ -116,6 +117,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ImageNotFoundException.class)
     protected ResponseEntity<?> handle(ImageNotFoundException e) {
         log.error("ImageNotFoundException = {}", e.getErrorCode().getMessage());
+        return response.error(e.getErrorCode());
+    }
+
+    @ExceptionHandler(ProfileUpdateException.class)
+    protected ResponseEntity<?> handle(ProfileUpdateException e) {
+        log.error("ProfileUpdateException = {}", e.getErrorCode().getMessage());
         return response.error(e.getErrorCode());
     }
 

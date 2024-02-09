@@ -29,7 +29,7 @@ public class MybraryRepositoryImpl implements MybraryRepositoryCustom {
         return Optional.ofNullable(query.select(
                                             Projections.constructor(MybraryGetDto.class, mybrary.id, frameImgae.url,
                                                                     mybrary.backgroundColor, mybrary.deskColor, mybrary.bookshelfColor, mybrary.easelColor,
-                                                                    member.id, member.email, member.nickname, member.intro, profileImgae.url,
+                                                                    member.id, member.email, member.name, member.nickname, member.intro, profileImgae.url,
                                                                     member.isNotifyEnabled,
                                                                     member.isProfilePublic, bookshelf.id, rollingPaper.id
                                             )
@@ -52,7 +52,7 @@ public class MybraryRepositoryImpl implements MybraryRepositoryCustom {
         return Optional.ofNullable(query.select(
                                             Projections.constructor(MybraryOtherGetDto.class, mybrary.id, frameImgae.url,
                                                                     mybrary.backgroundColor, mybrary.deskColor, mybrary.bookshelfColor, mybrary.easelColor,
-                                                                    member.id, member.email, member.nickname, member.intro, profileImgae.url,
+                                                                    member.id, member.email, member.name, member.nickname, member.intro, profileImgae.url,
                                                                     member.isNotifyEnabled,
                                                                     member.isProfilePublic, bookshelf.id, rollingPaper.id
                                             )

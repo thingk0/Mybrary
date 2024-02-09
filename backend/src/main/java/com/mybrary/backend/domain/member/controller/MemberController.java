@@ -227,7 +227,7 @@ public class MemberController {
     public ResponseEntity<?> updateProfile(@Parameter(hidden = true) Authentication authentication,
                                            @RequestBody MemberUpdateDto member, @RequestParam
                                            MultipartFile multipartFile) {
-        memberService.updateProfile(member);
+        memberService.updateProfile(authentication.getName(), member);
         return response.success(ResponseCode.MEMBER_INFO_UPDATE_SUCCESS.getMessage());
     }
 
@@ -235,9 +235,7 @@ public class MemberController {
     @PutMapping("/password-update")
     public ResponseEntity<?> updatePassword(@Parameter(hidden = true) Authentication authentication,
                                             @RequestBody PasswordUpdateDto password) {
-        Member me = memberService.findMember(authentication.getName());
-        Long myId = me.getId();
-        memberService.updatePassword(myId, password);
+        memberService.updatePassword(authentication.getName(), password);
         return response.success(ResponseCode.PASSWORD_UPDATE_SUCCESS.getMessage());
     }
 

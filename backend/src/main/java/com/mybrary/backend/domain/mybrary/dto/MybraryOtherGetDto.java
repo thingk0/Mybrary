@@ -28,6 +28,7 @@ public class MybraryOtherGetDto {
     private int easelColor;
     private Long memberId;
     private String email;
+    private String name;
     private String nickname;
     private String intro;
     private String profileImageUrl;
@@ -42,7 +43,7 @@ public class MybraryOtherGetDto {
     private Long rollingPaperId;
 
     public MybraryOtherGetDto(Long mybraryId, String frameImageUrl, int backgroundColor, int deskColor, int bookshelfColor,
-                         int easelColor, Long memberId, String email, String nickname, String intro, String profileImageUrl,
+                         int easelColor, Long memberId, String email, String name, String nickname, String intro, String profileImageUrl,
                          boolean isNotifyEnable, boolean isProfilePublic, Long bookShelfId, Long rollingPaperId) {
         this.mybraryId = mybraryId;
         this.frameImageUrl = frameImageUrl;
@@ -52,6 +53,7 @@ public class MybraryOtherGetDto {
         this.easelColor = easelColor;
         this.memberId = memberId;
         this.email = email;
+        this.name = name;
         this.nickname = nickname;
         this.intro = intro;
         this.profileImageUrl = profileImageUrl;
