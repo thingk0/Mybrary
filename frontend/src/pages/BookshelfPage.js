@@ -4,37 +4,21 @@ import Container from "../components/frame/Container";
 import CategoryEditModal from "../components/bookshelf/CategoryEditModal";
 import BookshelfHeader from "../components/bookshelf/BookshelfHeader";
 import Bookshelf from "../components/bookshelf/Bookshelf";
-import {
-  getCategoryList,
-  updateCategory,
-  createCategory,
-  getBookList,
-  deleteCategory,
-} from "../api/category/Category.js";
+import { getCategoryList } from "../api/category/Category.js";
 
-import { useParams, Params } from "react-router-dom";
-// import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 export default function BookshelfPage() {
   const [categoryList, setCategoryList] = useState([]);
-  const [fetchedData, setFetchedData] = useState([]);
-  const { bookShelfId } = useParams(); // URL에서 bookshelfId 추출
+  const { bookShelfId } = useParams();
   useEffect(() => {
     async function fetchbookshelfData() {
       console.log(bookShelfId);
       try {
-        // bookshelfId를 이용하여 서버에 요청
         const response = await getCategoryList(bookShelfId);
-        setFetchedData(response);
         console.log(response);
 
-        // 책장 카테고리 정렬 및 홀수 개수 처리
         const newCategoryList = [...response.data];
-        if (newCategoryList.length % 2 !== 0) {
-          newCategoryList.push({
-            categoryId: "empty",
-          });
-        }
         const sortedCategoryList = newCategoryList.sort(
           (a, b) => a.seq - b.seq
         );
@@ -55,6 +39,7 @@ export default function BookshelfPage() {
           <div className={styles.middle}>
             <div>책갈피목록</div>
             <CategoryEditModal
+              bookShelfId={bookShelfId}
               categoryList={categoryList}
               setCategoryList={setCategoryList}
               content="카테고리수정"

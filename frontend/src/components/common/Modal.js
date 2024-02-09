@@ -12,6 +12,9 @@ export default function Modal({
   left,
   top,
   bottom,
+  setOpen,
+  open,
+  header,
 }) {
   const ref = useRef();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -19,8 +22,15 @@ export default function Modal({
 
   return (
     <div className={styles.modalContainer}>
-      <div onClick={() => setIsModalOpen(true)}>{title}</div>
-      {isModalOpen && (
+      <div
+        onClick={() => {
+          setIsModalOpen(true);
+          setOpen(true);
+        }}
+      >
+        {title}
+      </div>
+      {isModalOpen && open && (
         <div
           ref={ref}
           className={styles.modal}
@@ -33,11 +43,14 @@ export default function Modal({
             right: right,
           }}
         >
-          <div
-            className={styles.modalClose}
-            onClick={() => setIsModalOpen(false)}
-          >
-            닫기
+          <div className={styles.flex}>
+            <div>{header}</div>
+            <div
+              className={styles.modalClose}
+              onClick={() => setIsModalOpen(false)}
+            >
+              닫기
+            </div>
           </div>
           {children}
         </div>

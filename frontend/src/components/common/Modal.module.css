@@ -26,8 +26,10 @@
   border-bottom-color: var(--blur1);
   filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.25));
 } */
-
+.flex {
+  display: flex;
+  justify-content: space-between;
+}
 .modalClose {
-  text-align: end;
   color: var(--gomin5);
 }

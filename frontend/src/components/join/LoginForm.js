@@ -6,6 +6,7 @@ import useStompStore from "../../store/useStompStore";
 import useNotificationStore from "../../store/useNotificationStore";
 import styles from "./LoginForm.module.css";
 import Loading from "../common/Loading";
+import { getMyMybrary } from "../../api/mybrary/Mybrary";
 
 function LoginForm() {
   /* 로그인하고 바로 stompClient 초기화. */
@@ -57,12 +58,6 @@ function LoginForm() {
         // useStore에 data안에 들어있는 기본 정보들을 저장해라
         localStorage.setItem("accessToken", data.data.token);
         localStorage.setItem("tokenTimestamp", Date.now());
-        await setUser({
-          email: formData.email,
-          memberId: data.data.memberInfo.memberId,
-          nickname: data.data.memberInfo.nickname,
-          bookshelfId: 0,
-        });
 
         async function socketConnect() {
           try {
@@ -77,6 +72,14 @@ function LoginForm() {
         await socketConnect();
         console.log(data.data.memberInfo.memberId);
         setIsLoading(false);
+        const response = await getMyMybrary();
+        await setUser({
+          email: formData.email,
+          memberId: data.data.memberInfo.memberId,
+          nickname: data.data.memberInfo.nickname,
+          bookshelfId: response.data.bookShelfId,
+        });
+
         navigate(`/mybrary/${data.data.memberInfo.memberId}`);
         // navigate(`/mybrary/userid`);
       } else {

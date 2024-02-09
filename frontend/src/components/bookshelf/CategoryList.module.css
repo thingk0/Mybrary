@@ -1,5 +1,5 @@
 .category {
-  width: 110px;
+  width: 116px;
   height: 44px;
   background-color: var(--blur2);
   box-shadow: 0 0 10px 0 var(--blur2);
@@ -11,6 +11,10 @@
 }
 
 .categoryList {
-  padding: 10px;
-  /* d */
+  padding: 12px;
+  flex-wrap: wrap;
+  display: flex;
+  font-size: 16px;
+  gap: 13px;
+  overflow-y: auto;
 }
