@@ -8,7 +8,6 @@ const useUserStore = create(
         memberId: "",
         email: "",
         nickname: "",
-        bookshelfId: 0,
         profileImageUrl: "",
       },
       setUser: (userInfo) => {
