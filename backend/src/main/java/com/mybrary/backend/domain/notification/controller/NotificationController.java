@@ -1,6 +1,6 @@
 package com.mybrary.backend.domain.notification.controller;
 
-import com.mybrary.backend.domain.member.dto.MemberInfoDto;
+import com.mybrary.backend.domain.member.dto.responseDto.MemberInfoDto;
 import com.mybrary.backend.domain.member.entity.Member;
 import com.mybrary.backend.domain.member.service.MemberService;
 import com.mybrary.backend.domain.notification.dto.NotificationGetDto;
@@ -21,9 +21,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "Notification 컨트롤러", description = "Notification Controller API")

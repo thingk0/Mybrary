@@ -1,8 +1,8 @@
 package com.mybrary.backend.domain.comment.service;
 
-import com.mybrary.backend.domain.comment.dto.CommentGetAllDto;
-import com.mybrary.backend.domain.comment.dto.CommentGetDto;
-import com.mybrary.backend.domain.comment.dto.CommentPostDto;
+import com.mybrary.backend.domain.comment.dto.requestDto.CommentPostDto;
+import com.mybrary.backend.domain.comment.dto.responseDto.CommentGetAllDto;
+import com.mybrary.backend.domain.comment.dto.responseDto.CommentGetDto;
 import com.mybrary.backend.domain.comment.entity.Comment;
 import com.mybrary.backend.domain.comment.repository.CommentRepository;
 import com.mybrary.backend.domain.contents.paper.entity.Paper;
@@ -11,7 +11,6 @@ import com.mybrary.backend.domain.member.entity.Member;
 import com.mybrary.backend.domain.member.repository.MemberRepository;
 import com.mybrary.backend.domain.notification.dto.NotificationPostDto;
 import com.mybrary.backend.domain.notification.service.NotificationService;
-import com.mybrary.backend.global.exception.member.EmailNotFoundException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -109,16 +108,6 @@ public class CommentServiceImpl implements CommentService {
     /* */
     @Override
     public CommentGetAllDto getAllComment(Long memberId, Long paperId) {
-//        - 페이퍼ID(paperId)
-//            - 댓글 리스트(commentList)
-//            [
-//            - 댓글ID(commentId)
-//                - 작성자ID(ownerId)
-//                - 작성자닉네임(ownerNickname)
-//                - 작성자여부(isOwner)
-//                - 댓글내용(comment)
-//                - 컬러코드(colorCode)
-//                - 시간(time)
 
         List<CommentGetDto> commentGetDtoList = commentRepository.getCommentGetDtoListByPaperId(paperId)
                                                                  .orElseThrow(NullPointerException::new);
@@ -130,7 +119,7 @@ public class CommentServiceImpl implements CommentService {
         /* 작성자여부는 따로 구하기 */
         for (CommentGetDto commentGetDto : commentGetDtoList) {
             boolean isOwnerTrue = commentGetDto.getOwnerId().equals(memberId);
-            commentGetDto.setOwner(isOwnerTrue);
+            commentGetDto.updateIsOwner(isOwnerTrue);
         }
 
         return commentGetAllDto;

@@ -1,9 +1,9 @@
 package com.mybrary.backend.domain.search.controller;
 
-import com.mybrary.backend.domain.book.dto.BookGetDto;
-import com.mybrary.backend.domain.contents.thread.responseDto.ThreadSearchGetDto;
-import com.mybrary.backend.domain.member.dto.MemberGetDto;
-import com.mybrary.backend.domain.member.dto.MemberInfoDto;
+import com.mybrary.backend.domain.book.dto.responseDto.BookGetDto;
+import com.mybrary.backend.domain.contents.thread.dto.responseDto.ThreadSearchGetDto;
+import com.mybrary.backend.domain.member.dto.responseDto.MemberGetDto;
+import com.mybrary.backend.domain.member.dto.responseDto.MemberInfoDto;
 import com.mybrary.backend.global.format.code.ApiResponse;
 import com.mybrary.backend.global.format.response.ResponseCode;
 import io.swagger.v3.oas.annotations.Operation;

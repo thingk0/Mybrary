@@ -1,9 +1,9 @@
 package com.mybrary.backend.domain.contents.paper.repository.custom;
 
-import com.mybrary.backend.domain.contents.paper.dto.GetFollowingPaperDto;
-import com.mybrary.backend.domain.contents.paper.dto.PaperGetDto;
-import com.mybrary.backend.domain.contents.paper.dto.PaperInBookGetDto;
-import com.mybrary.backend.domain.member.dto.MemberInfoDto;
+import com.mybrary.backend.domain.contents.paper.dto.responseDto.GetFollowingPaperDto;
+import com.mybrary.backend.domain.contents.paper.dto.responseDto.PaperGetDto;
+import com.mybrary.backend.domain.contents.paper.dto.responseDto.PaperInBookGetDto;
+import com.mybrary.backend.domain.member.dto.responseDto.MemberInfoDto;
 import java.util.List;
 import java.util.Optional;
 

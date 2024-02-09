@@ -1,8 +1,8 @@
 package com.mybrary.backend.domain.category.service;
 
-import com.mybrary.backend.domain.category.dto.CategoryGetDto;
-import com.mybrary.backend.domain.category.dto.CategoryPostDto;
-import com.mybrary.backend.domain.category.dto.CategoryUpdateDto;
+import com.mybrary.backend.domain.category.dto.responseDto.CategoryGetDto;
+import com.mybrary.backend.domain.category.dto.requestDto.CategoryPostDto;
+import com.mybrary.backend.domain.category.dto.requestDto.CategoryUpdateDto;
 import java.util.List;
 
 public interface CategoryService {

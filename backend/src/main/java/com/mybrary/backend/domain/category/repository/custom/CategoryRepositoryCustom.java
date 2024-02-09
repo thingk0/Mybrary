@@ -1,7 +1,7 @@
 package com.mybrary.backend.domain.category.repository.custom;
 
-import com.mybrary.backend.domain.category.dto.CategoryGetDto;
-import com.mybrary.backend.domain.category.dto.MyCategoryGetDto;
+import com.mybrary.backend.domain.category.dto.responseDto.CategoryGetDto;
+import com.mybrary.backend.domain.category.dto.responseDto.MyCategoryGetDto;
 import java.util.List;
 import java.util.Optional;
 

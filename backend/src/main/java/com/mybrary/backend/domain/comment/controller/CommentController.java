@@ -1,15 +1,11 @@
 package com.mybrary.backend.domain.comment.controller;
 
-import com.mybrary.backend.domain.comment.dto.CommentGetDto;
-import com.mybrary.backend.domain.comment.dto.CommentPostDto;
+import com.mybrary.backend.domain.comment.dto.requestDto.CommentPostDto;
  import com.mybrary.backend.domain.comment.service.CommentService;
-import com.mybrary.backend.domain.member.dto.MemberInfoDto;
 import com.mybrary.backend.global.format.code.ApiResponse;
 import com.mybrary.backend.global.format.response.ResponseCode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;

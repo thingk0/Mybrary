@@ -6,8 +6,8 @@ import static com.mybrary.backend.domain.member.entity.QMember.member;
 import static com.mybrary.backend.domain.mybrary.entity.QMybrary.mybrary;
 import static com.mybrary.backend.domain.pickbook.entity.QPickBook.pickBook;
 
-import com.mybrary.backend.domain.category.dto.CategoryGetDto;
-import com.mybrary.backend.domain.category.dto.MyCategoryGetDto;
+import com.mybrary.backend.domain.category.dto.responseDto.CategoryGetDto;
+import com.mybrary.backend.domain.category.dto.responseDto.MyCategoryGetDto;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;

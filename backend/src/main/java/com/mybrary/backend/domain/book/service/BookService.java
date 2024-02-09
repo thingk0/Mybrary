@@ -1,14 +1,13 @@
 package com.mybrary.backend.domain.book.service;
 
-import com.mybrary.backend.domain.book.dto.BookGetDto;
-import com.mybrary.backend.domain.book.dto.BookListGetFromPaperDto;
-import com.mybrary.backend.domain.book.dto.BookPaperGetDto;
-import com.mybrary.backend.domain.book.dto.BookPostDto;
-import com.mybrary.backend.domain.book.dto.BookSubscribeDto;
-import com.mybrary.backend.domain.book.dto.BookUpdateDto;
-import com.mybrary.backend.domain.category.dto.MyCategoryGetDto;
+import com.mybrary.backend.domain.book.dto.responseDto.BookGetDto;
+import com.mybrary.backend.domain.book.dto.responseDto.BookListGetFromPaperDto;
+import com.mybrary.backend.domain.book.dto.responseDto.BookPaperGetDto;
+import com.mybrary.backend.domain.book.dto.requestDto.BookPostDto;
+import com.mybrary.backend.domain.book.dto.requestDto.BookSubscribeDto;
+import com.mybrary.backend.domain.book.dto.requestDto.BookUpdateDto;
+import com.mybrary.backend.domain.category.dto.responseDto.MyCategoryGetDto;
 import java.util.List;
-import org.springframework.security.core.Authentication;
 
 public interface BookService {
 

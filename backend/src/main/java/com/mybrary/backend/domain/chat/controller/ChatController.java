@@ -1,13 +1,10 @@
 package com.mybrary.backend.domain.chat.controller;
 
-import com.mybrary.backend.domain.chat.dto.ChatMessageGetDto;
-import com.mybrary.backend.domain.chat.dto.ChatMessagePostDto;
-import com.mybrary.backend.domain.chat.dto.ChatRoomGetDto;
-import com.mybrary.backend.domain.chat.dto.TChatMessageGetDto;
+import com.mybrary.backend.domain.chat.dto.requestDto.ChatMessagePostDto;
+import com.mybrary.backend.domain.chat.dto.responseDto.ChatRoomGetDto;
+import com.mybrary.backend.domain.chat.dto.responseDto.TChatMessageGetDto;
 import com.mybrary.backend.domain.chat.service.ChatService;
-import com.mybrary.backend.domain.contents.paper.dto.PaperShareDto;
-import com.mybrary.backend.domain.member.dto.MemberInfoDto;
-import com.mybrary.backend.domain.member.entity.Member;
+import com.mybrary.backend.domain.member.dto.responseDto.MemberInfoDto;
 import com.mybrary.backend.domain.member.service.MemberService;
 import com.mybrary.backend.global.format.code.ApiResponse;
 import com.mybrary.backend.global.format.response.ResponseCode;

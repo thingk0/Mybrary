@@ -9,11 +9,11 @@ import static com.mybrary.backend.domain.image.entity.QImage.image;
 import static com.mybrary.backend.domain.member.entity.QMember.member;
 import static com.mybrary.backend.domain.pickbook.entity.QPickBook.pickBook;
 
-import com.mybrary.backend.domain.book.dto.BookGetDto;
-import com.mybrary.backend.domain.book.dto.BookListGetFromPaperDto;
-import com.mybrary.backend.domain.book.dto.MyBookGetDto;
+import com.mybrary.backend.domain.book.dto.responseDto.BookGetDto;
+import com.mybrary.backend.domain.book.dto.responseDto.BookListGetFromPaperDto;
+import com.mybrary.backend.domain.book.dto.responseDto.MyBookGetDto;
 import com.mybrary.backend.domain.image.entity.QImage;
-import com.mybrary.backend.domain.member.dto.MemberInfoDto;
+import com.mybrary.backend.domain.member.dto.responseDto.MemberInfoDto;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;

@@ -2,7 +2,7 @@ package com.mybrary.backend.domain.notification.service.impl;
 
 import com.mybrary.backend.domain.book.entity.Book;
 import com.mybrary.backend.domain.book.repository.BookRepository;
-import com.mybrary.backend.domain.member.dto.MemberInfoDto;
+import com.mybrary.backend.domain.member.dto.responseDto.MemberInfoDto;
 import com.mybrary.backend.domain.member.entity.Member;
 import com.mybrary.backend.domain.member.repository.MemberRepository;
 import com.mybrary.backend.domain.notification.dto.NotificationGetDto;

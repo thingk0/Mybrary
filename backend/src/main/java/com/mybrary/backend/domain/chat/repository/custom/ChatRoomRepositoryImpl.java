@@ -1,16 +1,9 @@
 package com.mybrary.backend.domain.chat.repository.custom;
 
 import static com.mybrary.backend.domain.chat.entity.QChatJoin.chatJoin;
-import static com.mybrary.backend.domain.chat.entity.QChatMessage.chatMessage;
 import static com.mybrary.backend.domain.chat.entity.QChatRoom.chatRoom;
-import static com.mybrary.backend.domain.image.entity.QImage.image;
-import static com.mybrary.backend.domain.member.entity.QMember.member;
 
-import com.mybrary.backend.domain.chat.dto.ChatRoomGetDto;
-import com.mybrary.backend.domain.chat.entity.QChatJoin;
 import com.mybrary.backend.domain.chat.entity.QChatMessage;
-import com.mybrary.backend.domain.member.dto.MemberInfoDto;
-import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;

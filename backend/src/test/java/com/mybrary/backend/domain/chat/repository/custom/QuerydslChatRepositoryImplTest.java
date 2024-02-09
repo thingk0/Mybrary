@@ -1,7 +1,7 @@
 package com.mybrary.backend.domain.chat.repository.custom;
 
 import com.mybrary.backend.domain.image.entity.Image;
-import com.mybrary.backend.domain.member.dto.SignupRequestDto;
+import com.mybrary.backend.domain.member.dto.requestDto.SignupRequestDto;
 import com.mybrary.backend.domain.member.entity.Member;
 import com.mybrary.backend.domain.member.repository.MemberRepository;
 import org.junit.jupiter.api.BeforeEach;

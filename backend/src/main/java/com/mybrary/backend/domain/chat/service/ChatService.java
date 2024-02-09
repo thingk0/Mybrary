@@ -1,11 +1,10 @@
 package com.mybrary.backend.domain.chat.service;
 
-import com.mybrary.backend.domain.chat.dto.ChatMessagePostDto;
-import com.mybrary.backend.domain.chat.dto.ChatRoomGetDto;
-import com.mybrary.backend.domain.chat.dto.TChatMessageGetDto;
+import com.mybrary.backend.domain.chat.dto.requestDto.ChatMessagePostDto;
+import com.mybrary.backend.domain.chat.dto.responseDto.ChatRoomGetDto;
+import com.mybrary.backend.domain.chat.dto.responseDto.TChatMessageGetDto;
 import org.springframework.data.domain.Pageable;
 import java.util.List;
-import org.springframework.security.core.Authentication;
 
 public interface ChatService {
 

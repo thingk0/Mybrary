@@ -1,9 +1,8 @@
 package com.mybrary.backend.domain.contents.paper.controller;
 
-import com.mybrary.backend.domain.chat.dto.ChatMessagePostDto;
+import com.mybrary.backend.domain.chat.dto.requestDto.ChatMessagePostDto;
 import com.mybrary.backend.domain.chat.service.ChatService;
-import com.mybrary.backend.domain.contents.paper.dto.PaperScrapDto;
-import com.mybrary.backend.domain.contents.paper.dto.PaperShareDto;
+import com.mybrary.backend.domain.contents.paper.dto.requestDto.PaperScrapDto;
 import com.mybrary.backend.domain.contents.paper.service.PaperService;
 import com.mybrary.backend.domain.member.entity.Member;
 import com.mybrary.backend.domain.member.service.MemberService;

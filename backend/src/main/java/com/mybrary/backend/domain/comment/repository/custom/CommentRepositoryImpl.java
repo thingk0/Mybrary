@@ -1,10 +1,9 @@
 package com.mybrary.backend.domain.comment.repository.custom;
 
 import static com.mybrary.backend.domain.comment.entity.QComment.comment;
-import static com.mybrary.backend.domain.contents.like.entity.QLike.like;
 import static com.mybrary.backend.domain.contents.paper.entity.QPaper.paper;
 import static com.mybrary.backend.domain.member.entity.QMember.member;
-import com.mybrary.backend.domain.comment.dto.CommentGetDto;
+import com.mybrary.backend.domain.comment.dto.responseDto.CommentGetDto;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;

@@ -1,8 +1,8 @@
 package com.mybrary.backend.domain.contents.paper.service;
 
-import com.mybrary.backend.domain.contents.paper.dto.PaperScrapDto;
-import com.mybrary.backend.domain.contents.paper.dto.PaperShareDto;
-import com.mybrary.backend.domain.contents.paper.dto.ToggleLikeResult;
+import com.mybrary.backend.domain.contents.paper.dto.requestDto.PaperScrapDto;
+import com.mybrary.backend.domain.contents.paper.dto.requestDto.PaperShareDto;
+import com.mybrary.backend.domain.contents.paper.dto.responseDto.ToggleLikeResult;
 
 public interface PaperService {
 

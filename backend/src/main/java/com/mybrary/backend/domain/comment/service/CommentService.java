@@ -1,7 +1,7 @@
 package com.mybrary.backend.domain.comment.service;
 
-import com.mybrary.backend.domain.comment.dto.CommentGetAllDto;
-import com.mybrary.backend.domain.comment.dto.CommentPostDto;
+import com.mybrary.backend.domain.comment.dto.responseDto.CommentGetAllDto;
+import com.mybrary.backend.domain.comment.dto.requestDto.CommentPostDto;
 
 public interface CommentService {
 

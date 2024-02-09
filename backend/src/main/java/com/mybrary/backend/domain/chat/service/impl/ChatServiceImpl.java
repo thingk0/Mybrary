@@ -1,19 +1,26 @@
 package com.mybrary.backend.domain.chat.service.impl;
 
-import com.mybrary.backend.domain.chat.dto.*;
-import com.mybrary.backend.domain.chat.entity.*;
-import com.mybrary.backend.domain.chat.repository.*;
+import com.mybrary.backend.domain.chat.dto.requestDto.ChatMessagePostDto;
+import com.mybrary.backend.domain.chat.dto.responseDto.ChatRoomGetDto;
+import com.mybrary.backend.domain.chat.dto.responseDto.TChatMessageGetDto;
+import com.mybrary.backend.domain.chat.dto.responseDto.TChatMessageWebSocketGetDto;
+import com.mybrary.backend.domain.chat.entity.ChatJoin;
+import com.mybrary.backend.domain.chat.entity.ChatMessage;
+import com.mybrary.backend.domain.chat.entity.ChatRoom;
+import com.mybrary.backend.domain.chat.repository.ChatJoinRepository;
+import com.mybrary.backend.domain.chat.repository.ChatMessageRepository;
+import com.mybrary.backend.domain.chat.repository.ChatRoomRepository;
 import com.mybrary.backend.domain.chat.service.ChatService;
-import com.mybrary.backend.domain.contents.thread.responseDto.ThreadShareGetDto;
+import com.mybrary.backend.domain.contents.thread.dto.responseDto.ThreadShareGetDto;
 import com.mybrary.backend.domain.contents.thread.repository.ThreadRepository;
-import com.mybrary.backend.domain.member.dto.MemberInfoDto;
+import com.mybrary.backend.domain.member.dto.responseDto.MemberInfoDto;
 import com.mybrary.backend.domain.member.entity.Member;
 import com.mybrary.backend.domain.member.repository.MemberRepository;
 import com.mybrary.backend.domain.member.service.MemberService;
-import org.springframework.data.domain.Pageable;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -205,13 +212,13 @@ public class ChatServiceImpl implements ChatService {
 
         // 웹소켓 주소로 보내야할 객체 TChatMessageWebSocketGetDto
         TChatMessageWebSocketGetDto sendMessage = TChatMessageWebSocketGetDto.builder()
-            .chatId(savedMessage.getId())
-            .sender(sender)
-            .message(savedMessage.getMessage())
-            .thread(null)
-            .isRead(savedMessage.isRead())
-            .createdAt(savedMessage.getCreatedAt())
-            .build();
+                                                                             .chatId(savedMessage.getId())
+                                                                             .sender(sender)
+                                                                             .message(savedMessage.getMessage())
+                                                                             .thread(null)
+                                                                             .isRead(savedMessage.isRead())
+                                                                             .createdAt(savedMessage.getCreatedAt())
+                                                                             .build();
 
 
         // 웹소켓 메서드

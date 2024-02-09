@@ -1,8 +1,8 @@
 package com.mybrary.backend.domain.book.repository.custom;
 
-import com.mybrary.backend.domain.book.dto.BookGetDto;
-import com.mybrary.backend.domain.book.dto.BookListGetFromPaperDto;
-import com.mybrary.backend.domain.book.dto.MyBookGetDto;
+import com.mybrary.backend.domain.book.dto.responseDto.BookGetDto;
+import com.mybrary.backend.domain.book.dto.responseDto.BookListGetFromPaperDto;
+import com.mybrary.backend.domain.book.dto.responseDto.MyBookGetDto;
 import java.util.List;
 import java.util.Optional;
 

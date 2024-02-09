@@ -2,9 +2,9 @@ package com.mybrary.backend.domain.category.service.impl;
 
 import com.mybrary.backend.domain.bookshelf.entity.Bookshelf;
 import com.mybrary.backend.domain.bookshelf.repository.BookShelfRepository;
-import com.mybrary.backend.domain.category.dto.CategoryGetDto;
-import com.mybrary.backend.domain.category.dto.CategoryPostDto;
-import com.mybrary.backend.domain.category.dto.CategoryUpdateDto;
+import com.mybrary.backend.domain.category.dto.responseDto.CategoryGetDto;
+import com.mybrary.backend.domain.category.dto.requestDto.CategoryPostDto;
+import com.mybrary.backend.domain.category.dto.requestDto.CategoryUpdateDto;
 import com.mybrary.backend.domain.category.entity.Category;
 import com.mybrary.backend.domain.category.repository.CategoryRepository;
 import com.mybrary.backend.domain.category.service.CategoryService;

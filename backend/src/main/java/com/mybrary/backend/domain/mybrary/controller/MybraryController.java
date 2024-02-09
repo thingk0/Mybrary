@@ -1,7 +1,6 @@
 package com.mybrary.backend.domain.mybrary.controller;
 
-import com.mybrary.backend.domain.member.dto.MemberGetDto;
-import com.mybrary.backend.domain.member.entity.Member;
+import com.mybrary.backend.domain.member.dto.responseDto.MemberGetDto;
 import com.mybrary.backend.domain.member.service.MemberService;
 import com.mybrary.backend.domain.mybrary.dto.MybraryGetDto;
 import com.mybrary.backend.domain.mybrary.dto.MybraryOtherGetDto;

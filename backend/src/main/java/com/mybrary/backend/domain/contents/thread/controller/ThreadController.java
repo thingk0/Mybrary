@@ -1,7 +1,7 @@
 package com.mybrary.backend.domain.contents.thread.controller;
 
-import com.mybrary.backend.domain.contents.thread.requestDto.ThreadPostDto;
-import com.mybrary.backend.domain.contents.thread.requestDto.ThreadUpdateDto;
+import com.mybrary.backend.domain.contents.thread.dto.requestDto.ThreadPostDto;
+import com.mybrary.backend.domain.contents.thread.dto.requestDto.ThreadUpdateDto;
 import com.mybrary.backend.domain.contents.thread.service.ThreadService;
 import com.mybrary.backend.domain.member.entity.Member;
 import com.mybrary.backend.domain.member.service.MemberService;

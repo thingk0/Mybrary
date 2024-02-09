@@ -189,15 +189,15 @@ public class ThreadServiceImpl implements ThreadService {
                       paperRepository.getFollowingPaperDtoResults(threadDto.getThreadId());
                   /* 페이퍼 관련정보 처리 로직 */
                   for (GetFollowingPaperDto paperDto : getFollowingPaperDtoList) {
-                        /* 좋아요 여부 판단 */
-                        boolean isLiked = likeService.checkIsLiked(paperDto.getId(), myId);
-                        paperDto.setLiked(isLiked);
-                        /* 태그목록 포함 처리 */
-                        paperDto.setTagList(tagService.getTagNameList(paperDto.getId()));
-                        /* 이미지 url들 포함 처리 */
+                        /* 좋아요 여부 판단, 태그목록 포함 처리, 이미지 url들 포함 처리*/
                         List<String> imageUrls = imageRepository.findByPaperId(paperDto.getId());
-                        paperDto.setImageUrl1(imageUrls.get(0));
-                        paperDto.setImageUrl1(imageUrls.get(1));
+
+                        paperDto = GetFollowingPaperDto.builder()
+                                                       .isLiked(likeService.checkIsLiked(paperDto.getId(), myId))
+                                                       .tagList(tagService.getTagNameList(paperDto.getId()))
+                                                       .imageUrl1(imageUrls.get(0))
+                                                       .imageUrl2(imageUrls.get(1))
+                                                       .build();
                   }
 
 
@@ -242,15 +242,19 @@ public class ThreadServiceImpl implements ThreadService {
             log.info("2");
 
             for (PaperGetDto paperGetDto : paperGetDtoList) {
-                  paperGetDto.setLiked(likeService.checkIsLiked(paperGetDto.getPaperId(), memberId));
+                  paperGetDto.updateIsLiked(likeService.checkIsLiked(paperGetDto.getPaperId(), memberId));
                   List<Tag> tagList = tagRepository.getTagsByPaperId(paperGetDto.getPaperId())
                                                    .orElse(Collections.emptyList());
                   /**/
                   log.info("3");
-                  List<String> tagNameList = tagList.stream()
-                                                    .map(Tag::getTagName)
-                                                    .toList();
-                  paperGetDto.setTagList(tagNameList);
+                  List<String> tagNameList = new ArrayList<>();
+
+                  if(!tagList.isEmpty()){
+                        tagNameList = tagList.stream()
+                                             .map(Tag::getTagName)
+                                             .toList();
+                  }
+                  paperGetDto.updateTagList(tagNameList);
             }
             /**/
             log.info("4");

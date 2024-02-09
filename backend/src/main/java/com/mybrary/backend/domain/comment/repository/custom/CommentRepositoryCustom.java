@@ -1,6 +1,6 @@
 package com.mybrary.backend.domain.comment.repository.custom;
 
-import com.mybrary.backend.domain.comment.dto.CommentGetDto;
+import com.mybrary.backend.domain.comment.dto.responseDto.CommentGetDto;
 import java.util.List;
 import java.util.Optional;
 
