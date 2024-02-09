@@ -10,21 +10,23 @@ import static com.mybrary.backend.domain.member.entity.QMember.member;
 import static com.mybrary.backend.domain.mybrary.entity.QMybrary.mybrary;
 import static com.querydsl.jpa.JPAExpressions.select;
 
+import com.mybrary.backend.domain.contents.thread.entity.Thread;
 import com.mybrary.backend.domain.contents.thread.responseDto.GetThreadDto;
 import com.mybrary.backend.domain.contents.thread.responseDto.ThreadInfoGetDto;
 import com.mybrary.backend.domain.contents.thread.responseDto.ThreadShareGetDto;
-import com.mybrary.backend.domain.contents.thread.entity.Thread;
 import com.mybrary.backend.domain.image.entity.QImage;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 @RequiredArgsConstructor
 @Repository
+@Log4j2
 public class ThreadRepositoryImpl implements ThreadRepositoryCustom {
 
       private final JPAQueryFactory query;
@@ -46,6 +48,7 @@ public class ThreadRepositoryImpl implements ThreadRepositoryCustom {
                                             .fetchFirst());
       }
 
+      @Override
       public List<GetThreadDto> getFollowingThreadDtoResults(Long memberId,
           Pageable pageable) {
             return query.select(
@@ -65,7 +68,6 @@ public class ThreadRepositoryImpl implements ThreadRepositoryCustom {
                         .on(follow.following.id.eq(member.id))
                         .where(follow.follower.id.eq(memberId)
                                                  .or(member.id.eq(memberId)))
-                        .groupBy(thread.id)
                         .orderBy(thread.createdAt.desc())
                         .offset(pageable.getOffset())
                         .limit(pageable.getPageSize())
@@ -95,7 +97,6 @@ public class ThreadRepositoryImpl implements ThreadRepositoryCustom {
                                         select(follow.following.member.id)
                                             .from(follow)
                                             .where(follow.follower.member.id.eq(memberId))).and(paper.member.id.ne(memberId)))
-                        .groupBy(thread.id)
                         .orderBy(thread.createdAt.desc())
                         .offset(pageable.getOffset())
                         .limit(count)
@@ -105,23 +106,41 @@ public class ThreadRepositoryImpl implements ThreadRepositoryCustom {
       /* 내 쓰레드 조회하기, 특정 회원의 쓰레드 조회하기에 공통으로 사용됨 */
       @Override
       public List<ThreadInfoGetDto> getSimpleThreadDtoResults(Long memberId, Pageable pageable) {
-            return query.select(
-                            Projections.constructor(ThreadInfoGetDto.class, thread.id,
-                                image.url, paper.likeCount, paper.commentCount, paper.scrapCount))
-                        .from(thread)
-                        .leftJoin(paper)
-                        .on(paper.thread.id.eq(thread.id)
-                                           .and(paper.member.id.eq(memberId)))
-                        .leftJoin(paperImage)
-                        .on(paper.id.eq(paperImage.paper.id)
-                                    .and(paperImage.imageSeq.eq(1)))
-                        .leftJoin(image)
-                        .on(paperImage.paper.id.eq(paper.id))
-                        .groupBy(thread.id)
-                        .orderBy(thread.createdAt.desc())
-                        .offset(pageable.getOffset())
-                        .limit(pageable.getPageSize())
-                        .fetch();
+//            return query.select(
+//                            Projections.constructor(ThreadInfoGetDto.class, paper.thread.id,
+//                                image.url, paper.likeCount, paper.commentCount, paper.scrapCount, paper.isPaperPublic, paper.isScrapEnabled))
+//                        .from(thread)
+//                        .leftJoin(paper)
+//                        .on(paper.thread.id.eq(thread.id).and(paper.member.id.eq(memberId)))
+//                        .leftJoin(paperImage)
+//                        .on(paper.id.eq(paperImage.paper.id).and(paperImage.imageSeq.eq(1)))
+//                        .leftJoin(image)
+//                        .on(paperImage.image.id.eq(image.id))
+//                        .orderBy(thread.createdAt.desc())
+//                        .offset(pageable.getOffset())
+//                        .limit(pageable.getPageSize())
+//                        .fetch();
+            return query.select(Projections.constructor(ThreadInfoGetDto.class,
+                    thread.id,
+                    image.url,
+                    paper.likeCount,
+                    paper.commentCount,
+                    paper.scrapCount,
+                    paper.isPaperPublic,
+                    paper.isScrapEnabled))
+                .from(thread)
+                .leftJoin(paper)
+                .on(paper.thread.id.eq(thread.id)
+                                   .and(paper.member.id.eq(memberId)))
+                // 첫 번째 paper만 선택하는 조건
+                .leftJoin(paperImage)
+                            .on(paperImage.imageSeq.eq(1).and(paper.id.eq(paperImage.paper.id)))
+                .leftJoin(image)
+                .on(paperImage.image.id.eq(image.id))
+                .orderBy(thread.createdAt.desc(), paper.createdAt.asc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
       }
 
       @Override

@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public interface MemberRepositoryCustom {
 
-    Optional<Member> findByEmail(String email);
+    Optional<Member> searchByEmail(String email);
 
     boolean isNicknameDuplicate(String email);
 

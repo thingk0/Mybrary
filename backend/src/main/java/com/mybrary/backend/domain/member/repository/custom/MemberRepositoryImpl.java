@@ -16,7 +16,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
     private final JPAQueryFactory query;
 
     @Override
-    public Optional<Member> findByEmail(String email) {
+    public Optional<Member> searchByEmail(String email) {
         return Optional.ofNullable(query.selectFrom(member)
                                         .leftJoin(image).on(member.profileImage.id.eq(image.id)).fetchJoin()
                                         .where(member.email.eq(email))

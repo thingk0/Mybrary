@@ -3,6 +3,7 @@ package com.mybrary.backend.domain.contents.thread.entity;
 import com.mybrary.backend.domain.base.BaseEntity;
 import com.mybrary.backend.domain.contents.paper.entity.Paper;
 import com.mybrary.backend.domain.mybrary.entity.Mybrary;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,7 +12,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
@@ -42,7 +42,7 @@ public class Thread extends BaseEntity {
 
     /* thread - paper 양방향 관계 설정 */
     @Builder.Default
-    @OneToMany(mappedBy = "thread")
+    @OneToMany(mappedBy = "thread", cascade = {CascadeType.REMOVE})
     private List<Paper> paperList = new ArrayList<>();
 }
 

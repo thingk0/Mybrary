@@ -1,7 +1,13 @@
 package com.mybrary.backend.domain.book.controller;
 
-import com.mybrary.backend.domain.book.dto.*;
+import com.mybrary.backend.domain.book.dto.BookListGetFromPaperDto;
+import com.mybrary.backend.domain.book.dto.BookPaperGetDto;
+import com.mybrary.backend.domain.book.dto.BookPostDto;
+import com.mybrary.backend.domain.book.dto.BookSubscribeDto;
+import com.mybrary.backend.domain.book.dto.BookUpdateDto;
 import com.mybrary.backend.domain.book.service.BookService;
+import com.mybrary.backend.domain.member.entity.Member;
+import com.mybrary.backend.domain.member.service.MemberService;
 import com.mybrary.backend.global.format.code.ApiResponse;
 import com.mybrary.backend.global.format.response.ResponseCode;
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,13 +34,15 @@ public class BookController {
 
     private final ApiResponse response;
     private final BookService bookService;
+    private final MemberService memberService;
 
     @Operation(summary = "나의 책 목록 조회", description = "나의 책 목록 조회")
     @GetMapping("/my")
     public ResponseEntity<?> getMyBookList(
-        @Parameter(hidden = true) Authentication authentication,
-        @RequestBody Long memberId) {
-        return response.success(ResponseCode.BOOK_LIST_FETCHED, bookService.getMyBookList(memberId));
+        @Parameter(hidden = true) Authentication authentication) {
+        Member me = memberService.findMember(authentication.getName());
+        Long myId = me.getId();
+        return response.success(ResponseCode.BOOK_LIST_FETCHED, bookService.getMyBookList(myId));
     }
 
     @Operation(summary = "책 생성", description = "책 생성")

@@ -10,8 +10,8 @@ import com.mybrary.backend.global.format.response.ResponseCode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.io.IOException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
@@ -23,9 +23,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@Log4j2
 @Tag(name = "Thread 컨트롤러", description = "Thread Controller API")
 @RestController
 @RequiredArgsConstructor
@@ -40,10 +40,11 @@ public class ThreadController {
     @PostMapping
     public ResponseEntity<?> createThread(@Parameter(hidden = true) Authentication authentication,
 //        @RequestParam(required = false) List<MultipartFile> files,
-        @RequestBody ThreadPostDto threadPostDto )
-        throws IOException {
+        @RequestBody ThreadPostDto threadPostDto ) {
+        log.info("시작");
         Member me = memberService.findMember(authentication.getName());
         Long myId = me.getId();
+        log.info("스레드 생성 컨트롤러 ");
         return response.success(ResponseCode.THREAD_CREATED,
             threadService.createThread(myId, threadPostDto));
     }
@@ -51,8 +52,6 @@ public class ThreadController {
     @GetMapping("/home")
     public ResponseEntity<?> getMainAllThread(
         @Parameter(hidden = true) Authentication authentication,
-        @RequestParam(name = "page") int number,
-        @RequestBody Long memberId,
         @PageableDefault(page = 0, size = 10) Pageable pageable) {
         Member me = memberService.findMember(authentication.getName());
         Long myId = me.getId();
@@ -63,18 +62,17 @@ public class ThreadController {
     @GetMapping("/desk")
     public ResponseEntity<?> getMyAllThread(
         @Parameter(hidden = true) Authentication authentication,
-        @RequestBody Long memberId,
         @PageableDefault(page = 0, size = 10) Pageable page) {
         Member me = memberService.findMember(authentication.getName());
         Long myId = me.getId();
         return response.success(ResponseCode.MY_THREAD_LIST_FETCHED,
             threadService.getMyAllThread(myId, page));
     }
-    @Operation(summary = "특정 회원의 쓰레드 조회", description = "회원 아이디를 통한 특정 회원의 마이브러리 책상에서의 쓰레드 목록 조회")
+    @Operation(summary = "특정 회원의 쓰레드 조회", description = "특정 회원의 마이브러리 책상에서의 쓰레드 목록 조회")
     @GetMapping("/{id}/desk")
     public ResponseEntity<?> getOtherAllThread(
         @Parameter(hidden = true) Authentication authentication,
-        @RequestBody Long memberId,
+        @PathVariable(name = "id") Long memberId,
         @PageableDefault(page = 0, size = 10) Pageable page) {
         Member me = memberService.findMember(authentication.getName());
         Long myId = me.getId();
@@ -103,10 +101,11 @@ public class ThreadController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getThread(
         @Parameter(hidden = true) Authentication authentication,
-        @RequestBody Long memberId,
         @PathVariable(name = "id") Long threadId) {
-        return response.success(ResponseCode.THREAD_DELETED,
-                                threadService.getThread(memberId, threadId));
+        Member me = memberService.findMember(authentication.getName());
+        Long myId = me.getId();
+        return response.success(ResponseCode.THREAD_SEARCHED,
+                                threadService.getThread(myId, threadId));
 
     }
 

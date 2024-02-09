@@ -1,7 +1,5 @@
 package com.mybrary.backend.domain.contents.paper.dto;
 
-import com.mybrary.backend.domain.image.dto.ImagePostDto;
-import com.mybrary.backend.domain.member.dto.MemberGetDto;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -22,7 +20,7 @@ public class PaperGetDto {
      */
 
     private Long paperId;
-    private String createdAt;
+    private LocalDateTime createdAt;
     private int layoutType;
     private String content1;
     private String content2;
@@ -37,7 +35,7 @@ public class PaperGetDto {
     private List<String> tagList;
 
     /* isLiked, tagList는 따로 바인딩 */
-    public PaperGetDto(Long paperId, String createdAt, int layoutType, String content1, String content2, String image1Url,
+    public PaperGetDto(Long paperId, LocalDateTime createdAt, int layoutType, String content1, String content2, String image1Url,
                        String image2Url, int likeCount, int commentCount, int scrapCount, boolean isScrapEnabled,
                        boolean isPaperPublic) {
         this.paperId = paperId;

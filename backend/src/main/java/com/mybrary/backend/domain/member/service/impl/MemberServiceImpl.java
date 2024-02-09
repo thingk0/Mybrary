@@ -74,7 +74,7 @@ public class MemberServiceImpl implements MemberService {
         checkPasswordConfirmation(requestDto.getPassword(), requestDto.getPasswordConfirm());
 
         /* 이메일 중복 검증 */
-        memberRepository.findByEmail(requestDto.getEmail())
+        memberRepository.searchByEmail(requestDto.getEmail())
                         .ifPresent(this::throwDuplicateEmailException);
 
         /* 회원 생성 */
@@ -123,7 +123,7 @@ public class MemberServiceImpl implements MemberService {
     public LoginResponseDto login(LoginRequestDto requestDto, HttpServletResponse response) {
         log.info("event=LoginAttempt, email={}", requestDto.getEmail());
 
-        Member member = findMemberByEmail(requestDto.getEmail());
+        Member member = searchMemberByEmail(requestDto.getEmail());
         isPasswordMatchingWithEncoded(requestDto.getPassword(), member.getPassword());
         removeOldRefreshToken(requestDto, member);
 
@@ -145,7 +145,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Member findMember(String email) {
-        return memberRepository.findByEmail(email).orElseThrow(EmailNotFoundException::new);
+        return memberRepository.searchByEmail(email).orElseThrow(EmailNotFoundException::new);
     }
 
 
@@ -312,7 +312,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void secession(SecessionRequestDto secession) {
 
-        Member member = memberRepository.findByEmail(secession.getEmail())
+        Member member = memberRepository.searchByEmail(secession.getEmail())
                                         .orElseThrow(InvalidLoginAttemptException::new);
 
         isPasswordMatchingWithEncoded(secession.getPassword(), member.getPassword());
@@ -334,10 +334,10 @@ public class MemberServiceImpl implements MemberService {
         return email;
     }
 
-    private Member findMemberByEmail(String email) {
-        Member member = memberRepository.findByEmail(email)
+    private Member searchMemberByEmail(String email) {
+        Member member = memberRepository.searchByEmail(email)
                                         .orElseThrow(EmailNotFoundException::new);
-        log.info("event=MemberFindByEmail, email={}", email);
+        log.info("event=MemberSearchByEmail, email={}", email);
         return member;
     }
 

@@ -9,7 +9,6 @@ import com.mybrary.backend.domain.contents.paper.dto.PaperUpdateDto;
 import com.mybrary.backend.domain.contents.paper.dto.PostPaperDto;
 import com.mybrary.backend.domain.contents.paper.entity.Paper;
 import com.mybrary.backend.domain.contents.paper.repository.PaperRepository;
-import com.mybrary.backend.domain.contents.paper_image.entity.PaperImage;
 import com.mybrary.backend.domain.contents.paper_image.repository.PaperImageRepository;
 import com.mybrary.backend.domain.contents.scrap.entity.Scrap;
 import com.mybrary.backend.domain.contents.scrap.repository.ScrapRepository;
@@ -20,12 +19,10 @@ import com.mybrary.backend.domain.contents.thread.entity.Thread;
 import com.mybrary.backend.domain.contents.thread.repository.ThreadRepository;
 import com.mybrary.backend.domain.contents.thread.requestDto.ThreadPostDto;
 import com.mybrary.backend.domain.contents.thread.requestDto.ThreadUpdateDto;
-import com.mybrary.backend.domain.contents.thread.responseDto.DeleteThreadDto;
 import com.mybrary.backend.domain.contents.thread.responseDto.GetThreadDto;
 import com.mybrary.backend.domain.contents.thread.responseDto.ThreadGetDto;
 import com.mybrary.backend.domain.contents.thread.responseDto.ThreadInfoGetDto;
 import com.mybrary.backend.domain.contents.thread.service.ThreadService;
-import com.mybrary.backend.domain.image.entity.Image;
 import com.mybrary.backend.domain.image.repository.ImageRepository;
 import com.mybrary.backend.domain.image.service.ImageService;
 import com.mybrary.backend.domain.member.dto.MemberInfoDto;
@@ -35,14 +32,15 @@ import com.mybrary.backend.domain.mybrary.repository.MybraryRepository;
 import com.mybrary.backend.domain.notification.service.NotificationService;
 import com.mybrary.backend.global.exception.member.EmailNotFoundException;
 import jakarta.transaction.Transactional;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+@Log4j2
 @Service
 @RequiredArgsConstructor
 public class ThreadServiceImpl implements ThreadService {
@@ -65,22 +63,22 @@ public class ThreadServiceImpl implements ThreadService {
 
       @Transactional
       @Override
-      public Long createThread(Long myId, ThreadPostDto threadPostDto)
-          throws IOException {
+      public Long createThread(Long myId, ThreadPostDto threadPostDto) {
+            log.info("createThread 살행");
             Thread thread = Thread.builder()
-                                  .mybrary(mybraryRepository.findByMemberId(myId))
+                                  .mybrary(mybraryRepository.searchByMemberId(myId))
                                   .build();
             threadRepository.save(thread);
-
+            log.info("sp1");
             /* paper 객체 하나씩 생성하고 저장 */
             List<PostPaperDto> postPaperDtoList = threadPostDto.getPostPaperDto();
-
+            log.info("sp2");
             int paperSeq = 1;   //페이퍼이미지 순서
             int imageSeq = 0;   //이미지리스트에서 얻어올 순서
 
             Member member = memberRepository.findById(myId)
                                             .orElseThrow(NullPointerException::new);
-
+            log.info("memberId = {} / email = {} / nickname = {}", member.getId(), member.getEmail(), member.getNickname());
             for (PostPaperDto dto : postPaperDtoList) {
                   /* paper 객체 생성 */
                   Paper paper = Paper.builder()
@@ -93,7 +91,7 @@ public class ThreadServiceImpl implements ThreadService {
                                      .isScrapEnabled(dto.isScrapEnable())
                                      .build();
                   paperRepository.save(paper);
-
+                  log.info("paper 저장 이후");
                   /* bookid가 있는경우에만 scrap 생성 */
                   Long bookId = dto.getBookId();
                   if (bookId != null) {
@@ -119,6 +117,7 @@ public class ThreadServiceImpl implements ThreadService {
                         tagEntityList.add(tag);
                   }
                   tagRepository.saveAll(tagEntityList);
+                  log.info("tag목록 생성 이후 ");
 
                   /* 여기서 페이퍼에 대한 멘션 알림 보내는 로직 */
                   /* 쓰레드를 생성한 멤버가 sender, 멘션된 회원이 receiver, 알람타입은  */
@@ -137,31 +136,31 @@ public class ThreadServiceImpl implements ThreadService {
 //            Long image1 = imageService.uploadImage(fileList.get(imageSeq));
 //            Long image2 = imageService.uploadImage(fileList.get(imageSeq + 1));
 
-                  Long imageId1 = imageService.uploadImage();
-                  Long imageId2 = imageService.uploadImage();
+//                  Long imageId1 = imageService.uploadImage();
+//                  Long imageId2 = imageService.uploadImage();
 
                   /* paperImage 객체 생성 */
-                  Image image1 = imageRepository.findById(imageId1)
-                                                .orElseThrow(NullPointerException::new);
-                  Image image2 = imageRepository.findById(imageId2)
-                                                .orElseThrow(NullPointerException::new);
-
-                  PaperImage paperImage1 = PaperImage.builder()
-                                                     .paper(paper)
-                                                     .image(image1)
-                                                     .imageSeq(imageSeq)
-                                                     .build();
-
-                  PaperImage paperImage2 = PaperImage.builder()
-                                                     .paper(paper)
-                                                     .image(image2)
-                                                     .imageSeq(imageSeq + 1)
-                                                     .build();
-
-                  paperImageRepository.save(paperImage1);
-                  paperImageRepository.save(paperImage2);
-
-                  imageSeq = imageSeq + 2;
+//                  Image image1 = imageRepository.findById(imageId1)
+//                                                .orElse(new Image());
+//                  Image image2 = imageRepository.findById(imageId2)
+//                                                .orElse(NullPointerException::new);
+//
+//                  PaperImage paperImage1 = PaperImage.builder()
+//                                                     .paper(paper)
+//                                                     .image(image1)
+//                                                     .imageSeq(imageSeq)
+//                                                     .build();
+//
+//                  PaperImage paperImage2 = PaperImage.builder()
+//                                                     .paper(paper)
+//                                                     .image(image2)
+//                                                     .imageSeq(imageSeq + 1)
+//                                                     .build();
+//
+//                  paperImageRepository.save(paperImage1);
+//                  paperImageRepository.save(paperImage2);
+//
+//                  imageSeq = imageSeq + 2;
             }
 
             return thread.getId();
@@ -223,7 +222,8 @@ public class ThreadServiceImpl implements ThreadService {
 
             Member member = memberRepository.findById(memberId)
                                             .orElseThrow(NullPointerException::new);
-
+            log.info("memeberId:" + memberId);
+            List<ThreadInfoGetDto> list = threadRepository.getSimpleThreadDtoResults(memberId, pageable);
             return threadRepository.getSimpleThreadDtoResults(memberId, pageable);
       }
 
@@ -232,22 +232,24 @@ public class ThreadServiceImpl implements ThreadService {
       public ThreadGetDto getThread(Long memberId, Long threadId) {
 
             ThreadGetDto threadGetDto = new ThreadGetDto();
+            threadGetDto.setThreadId(threadId);
 
             Member member = memberRepository.findById(memberId).orElseThrow(NullPointerException::new);
             MemberInfoDto memberInfoDto = memberRepository.getMemberInfo(memberId);
-
+            log.info("1");
             /* isLiked 따로 처리로 */
             List<PaperGetDto> paperGetDtoList = paperRepository.getPaperGetDto(threadId);
-
+            log.info("2");
             for (PaperGetDto paperGetDto : paperGetDtoList) {
                   paperGetDto.setLiked(likeService.checkIsLiked(paperGetDto.getPaperId(), memberId));
                   List<Tag> tagList = tagRepository.getTagsByPaperId(paperGetDto.getPaperId()).orElse(Collections.emptyList());
+                  log.info("3");
                   List<String> tagNameList = tagList.stream() // tagList를 스트림으로 변환
                                                     .map(Tag::getTagName) // 각 Tag 객체에서 getName 메소드를 호출하여 이름을 추출
                                                     .toList(); // 결과를 새로운 List<String>
                   paperGetDto.setTagList(tagNameList);
             }
-
+            log.info("4");
             threadGetDto.setThreadId(threadId);
             threadGetDto.setMember(memberInfoDto);
             threadGetDto.setPaperList(paperGetDtoList);
@@ -294,11 +296,13 @@ public class ThreadServiceImpl implements ThreadService {
 
       @Transactional
       @Override
-      public DeleteThreadDto deleteThread(Long myId, Long threadId) {
-            /* 삭제된 페이퍼 개수와 threadId 반환 */
-            DeleteThreadDto deleteThreadDto = new DeleteThreadDto();
-            deleteThreadDto.setThreadId(threadId);
-            deleteThreadDto.setPaperCount(paperRepository.deletePaperByThreadsId(threadId));
-            return deleteThreadDto;
+      public int deleteThread(Long myId, Long threadId) {
+            /* 삭제된 페이퍼 개수 반환 */
+            Thread thread = threadRepository.findById(threadId).orElseThrow(NullPointerException::new);
+            int count = thread.getPaperList().size();
+            paperRepository.deleteAll(thread.getPaperList());
+            threadRepository.delete(thread);
+
+            return count;
       }
 }

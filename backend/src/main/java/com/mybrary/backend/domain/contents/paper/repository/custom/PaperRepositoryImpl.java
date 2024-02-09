@@ -1,32 +1,23 @@
 package com.mybrary.backend.domain.contents.paper.repository.custom;
 
 import static com.mybrary.backend.domain.book.entity.QBook.book;
-import static com.mybrary.backend.domain.contents.like.entity.QLike.like;
 import static com.mybrary.backend.domain.contents.paper.entity.QPaper.paper;
 import static com.mybrary.backend.domain.contents.paper_image.entity.QPaperImage.paperImage;
 import static com.mybrary.backend.domain.contents.scrap.entity.QScrap.scrap;
-import static com.mybrary.backend.domain.contents.tag.entity.QTag.tag;
 import static com.mybrary.backend.domain.contents.thread.entity.QThread.thread;
+import static com.mybrary.backend.domain.image.entity.QImage.image;
+import static com.mybrary.backend.domain.member.entity.QMember.member;
 
 import com.mybrary.backend.domain.contents.paper.dto.GetFollowingPaperDto;
-import com.mybrary.backend.domain.contents.paper.dto.PaperInBookGetDto;
-import com.mybrary.backend.domain.image.entity.QImage;
-import com.mybrary.backend.domain.member.dto.MemberInfoDto;
-import com.mybrary.backend.domain.member.dto.login.MemberInfo;
 import com.mybrary.backend.domain.contents.paper.dto.PaperGetDto;
-import com.mybrary.backend.domain.member.dto.MemberGetDto;
+import com.mybrary.backend.domain.contents.paper.dto.PaperInBookGetDto;
+import com.mybrary.backend.domain.member.dto.MemberInfoDto;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import java.util.List;
-import static com.mybrary.backend.domain.contents.paper.entity.QPaper.paper;
-import static com.mybrary.backend.domain.contents.thread.entity.QThread.thread;
-import static com.mybrary.backend.domain.image.entity.QImage.image;
-import static com.mybrary.backend.domain.image.entity.QImage.image;
-import static com.mybrary.backend.domain.member.entity.QMember.member;
 
 @RequiredArgsConstructor
 @Repository
@@ -48,14 +39,12 @@ public class PaperRepositoryImpl implements PaperRepositoryCustom {
                                            paper.isPaperPublic.as("isPaperPublic")
                         ))
                     .from(paper)
-                    .leftJoin(thread).on(paper.thread.id.eq(thread.id))
-                    .where(thread.id.eq(threadId))
-                    .groupBy(thread)
+                    .leftJoin(thread).on(paper.thread.id.eq(threadId))
                     .fetch();
     }
 
     @Override
-    public Long deletePaperByThreadsId(Long threadId) {
+    public Long deletePaperByThreadId(Long threadId) {
         return query
             .delete(paper)
             .where(paper.thread.id.eq(threadId))
@@ -137,9 +126,7 @@ public class PaperRepositoryImpl implements PaperRepositoryCustom {
                                            paper.isPaperPublic.as("isPaperPublic")
                         ))
                     .from(paper)
-                    .leftJoin(image).on(paper.thread.id.eq(thread.id))
-                    .where(thread.id.eq(threadId))
-                    .groupBy(thread)
+                    .leftJoin(paperImage).on(paperImage.paper.id.eq(paper.id).and(thread.id.eq(threadId)))
                     .fetch();
 
     }
