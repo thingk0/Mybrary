@@ -17,7 +17,7 @@ function LoginForm() {
   const navigateToErrorPage = () => {
     navigate("/error");
   };
-  //  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   // 유저상태 전역 관리를 위한 코드
   const setUser = useUserStore((state) => state.setUser);
