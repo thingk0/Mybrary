@@ -1,0 +1,22 @@
+.modalContainer {
+  position: relative;
+}
+
+.modal {
+  position: absolute;
+  padding: 15px;
+  z-index: 10000;
+  box-shadow: 0 0 25px 0 rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(12.5px);
+  background-color: var(--blur1);
+  border-radius: 10px;
+  /* height: 600px; */
+}
+
+.flex {
+  display: flex;
+  justify-content: space-between;
+}
+.modalClose {
+  color: var(--gomin5);
+}

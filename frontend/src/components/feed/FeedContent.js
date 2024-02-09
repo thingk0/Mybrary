@@ -3,6 +3,7 @@
 import icon_comment from "../../assets/icon/icon_comment.png";
 import icon_book from "../../assets/icon/icon_book.png";
 import icon_like from "../../assets/icon/icon_like.png";
+import icon_nolike from "../../assets/icon/icon_nolike.png";
 import icon_scrap from "../../assets/icon/icon_scrap.png";
 import icon_share from "../../assets/icon/icon_share.png";
 import user_img from "../../assets/이미지예시.png";
@@ -12,6 +13,7 @@ import styles from "./FeedContent.module.css";
 import ContentItem from "./ContentItem";
 import { useState } from "react";
 import s from "classnames";
+import FeedModal from "./FeedModal";
 
 export default function FeedContent({
   index,
@@ -28,6 +30,8 @@ export default function FeedContent({
       setZIndex(3);
     }, 800);
   };
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <div className={styles.content}>
@@ -49,7 +53,7 @@ export default function FeedContent({
           </div>
           <div className={styles.icon_container}>
             <div className={styles.icon_left}>
-              <img src={icon_like} alt="" />
+              <img src={icon_nolike} alt="" />
               <div>{paper.likeCount}</div>
               <img
                 src={icon_comment}
@@ -57,9 +61,28 @@ export default function FeedContent({
                 onClick={() => openComment(index)}
               />
               <div>{paper.commentCount}</div>
-              <img src={icon_scrap} alt="" />
+              <div>
+                <img src={icon_scrap} alt="" />
+              </div>
               <div>{paper.scrapCount}</div>
-              <img src={icon_book} alt="" />
+              <div>
+                <img
+                  src={icon_book}
+                  alt=""
+                  onClick={() => {
+                    setIsModalOpen(true);
+                  }}
+                />
+                <FeedModal
+                  setIsModalOpen={setIsModalOpen}
+                  isModalOpen={isModalOpen}
+                  width="300px"
+                  height="300px"
+                  left="0"
+                  top="0"
+                  header="이 페이퍼를 포함한 책"
+                />
+              </div>
             </div>
 
             <img src={icon_share} alt="" className={styles.icon_right} />
