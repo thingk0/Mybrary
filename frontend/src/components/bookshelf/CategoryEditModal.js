@@ -8,38 +8,49 @@ import styles from "./CategoryEditModal.module.css";
 import { useState } from "react";
 import CategoryList from "./CategoryList";
 import Modal from "../common/Modal";
+import { createCategory } from "../../api/category/Category";
 
 export default function CategoryEditModal({
   categoryList,
   content,
   setCategoryList,
+  bookShelfId,
 }) {
-  const [newCategoryName, setNewCategoryName] = useState(""); // 새로운 카테고리 이름 상태 추가
+  const [newCategoryName, setNewCategoryName] = useState("");
+  const [open, setOpen] = useState(false);
 
-  const handleAddCategory = () => {
-    // 새로운 카테고리 객체 생성
+  const handleAddCategory = async () => {
+    const category = {
+      bookShelfId: bookShelfId,
+      name: newCategoryName,
+    };
+    const id = await createCategory(category);
     const newCategory = {
-      categoryId: (Math.random() * 1000).toString(), //이 값은 나중에 요청하고 나서 받아올 것임.
-      categoryName: newCategoryName,
-      categorySeq: categoryList.length + 1,
+      categoryId: id,
+      name: newCategoryName,
+      seq: categoryList.length + 1,
       bookCount: 0,
     };
 
-    // 기존 카테고리 리스트에 새로운 카테고리 추가
     setCategoryList([...categoryList, newCategory]);
-
-    // 인풋창 초기화
     setNewCategoryName("");
   };
 
   return (
-    <Modal title={content} width="260px">
+    <Modal
+      title={content}
+      width="270px"
+      open={open}
+      setOpen={setOpen}
+      top={"30px"}
+      right={"0px"}
+      header={content}
+    >
       <div className={styles.flex}>
-        <div>카테고리수정</div>
         <div>삭제</div>
       </div>
-
       <CategoryList
+        bookShelfId={bookShelfId}
         categoryList={categoryList}
         setCategoryList={setCategoryList}
       />
@@ -49,8 +60,7 @@ export default function CategoryEditModal({
         value={newCategoryName}
         onChange={(e) => setNewCategoryName(e.target.value)}
       />
-
-      <button onClick={handleAddCategory}>추가</button>
+      <button onClick={() => handleAddCategory()}>추가</button>
     </Modal>
   );
 }

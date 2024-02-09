@@ -12,9 +12,14 @@ export default function WelcomePage() {
     <>
       <div className={styles.container}>
         <div className={styles.문구}>
-          <div>마이브러리에 오신것을 환영합니다</div>
+          <div className={styles.title}>MYBRATY</div>
+          <div className={styles.text}>
+            당신의 추억이 한 페이지가 될 수 있도록
+          </div>
 
-          <div onClick={() => handleStart()}>입장하기</div>
+          <div onClick={() => handleStart()} className={styles.button}>
+            입장하기
+          </div>
         </div>
       </div>
     </>

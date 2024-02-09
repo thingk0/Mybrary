@@ -3,9 +3,9 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: linear-gradient(135deg, #e0c3ff 0%, #ffed95 100%);
-  background-size: 400% 400%;
-  animation: gradientBG 7s ease infinite;
+  background: linear-gradient(135deg, #ffe1d2 0%, #cab5a8 100%);
+  background-size: 200% 200%;
+  animation: gradientBG 1s ease infinite;
 }
 
 .문구 {
@@ -16,7 +16,6 @@
 .문구 > div:first-child {
   margin-bottom: 20px;
   font-size: 2rem;
-  /* font-weight: bold; */
 }
 
 .문구 > div:last-child {
