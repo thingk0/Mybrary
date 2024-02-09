@@ -292,14 +292,30 @@
   animation: fadeIn 0.5s ease-in-out; /* 애니메이션 적용 */
 }
 
+.flex {
+  display: flex;
+  margin: 70px 70px 0 0;
+}
+.dd {
+  transform: translateX(-90%);
+}
+
 .container {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   justify-content: flex-start;
   animation: trans 1s ease-in-out; /* 애니메이션 적용 */
+  transition: transform 0.3s;
 }
-
+.hideList {
+  transform: translateX(250%);
+  transition: transform 0.3s;
+}
+.showList {
+  transform: translateX(120%);
+  transition: transform 0.3s;
+}
 .active {
   display: flex;
   flex-direction: column;
@@ -310,7 +326,6 @@
 }
 
 .profileContainer {
-  margin: 70px 70px 0 0;
   padding: 20px;
   border-radius: 10px;
   background-color: var(--blur1);

@@ -32,13 +32,20 @@ import gomimg from "../assets/곰탱이.png";
 import BigModal from "../components/common/BigModal";
 import axios from "axios";
 import Loading from "../components/common/Loading";
+import {
+  getMyFollowingList,
+  getMyFollowerList,
+  deleteFollow,
+  deleteFollower,
+} from "../api/member/Follow";
+import FollowList from "../components/mybrary/FollowList";
+import FollowerList from "../components/mybrary/FollowerList";
 
 export default function MybraryPage() {
   const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
   const navigate = useNavigate();
   const Params = useParams();
   const nowuser = Params.userid;
-  console.log(nowuser);
   const [edit, setEdit] = useState(false);
   const [bgColor, setBgColor] = useState("1");
   const [esColor, setEsColor] = useState(easel1);
@@ -60,10 +67,37 @@ export default function MybraryPage() {
   const [showModalFrame, setShowModalFrame] = useState(false);
   const [showModalDoor, setShowModalDoor] = useState(false);
   const [showModalPost, setShowModalPost] = useState(false);
+  const [showList, setShowList] = useState(false);
+  const [showListType, setShowListType] = useState(null); // 리스트 타입을 관리하는 상태
+
+  const handleShowList = (type) => {
+    setShowList(true);
+    setShowListType(showListType === type ? null : type); // 같은 버튼을 다시 클릭하면 리스트를 닫습니다.
+  };
 
   const [testuser, setTestuser] = useState({
     data: {},
   });
+  const updateFollowerCount = (newCount) => {
+    setTestuser((prevState) => ({
+      ...prevState,
+      data: {
+        ...prevState.data,
+        followerCount: newCount,
+      },
+    }));
+  };
+
+  // 팔로잉 수 업데이트 함수
+  const updateFollowingCount = (newCount) => {
+    setTestuser((prevState) => ({
+      ...prevState,
+      data: {
+        ...prevState.data,
+        followingCount: newCount,
+      },
+    }));
+  };
 
   useEffect(() => {
     async function fetchMybraryData() {
@@ -250,6 +284,10 @@ export default function MybraryPage() {
     }
   }
 
+  const handleShow = () => {
+    setShowList(true);
+  };
+
   return (
     <>
       <div className={s(`${styles.bg} ${styles[`bg${color[bgColor - 1]}`]}`)}>
@@ -401,51 +439,80 @@ export default function MybraryPage() {
           )}
         </div>
         {/* <div className={styles.trapezoid}></div> */}
-        {checkme && (
-          <div className={styles.editButton} onClick={() => setEdit(true)}>
-            프로필 편집
-          </div>
-        )}
-        <div className={s(edit ? styles.active : styles.container)}>
-          <div className={styles.profileContainer}>
-            <div className={styles.profile}>
-              <div className={styles.프로필박스2}>
-                <img
-                  className={styles.프로필이미지곰}
-                  src={testuser.data.url || gomimg}
-                  alt="대체 이미지"
-                />
-              </div>
-              <div className={styles.프로필박스}>
-                <div>{testuser.data.nickname}</div>
-                <div>{testuser.data.name}</div>
-              </div>
-              <div className={styles.프로필박스}>
-                <div>{testuser.data.bookCount}</div>
-                <div>앨범</div>
-              </div>
-              <div className={styles.프로필박스}>
-                <div>{testuser.data.threadCount}</div>
-                <div>게시글</div>
-              </div>
-              <div className={styles.프로필박스}>
-                <div>{testuser.data.followerCount}</div>
-                <div>팔로워</div>
-              </div>
-              <div className={styles.프로필박스}>
-                <div>{testuser.data.followingCount}</div>
-                <div>팔로우</div>
-              </div>
-            </div>
-            <div className={styles.한줄소개}>{testuser.data.intro}</div>
-          </div>
-          <div>
-            {checkme && (
-              <div className={styles.editButton} onClick={() => setEdit(true)}>
-                방 꾸미기
-              </div>
+        <div className={styles.flex}>
+          <div className={showListType ? styles.showList : styles.hideList}>
+            {showListType === "follower" && (
+              <FollowerList
+                updateFollowerCount={updateFollowerCount}
+                updateFollowingCount={updateFollowingCount}
+                setShowList={() => setShowListType(null)}
+                me={user.memberId}
+                nowuser={nowuser}
+              />
             )}
-            {/* <div className={styles.editButton}>방 꾸미기</div> */}
+            {showListType === "following" && (
+              <FollowList
+                updateFollowingCount={updateFollowingCount}
+                setShowList={() => setShowListType(null)}
+                me={user.memberId}
+                nowuser={nowuser}
+              />
+            )}
+          </div>
+          <div
+            className={s(
+              edit ? styles.active : showListType ? styles.dd : styles.container
+            )}
+          >
+            <div className={styles.profileContainer}>
+              <div className={styles.profile}>
+                <div className={styles.프로필박스2}>
+                  <img
+                    className={styles.프로필이미지곰}
+                    src={testuser.data.url || gomimg}
+                    alt="대체 이미지"
+                  />
+                </div>
+                <div className={styles.프로필박스}>
+                  <div>{testuser.data.nickname}</div>
+                  <div>{testuser.data.name}</div>
+                </div>
+                <div className={styles.프로필박스}>
+                  <div>{testuser.data.bookCount}</div>
+                  <div>앨범</div>
+                </div>
+                <div className={styles.프로필박스}>
+                  <div>{testuser.data.threadCount}</div>
+                  <div>게시글</div>
+                </div>
+                <div
+                  className={styles.프로필박스}
+                  onClick={() => handleShowList("follower")}
+                >
+                  <div>{testuser.data.followerCount}</div>
+                  <div>팔로워</div>
+                </div>
+                <div
+                  className={styles.프로필박스}
+                  onClick={() => handleShowList("following")}
+                >
+                  <div>{testuser.data.followingCount}</div>
+                  <div>팔로잉</div>
+                </div>
+              </div>
+              <div className={styles.한줄소개}>{testuser.data.intro}</div>
+            </div>
+            <div>
+              {checkme && (
+                <div
+                  className={styles.editButton}
+                  onClick={() => setEdit(true)}
+                >
+                  방 꾸미기
+                </div>
+              )}
+              {/* <div className={styles.editButton}>방 꾸미기</div> */}
+            </div>
           </div>
         </div>
         {edit && (
