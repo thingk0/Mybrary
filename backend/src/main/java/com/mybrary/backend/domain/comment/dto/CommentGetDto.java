@@ -1,7 +1,5 @@
 package com.mybrary.backend.domain.comment.dto;
 
-import com.mybrary.backend.domain.member.dto.MemberInfoDto;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,13 +18,29 @@ public class CommentGetDto {
      *
      */
 
+//     - 댓글ID(commentId)
+//  - 작성자ID(ownerId)
+//  - 작성자닉네임(ownerNickname)
+//  - 작성자여부(isOwner)
+//  - 댓글내용(comment)
+//  - 컬러코드(colorCode)
+//  - 시간(time)
+
     private Long commentId;
-    private String time;
-    private MemberInfoDto writer;
+    private Long ownerId;
+    private String ownerNickname;
     private boolean isOwner;
     private String content;
     private int colorCode;
-    private List<MemberInfoDto> mentionList;
-    private List<CommentGetDto> reCommentList;
+    private String time;
 
+    public CommentGetDto(Long commentId, Long ownerId, String ownerNickname,
+        String content, int colorCode, String time) {
+        this.commentId = commentId;
+        this.ownerId = ownerId;
+        this.ownerNickname = ownerNickname;
+        this.content = content;
+        this.colorCode = colorCode;
+        this.time = time;
+    }
 }

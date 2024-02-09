@@ -14,8 +14,11 @@ import com.mybrary.backend.domain.member.dto.email.EmailValidationRequestDto;
 import com.mybrary.backend.domain.member.entity.Member;
 import com.mybrary.backend.domain.member.service.MailService;
 import com.mybrary.backend.domain.member.service.MemberService;
-import com.mybrary.backend.global.format.ApiResponse;
-import com.mybrary.backend.global.format.ResponseCode;
+import com.mybrary.backend.global.annotation.AccessToken;
+import com.mybrary.backend.global.annotation.Nickname;
+import com.mybrary.backend.global.format.code.ApiResponse;
+import com.mybrary.backend.global.format.response.ResponseCode;
+import com.mybrary.backend.global.jwt.service.TokenService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -45,8 +48,15 @@ import org.springframework.web.multipart.MultipartFile;
 public class MemberController {
 
     private final ApiResponse response;
-    private final MemberService memberService;
+    private final TokenService tokenService;
     private final MailService mailService;
+    private final MemberService memberService;
+
+    @Operation(summary = "토큰 갱신", description = "리프레쉬 토큰을 통해 액세스 토큰 재발급 요청")
+    @PutMapping
+    public ResponseEntity<?> token(@AccessToken @RequestBody String accessToken) {
+        return response.success(tokenService.reIssueAccessToken(accessToken));
+    }
 
     @Operation(summary = "일반 회원가입", description = "일반 회원가입")
     @PostMapping
@@ -58,7 +68,7 @@ public class MemberController {
         }
 
         Long savedId = memberService.create(requestDto);
-        return response.success(ResponseCode.MEMBER_SIGNUP_SUCCESS.getMessage(), savedId);
+        return response.success(ResponseCode.MEMBER_SIGNUP_SUCCESS, savedId);
     }
 
     @Operation(summary = "소셜 회원가입", description = "소셜 회원가입")
@@ -72,7 +82,7 @@ public class MemberController {
     @PostMapping("/email/verification")
     public ResponseEntity<?> emailVerification(@Valid @RequestBody EmailValidationRequestDto requestDto,
                                                BindingResult bindingResult) {
-        System.out.println(requestDto.getEmail());
+
         if (bindingResult.hasErrors()) {
             return response.fail(bindingResult);
         }
@@ -91,15 +101,17 @@ public class MemberController {
             return response.fail(bindingResult);
         }
 
-        return response.success(ResponseCode.EMAIL_VERIFIED_SUCCESS.getMessage(),
+        return response.success(ResponseCode.EMAIL_VERIFIED_SUCCESS,
                                 mailService.confirmAuthCode(requestDto.getEmail(), requestDto.getAuthNum(), servletResponse));
     }
 
-    @Operation(summary = "닉네임 검사", description = "닉네임 유효성 및 중복 검사")
-    @GetMapping("/nickname")
-    public ResponseEntity<?> nicknameCheck(@RequestParam String nickname) {
-        return new ResponseEntity<>(HttpStatus.OK);
+    @Operation(summary = "닉네임 중복 검사", description = "닉네임의 중복 여부를 검사")
+    @GetMapping("/nickname/{nickname}/exists")
+    public ResponseEntity<?> nicknameExists(@Nickname @PathVariable String nickname) {
+        boolean result = memberService.checkNicknameDuplication(nickname);
+        return response.success(result ? ResponseCode.DUPLICATE_NICKNAME : ResponseCode.NICKNAME_AVAILABLE, result);
     }
+
 
     @Operation(summary = "일반 로그인", description = "일반 로그인")
     @PostMapping("/login")
@@ -111,8 +123,7 @@ public class MemberController {
             return response.fail(bindingResult);
         }
 
-        memberService.login(requestDto, httpServletResponse);
-        return response.success(ResponseCode.LOGIN_SUCCESS.getMessage());
+        return response.success(ResponseCode.LOGIN_SUCCESS, memberService.login(requestDto, httpServletResponse));
     }
 
     @Operation(summary = "소셜 로그인", description = "소셜 로그인")
@@ -121,15 +132,16 @@ public class MemberController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @Operation(summary = "로그아웃", description = "로그아웃")
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(@Parameter(hidden = true) Authentication authentication,
+                                    HttpServletResponse servletResponse) {
+        return response.success(ResponseCode.LOGOUT_SUCCESS, memberService.logout(authentication.getName(), servletResponse));
+    }
+
     @Operation(summary = "비밀번호 재설정(비번찾기)", description = "비밀번호를 잃어버렸을 때 비밀번호 재설정")
     @PutMapping("/password-reset")
     public ResponseEntity<?> resetPassword(@RequestBody PasswordUpdateDto password) {
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @Operation(summary = "로그아웃", description = "로그아웃")
-    @PostMapping("/logout")
-    public ResponseEntity<?> logout() {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -139,7 +151,7 @@ public class MemberController {
         Member me = memberService.findMember(authentication.getName());
         Long myId = me.getId();
         List<MyFollowingDto> result = memberService.getAllMyFollowing(myId);
-        return response.success(ResponseCode.FOLLOWINGS_FETCH_SUCCESS.getMessage(), result);
+        return response.success(ResponseCode.FOLLOWINGS_FETCH_SUCCESS, result);
     }
 
     @Operation(summary = "나의 팔로워 리스트", description = "나의 팔로워 리스트")
@@ -148,7 +160,7 @@ public class MemberController {
         Member me = memberService.findMember(authentication.getName());
         Long myId = me.getId();
         List<MyFollowerDto> result = memberService.getAllMyFollower(myId);
-        return response.success(ResponseCode.FOLLOWERS_FETCH_SUCCESS.getMessage(), result);
+        return response.success(ResponseCode.FOLLOWERS_FETCH_SUCCESS, result);
     }
 
     @Operation(summary = "특정회원의 팔로잉 리스트", description = "특정회원의 팔로잉 리스트")
@@ -158,7 +170,7 @@ public class MemberController {
         Member me = memberService.findMember(authentication.getName());
         Long myId = me.getId();
         List<FollowingDto> result = memberService.getAllFollowing(myId, memberId);
-        return response.success(ResponseCode.FOLLOWINGS_FETCH_SUCCESS.getMessage(), result);
+        return response.success(ResponseCode.FOLLOWINGS_FETCH_SUCCESS, result);
     }
 
     @Operation(summary = "특정회원의 팔로워 리스트", description = "특정회원의 팔로워 리스트")
@@ -168,21 +180,21 @@ public class MemberController {
         Member me = memberService.findMember(authentication.getName());
         Long myId = me.getId();
         List<FollowerDto> result = memberService.getAllFollower(myId, memberId);
-        return response.success(ResponseCode.FOLLOWERS_FETCH_SUCCESS.getMessage(), result);
+        return response.success(ResponseCode.FOLLOWERS_FETCH_SUCCESS, result);
     }
 
     @Operation(summary = "팔로우하기", description = "특정회원을 팔로우하기")
     @PostMapping("/{id}/follow")
-    public ResponseEntity<?> follow(@Parameter(hidden = true) Authentication authentication, @PathVariable(name = "id") Long memberId) {
-        Member me = memberService.findMember(authentication.getName());
-        Long myId = me.getId();
-        memberService.follow(myId, memberId);
+    public ResponseEntity<?> follow(@Parameter(hidden = true) Authentication authentication,
+                                    @PathVariable(name = "id") Long memberId) {
+        memberService.follow(authentication.getName(), memberId, false);
         return response.success(ResponseCode.FOLLOW_SUCCESS.getMessage());
     }
 
     @Operation(summary = "언팔로우하기", description = "특정회원을 언팔로우하기")
     @DeleteMapping("/{id}/unfollow")
-    public ResponseEntity<?> unfollow(@Parameter(hidden = true) Authentication authentication, @PathVariable(name = "id") Long memberId) {
+    public ResponseEntity<?> unfollow(@Parameter(hidden = true) Authentication authentication,
+                                      @PathVariable(name = "id") Long memberId) {
         Member me = memberService.findMember(authentication.getName());
         Long myId = me.getId();
         memberService.unfollow(myId, memberId);
@@ -191,26 +203,38 @@ public class MemberController {
 
     @Operation(summary = "팔로워끊기", description = "특정회원이 나를 팔로우한 것을 끊기")
     @DeleteMapping("/{id}/follower")
-    public ResponseEntity<?> deleteFollower(@Parameter(hidden = true) Authentication authentication, @PathVariable(name = "id") Long memberId) {
+    public ResponseEntity<?> deleteFollower(@Parameter(hidden = true) Authentication authentication,
+                                            @PathVariable(name = "id") Long memberId) {
         Member me = memberService.findMember(authentication.getName());
         Long myId = me.getId();
         memberService.deleteFollower(myId, memberId);
         return response.success(ResponseCode.FOLLOWER_DELETE_SUCCESS.getMessage());
     }
 
-    /* 설정페이지에 필요한 API */
+    @Operation(summary = "팔로우요청 취소", description = "내가 어떤 회원을 팔로우요청 보냈는데(상대방이 계정 비공개라 팔로우를 요청함) 취소하고 싶을 때")
+    @PostMapping("/{id}/follow/cancel")
+    public ResponseEntity<?> followCancel(@Parameter(hidden = true) Authentication authentication,
+                                            @PathVariable(name = "id") Long memberId) {
 
+        memberService.followCancel(authentication.getName(), memberId);
+
+        return response.success(ResponseCode.FOLLOW_CANCEL_SUCCESS.getMessage());
+    }
+
+    /* 설정페이지에 필요한 API */
     @Operation(summary = "회원 정보 수정", description = "닉네임, 프로필이미지, 소개,  수정")
     @PutMapping("/profile")
-    public ResponseEntity<?> updateProfile(@Parameter(hidden = true) Authentication authentication, @RequestBody MemberUpdateDto member, @RequestParam
-    MultipartFile multipartFile) {
+    public ResponseEntity<?> updateProfile(@Parameter(hidden = true) Authentication authentication,
+                                           @RequestBody MemberUpdateDto member, @RequestParam
+                                           MultipartFile multipartFile) {
         memberService.updateProfile(member);
         return response.success(ResponseCode.MEMBER_INFO_UPDATE_SUCCESS.getMessage());
     }
 
     @Operation(summary = "비밀번호 재설정(로그인후)", description = "로그인 후 비밀번호 재설정")
     @PutMapping("/password-update")
-    public ResponseEntity<?> updatePassword(@Parameter(hidden = true) Authentication authentication, @RequestBody PasswordUpdateDto password) {
+    public ResponseEntity<?> updatePassword(@Parameter(hidden = true) Authentication authentication,
+                                            @RequestBody PasswordUpdateDto password) {
         Member me = memberService.findMember(authentication.getName());
         Long myId = me.getId();
         memberService.updatePassword(myId, password);
@@ -219,7 +243,8 @@ public class MemberController {
 
     @Operation(summary = "계정 탈퇴", description = "계정 탈퇴 (삭제처리)")
     @DeleteMapping("/secession")
-    public ResponseEntity<?> secession(@Parameter(hidden = true) Authentication authentication, @RequestBody SecessionRequestDto secession) {
+    public ResponseEntity<?> secession(@Parameter(hidden = true) Authentication authentication,
+                                       @RequestBody SecessionRequestDto secession) {
         memberService.secession(secession);
         return response.success(ResponseCode.ACCOUNT_SECESSION_SUCCESS.getMessage());
     }

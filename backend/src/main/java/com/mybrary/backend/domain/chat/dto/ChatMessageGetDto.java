@@ -1,6 +1,5 @@
 package com.mybrary.backend.domain.chat.dto;
 
-import com.mybrary.backend.domain.contents.thread.dto.ThreadSimpleGetDto;
 import com.mybrary.backend.domain.member.dto.MemberInfoDto;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
@@ -25,7 +24,11 @@ public class ChatMessageGetDto {
     private Long chatId;
     private MemberInfoDto sender;
     private String message;
-    private ThreadSimpleGetDto thread;
+    private Long threadId;
+    private String threadImageUrl;
+    private Long writerId;
+    private String writerNickname;
+    private String writerImageUrl;
     private boolean isRead;
     private LocalDateTime createdAt;
 

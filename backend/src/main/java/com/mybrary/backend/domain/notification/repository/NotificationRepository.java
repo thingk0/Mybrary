@@ -1,12 +1,13 @@
 package com.mybrary.backend.domain.notification.repository;
 
 import com.mybrary.backend.domain.notification.entity.Notification;
+import com.mybrary.backend.domain.notification.repository.custom.NotificationRepositoryCustom;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface NotificationRepository extends JpaRepository<Notification, Long> {
+public interface NotificationRepository extends JpaRepository<Notification, Long>, NotificationRepositoryCustom {
 
     /* 나의 알림 조회 */
     @Query("select n from Notification n where n.receiver.id = :myId and n.isRead = false")

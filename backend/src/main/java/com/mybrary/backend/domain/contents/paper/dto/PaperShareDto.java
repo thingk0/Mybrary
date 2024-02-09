@@ -19,8 +19,8 @@ public class PaperShareDto {
      *  여러명 선택해서 공유할 수 있으니 멤버아이디 리스트 포함
      */
 
+    private Long chatRoomId;
+    private Long receiverId;
     private Long threadId;
-    private Long paperId;
-    private List<Long> memberIdList;
 
 }

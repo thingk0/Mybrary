@@ -17,7 +17,7 @@ function LoginForm() {
   const navigateToErrorPage = () => {
     navigate("/error");
   };
-  const [isLoading, setIsLoading] = useState(false);
+  //  const [isLoading, setIsLoading] = useState(false);
 
   // 유저상태 전역 관리를 위한 코드
   const setUser = useUserStore((state) => state.setUser);
@@ -48,12 +48,10 @@ function LoginForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
     try {
       // 로그인 요청 보내기
 
       const data = await login(formData);
-      console.log(data);
       if (data.status === "SUCCESS") {
         // useStore에 data안에 들어있는 기본 정보들을 저장해라
         localStorage.setItem("accessToken", data.data.token);
@@ -66,7 +64,8 @@ function LoginForm() {
             }
           } catch (e) {
             //웹소켓 연결 실패
-            console.log(e);
+          } finally {
+            setFormData({});
           }
         }
         await socketConnect();
@@ -81,7 +80,6 @@ function LoginForm() {
         });
 
         navigate(`/mybrary/${data.data.memberInfo.memberId}`);
-        // navigate(`/mybrary/userid`);
       } else {
         // 이메일, 비밀번호 불일치
         setIsLoginFail(true);
@@ -89,7 +87,6 @@ function LoginForm() {
     } catch (e) {
       // 전송 오류 발생 시
       // 서버에러. 에러페이지로 이동
-      console.log(e);
       navigateToErrorPage();
     }
   };

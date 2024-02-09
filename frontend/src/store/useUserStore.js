@@ -5,8 +5,8 @@ const useUserStore = create(
   persist(
     (set) => ({
       user: {
-        email: "",
         memberId: "",
+        email: "",
         nickname: "",
         bookshelfId: 0,
       },

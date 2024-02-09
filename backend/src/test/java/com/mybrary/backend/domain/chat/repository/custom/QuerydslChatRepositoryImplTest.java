@@ -1,14 +1,11 @@
 package com.mybrary.backend.domain.chat.repository.custom;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import com.mybrary.backend.domain.image.entity.Image;
 import com.mybrary.backend.domain.member.dto.SignupRequestDto;
 import com.mybrary.backend.domain.member.entity.Member;
 import com.mybrary.backend.domain.member.repository.MemberRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -30,9 +27,9 @@ class QuerydslChatRepositoryImplTest {
 
         Image.builder()
              .name("image")
-            .originUr1l("originUrl")
-            .thumbnailUrl("thumbNailUrl")
-            .originName("originName")
+            .url("originUrl")
+//            .thumbnailUrl("thumbNailUrl")
+//            .originName("originName")
 
              .build();
 

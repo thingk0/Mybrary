@@ -35,10 +35,14 @@ export default function Nav() {
     setModalIsOpen(true);
   };
 
-  const handleLogOut = () => {
-    doLogout();
-    setUser(null);
-    navigate("/join");
+  const handleLogOut = async () => {
+    try {
+      await doLogout();
+      setUser(null);
+      navigate("/join");
+    } catch (e) {
+      navigate("/error");
+    }
   };
 
   return (

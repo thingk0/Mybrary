@@ -26,4 +26,9 @@ public class ChatRoomGetDto {
     private LocalDateTime recentMessageTime;
     private int newMessageCount;
 
+    public ChatRoomGetDto(Long chatRoomId, MemberInfoDto joinMember) {
+        this.chatRoomId = chatRoomId;
+        this.joinMember = joinMember;
+    }
+
 }
