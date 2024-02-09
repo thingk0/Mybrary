@@ -1,5 +1,6 @@
 
 package com.mybrary.backend.domain.mybrary.service.impl;
+
 import com.mybrary.backend.domain.book.repository.BookRepository;
 import com.mybrary.backend.domain.contents.thread.repository.ThreadRepository;
 import com.mybrary.backend.domain.follow.repository.FollowRepository;
@@ -26,12 +27,14 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Service
 public class MybraryServiceImpl implements MybraryService {
+
     private final MemberService memberService;
     private final MybraryRepository mybraryRepository;
     private final ThreadRepository threadRepository;
     private final BookRepository bookRepository;
     private final FollowRepository followRepository;
     private final ImageRepository imageRepository;
+
     @Override
     public MybraryGetDto getMybrary(String email) {
         Long myId = memberService.findMember(email).getId();
@@ -42,6 +45,7 @@ public class MybraryServiceImpl implements MybraryService {
         mybrary.setFollowingCount(followRepository.countMyFollowing(myId).orElse(0));
         return mybrary;
     }
+
     @Override
     public MybraryOtherGetDto getOtherMybrary(String myEmail, Long memberid) {
         Long myId = memberService.findMember(myEmail).getId();
@@ -50,18 +54,19 @@ public class MybraryServiceImpl implements MybraryService {
         mybrary.setBookCount(bookRepository.countMyBook(mybrary.getBookShelfId()).orElse(0));
         mybrary.setFollowerCount(followRepository.countMyFollower(memberid).orElse(0));
         mybrary.setFollowingCount(followRepository.countMyFollowing(memberid).orElse(0));
-        if(followRepository.findFollow(myId, memberid)!=null){
+        if (followRepository.findFollow(myId, memberid) != null) {
             mybrary.setFollowed(true);
         }
         return mybrary;
     }
+
     @Transactional
     @Override
     public void updateMybrary(String email, MybraryUpdateDto mybrary) {
 
         Member member = memberService.findMember(email);
         Mybrary oldMybrary = mybraryRepository.findById(mybrary.getMybraryId()).orElseThrow(MybraryNotFoundException::new);
-        if(!oldMybrary.getMember().getId().equals(member.getId())){
+        if (!oldMybrary.getMember().getId().equals(member.getId())) {
             throw new NotMybraryException();
         }
 
