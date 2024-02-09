@@ -26,26 +26,9 @@ export default function Edit({
     setToolbarZIndex2(1);
   };
 
-  const [value, setValue] = useState({
-    image1: null,
-    image2: null,
-  });
-  const handleChange1 = (name, valu) => {
-    setValue((prevValue) => ({
-      ...prevValue,
-      [name]: valu,
-    }));
+  const handleChange = (name, value) => {
     const updatedPapers = [...papers];
-    updatedPapers[currentPage].image1 = value.valu;
-    setPapers(updatedPapers);
-  };
-  const handleChange2 = (name, valu) => {
-    setValue((prevValue) => ({
-      ...prevValue,
-      [name]: valu,
-    }));
-    const updatedPapers = [...papers];
-    updatedPapers[currentPage].image2 = value.valu;
+    updatedPapers[currentPage][name] = value;
     setPapers(updatedPapers);
   };
 
@@ -150,15 +133,15 @@ export default function Edit({
       <FileInput
         className={item[`img2_${papers[currentPage].layoutType}`]}
         name="image2"
-        value={value.image2}
-        onChange={handleChange2}
+        value={papers[currentPage].image2}
+        onChange={handleChange}
       />
 
       <FileInput
         className={item[`img1_${papers[currentPage].layoutType}`]}
         name="image1"
-        value={value.image1}
-        onChange={handleChange1}
+        value={papers[currentPage].image1}
+        onChange={handleChange}
       />
     </div>
   );
