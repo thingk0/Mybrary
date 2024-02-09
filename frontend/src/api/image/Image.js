@@ -1,10 +1,17 @@
 import axios from "axios";
 
-// 아마 수정 해야 될수도?
-/* 이미지 업로드 */
-export async function uplodaImage(object) {
+export async function uplodaImage(formData) {
   try {
-    const response = await axios.post("/api/v1/image", object);
+    const response = await axios.post("/image", formData);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function getImageList(imageIdArr) {
+  try {
+    const response = await axios.post("/get-image", { imageIds: imageIdArr });
     return response.data;
   } catch (error) {
     throw error;
