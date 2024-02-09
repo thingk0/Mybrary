@@ -20,7 +20,7 @@ export async function getFollowingList(id) {
   }
 }
 
-/* 특정 회원 팔로잉 리스트 조회 */
+/* 특정 회원 팔로워 리스트 조회 */
 export async function getFollowerList(id) {
   try {
     const response = await axios.get(BASE_URL + `member/${id}/followers`);
@@ -63,7 +63,7 @@ export async function deleteFollow(id) {
 /* 팔로워 끊기 (나를 팔로우 하고 있는 사람 끊기) */
 export async function deleteFollower(id) {
   try {
-    const response = await axios.delete(BASE_URL + `member/${id}/unfollow`);
+    const response = await axios.delete(BASE_URL + `member/${id}/follower`);
     return response.data;
   } catch (error) {
     throw error;

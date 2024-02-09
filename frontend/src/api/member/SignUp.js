@@ -32,6 +32,7 @@ export async function verifyCode(email, code) {
       email: email,
       authNum: code,
     });
+    console.log(response);
     return response.data;
   } catch (error) {
     throw error;

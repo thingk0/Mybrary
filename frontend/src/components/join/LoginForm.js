@@ -5,7 +5,7 @@ import useUserStore from "../../store/useUserStore";
 import useStompStore from "../../store/useStompStore";
 import useNotificationStore from "../../store/useNotificationStore";
 import styles from "./LoginForm.module.css";
-import Loading from "../common/Loading";
+
 
 function LoginForm() {
   /* 로그인하고 바로 stompClient 초기화. */
@@ -16,7 +16,6 @@ function LoginForm() {
   const navigateToErrorPage = () => {
     navigate("/error");
   };
-  //  const [isLoading, setIsLoading] = useState(false);
 
   // 유저상태 전역 관리를 위한 코드
   const setUser = useUserStore((state) => state.setUser);

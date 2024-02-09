@@ -37,14 +37,6 @@
   color: var(--main3);
 }
 
-.newPage {
-  background-color: var(--gomin3);
-  color: var(--main4);
-}
-.newPage:hover {
-  background-color: #acbee6;
-}
-
 .deletePage {
   background-color: var(--gomin5);
   color: var(--main4);

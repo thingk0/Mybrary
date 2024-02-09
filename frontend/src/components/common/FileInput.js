@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import placeholderImg from "../../assets/easel_01.png";
+import placeholderImg from "../../assets/img.png";
 import resetImg from "../../assets/easel_01.png";
 import "./FileInput.css";
 
@@ -67,7 +67,7 @@ function FileInput({ className = "", name, value, initialPreview, onChange }) {
       {/* 선택된 파일이 있을 때만 초기화 버튼 표시 */}
       {value && (
         <button className="FileInput-clear-button" onClick={handleClearClick}>
-          <img src={resetImg} alt="선택해제" />
+          X
         </button>
       )}
     </div>

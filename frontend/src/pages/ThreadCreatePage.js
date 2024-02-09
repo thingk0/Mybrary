@@ -210,7 +210,13 @@ export default function ThreadCreatePage() {
           </div>
 
           <div className={styles.postButtons}>
-            <div className={s(styles.postButton)} onClick={() => saveContent()}>
+            <div
+              className={s(styles.postButton)}
+              onClick={() => {
+                saveContent();
+                setModalIsOpen(true);
+              }}
+            >
               게시
             </div>
           </div>

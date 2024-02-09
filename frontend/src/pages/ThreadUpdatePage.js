@@ -46,18 +46,16 @@ export default function ThreadUpdatePage() {
     2551,
   ];
 
-  const [bookId, setBookId] = useState(0); // 책 ID 상태 추가
   useEffect(() => {
     // 백엔드에서 데이터를 가져오는 로직을 구현합니다.
     // 예시를 위해 목 데이터를 사용합니다.
     const fetchedData = {
-      bookId: 1,
       paperList: [
         {
           content1: "<p>첫 번째 페이지의 첫 번째 텍스트 내용입니다.</p>",
           content2: "<p>첫 번째 페이지의 두 번째 텍스트 내용입니다.</p>",
-          image1: null,
-          image2: null,
+          image1: "null",
+          image2: "null",
           layoutType: 2333,
           tagList: ["태그1", "태그2"],
           mentionIdList: [101, 102],
@@ -65,8 +63,8 @@ export default function ThreadUpdatePage() {
         {
           content1: "<p>두 번째 페이지의 첫 번째 텍스트 내용입니다.</p>",
           content2: "<p>두 번째 페이지의 두 번째 텍스트 내용입니다.</p>",
-          image1: null,
-          image2: null,
+          image1: "null",
+          image2: "null",
           layoutType: 2332,
           tagList: ["태그3", "태그4"],
           mentionIdList: [103, 104],
@@ -74,9 +72,9 @@ export default function ThreadUpdatePage() {
         {
           content1: "<p>세 번째 페이지의 첫 번째 텍스트 내용입니다.</p>",
           content2: "<p>세 번째 페이지의 두 번째 텍스트 내용입니다.</p>",
-          image1: null,
+          image1: "null",
           image2: null,
-          layoutType: 2331,
+          layoutType: 1303,
           tagList: ["태그5", "태그6"],
           mentionIdList: ["105", 106],
         },
@@ -85,7 +83,6 @@ export default function ThreadUpdatePage() {
       scarpEnable: true,
     };
 
-    setBookId(fetchedData.bookId);
     setPaperPublic(fetchedData.paperPublic);
     setScarpEnable(fetchedData.scarpEnable);
 
@@ -121,7 +118,6 @@ export default function ThreadUpdatePage() {
     });
 
     const payload = {
-      bookId,
       paperList,
       paperPublic,
       scarpEnable,
@@ -152,7 +148,6 @@ export default function ThreadUpdatePage() {
             setPapers={setPapers}
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
-            initialPaper={initialPaper}
           />
         </div>
         <div
@@ -202,38 +197,60 @@ export default function ThreadUpdatePage() {
           </div>
         </div>
         <div className={styles.setting}>
-          <div className={styles.title}>책선택</div>
-          <div className={styles.subtitle}>
-            쓰레드를 끼워넣을 책을 선택하세요
-          </div>
-          <div className={styles.settingButtons}>
-            <button>선택되지않음</button>
-          </div>
-
           <div className={styles.title}>공개설정</div>
           <div className={styles.subtitle}>
-            나만보기일 경우 남에게 보여지지 않습니다
+            나만보기일 경우 스레드가 남에게 보여지지 않습니다.
           </div>
           <div className={styles.settingButtons}>
-            <button onClick={() => setPaperPublic(!paperPublic)}>
-              {paperPublic ? "공개" : "나만보기"}
-            </button>
+            <div
+              className={paperPublic ? styles.select : styles.button}
+              onClick={() => setPaperPublic(true)}
+            >
+              공개
+            </div>
+
+            <div
+              className={!paperPublic ? styles.select : styles.button}
+              onClick={() => {
+                setPaperPublic(false);
+                setScarpEnable(false);
+              }}
+            >
+              나만보기
+            </div>
           </div>
 
           <div className={styles.title}>스크랩허용</div>
           <div className={styles.subtitle}>
-            나만보기일 경우 스크랩허용을 할 수 없습니다
+            나만보기일 경우 스크랩허용을 할 수 없습니다.
           </div>
           <div className={styles.settingButtons}>
-            <button onClick={() => setScarpEnable(!scarpEnable)}>
-              {scarpEnable ? "스크랩 허용" : "스크랩 비허용"}
-            </button>
+            {paperPublic && (
+              <div
+                className={scarpEnable ? styles.select : styles.button}
+                onClick={() => setScarpEnable(true)}
+              >
+                스크랩 허용
+              </div>
+            )}
+
+            <div
+              className={!scarpEnable ? styles.select : styles.button}
+              onClick={() => setScarpEnable(false)}
+            >
+              스크랩 비허용
+            </div>
           </div>
 
           <div className={styles.postButtons}>
-            <button className={styles.postButton} onClick={() => saveContent()}>
+            <div
+              className={s(styles.postButton)}
+              onClick={() => {
+                saveContent();
+              }}
+            >
               게시
-            </button>
+            </div>
           </div>
         </div>
       </div>

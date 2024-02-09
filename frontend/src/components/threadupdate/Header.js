@@ -6,12 +6,7 @@ export default function Header({
   setPapers,
   currentPage,
   setCurrentPage,
-  initialPaper,
 }) {
-  const addPaper = () => {
-    setPapers([...papers, initialPaper()]);
-    setCurrentPage(papers.length);
-  };
   const removePaper = (pageIndex) => {
     const updatedPapers = papers.filter((_, index) => index !== pageIndex);
     setPapers(updatedPapers);
@@ -28,7 +23,7 @@ export default function Header({
 
   return (
     <div className={styles.header_container}>
-      <div className={styles.title}>스레드 작성</div>
+      <div className={styles.title}>스레드 수정</div>
       <div className={styles.buttons}>
         {papers.map((_, index) => (
           <div
@@ -42,14 +37,6 @@ export default function Header({
             페이퍼 {index + 1}
           </div>
         ))}
-        {papers.length < 5 && (
-          <div className={styles.newPage} onClick={addPaper}>
-            새로운
-            <br />
-            페이퍼
-            <br />
-          </div>
-        )}
         {papers.length > 1 && (
           <div
             className={styles.deletePage}

@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import Nav from "./components/atom/Nav";
 import "./App.css";
 import axios from "axios";
@@ -56,10 +56,14 @@ export default function App() {
     }
     socketConnect();
   }, []);
+  const location = useLocation(); // 현재 위치 정보를 가져옵니다.
+
+  // 현재 경로가 홈('/')이면 Nav를 숨깁니다.
+  const showNav = location.pathname !== "/" && location.pathname !== "/join";
 
   return (
     <>
-      <Nav />
+      {showNav && <Nav />}
       <div>
         <Outlet />
       </div>
