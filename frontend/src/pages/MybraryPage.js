@@ -27,7 +27,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import useUserStore from "../store/useUserStore";
 import useStompStore from "../store/useStompStore";
 import 혜선누나 from "../assets/혜선누나.jpg";
-import { getMyMybrary, updateMybrary } from "../api/mybrary/Mybrary";
+import {
+  getMyMybrary,
+  getMybrary,
+  updateMybrary,
+} from "../api/mybrary/Mybrary";
 import gomimg from "../assets/곰탱이.png";
 import BigModal from "../components/common/BigModal";
 import axios from "axios";
@@ -99,7 +103,10 @@ export default function MybraryPage() {
   };
 
   useEffect(() => {
+    const nowuser = Params.userid;
+    setCheckme(false);
     async function fetchMybraryData() {
+      setShowListType(null);
       try {
         const memberId = user.memberId;
         console.log(memberId);
@@ -121,10 +128,11 @@ export default function MybraryPage() {
 
           setIsLoading(false);
         } else {
-          const response = await getMyMybrary(nowuser);
+          console.log(nowuser);
+          const response = await getMybrary(nowuser);
           console.log("상대방의라이브러리입니다");
           setTestuser(response);
-          setBgColor(response.data.backgroundColor - 1);
+          setBgColor(response.data.backgroundColor);
           setEsColor(easelImgs[response.data.easelColor - 1]);
           setEaselnum(response.data.easelColor);
           setTbColor(tableImgs[response.data.deskColor - 1]);
@@ -141,7 +149,7 @@ export default function MybraryPage() {
     }
 
     fetchMybraryData();
-  }, []);
+  }, [nowuser]);
 
   if (isLoading) {
     return <Loading></Loading>; // 로딩 중일 때 보여줄 컴포넌트 또는 메시지
