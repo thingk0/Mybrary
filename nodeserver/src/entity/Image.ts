@@ -20,15 +20,14 @@ export class Image {
 
   @Column({
     type: "timestamp",
-    precision: 6,
-    nullable: true,
+    default: () => "CURRENT_TIMESTAMP",
   })
   created_at: Date | null;
 
   @Column({
     type: "timestamp",
-    precision: 6,
-    nullable: true,
+    onUpdate: "CURRENT_TIMESTAMP", // MySQL의 경우, 업데이트 시간 자동 갱신
+    default: () => "CURRENT_TIMESTAMP",
   })
   modified_at: Date | null;
 
