@@ -5,6 +5,7 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @NoArgsConstructor
@@ -19,10 +20,12 @@ public class MyCategoryGetDto {
 
     private Long categoryId;
     private String categoryName;
+
+    @Setter
     private List<MyBookGetDto> bookList;
 
-    public void setBookList(List<MyBookGetDto> myBookGetDtoList){
-        this.bookList = myBookGetDtoList;
+    public MyCategoryGetDto(Long categoryId, String categoryName) {
+        this.categoryId = categoryId;
+        this.categoryName = categoryName;
     }
-
 }
