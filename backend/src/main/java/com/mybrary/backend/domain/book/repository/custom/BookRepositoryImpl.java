@@ -9,6 +9,7 @@ import static com.mybrary.backend.domain.image.entity.QImage.image;
 import static com.mybrary.backend.domain.member.entity.QMember.member;
 import static com.mybrary.backend.domain.pickbook.entity.QPickBook.pickBook;
 
+import com.mybrary.backend.domain.book.dto.responseDto.BookForMainThreadDto;
 import com.mybrary.backend.domain.book.dto.responseDto.BookGetDto;
 import com.mybrary.backend.domain.book.dto.responseDto.BookListGetFromPaperDto;
 import com.mybrary.backend.domain.book.dto.responseDto.MyBookGetDto;
@@ -89,7 +90,17 @@ public class BookRepositoryImpl implements BookRepositoryCustom {
                                         .fetch()
         );
     }
-}
+
+    @Override
+    public Optional<List<BookForMainThreadDto>> getBookForMainThread(Long writerId, Long paperId) {
+        return Optional.ofNullable(query.select(Projections.constructor(BookForMainThreadDto.class, book.id, book.coverTitle))
+                                       .from(book)
+                                       .leftJoin(scrap).on(scrap.book.id.eq(book.id))
+                                       .leftJoin(paper).on(scrap.paper.id.eq(paper.id))
+                                       .where(paper.member.id.eq(writerId).and(paper.id.eq(paperId)).and(book.member.id.eq(writerId)))
+                                       .fetch());
+    }
+
 //    @Override
 //    public Optional<List<MyBookGetDto>> getAllMyBookList(Long memberId, Long categoryId) {
 //        return Optional.ofNullable(query.select(Projections.constructor(MyBookGetDto.class, book.id, book.coverTitle, scrap.count()))
@@ -99,3 +110,5 @@ public class BookRepositoryImpl implements BookRepositoryCustom {
 //                                        .groupBy(book.id)
 //                                        .fetch());
 //    }
+
+}

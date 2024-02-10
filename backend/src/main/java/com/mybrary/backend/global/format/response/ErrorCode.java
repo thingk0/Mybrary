@@ -73,6 +73,7 @@ public enum ErrorCode {
 
     // 스레드 예외 처리
     THREADID_NOT_FOUND(HttpStatus.NOT_FOUND, "스레드 아이디를 찾을 수 없습니다."),
+    MAIN_THREAD_LIST_NOT_FOUND(HttpStatus.NOT_FOUND, "메인피드에서 스레드 리스트 찾을 수 없습니다."),
 
     // 페이퍼 예외 처리
     PAPERLIST_NOT_FOUND(HttpStatus.NOT_FOUND, "페이퍼리스트를 찾을 수 없습니다."),

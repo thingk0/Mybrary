@@ -2,6 +2,8 @@ package com.mybrary.backend.domain.contents.thread.service.impl;
 
 import com.mybrary.backend.domain.book.entity.Book;
 import com.mybrary.backend.domain.book.repository.BookRepository;
+import com.mybrary.backend.domain.comment.repository.CommentRepository;
+import com.mybrary.backend.domain.contents.like.repository.LikeRepository;
 import com.mybrary.backend.domain.contents.like.service.LikeService;
 import com.mybrary.backend.domain.contents.paper.dto.requestDto.PaperUpdateDto;
 import com.mybrary.backend.domain.contents.paper.dto.requestDto.PostPaperDto;
@@ -33,9 +35,11 @@ import com.mybrary.backend.domain.member.repository.MemberRepository;
 import com.mybrary.backend.domain.mybrary.repository.MybraryRepository;
 import com.mybrary.backend.domain.notification.service.NotificationService;
 import com.mybrary.backend.global.exception.book.BookNotFoundException;
+import com.mybrary.backend.global.exception.image.ImageNotFoundException;
 import com.mybrary.backend.global.exception.member.EmailNotFoundException;
 import com.mybrary.backend.global.exception.member.MemberNotFoundException;
 import com.mybrary.backend.global.exception.paper.PaperListNotFoundException;
+import com.mybrary.backend.global.exception.thread.MainThreadListNotFoundException;
 import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -62,6 +66,8 @@ public class ThreadServiceImpl implements ThreadService {
     private final BookRepository bookRepository;
     private final ScrapRepository scrapRepository;
     private final LikeService likeService;
+    private final LikeRepository likeRepository;
+    private final CommentRepository commentRepository;
     private final NotificationService notificationService;
 
     /* 예외 처리 상황별로 추후 추가할예정 */
@@ -170,33 +176,85 @@ public class ThreadServiceImpl implements ThreadService {
     @Transactional
     @Override
     public List<GetThreadDto> getMainAllThread(Long myId, Pageable pageable) {
+//        /* following중인 멤버(본인 포함) 의 쓰레드 최대 5개와 관련된 정보 dto 생성 */
+//        List<GetThreadDto> threadDtoList = threadRepository
+//            .getFollowingThreadDtoResults(myId, pageable);
+//        /* following중이지 않은 멤버의 쓰레드 최대 10개 조회와 관련 정보 dto 생성*/
+//        int getRandomCount = 10 - threadDtoList.size();
+//        threadDtoList.addAll(
+//            threadRepository.getRandomThreadDtoResults(myId, pageable, getRandomCount));
+//        /* list 내에서 무작위로 순서 배정 */
+//        Collections.shuffle(threadDtoList);
+//
+//        /* followingThreadDtos의 각 threadId에 해당하는 paper관련 정보 조회 */
+//        for (GetThreadDto threadDto : threadDtoList) {
+//            /* threadId에 해당하는 paper 관련 정보 dto 목록 조회 */
+//            List<GetFollowingPaperDto> getFollowingPaperDtoList =
+//                paperRepository.getFollowingPaperDtoResults(threadDto.getThreadId());
+//            /* 페이퍼 관련정보 처리 로직 */
+//            for (GetFollowingPaperDto paperDto : getFollowingPaperDtoList) {
+//                /* 좋아요 여부 판단, 태그목록 포함 처리, 이미지 url들 포함 처리*/
+//                List<String> imageUrls = imageRepository.findByPaperId(paperDto.getId());
+//
+//                paperDto = GetFollowingPaperDto.builder()
+//                                               .isLiked(likeService.checkIsLiked(paperDto.getId(), myId))
+//                                               .tagList(tagService.getTagNameList(paperDto.getId()))
+//                                               .imageUrl1(imageUrls.get(0))
+//                                               .imageUrl2(imageUrls.get(1))
+//                                               .build();
+//            }
+//
+//
+//        }
+
         /* following중인 멤버(본인 포함) 의 쓰레드 최대 5개와 관련된 정보 dto 생성 */
-        List<GetThreadDto> threadDtoList = threadRepository
-            .getFollowingThreadDtoResults(myId, pageable);
+        List<GetThreadDto> threadDtoList = threadRepository.getFollowingThreadDtoResults(myId, pageable).orElseThrow(
+            MainThreadListNotFoundException::new);
+
+        System.out.println("1");
+        System.out.println("크기" + threadDtoList.size());
+
         /* following중이지 않은 멤버의 쓰레드 최대 10개 조회와 관련 정보 dto 생성*/
         int getRandomCount = 10 - threadDtoList.size();
         threadDtoList.addAll(
-            threadRepository.getRandomThreadDtoResults(myId, pageable, getRandomCount));
+            threadRepository.getRandomThreadDtoResults(myId, pageable, getRandomCount).orElseThrow(MainThreadListNotFoundException::new));
+        System.out.println("2");
+        System.out.println("크기" + threadDtoList.size());
+
         /* list 내에서 무작위로 순서 배정 */
         Collections.shuffle(threadDtoList);
 
         /* followingThreadDtos의 각 threadId에 해당하는 paper관련 정보 조회 */
-        for (GetThreadDto threadDto : threadDtoList) {
+        for (int i = 0;i<threadDtoList.size();i++) {
+            GetThreadDto threadDto = threadDtoList.get(i);
+
             /* threadId에 해당하는 paper 관련 정보 dto 목록 조회 */
             List<GetFollowingPaperDto> getFollowingPaperDtoList =
-                paperRepository.getFollowingPaperDtoResults(threadDto.getThreadId());
-            /* 페이퍼 관련정보 처리 로직 */
-            for (GetFollowingPaperDto paperDto : getFollowingPaperDtoList) {
-                /* 좋아요 여부 판단, 태그목록 포함 처리, 이미지 url들 포함 처리*/
-                List<String> imageUrls = imageRepository.findByPaperId(paperDto.getId());
+                paperRepository.getFollowingPaperDtoResults(threadDto.getThreadId()).orElseThrow(PaperListNotFoundException::new);
+                System.out.println("3");
 
-                paperDto = GetFollowingPaperDto.builder()
-                                               .isLiked(likeService.checkIsLiked(paperDto.getId(), myId))
-                                               .tagList(tagService.getTagNameList(paperDto.getId()))
-                                               .imageUrl1(imageUrls.get(0))
-                                               .imageUrl2(imageUrls.get(1))
-                                               .build();
+            /* 페이퍼 관련정보 처리 로직 */
+            for (int j = 0;j<getFollowingPaperDtoList.size();j++) {
+                GetFollowingPaperDto paperDto = getFollowingPaperDtoList.get(j);
+
+                /* 좋아요 여부 판단, 태그목록 포함 처리, 이미지 url들 포함 처리*/
+                List<String> imageUrls = imageRepository.findPaperImage(paperDto.getId()).orElseThrow(ImageNotFoundException::new);
+                System.out.println("4");
+
+                paperDto.setImageUrl1(imageUrls.get(0));
+                if(imageUrls.size()==2) paperDto.setImageUrl2(imageUrls.get(1));
+
+                paperDto.setLikesCount(likeRepository.getLikeCount(paperDto.getId()).orElse(0));
+                paperDto.setCommentCount(commentRepository.getCommentCount(paperDto.getId()).orElse(0));
+                paperDto.setScrapCount(scrapRepository.getScrapCount(paperDto.getId()).orElse(0));
+                paperDto.setLiked(likeService.checkIsLiked(paperDto.getId(), myId));
+                paperDto.setTagList(tagRepository.getTagList(paperDto.getId()).orElse(new ArrayList<>()));
+                System.out.println("5");
+
+                paperDto.setBookList(bookRepository.getBookForMainThread(threadDto.getMemberId(), paperDto.getId()).orElse(new ArrayList<>()));
             }
+
+            threadDto.setPaperList(getFollowingPaperDtoList);
 
         }
         return threadDtoList;

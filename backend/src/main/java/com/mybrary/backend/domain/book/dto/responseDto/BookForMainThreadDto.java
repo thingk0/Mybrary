@@ -10,19 +10,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class BookGetDto {
+public class BookForMainThreadDto {
 
     /**
-     *  책의 표지만 있는 DTO
-     *  (내부 페이퍼에 대한 데이터는 없음)
+     *   메인피드 스레드 조회에서 페이퍼가 포함된 책 목록
+     *
      */
 
     private Long bookId;
-    private MemberInfoDto writer;
-    private String coverTitle;
-    private String url;
-    private int coverLayout;
-    private int coverColorCode;
-    private int bookMarkerIndex;
+    private String title;
 
 }

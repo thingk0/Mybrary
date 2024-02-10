@@ -16,7 +16,7 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class GetThreadDto {
+public class GetThreadRandomDto {
 
     /* 쓰레드 관련 정보 */
     private Long threadId;
@@ -32,14 +32,14 @@ public class GetThreadDto {
 
     private String profileUrl;
 
-    private boolean isFollowed = true;
+    private boolean isFollowed = false;
 
     /* 해당 쓰레드에 포함된 paperId 목록, 이건 따로 조인해서 바인딩해야함 */
     private List<GetFollowingPaperDto> paperList;
 
     @QueryProjection
-    public GetThreadDto(Long threadId, LocalDateTime threadCreatedAt,
-                        Long memberId, String memberName, String nickname, String profileUrl) {
+    public GetThreadRandomDto(Long threadId, LocalDateTime threadCreatedAt,
+                              Long memberId, String memberName, String nickname, String profileUrl) {
         this.threadId = threadId;
         this.threadCreatedAt = threadCreatedAt;
         this.memberId = memberId;

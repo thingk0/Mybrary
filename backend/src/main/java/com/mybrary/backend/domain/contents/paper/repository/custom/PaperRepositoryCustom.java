@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface PaperRepositoryCustom {
 
-    List<GetFollowingPaperDto> getFollowingPaperDtoResults(Long threadId);
+    Optional<List<GetFollowingPaperDto>> getFollowingPaperDtoResults(Long threadId);
 
     Long deletePaperByThreadId(Long threadId);
     Optional<List<PaperGetDto>> getPaperGetDto(Long threadId);

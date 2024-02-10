@@ -25,20 +25,25 @@ public class PaperRepositoryImpl implements PaperRepositoryCustom {
 
     private final JPAQueryFactory query;
 
-    public List<GetFollowingPaperDto> getFollowingPaperDtoResults(Long threadId) {
-        return query.select(
-                        Projections.fields(GetFollowingPaperDto.class,
-                                           paper.id.as("id"),
-                                           paper.layoutType.as("layoutType"),
-                                           paper.content1.as("content1"),
-                                           paper.content2.as("content2"),
-                                           paper.likeCount.as("likeCount"),
-                                           paper.commentCount.as("commentCount"),
-                                           paper.scrapCount.as("scrapCount")
-                        ))
-                    .from(paper)
-                    .leftJoin(thread).on(paper.thread.id.eq(threadId))
-                    .fetch();
+    public Optional<List<GetFollowingPaperDto>> getFollowingPaperDtoResults(Long threadId) {
+//        return query.select(
+//                        Projections.fields(GetFollowingPaperDto.class,
+//                                           paper.id.as("id"),
+//                                           paper.layoutType.as("layoutType"),
+//                                           paper.content1.as("content1"),
+//                                           paper.content2.as("content2"),
+//                                           paper.likeCount.as("likeCount"),
+//                                           paper.commentCount.as("commentCount"),
+//                                           paper.scrapCount.as("scrapCount")
+//                        ))
+//                    .from(paper)
+//                    .leftJoin(thread).on(paper.thread.id.eq(threadId))
+//                    .fetch();
+
+        return Optional.ofNullable(query.select(Projections.constructor(GetFollowingPaperDto.class, paper.id, paper.layoutType, paper.content1, paper.content2, paper.isPaperPublic, paper.isScrapEnabled))
+                                       .from(paper)
+                                       .where(paper.thread.id.eq(threadId))
+                                       .fetch());
     }
 
     @Override
