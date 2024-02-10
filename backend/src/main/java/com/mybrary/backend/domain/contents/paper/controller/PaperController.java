@@ -53,10 +53,10 @@ public class PaperController {
     @Operation(summary = "페이퍼 좋아요", description = "페이퍼 좋아요 또는 좋아요 취소 요청")
     @PostMapping("{id}/toggle-like")
     public ResponseEntity<?> toggleLike(@Parameter(hidden = true) Authentication authentication,
-        @PathVariable(name = "id") Long paperId,
-        @RequestBody Long memberId) {
-        /* responseCode 수정해야함 */
-        return response.success(ResponseCode.PAPER_SCRAPPED, paperService.toggleLike(memberId, paperId));
+        @PathVariable(name = "id") Long paperId) {
+        Member member = memberService.findMember(authentication.getName());
+        Long myId = member.getId();
+        return response.success(ResponseCode.PAPER_SCRAPPED, paperService.toggleLike(myId, paperId));
     }
 
 }

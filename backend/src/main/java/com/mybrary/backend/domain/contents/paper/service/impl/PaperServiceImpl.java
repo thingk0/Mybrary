@@ -13,13 +13,17 @@ import com.mybrary.backend.domain.contents.scrap.entity.Scrap;
 import com.mybrary.backend.domain.contents.scrap.repository.ScrapRepository;
 import com.mybrary.backend.domain.member.entity.Member;
 import com.mybrary.backend.domain.member.repository.MemberRepository;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Log4j2
 @RequiredArgsConstructor
 public class PaperServiceImpl implements PaperService {
 
@@ -53,37 +57,31 @@ public class PaperServiceImpl implements PaperService {
         return null;
     }
 
+    @Transactional
     @Override
     public ToggleLikeResult toggleLike(Long memberId, Long paperId) {
         /* like 엔티티에 가서 memberId와 paperId에 해당하는 정보가 있는지 확인,
          * 좋아요 정보가 있다면 like isDeleted true 설정, 정보가 없다면 like 생성
          *  */
+        Member member = memberRepository.findById(memberId)
+                                        .orElseThrow(() -> new EntityNotFoundException("Member not found with id: " + memberId));
+        Paper paper = paperRepository.findById(paperId)
+                                     .orElseThrow(() -> new EntityNotFoundException("Paper not found with id: " + paperId));
 
-        Member member = memberRepository.findById(memberId).orElseThrow(NullPointerException::new);
-        Paper paper = paperRepository.findById(paperId).orElseThrow(NullPointerException::new);
-        AtomicReference<ToggleLikeResult> toggleLikeResult =  new AtomicReference<>();
+        Optional<Like> isLikePresent = likeRepository.isLikedPaper(memberId, paperId);
 
-        likeRepository.isLikedPaper(memberId, paperId)
-                      .ifPresentOrElse(like -> {
-                          // 좋아요 정보가 있다면 삭제
-                          likeRepository.deleteById(like.getId());
-                          toggleLikeResult.set(ToggleLikeResult.builder()
-                                                             .likeResult("false")
-                                                             .paperId(paperId)
-                                                             .build());
-                      }, () -> {
-                          // 좋아요 정보가 없다면 생성
-                          Like like = Like.builder()
-                                          .member(member)
-                                          .paper(paper)
-                                          .build();
-                          likeRepository.save(like);
-                          toggleLikeResult.set(ToggleLikeResult.builder()
-                                                               .likeResult("true")
-                                                               .paperId(paperId)
-                                                               .build());
-                      });
-
-        return toggleLikeResult.get();
+        if (isLikePresent.isPresent()) {
+            /* 좋아요 정보가 있다면 삭제 */
+            likeRepository.delete(isLikePresent.get());
+            return new ToggleLikeResult("false", paperId); // 좋아요 취소 결과 반환
+        } else {
+            /* 좋아요 정보가 없다면 생성 */
+            Like newLike = Like.builder()
+                               .paper(paper)
+                               .member(member)
+                               .build();
+            likeRepository.save(newLike);
+            return new ToggleLikeResult("true", paperId); // 좋아요 결과 반환
+        }
     }
 }

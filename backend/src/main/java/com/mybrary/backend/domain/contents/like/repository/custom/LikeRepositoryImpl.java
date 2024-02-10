@@ -1,7 +1,6 @@
 package com.mybrary.backend.domain.contents.like.repository.custom;
 
 import static com.mybrary.backend.domain.contents.like.entity.QLike.like;
-import static com.mybrary.backend.domain.contents.paper.entity.QPaper.paper;
 
 import com.mybrary.backend.domain.contents.like.entity.Like;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -13,7 +12,7 @@ public class LikeRepositoryImpl implements LikeRepositoryCustom {
 
     private final JPAQueryFactory query;
 
-    public Optional<Like> isLikedPaper(Long paperId, Long memberId) {
+    public Optional<Like> isLikedPaper(Long memberId, Long paperId) {
         return Optional.ofNullable(query.select(like)
             .from(like)
             .where(like.member.id.eq(memberId).and(like.paper.id.eq(paperId)))

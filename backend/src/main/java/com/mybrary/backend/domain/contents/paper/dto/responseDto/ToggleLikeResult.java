@@ -1,7 +1,15 @@
 package com.mybrary.backend.domain.contents.paper.dto.responseDto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class ToggleLikeResult {
     /* 좋아요 또는 좋아요 취소에 따른 반환값을 문자열 true / false로 반환 */
