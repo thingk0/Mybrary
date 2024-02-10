@@ -40,10 +40,14 @@ public class PaperRepositoryImpl implements PaperRepositoryCustom {
 //                    .leftJoin(thread).on(paper.thread.id.eq(threadId))
 //                    .fetch();
 
-        return Optional.ofNullable(query.select(Projections.constructor(GetFollowingPaperDto.class, paper.id, paper.layoutType, paper.content1, paper.content2, paper.isPaperPublic, paper.isScrapEnabled))
-                                       .from(paper)
-                                       .where(paper.thread.id.eq(threadId))
-                                       .fetch());
+        return Optional.ofNullable(query.select(
+                                            Projections.constructor(GetFollowingPaperDto.class, paper.id, paper.layoutType,
+                                                paper.content1, paper.content2,  paper.likeCount.as("likeCount"),
+                                                paper.commentCount.as("commentCount"),
+                                                paper.scrapCount.as("scrapCount"), paper.isPaperPublic, paper.isScrapEnabled))
+                                        .from(paper)
+                                        .where(paper.thread.id.eq(threadId))
+                                        .fetch());
     }
 
     @Override
@@ -99,24 +103,24 @@ public class PaperRepositoryImpl implements PaperRepositoryCustom {
     @Override
     public Optional<List<PaperGetDto>> getPaperGetDto(Long threadId) {
         return Optional.ofNullable(query.select(
-                        Projections.fields(PaperGetDto.class,
-                                           paper.id.as("id"),
-                                           paper.createdAt.as("createdAt"),
-                                           paper.layoutType.as("layoutType"),
-                                           paper.content1.as("content1"),
-                                           paper.content2.as("content2"),
-                                           image.id.as("imageId1"),
-                                           image.url.as("imageUrl1"),
-                                           image.id.as("imageId2"),
-                                           image.url.as("imageUrl2"),
-                                           paper.likeCount.as("likeCount"),
-                                           paper.commentCount.as("commentCount"),
-                                           paper.scrapCount.as("scrapCount")
-                        ))
-                    .from(paper)
-                    .leftJoin(paperImage).on(paperImage.paper.id.eq(paper.id).and(thread.id.eq(threadId)))
-                    .fetch());
-
+                                            Projections.fields(PaperGetDto.class,
+                                                paper.id.as("paperId"),
+                                                paper.createdAt.as("createdAt"),
+                                                paper.layoutType.as("layoutType"),
+                                                paper.content1.as("content1"),
+                                                paper.content2.as("content2"),
+//                                                image.id.as("imageId1"),
+//                                                image.url.as("imageUrl1"),
+//                                                image.id.as("imageId2"),
+//                                                image.url.as("imageUrl2"),
+                                                paper.likeCount.as("likeCount"),
+                                                paper.commentCount.as("commentCount"),
+                                                paper.scrapCount.as("scrapCount")
+                                            ))
+                                        .from(paper)
+//                                        .leftJoin(paperImage).on(paperImage.paper.id.eq(paper.id).and(thread.id.eq(threadId)))
+                                        .leftJoin(thread).on(paper.thread.id.eq(thread.id))
+                                        .fetch());
     }
 
 

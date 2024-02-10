@@ -106,8 +106,8 @@ public class ThreadServiceImpl implements ThreadService {
                                      .build();
                   paperRepository.save(paper);
                   /* paperImage 객체 생성 */
-                  Image image1 = imageRepository.findById(dto.getImage1()).orElse(null);
-                  Image image2 = imageRepository.findById(dto.getImage2()).orElse(null);
+                  Image image1 = imageRepository.findById(dto.getImageId1()).orElse(null);
+                  Image image2 = imageRepository.findById(dto.getImageId2()).orElse(null);
                   if (image1 != null) {
                         PaperImage paperImage1 = PaperImage.builder()
                                                            .paper(paper)
@@ -207,30 +207,25 @@ public class ThreadServiceImpl implements ThreadService {
 //
 //        }
 
-        /* following중인 멤버(본인 포함) 의 쓰레드 최대 5개와 관련된 정보 dto 생성 */
-        List<GetThreadDto> threadDtoList = threadRepository.getFollowingThreadDtoResults(myId, pageable).orElseThrow(
-            MainThreadListNotFoundException::new);
-
-        System.out.println("1");
-        System.out.println("크기" + threadDtoList.size());
-
-        /* following중이지 않은 멤버의 쓰레드 최대 10개 조회와 관련 정보 dto 생성*/
-        int getRandomCount = 10 - threadDtoList.size();
-        threadDtoList.addAll(
-            threadRepository.getRandomThreadDtoResults(myId, pageable, getRandomCount).orElseThrow(MainThreadListNotFoundException::new));
-        System.out.println("2");
-        System.out.println("크기" + threadDtoList.size());
-
-        /* list 내에서 무작위로 순서 배정 */
-        Collections.shuffle(threadDtoList);
-
-        /* followingThreadDtos의 각 threadId에 해당하는 paper관련 정보 조회 */
-        for (int i = 0;i<threadDtoList.size();i++) {
-            GetThreadDto threadDto = threadDtoList.get(i);
-
-            /* threadId에 해당하는 paper 관련 정보 dto 목록 조회 */
-            List<GetFollowingPaperDto> getFollowingPaperDtoList =
-                paperRepository.getFollowingPaperDtoResults(threadDto.getThreadId()).orElseThrow(PaperListNotFoundException::new);
+          /* following중인 멤버(본인 포함) 의 쓰레드 최대 5개와 관련된 정보 dto 생성 */
+          List<GetThreadDto> threadDtoList = threadRepository.getFollowingThreadDtoResults(myId, pageable).orElseThrow(
+              MainThreadListNotFoundException::new);
+          System.out.println("1");
+          System.out.println("크기" + threadDtoList.size());
+          /* following중이지 않은 멤버의 쓰레드 최대 10개 조회와 관련 정보 dto 생성*/
+          int getRandomCount = 10 - threadDtoList.size();
+          threadDtoList.addAll(
+              threadRepository.getRandomThreadDtoResults(myId, pageable, getRandomCount).orElseThrow(MainThreadListNotFoundException::new));
+          System.out.println("2");
+          System.out.println("크기" + threadDtoList.size());
+          /* list 내에서 무작위로 순서 배정 */
+          Collections.shuffle(threadDtoList);
+          /* followingThreadDtos의 각 threadId에 해당하는 paper관련 정보 조회 */
+          for (int i = 0;i<threadDtoList.size();i++) {
+                GetThreadDto threadDto = threadDtoList.get(i);
+                /* threadId에 해당하는 paper 관련 정보 dto 목록 조회 */
+                List<GetFollowingPaperDto> getFollowingPaperDtoList =
+                    paperRepository.getFollowingPaperDtoResults(threadDto.getThreadId()).orElseThrow(PaperListNotFoundException::new);
                 System.out.println("3");
 
             /* 페이퍼 관련정보 처리 로직 */
@@ -260,9 +255,12 @@ public class ThreadServiceImpl implements ThreadService {
             }
 
             threadDto.setPaperList(getFollowingPaperDtoList);
+            threadDto.setPaperPublic(getFollowingPaperDtoList.get(0).isPaperPublic());
+            threadDto.setScrapEnable(getFollowingPaperDtoList.get(0).isScrapEnable());
 
         }
         return threadDtoList;
+
     }
 
 
@@ -315,13 +313,13 @@ public class ThreadServiceImpl implements ThreadService {
             /* paperGetDtoList 정보 조회 및 생성 */
             List<PaperGetDto> paperGetDtoList = paperRepository.getPaperGetDto(threadId).orElseThrow(PaperListNotFoundException::new);
 
-            /* 페이퍼별 이미지 url 노드서버로부터 반환 요청, image id -> image url  */
-
             /**/
             log.info("2");
-            log.info(paperGetDtoList.size());
+            log.info("size: " + paperGetDtoList.size());
             for (PaperGetDto paperGetDto : paperGetDtoList) {
+                  log.info("fd" + paperGetDto.getPaperId());
                   paperGetDto.updateIsLiked(likeService.checkIsLiked(paperGetDto.getPaperId(), memberId));
+                  log.info("checkisliked");
                   List<Tag> tagList = tagRepository.getTagsByPaperId(paperGetDto.getPaperId())
                                                    .orElse(Collections.emptyList());
                   /**/
@@ -334,6 +332,14 @@ public class ThreadServiceImpl implements ThreadService {
                                              .toList();
                   }
                   paperGetDto.updateTagList(tagNameList);
+
+                  /* image id와 url은 따로 */
+                  Image image1 = imageRepository.findImage1ByPaperId(paperGetDto.getPaperId()).orElse(null);
+                  Image image2 = imageRepository.findImage2ByPaperId(paperGetDto.getPaperId()).orElse(null);
+                  paperGetDto.updateImageId1(image1.getId());
+                  paperGetDto.updateImageId2(image2.getId());
+                  paperGetDto.updateImageUrl1(image1.getUrl());
+                  paperGetDto.updateImageUrl2(image2.getUrl());
             }
             /**/
             log.info("4");
@@ -366,9 +372,14 @@ public class ThreadServiceImpl implements ThreadService {
         Member member = memberRepository.findById(myId)
                                         .orElseThrow(EmailNotFoundException::new);
         List<PaperUpdateDto> paperUpdateDtoList = threadUpdateDto.getPaperList();
+
         for (PaperUpdateDto paperDto : paperUpdateDtoList) {
             Paper paper = paperRepository.findById(paperDto.getPaperId())
                                          .orElseThrow(NullPointerException::new);
+            Scrap scrap = scrapRepository.findByPaperId(paperDto.getPaperId());
+            Book book = bookRepository.findById(paperDto.getBookId()).orElseThrow(NullPointerException::new);
+            scrap.updateBook(book);
+
             paper.updateLayoutType(paperDto.getLayoutType());
             paper.updateContent1(paperDto.getContent1());
             paper.updateContent2(paperDto.getContent2());
@@ -402,7 +413,7 @@ public class ThreadServiceImpl implements ThreadService {
                                         .orElseThrow(NullPointerException::new);
         int count = thread.getPaperList().size();
 
-        paperRepository.deleteAll(thread.getPaperList());
+//        paperRepository.deleteAll(thread.getPaperList());
         threadRepository.delete(thread);
 
         return count;

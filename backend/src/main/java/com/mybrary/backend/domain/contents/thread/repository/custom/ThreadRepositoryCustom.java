@@ -24,7 +24,7 @@ public interface ThreadRepositoryCustom {
         List<Thread> getThreadsByMemberId(Long memberId, Pageable pageable);
         ThreadInfoGetDto getSimpleThreadDtoResult(Long threadId);
     /* */
-    List<ThreadInfoGetDto> getSimpleThreadDtoResults(Long memberId, Pageable pageable);
+//    List<ThreadInfoGetDto> getSimpleThreadDtoResults(Long memberId, Pageable pageable);
 
     ThreadShareGetDto getThreadShare(Long threadId);
 }

@@ -36,7 +36,7 @@ public class GetFollowingPaperDto {
     private boolean isScrapEnable;
 
     public GetFollowingPaperDto(Long paperId, int layoutType, String content1, String content2,
-        int likesCount, int commentCount, int scrapCount) {
+        int likesCount, int commentCount, int scrapCount, boolean isPaperPublic, boolean isScrapEnable) {
         this.id = paperId;
         this.layoutType = layoutType;
         this.content1 = content1;
@@ -44,15 +44,17 @@ public class GetFollowingPaperDto {
         this.likesCount = likesCount;
         this.commentCount = commentCount;
         this.scrapCount = scrapCount;
-    }
-
-    public GetFollowingPaperDto(Long id, int layoutType, String content1, String content2, boolean isPaperPublic,
-                                boolean isScrapEnable) {
-        this.id = id;
-        this.layoutType = layoutType;
-        this.content1 = content1;
-        this.content2 = content2;
         this.isPaperPublic = isPaperPublic;
         this.isScrapEnable = isScrapEnable;
     }
+
+//    public GetFollowingPaperDto(Long id, int layoutType, String content1, String content2, boolean isPaperPublic,
+//                                boolean isScrapEnable) {
+//        this.id = id;
+//        this.layoutType = layoutType;
+//        this.content1 = content1;
+//        this.content2 = content2;
+//        this.isPaperPublic = isPaperPublic;
+//        this.isScrapEnable = isScrapEnable;
+//    }
 }

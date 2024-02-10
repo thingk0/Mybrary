@@ -1,8 +1,10 @@
 package com.mybrary.backend.domain.contents.paper.entity;
 
 import com.mybrary.backend.domain.base.BaseEntity;
+import com.mybrary.backend.domain.contents.scrap.entity.Scrap;
 import com.mybrary.backend.domain.contents.thread.entity.Thread;
 import com.mybrary.backend.domain.member.entity.Member;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -11,6 +13,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -68,6 +73,10 @@ public class Paper extends BaseEntity {
     @Column(name = "is_paper_public")
     private boolean isPaperPublic = true;
 
+    /* 스크랩과 양방향 설정 */
+    @Builder.Default
+    @OneToMany(mappedBy = "paper", cascade = {CascadeType.REMOVE})
+    private List<Scrap> scrapList = new ArrayList<>();
 
     /* 스레드 수정에 사용 */
     public void updateLayoutType(int type){

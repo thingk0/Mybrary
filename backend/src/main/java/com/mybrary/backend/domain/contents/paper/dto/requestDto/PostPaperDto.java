@@ -16,8 +16,8 @@ public class PostPaperDto {
 
     private String content1;
     private String content2;
-    private Long image1;
-    private Long image2;
+    private Long imageId1;
+    private Long imageId2;
     private int layoutType;
     private List<String> tagList;
     private List<Long> mentionList;

@@ -44,6 +44,9 @@ public class Scrap extends BaseEntity {
     @Column(name = "paper_seq")
     private int paperSeq;
 
+    public void updateBook(Book book){
+        this.book = book;
+    }
 }
 
 
