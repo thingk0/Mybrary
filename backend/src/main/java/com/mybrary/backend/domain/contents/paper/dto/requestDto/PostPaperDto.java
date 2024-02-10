@@ -21,4 +21,5 @@ public class PostPaperDto {
     private int layoutType;
     private List<String> tagList;
     private List<Long> mentionList;
+
 }

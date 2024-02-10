@@ -1,13 +1,9 @@
 package com.mybrary.backend.domain.contents.scrap.repository.custom;
 
-import static com.mybrary.backend.domain.comment.entity.QComment.comment;
-import static com.mybrary.backend.domain.contents.paper.entity.QPaper.paper;
 import static com.mybrary.backend.domain.contents.scrap.entity.QScrap.scrap;
-import static com.mybrary.backend.domain.contents.tag.entity.QTag.tag;
 
 import com.mybrary.backend.domain.contents.scrap.entity.Scrap;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -42,6 +38,7 @@ public class ScrapRepositoryImpl implements ScrapRepositoryCustom {
                                            .from(scrap)
                                            .where(scrap.book.id.eq(bookId)).fetchOne());
       }
+
 
 
 }

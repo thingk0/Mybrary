@@ -103,6 +103,42 @@ public class ThreadRepositoryImpl implements ThreadRepositoryCustom {
                         .fetch();
       }
 
+      /* 쓰레드 목록 조회하기에서 사용, 먼저 쓰레드부터 조회 */
+      public List<Thread> getThreadsByMemberId(Long memberId, Pageable pageable){
+            return query.select(thread)
+                        .from(paper)
+                        .leftJoin(thread)
+                        .on(paper.thread.id.eq(thread.id))
+                        .where(paper.member.id.eq(memberId))
+                        .orderBy(thread.createdAt.desc(), paper.createdAt.asc())
+                        .offset(pageable.getOffset())
+                        .limit(pageable.getPageSize())
+                        .fetch();
+      }
+
+      /* 이것도 쓰레드 목록 조회하기에서 사용, 쓰레드별로 페이퍼 하나에 대한 정보를 조회하도록 함 */
+      @Override
+      public ThreadInfoGetDto getSimpleThreadDtoResult(Long threadId){
+            return query.select(Projections.constructor(ThreadInfoGetDto.class,
+                            paper.thread.id,
+                            image.url,
+                            paper.likeCount,
+                            paper.commentCount,
+                            paper.scrapCount,
+                            paper.isPaperPublic,
+                            paper.isScrapEnabled))
+                        .from(paper)
+                        .leftJoin(thread).on(paper.thread.id.eq(thread.id))
+                        // 첫 번째 paper만 선택하는 조건
+                        .leftJoin(paperImage).on(paper.id.eq(paperImage.paper.id).and(paperImage.imageSeq.eq(1)))
+                        .leftJoin(image).on(paperImage.image.id.eq(image.id))
+                        .orderBy(thread.createdAt.desc(), paper.createdAt.asc())
+                        .where(thread.id.eq(threadId))
+                        .limit(1)
+                        .fetchOne();
+      }
+
+
       /* 내 쓰레드 조회하기, 특정 회원의 쓰레드 조회하기에 공통으로 사용됨 */
       @Override
       public List<ThreadInfoGetDto> getSimpleThreadDtoResults(Long memberId, Pageable pageable) {
@@ -122,7 +158,7 @@ public class ThreadRepositoryImpl implements ThreadRepositoryCustom {
 //                        .fetch();
 //
             return query.select(Projections.constructor(ThreadInfoGetDto.class,
-                    thread.id,
+                    paper.thread.id,
                     image.url,
                     paper.likeCount,
                     paper.commentCount,
