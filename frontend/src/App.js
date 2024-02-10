@@ -9,6 +9,8 @@ import useNotificationStore from "./store/useNotificationStore";
 import { Toaster } from "react-hot-toast";
 import { isTokenExpired, renewToken } from "./api/common/Token";
 
+axios.defaults.withCredentials = true;
+
 axios.interceptors.request.use(
   async (config) => {
     let accessToken = localStorage.getItem("accessToken");
@@ -23,11 +25,11 @@ axios.interceptors.request.use(
     // 토큰이 만료되었는지 확인
     if (isTokenExpired(accessToken)) {
       // 재요청 보내
-
-      console.log("이전: " + accessToken);
+      console.log(accessToken);
       accessToken = await renewToken(accessToken);
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("tokenTimestamp", Date.now());
+      console.log("갱신: " + accessToken);
     }
 
     config.headers["Authorization"] = `Bearer ${accessToken}`;
@@ -45,9 +47,11 @@ export default function App() {
 
   useEffect(() => {
     async function socketConnect() {
+      const token = localStorage.getItem("accessToken");
+      const header = { Authorization: "Bearer " + token };
       try {
         if (email) {
-          await connect(email, setNewNotification);
+          await connect(header, email, setNewNotification);
         }
       } catch (e) {
         //웹소켓 연결 실패

@@ -6,12 +6,20 @@ import line3 from "../assets/line3.png";
 import top from "../assets/top.png";
 import left from "../assets/left.png";
 import right from "../assets/right.png";
+import useUserStore from "../store/useUserStore";
 
 export default function WelcomePage() {
   const navigate = useNavigate();
-
+  const token = localStorage.getItem("accessToken");
+  const user = useUserStore((state) => state.user);
+  console.log(token);
+  console.log(user);
   const handleStart = () => {
-    navigate("/join");
+    if (token && user.memberId) {
+      navigate(`/mybrary/${user.memberId}`);
+    } else {
+      navigate("/join");
+    }
   };
 
   return (

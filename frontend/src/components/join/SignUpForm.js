@@ -83,16 +83,29 @@ function SignUpForm({ setPageremote }) {
     //console.log(client);
 
     // 일단 유효성에 대한 검증을 먼저 한 후에, 유효성을 만족하면 검증 요청을 보냄. 응답에 따라 상태를 바꾼다.
+    setFormErrors((prevFormErrors) => {
+      const { email, ...rest } = prevFormErrors;
+      return rest;
+    });
+
     if (!mail) {
-      setFormErrors((prevFormErrors) => ({
-        ...prevFormErrors,
-        email: "이메일을 입력해주세요",
-      }));
+      setTimeout(
+        () =>
+          setFormErrors((prevFormErrors) => ({
+            ...prevFormErrors,
+            email: "이메일을 입력해주세요",
+          })),
+        5
+      );
     } else if (!regex.email.test(mail)) {
-      setFormErrors((prevFormErrors) => ({
-        ...prevFormErrors,
-        email: "유효한 이메일을 입력해주세요",
-      }));
+      setTimeout(
+        () =>
+          setFormErrors((prevFormErrors) => ({
+            ...prevFormErrors,
+            email: "유효한 이메일을 입력해주세요",
+          })),
+        5
+      );
     } else {
       // 유효성은 검증 됐으므로, 메일 전송.
       // 이메일 전송 코드
@@ -125,7 +138,10 @@ function SignUpForm({ setPageremote }) {
 
   const handleVerifyCode = async (e) => {
     e.preventDefault();
-
+    setFormErrors((prevFormErrors) => {
+      const { code, ...rest } = prevFormErrors;
+      return rest;
+    });
     try {
       const data = await verifyCode(formData.email, code);
       // 일치하면
@@ -135,7 +151,7 @@ function SignUpForm({ setPageremote }) {
           return rest;
         });
 
-        showToast("이메일 인증이 완료 되었습니다.");
+        showToast("이메일 인증이 완료 되었습니다");
 
         setCode("");
 
@@ -144,11 +160,11 @@ function SignUpForm({ setPageremote }) {
       } else {
         setFormErrors((prevFormErrors) => ({
           ...prevFormErrors,
-          code: "인증번호가 일치하지 않거나, 인증 시간이 만료되었습니다.",
+          code: "인증번호가 일치하지 않거나, 인증 시간이 만료되었습니다",
         }));
       }
     } catch (e) {
-      console.log(e);
+      //console.log(e);
       navigateToErrorPage();
     }
   };
@@ -156,17 +172,31 @@ function SignUpForm({ setPageremote }) {
   const handleCheckNickName = async (e, nname) => {
     e.preventDefault();
     //닉네임 중복검사는 몇번이든 할 수 있다. 유효성 검증을 하고, 응답에 따라 상태를 바꾼다.
+
+    setFormErrors((prevFormErrors) => {
+      const { nickname, ...rest } = prevFormErrors;
+      return rest;
+    });
+
     if (!nname) {
-      setFormErrors((prevFormErrors) => ({
-        ...prevFormErrors,
-        nickname: "닉네임을 입력해주세요.",
-      }));
+      setTimeout(
+        () =>
+          setFormErrors((prevFormErrors) => ({
+            ...prevFormErrors,
+            nickname: "닉네임을 입력해주세요",
+          })),
+        5
+      );
     } else if (!regex.nickname.test(nname)) {
-      setFormErrors((prevFormErrors) => ({
-        ...prevFormErrors,
-        nickname:
-          "닉네임은 영어, 숫자, 언더바만 사용하여 3~15자 입력해야 합니다.",
-      }));
+      setTimeout(
+        () =>
+          setFormErrors((prevFormErrors) => ({
+            ...prevFormErrors,
+            nickname:
+              "닉네임은 영어, 숫자, 언더바만 사용하여 3~15자 입력해야 합니다",
+          })),
+        5
+      );
     } else {
       try {
         const data = await checkNickName(nname);
@@ -179,16 +209,16 @@ function SignUpForm({ setPageremote }) {
           });
           setIsNickNameChecked(true);
 
-          showToast("사용 가능한 닉네임입니다.");
+          showToast("사용 가능한 닉네임입니다");
         } else {
           /* 중복 닉네임인 경우 */
           setFormErrors((prevFormErrors) => ({
             ...prevFormErrors,
-            nickname: "중복된 닉네임입니다.",
+            nickname: "중복된 닉네임입니다",
           }));
         }
       } catch (e) {
-        console.log(e);
+        //console.log(e);
         navigateToErrorPage();
       }
     }
@@ -197,6 +227,7 @@ function SignUpForm({ setPageremote }) {
   // 폼 검사
   const handleSubmit = async (e) => {
     e.preventDefault(); // 원래 form 안에서 button 이 가지는 기본 기능을 막음
+
     const errors = validate(formData);
     if (Object.keys(errors).length === 0) {
       // 여기에 폼 제출 로직을 추가하세요.
@@ -220,7 +251,8 @@ function SignUpForm({ setPageremote }) {
         //signup 에서 에러 처리 돼있으므로 생략함.
       }
     } else {
-      setFormErrors(errors);
+      setFormErrors({});
+      setTimeout(() => setFormErrors(errors), 5);
     }
   };
 
@@ -228,37 +260,37 @@ function SignUpForm({ setPageremote }) {
     const errors = {};
 
     if (!formData.email) {
-      errors.email = "이메일을 입력해주세요.";
+      errors.email = "이메일을 입력해주세요";
     } else if (!regex.email.test(formData.email)) {
-      errors.email = "유효한 이메일 주소를 입력해주세요.";
+      errors.email = "유효한 이메일을 입력해주세요";
     } else if (!isEmailVerified) {
-      errors.email = "이메일 인증을 완료해주세요.";
+      errors.email = "이메일 인증을 완료해주세요";
     }
 
     if (!formData.password) {
-      errors.password = "비밀번호를 입력해주세요.";
+      errors.password = "비밀번호를 입력해주세요";
     } else if (!regex.password.test(formData.password)) {
       errors.password =
-        "비밀번호는 8자 이상, 15자 이하의 숫자, 소문자, 대문자, 특수문자를 모두 포함해야 합니다.";
+        "비밀번호는 8자 이상, 15자 이하의 숫자, 소문자, 대문자, 특수문자를 모두 포함해야 합니다";
     }
 
     if (formData.password !== formData.passwordConfirm) {
-      errors.passwordConfirm = "비밀번호가 일치하지 않습니다.";
+      errors.passwordConfirm = "비밀번호가 일치하지 않습니다";
     }
 
     if (!formData.name) {
-      errors.name = "이름을 입력해주세요.";
+      errors.name = "이름을 입력해주세요";
     } else if (!regex.name.test(formData.name)) {
-      errors.name = "유효한 한글 이름을 입력해주세요.";
+      errors.name = "유효한 한글 이름을 입력해주세요";
     }
 
     if (!formData.nickname) {
-      errors.nickname = "닉네임을 입력해주세요.";
+      errors.nickname = "닉네임을 입력해주세요";
     } else if (!regex.nickname.test(formData.nickname)) {
       errors.nickname =
-        "닉네임은 영어, 숫자, 언더바만 사용하여 3~15자 입력해야 합니다.";
+        "닉네임은 영어, 숫자, 언더바만 사용하여 3~15자 입력해야 합니다";
     } else if (!isNickNameChecked) {
-      errors.nickname = "닉네임 중복 검사를 완료해주세요.";
+      errors.nickname = "닉네임 중복 검사를 완료해주세요";
     }
 
     return errors;
@@ -271,7 +303,12 @@ function SignUpForm({ setPageremote }) {
           <div className={styles.폼내부}>
             <div className={styles.폼1}>
               <label>email</label>
-              <div className={styles.각각의폼디브}>
+              <div
+                className={`${styles.각각의폼디브} ${
+                  formErrors.email ? styles.shakeAnimation : ""
+                }`}
+                style={{ marginTop: "3px" }}
+              >
                 <input
                   className={styles.인풋창}
                   type="text"
@@ -285,6 +322,7 @@ function SignUpForm({ setPageremote }) {
                   <button
                     onClick={(e) => handleVerifyEmail(e, formData.email)}
                     disabled={isEmailVerifying || isEmailVerified}
+                    style={{ padding: "0 4px" }}
                   >
                     이메일 인증
                   </button>
@@ -297,7 +335,12 @@ function SignUpForm({ setPageremote }) {
             {isEmailVerifying && (
               <div>
                 <label>인증번호입력:</label>
-                <div className={styles.각각의폼디브}>
+                <div
+                  className={`${styles.각각의폼디브} ${
+                    formErrors.code ? styles.shakeAnimation : ""
+                  }`}
+                  style={{ marginTop: "3px" }}
+                >
                   <input
                     className={styles.인풋창}
                     type="text"
@@ -306,7 +349,10 @@ function SignUpForm({ setPageremote }) {
                     value={code}
                     onChange={handleCodeChange}
                   ></input>
-                  <button onClick={(e) => handleVerifyCode(e)}>
+                  <button
+                    onClick={(e) => handleVerifyCode(e)}
+                    style={{ padding: "0 4px" }}
+                  >
                     인증번호 확인
                   </button>
                 </div>
@@ -318,7 +364,12 @@ function SignUpForm({ setPageremote }) {
 
             <div className={styles.폼1}>
               <label>비밀번호</label>
-              <div className={styles.각각의폼디브}>
+              <div
+                className={`${styles.각각의폼디브} ${
+                  formErrors.password ? styles.shakeAnimation : ""
+                }`}
+                style={{ marginTop: "3px" }}
+              >
                 <input
                   className={styles.인풋창}
                   type="password"
@@ -335,7 +386,12 @@ function SignUpForm({ setPageremote }) {
 
             <div className={styles.폼1}>
               <label>비밀번호 확인</label>
-              <div className={styles.각각의폼디브}>
+              <div
+                className={`${styles.각각의폼디브} ${
+                  formErrors.passwordConfirm ? styles.shakeAnimation : ""
+                }`}
+                style={{ marginTop: "3px" }}
+              >
                 <input
                   className={styles.인풋창}
                   type="password"
@@ -354,7 +410,12 @@ function SignUpForm({ setPageremote }) {
 
             <div>
               <label>이름</label>
-              <div className={styles.각각의폼디브}>
+              <div
+                className={`${styles.각각의폼디브} ${
+                  formErrors.name ? styles.shakeAnimation : ""
+                }`}
+                style={{ marginTop: "3px" }}
+              >
                 <input
                   className={styles.인풋창}
                   type="text"
@@ -371,7 +432,12 @@ function SignUpForm({ setPageremote }) {
 
             <div>
               <label>닉네임</label>
-              <div className={styles.각각의폼디브}>
+              <div
+                className={`${styles.각각의폼디브} ${
+                  formErrors.nickname ? styles.shakeAnimation : ""
+                }`}
+                style={{ marginTop: "3px" }}
+              >
                 <input
                   className={styles.인풋창}
                   type="text"
@@ -383,6 +449,7 @@ function SignUpForm({ setPageremote }) {
 
                 <button
                   onClick={(e) => handleCheckNickName(e, formData.nickname)}
+                  style={{ padding: "0 4px" }}
                 >
                   닉네임 중복 검사
                 </button>

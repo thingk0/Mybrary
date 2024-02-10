@@ -23,7 +23,6 @@ export default function Nav() {
   );
   const navigate = useNavigate();
   const { setUser } = useUserStore();
-  console.log(user);
   const { setNewNotification } = useNotificationStore();
 
   const handleOffAlarm = () => {
@@ -37,8 +36,7 @@ export default function Nav() {
 
   const handleLogOut = async () => {
     try {
-      await doLogout();
-      setUser(null);
+      await doLogout(setUser);
       navigate("/join");
     } catch (e) {
       navigate("/error");
