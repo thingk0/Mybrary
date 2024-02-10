@@ -44,25 +44,26 @@ import {
 } from "../api/member/Follow";
 import FollowList from "../components/mybrary/FollowList";
 import FollowerList from "../components/mybrary/FollowerList";
+import FileInput from "../components/common/FileInput";
 
 export default function MybraryPage() {
-  const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
   const navigate = useNavigate();
   const Params = useParams();
   const nowuser = Params.userid;
+  const user = useUserStore((state) => state.user);
+  const client = useStompStore((state) => state.stompClient);
+
+  const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
   const [edit, setEdit] = useState(false);
   const [bgColor, setBgColor] = useState("1");
   const [esColor, setEsColor] = useState(easel1);
   const [tbColor, setTbColor] = useState(table1);
   const [bsColor, setBsColor] = useState(shelf1);
-  const user = useUserStore((state) => state.user);
-  const client = useStompStore((state) => state.stompClient);
   const [tablenum, setTablenum] = useState("1");
   const [easelnum, setEaselnum] = useState("1");
   const [bookshelfnum, setBookshelfnum] = useState("1");
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [frameimgurl, setFrameimgurl] = useState();
-  const [file, setFile] = useState();
   const [checkme, setCheckme] = useState(false);
   const [showModalBookshelf, setShowModalBookshelf] = useState(false);
   const [showModalTable, setShowModalTable] = useState(false);
@@ -73,6 +74,22 @@ export default function MybraryPage() {
   const [showList, setShowList] = useState(false);
   const [showListType, setShowListType] = useState(null); // 리스트 타입을 관리하는 상태
 
+  const [value, setValue] = useState({
+    mybraryId: "",
+    frameImageId: -1,
+    frameImage: null,
+    backgroundColor: 1,
+    deskColor: 0,
+    bookshelfColor: 0,
+    easelColor: 0,
+  });
+  const handleChange = (name, value) => {
+    setValue((prevValue) => ({
+      ...prevValue,
+      [name]: value,
+    }));
+  };
+
   const handleShowList = (type) => {
     setShowList(true);
     setShowListType(showListType === type ? null : type); // 같은 버튼을 다시 클릭하면 리스트를 닫습니다.
@@ -81,6 +98,8 @@ export default function MybraryPage() {
   const [testuser, setTestuser] = useState({
     data: {},
   });
+
+  // 팔로워 수 업데이트 함수
   const updateFollowerCount = (newCount) => {
     setTestuser((prevState) => ({
       ...prevState,
@@ -90,7 +109,6 @@ export default function MybraryPage() {
       },
     }));
   };
-
   // 팔로잉 수 업데이트 함수
   const updateFollowingCount = (newCount) => {
     setTestuser((prevState) => ({
@@ -103,8 +121,6 @@ export default function MybraryPage() {
   };
 
   useEffect(() => {
-    const nowuser = Params.userid;
-    setCheckme(false);
     async function fetchMybraryData() {
       setShowListType(null);
       try {
@@ -125,7 +141,6 @@ export default function MybraryPage() {
           setBsColor(bookshelfImgs[response.data.bookshelfColor - 1]);
           setBookshelfnum(response.data.bookshelfColor - 1);
           setFrameimgurl(response.data.frameImageUrl);
-
           setIsLoading(false);
         } else {
           console.log(nowuser);
@@ -248,34 +263,7 @@ export default function MybraryPage() {
       </>
     );
   }
-  const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setFrameimgurl(e.target.result); // 이 부분에서 미리보기 URL을 설정
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-  const handleFileUpload = async () => {
-    if (file) {
-      // 파일 업로드 로직 구현
-      // 예: 서버에 파일을 업로드하고, 응답으로 받은 이미지 URL을 저장
-      const formData = new FormData();
-      formData.append("image", file[0]);
-      const result = await axios.post("/upload-single", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      console.log(result);
-      // try {
-      //   setFrameimgurl(file); // 업로드된 이미지 URL을 상태에 저장
-      // } catch (error) {
-      //   console.error("파일 업로드 중 오류 발생:", error);
-      //   // 오류 처리 로직
-      // }
-    }
-  };
+
   function handlePostboxClick() {
     if (user.memberId === nowuser) {
       navigate("/paperplane");
@@ -283,10 +271,6 @@ export default function MybraryPage() {
       navigate("/paperplane");
     }
   }
-
-  const handleShow = () => {
-    setShowList(true);
-  };
 
   return (
     <>
@@ -377,7 +361,7 @@ export default function MybraryPage() {
                 onClick={() => setModalIsOpen(true)}
                 className={s(styles.edit, styles.이젤이미지변경)}
               >
-                이젤이미지변경하기
+                액자 이미지 변경하기
                 <BigModal
                   modalIsOpen={modalIsOpen}
                   setModalIsOpen={setModalIsOpen}
@@ -385,27 +369,12 @@ export default function MybraryPage() {
                   height="600px"
                   background="var(--main4)"
                 >
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setModalIsOpen(false);
-                    }}
-                  >
-                    x
-                  </button>
-                  <div>
-                    <div>현재 이미지</div>
-                    {frameimgurl && (
-                      <img
-                        className={styles.선택이미지}
-                        src={frameimgurl}
-                        alt="미리보기 이미지"
-                      />
-                    )}
-                    {/* 파일 업로드 input */}
-                    <input type="file" onChange={handleFileChange} />
-                    <button onClick={() => handleFileUpload()}>저장</button>
-                  </div>
+                  <FileInput
+                    className={styles.changeImg}
+                    name="frameImage"
+                    value={value.frameImage}
+                    onChange={handleChange}
+                  />
                 </BigModal>
               </div>
               <div className={s(styles.edit, styles.easelColor)}>

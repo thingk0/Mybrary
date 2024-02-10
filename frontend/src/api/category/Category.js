@@ -1,5 +1,6 @@
 import axios from "axios";
-const BASE_URL = "http://thingk0.duckdns.org:8080/api/v1/category";
+const BASE_URL = "https://i10b207.p.ssafy.io/api/v1/category";
+
 /* 카테고리 조회 */
 // const BASE_URL = "/api/v1/category";
 

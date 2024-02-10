@@ -55,7 +55,7 @@ export default function BookCreate({ booklist }) {
     const formData = new FormData();
     formData.append("images", value.coverImage);
     const coverImageId = await uplodaImage(formData);
-    console.log(coverImageId);
+    console.log(coverImageId.imageIds[0]);
     const bookid = await createBook({
       title: value.title,
       coverImageId: coverImageId.imageIds[0],

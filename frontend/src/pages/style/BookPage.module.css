@@ -1,72 +1,34 @@
-.카테고리 {
-  font-size: 30px;
-}
-.게시물,
-.롤링페이퍼 {
-  font-size: 22px;
-}
-.head {
-  margin-top: 20px;
-  width: 100%;
-  height: 10vh;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.bookpage {
-  width: 85%;
-  height: 100%;
-  /* background-color: #d85858; */
+.middle {
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
   align-items: center;
-  background-color: var(--main4);
+  width: 90%;
 }
-.body {
+.header {
   display: flex;
-  justify-content: center;
-}
-.middle {
-  position: relative;
+  justify-content: space-between;
   width: 100%;
-  /* background-color: #d85858; */
-}
-.책추가,
-.책갈피로이동 {
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  font-size: 19px;
-}
-.책검색,
-.옵션 {
-  position: absolute;
-  top: 0px;
-  right: 0px;
   font-size: 20px;
 }
 
-.mainbook {
-  position: relative;
+.options {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  width: 100%;
-  height: 56vh;
-  /* background-color: #ffc6c6; */
+  width: 90%;
+  margin: 0 auto;
+  font-size: 20px;
 }
+
 .캐러셀 {
   display: flex;
   align-items: flex-end;
-  justify-content: center;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  height: 25vh;
-  /* background-color: aquamarine; */
-  padding: 10px 0;
-  /* 추가: 마우스가 캐러셀 위에 있을 때만 스크롤바를 표시 */
-  overflow-y: hidden;
-  scrollbar-width: none; /* Firefox */
+  overflow-x: scroll;
+  width: 100%;
+  height: 230px;
+  padding: 0 10px 10px;
 }
 
 .캐러셀::-webkit-scrollbar {
@@ -79,7 +41,6 @@
   height: 180px; /* 세로 크기 */
   margin: 10px;
   gap: 12px;
-  scroll-snap-align: start;
   transition: transform 0.3s ease-in-out;
   cursor: pointer;
   display: flex;
@@ -93,7 +54,7 @@
 
 .캐러셀아이템:hover {
   transform: scale(1.1);
-  margin: 0px 14px 16px 14px;
+  /* margin: 0px 14px 16px 14px; */
 }
 
 .캐러셀아이템.selected {
@@ -128,6 +89,8 @@
   text-align: center;
   margin-right: 16px;
 }
+
+/* 책부분 */
 
 .선택한책 {
   display: flex;

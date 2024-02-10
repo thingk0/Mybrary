@@ -8,7 +8,7 @@ import useUserStore from "./store/useUserStore";
 import useNotificationStore from "./store/useNotificationStore";
 import { Toaster } from "react-hot-toast";
 import { isTokenExpired, renewToken } from "./api/common/Token";
-
+axios.defaults.withCredentials = true;
 axios.interceptors.request.use(
   async (config) => {
     let accessToken = localStorage.getItem("accessToken");

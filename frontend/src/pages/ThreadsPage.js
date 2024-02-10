@@ -174,6 +174,7 @@ export default function ThreadsPage() {
             책장 &gt;
           </div>
         </div>
+
         <div className={styles.mainbook}>
           {/* 그룹화된 데이터 렌더링 */}
           {[...groupedData.keys()].map((yearMonth) => (

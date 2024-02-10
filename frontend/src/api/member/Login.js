@@ -1,5 +1,5 @@
 import axios from "axios";
-const BASE_URL = "http://thingk0.duckdns.org:8080/api/v1/";
+const BASE_URL = "https://i10b207.p.ssafy.io/api/v1/";
 //로그인요청
 export async function login(user) {
   try {
@@ -9,6 +9,7 @@ export async function login(user) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(user),
+      credentials: "include",
     });
 
     if (!response.ok) {
@@ -21,6 +22,15 @@ export async function login(user) {
     throw error;
   }
 }
+// //로그인요청
+// export async function login(object) {
+//   try {
+//     const response = await axios.post(BASE_URL + "member/login", object);
+//     return response.data;
+//   } catch (error) {
+//     throw error;
+//   }
+// }
 
 /* 소셜 로그인 */
 export async function socialLogin(object) {
