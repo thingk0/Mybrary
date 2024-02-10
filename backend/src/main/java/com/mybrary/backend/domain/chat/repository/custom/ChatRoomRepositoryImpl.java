@@ -7,6 +7,7 @@ import com.mybrary.backend.domain.chat.entity.QChatMessage;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 
@@ -16,12 +17,12 @@ public class ChatRoomRepositoryImpl implements ChatRoomRepositoryCustom {
     private final JPAQueryFactory query;
 
     @Override
-    public List<Long> chatRoomIdList2(Long myId, Pageable page) {
+    public Optional<List<Long>> chatRoomIdList2(Long myId, Pageable page) {
 
         QChatMessage chatMessage = new QChatMessage("chatMessage");
         QChatMessage chatMessageSub = new QChatMessage("chatMessageSub");
 
-        return query.select(chatRoom.id)
+        return Optional.ofNullable(query.select(chatRoom.id)
                     .from(chatRoom)
                     .leftJoin(chatJoin).on(chatJoin.chatRoom.id.eq(chatRoom.id))
                     .leftJoin(chatMessage).on(chatMessage.chatRoom.id.eq(chatRoom.id))
@@ -35,7 +36,7 @@ public class ChatRoomRepositoryImpl implements ChatRoomRepositoryCustom {
                     .orderBy(chatMessage.createdAt.max().desc())
                     .offset(page.getOffset())
                     .limit(page.getPageSize())
-                    .fetch();
+                    .fetch());
 
     }
 }

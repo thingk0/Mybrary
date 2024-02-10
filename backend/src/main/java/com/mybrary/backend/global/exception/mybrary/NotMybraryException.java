@@ -1,4 +1,4 @@
-package com.mybrary.backend.global.exception;
+package com.mybrary.backend.global.exception.mybrary;
 
 import com.mybrary.backend.global.format.response.ErrorCode;
 import lombok.Getter;

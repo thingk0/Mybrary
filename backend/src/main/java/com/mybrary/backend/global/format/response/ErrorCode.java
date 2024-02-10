@@ -61,6 +61,9 @@ public enum ErrorCode {
     BOOK_ALREADY_SUBSCRIBE(HttpStatus.BAD_REQUEST, "책이 현재 카테고리에 이미 꽂혀있습니다."),
     PAPER_DELETE_FAILED(HttpStatus.BAD_REQUEST, "본인이 만든 책이 아닙니다."),
 
+    // 책장 예외 처리
+    BOOK_SHELF_NOT_FOUND(HttpStatus.NOT_FOUND, "책장을 찾을 수 없습니다."),
+
     // 픽북 예외 처리
     PICKBOOK_NOT_FOUND(HttpStatus.NOT_FOUND, "픽북을 찾을 수 없습니다."),
 
@@ -86,6 +89,9 @@ public enum ErrorCode {
     // 이미지 예외 처리
     IMAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "이미지를 찾을 수 없습니다."),
 
+    // 채팅 예외 처리
+    CHAT_ROOM_NOT_FOUND(HttpStatus.NOT_FOUND, "채팅방을 찾을 수 없습니다."),
+    CHAT_JOIN_MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "상대방을 찾을 수 없습니다.")
 
     ;
 

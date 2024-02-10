@@ -17,6 +17,9 @@ import com.mybrary.backend.domain.member.dto.responseDto.MemberInfoDto;
 import com.mybrary.backend.domain.member.entity.Member;
 import com.mybrary.backend.domain.member.repository.MemberRepository;
 import com.mybrary.backend.domain.member.service.MemberService;
+import com.mybrary.backend.global.exception.chat.ChatJoinMemberNotFoundException;
+import com.mybrary.backend.global.exception.chat.ChatRoomNotFoundException;
+import com.mybrary.backend.global.exception.member.MemberNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -56,7 +59,7 @@ public class ChatServiceImpl implements ChatService {
 //        List<Long> chatRoomIdList2 = chatRoomRepository.chatRoomIdList(myId, page);
 
         // 페이지네이션 한 코드
-        List<Long> chatRoomIdList = chatRoomRepository.chatRoomIdList2(myId, page);
+        List<Long> chatRoomIdList = chatRoomRepository.chatRoomIdList2(myId, page).orElseThrow(ChatRoomNotFoundException::new);
 
         // 채팅방 리스트만큼 반복
         for (int i = 0; i < chatRoomIdList.size(); i++) {
@@ -115,7 +118,7 @@ public class ChatServiceImpl implements ChatService {
         for (ChatMessage chatMessage : chatMessages) {
 
             // 2. 상대방 정보
-            Member you = chatJoinRepository.getJoinMemberByMemberId(chatRoomId, myId);
+            Member you = chatJoinRepository.getJoinMemberByMemberId(chatRoomId, myId).orElseThrow(ChatJoinMemberNotFoundException::new);
 
             // 3. 스레드Id가 null이 아닐 때 스레드 조회
             ThreadShareGetDto thread = null;
@@ -190,7 +193,7 @@ public class ChatServiceImpl implements ChatService {
         Member me = memberService.findMember(email);
         Long myId = me.getId();
         // 보내는 사람 객체 MemberInfoDto
-        MemberInfoDto sender = memberRepository.getMemberInfo(myId);
+        MemberInfoDto sender = memberRepository.getMemberInfo(myId).orElseThrow(MemberNotFoundException::new);
 
         // 채팅방 엔티티
         ChatRoom chatRoom = chatRoomRepository.findById(message.getChatRoomId()).get();
@@ -235,7 +238,7 @@ public class ChatServiceImpl implements ChatService {
         Member me = memberService.findMember(email);
         Long myId = me.getId();
         // 보내는 사람 객체 MemberInfoDto
-        MemberInfoDto sender = memberRepository.getMemberInfo(myId);
+        MemberInfoDto sender = memberRepository.getMemberInfo(myId).orElseThrow(MemberNotFoundException::new);
 
         // 채팅방 엔티티
         ChatRoom chatRoom;

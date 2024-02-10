@@ -11,7 +11,7 @@ public interface BookRepositoryCustom {
 
     Optional<Integer> countMyBook(Long bookShelfId);
 
-    List<BookGetDto> getAllBookByCategoryId(Long categoryId);
+    Optional<List<BookGetDto>> getAllBookByCategoryId(Long categoryId);
 
     Optional<List<MyBookGetDto>> getAllMyBookList(Long memeberId, Long categoryId);
 

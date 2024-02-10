@@ -12,7 +12,7 @@ public interface PaperRepositoryCustom {
     List<GetFollowingPaperDto> getFollowingPaperDtoResults(Long threadId);
 
     Long deletePaperByThreadId(Long threadId);
-    List<PaperGetDto> getPaperGetDto(Long threadId);
+    Optional<List<PaperGetDto>> getPaperGetDto(Long threadId);
 
     Optional<List<PaperInBookGetDto>> getPaperList(Long bookId);
 

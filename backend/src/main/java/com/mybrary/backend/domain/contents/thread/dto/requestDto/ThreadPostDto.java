@@ -20,6 +20,8 @@ public class ThreadPostDto {
 
     private Long bookId;
     private List<PostPaperDto> postPaperDto;
+    private boolean isPaperPublic;
+    private boolean isScrapEnable;
 
 //    private boolean isPaperPublic;
 //    private boolean isScarpEnable;

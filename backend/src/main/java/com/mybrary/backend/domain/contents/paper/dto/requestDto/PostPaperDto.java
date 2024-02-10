@@ -16,10 +16,9 @@ public class PostPaperDto {
 
     private String content1;
     private String content2;
+    private Long image1;
+    private Long image2;
     private int layoutType;
-    private Long bookId;
-    private boolean isPaperPublic;
-    private boolean isScrapEnable;
     private List<String> tagList;
     private List<Long> mentionList;
 }

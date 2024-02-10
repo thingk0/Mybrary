@@ -31,10 +31,10 @@ public class PickBookRepositoryImpl implements PickBookRepositoryCustom {
                     member.isProfilePublic, bookshelf.id, rollingPaper.id
                 )
             ).from(mybrary)
-            .innerJoin(member).on(mybrary.member.id.eq(member.id))
-            .innerJoin(bookshelf).on(bookshelf.mybrary.id.eq(mybrary.id))
-            .innerJoin(rollingPaper).on(rollingPaper.mybrary.id.eq(mybrary.id))
-            .innerJoin(image).on(member.profileImage.id.eq(image.id))
+            .leftJoin(member).on(mybrary.member.id.eq(member.id))
+            .leftJoin(bookshelf).on(bookshelf.mybrary.id.eq(mybrary.id))
+            .leftJoin(rollingPaper).on(rollingPaper.mybrary.id.eq(mybrary.id))
+            .leftJoin(image).on(member.profileImage.id.eq(image.id))
             .fetchFirst();
     }
     @Override
@@ -46,10 +46,10 @@ public class PickBookRepositoryImpl implements PickBookRepositoryCustom {
                     member.isProfilePublic, bookshelf.id, rollingPaper.id
                 )
             ).from(mybrary)
-            .innerJoin(member).on(mybrary.member.id.eq(member.id))
-            .innerJoin(bookshelf).on(bookshelf.mybrary.id.eq(mybrary.id))
-            .innerJoin(rollingPaper).on(rollingPaper.mybrary.id.eq(mybrary.id))
-            .innerJoin(image).on(member.profileImage.id.eq(image.id))
+            .leftJoin(member).on(mybrary.member.id.eq(member.id))
+            .leftJoin(bookshelf).on(bookshelf.mybrary.id.eq(mybrary.id))
+            .leftJoin(rollingPaper).on(rollingPaper.mybrary.id.eq(mybrary.id))
+            .leftJoin(image).on(member.profileImage.id.eq(image.id))
             .fetchFirst();
     }
 

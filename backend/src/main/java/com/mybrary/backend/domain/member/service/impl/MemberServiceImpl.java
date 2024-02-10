@@ -1,5 +1,7 @@
 package com.mybrary.backend.domain.member.service.impl;
 
+import com.mybrary.backend.domain.book.entity.Book;
+import com.mybrary.backend.domain.book.repository.BookRepository;
 import com.mybrary.backend.domain.bookshelf.entity.Bookshelf;
 import com.mybrary.backend.domain.bookshelf.repository.BookShelfRepository;
 import com.mybrary.backend.domain.category.entity.Category;
@@ -30,7 +32,7 @@ import com.mybrary.backend.domain.notification.repository.NotificationRepository
 import com.mybrary.backend.domain.notification.service.NotificationService;
 import com.mybrary.backend.domain.rollingpaper.entity.RollingPaper;
 import com.mybrary.backend.domain.rollingpaper.repository.RollingPaperRepository;
-import com.mybrary.backend.global.exception.ImageNotFoundException;
+import com.mybrary.backend.global.exception.image.ImageNotFoundException;
 import com.mybrary.backend.global.exception.member.DuplicateEmailException;
 import com.mybrary.backend.global.exception.member.EmailNotFoundException;
 import com.mybrary.backend.global.exception.member.InvalidLoginAttemptException;
@@ -70,6 +72,8 @@ public class MemberServiceImpl implements MemberService {
     private final NotificationRepository notificationRepository;
     private final NotificationService notificationService;
     private final ImageRepository imageRepository;
+    private final BookRepository bookRepository;
+
 
     @Transactional
     @Override
@@ -93,6 +97,7 @@ public class MemberServiceImpl implements MemberService {
                                  .deskColor(1)
                                  .bookshelfColor(1)
                                  .deskColor(1)
+                                 .easelColor(1)
                                  .build();
         mybraryRepository.save(mybrary);
 
@@ -112,12 +117,19 @@ public class MemberServiceImpl implements MemberService {
             categoryRepository.save(category);
         }
 
+        /* 기본 책 1개 생성 */
+        Book book = Book.builder()
+            .member(member)
+            .coverTitle("Mybrary 사용 법")
+            .coverLayout(1)
+            .coverColor(1)
+            .build();
+        bookRepository.save(book);
+
         /* 롤링페이퍼 생성 */
         RollingPaper rollingPaper = RollingPaper.builder()
                                                 .mybrary(mybrary)
                                                 .build();
-        // 이건 롤링페이퍼 이미지 바로 참조해야할 것 같다
-        // 수정 꼭 하자
         rollingPaperRepository.save(rollingPaper);
 
         return member.getId();
@@ -294,7 +306,7 @@ public class MemberServiceImpl implements MemberService {
 
         Member me = findMember(email);
 
-        if(!me.getId().equals(member.getMemberId())){
+        if (!me.getId().equals(member.getMemberId())) {
             throw new ProfileUpdateException();
         }
 

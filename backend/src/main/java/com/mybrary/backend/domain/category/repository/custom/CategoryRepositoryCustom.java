@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface CategoryRepositoryCustom {
 
-    List<CategoryGetDto> getAllCategory(Long bookshelfId);
+    Optional<List<CategoryGetDto>> getAllCategory(Long bookshelfId);
 
     Optional<Integer> nextSeq(Long bookShelfId);
 

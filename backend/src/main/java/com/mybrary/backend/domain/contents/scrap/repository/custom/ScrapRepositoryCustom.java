@@ -10,4 +10,5 @@ public interface ScrapRepositoryCustom {
 
       Optional<Scrap> getScrap(Long bookId, Long paperId);
 
+    Optional<Integer> findLastPaperSeq(Long bookId);
 }

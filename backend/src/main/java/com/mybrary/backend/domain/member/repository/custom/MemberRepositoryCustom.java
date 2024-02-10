@@ -10,5 +10,5 @@ public interface MemberRepositoryCustom {
 
     boolean isNicknameDuplicate(String email);
 
-    MemberInfoDto getMemberInfo(Long myId);
+    Optional<MemberInfoDto> getMemberInfo(Long myId);
 }

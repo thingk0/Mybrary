@@ -32,12 +32,12 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
     }
 
     @Override
-    public MemberInfoDto getMemberInfo(Long myId) {
-        return query.select(Projections.constructor(MemberInfoDto.class, member.id, member.nickname, member.intro, image.url))
+    public Optional<MemberInfoDto> getMemberInfo(Long myId) {
+        return Optional.ofNullable(query.select(Projections.constructor(MemberInfoDto.class, member.id, member.nickname, member.intro, image.url))
             .from(member)
             .leftJoin(image).on(member.profileImage.id.eq(image.id))
             .where(member.id.eq(myId))
-            .fetchOne();
+            .fetchOne());
 
     }
 

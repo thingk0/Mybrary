@@ -29,8 +29,8 @@ import com.mybrary.backend.domain.member.repository.MemberRepository;
 import com.mybrary.backend.domain.member.service.MemberService;
 import com.mybrary.backend.domain.pickbook.entity.PickBook;
 import com.mybrary.backend.domain.pickbook.repository.PickBookRepository;
-import com.mybrary.backend.global.exception.ImageNotFoundException;
-import com.mybrary.backend.global.exception.PickBookNotFoundException;
+import com.mybrary.backend.global.exception.image.ImageNotFoundException;
+import com.mybrary.backend.global.exception.pickbook.PickBookNotFoundException;
 import com.mybrary.backend.global.exception.book.BookAlreadySubscribeException;
 import com.mybrary.backend.global.exception.book.BookCreateException;
 import com.mybrary.backend.global.exception.book.BookDeleteException;
@@ -127,22 +127,14 @@ public class BookServiceImpl implements BookService {
         for (int i = 0;i<paperList.size();i++) {
 
             Long threadId = paperRepository.getThreadIdByPaperId(paperList.get(i).getPaperId()).orElseThrow(ThreadIdNotFoundException::new);
-            System.out.println("1");
             MemberInfoDto writer = paperRepository.getWriter(paperList.get(i).getPaperId()).orElseThrow(MemberNotFoundException::new);
-            System.out.println("2");
             String imageUrl1 = paperRepository.getImageUrl(paperList.get(i).getPaperId(), 1).orElseThrow(ImageNotFoundException::new);
-            System.out.println("3");
             String imageUrl2 = paperRepository.getImageUrl(paperList.get(i).getPaperId(), 2).orElseThrow(ImageNotFoundException::new);
-            System.out.println("4");
             List<String> tagList = tagRepository.getTagList(paperList.get(i).getPaperId()).orElseThrow(TagNotFoundException::new);
-            System.out.println("5");
             int likeCount = likeRepository.getLikeCount(paperList.get(i).getPaperId()).orElse(0);
-            System.out.println("6");
             int commentCount = commentRepository.getCommentCount(paperList.get(i).getPaperId()).orElse(0);
-            System.out.println("7");
             int scrapCount = scrapRepository.getScrapCount(paperList.get(i).getPaperId()).orElse(0);
             Like like = likeRepository.isLikedPaper(paperList.get(i).getPaperId(), myId).orElse(null);
-            System.out.println("9");
             boolean isLiked = false;
             if(like!=null) isLiked = true;
 
@@ -266,7 +258,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<BookGetDto> getAllBookByCategoryId(Long categoryId) {
-        return bookRepository.getAllBookByCategoryId(categoryId);
+        return bookRepository.getAllBookByCategoryId(categoryId).orElseThrow(BookNotFoundException::new);
     }
 
     @Override

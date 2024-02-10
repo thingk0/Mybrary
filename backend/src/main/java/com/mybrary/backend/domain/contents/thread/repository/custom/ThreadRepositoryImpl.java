@@ -120,14 +120,13 @@ public class ThreadRepositoryImpl implements ThreadRepositoryCustom {
 //                        .offset(pageable.getOffset())
 //                        .limit(pageable.getPageSize())
 //                        .fetch();
+//
             return query.select(Projections.constructor(ThreadInfoGetDto.class,
                     thread.id,
                     image.url,
                     paper.likeCount,
                     paper.commentCount,
-                    paper.scrapCount,
-                    paper.isPaperPublic,
-                    paper.isScrapEnabled))
+                    paper.scrapCount))
                 .from(thread)
                 .leftJoin(paper)
                 .on(paper.thread.id.eq(thread.id)
@@ -141,6 +140,17 @@ public class ThreadRepositoryImpl implements ThreadRepositoryCustom {
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
+
+            // 고치고있는 부분 -혜선-
+//            return Optional.ofNullable(query.select(Projections.constructor(ThreadInfoGetDto.class, thread.id, image.url, paper.likeCount.count(), paper.commentCount.count(), paper.scrapCount.count()))
+//                                           .from(thread)
+//                                           .leftJoin(paper).on(paper.thread.id.eq(thread.id))
+//                                           .leftJoin(paperImage).on(paperImage.paper.id.eq(paper.id))
+//                                           .leftJoin(image).on(paperImage.image.id.eq(image.id))
+//                                           .orderBy(paper.id.asc())
+//                                           .orderBy(paperImage.imageSeq.asc())
+//                                           .groupBy(thread.id)
+//                                           .fetch());
       }
 
       @Override

@@ -8,6 +8,8 @@ import com.mybrary.backend.domain.category.dto.requestDto.CategoryUpdateDto;
 import com.mybrary.backend.domain.category.entity.Category;
 import com.mybrary.backend.domain.category.repository.CategoryRepository;
 import com.mybrary.backend.domain.category.service.CategoryService;
+import com.mybrary.backend.global.exception.bookshelf.BookshelfNotFoundException;
+import com.mybrary.backend.global.exception.category.CategoryNotFoundException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,13 +23,13 @@ public class CategoryServiceImpl implements CategoryService {
     private final BookShelfRepository bookShelfRepository;
     @Override
     public List<CategoryGetDto> getAllCategory(Long bookshelfId) {
-        return categoryRepository.getAllCategory(bookshelfId);
+        return categoryRepository.getAllCategory(bookshelfId).orElseThrow(CategoryNotFoundException::new);
     }
 
     @Transactional
     @Override
     public Long createCategory(CategoryPostDto category) {
-        Bookshelf bookshelf = bookShelfRepository.findById(category.getBookShelfId()).get();
+        Bookshelf bookshelf = bookShelfRepository.findById(category.getBookShelfId()).orElseThrow(BookshelfNotFoundException::new);
         int seq = categoryRepository.nextSeq(category.getBookShelfId()).orElse(0);
         Category categoryEntity = Category.builder()
             .categoryName(category.getName())
@@ -45,7 +47,7 @@ public class CategoryServiceImpl implements CategoryService {
             CategoryGetDto c = category.getCategoryList().get(i);
 
             Long categoryId = c.getCategoryId();
-            Category categoryEntity = categoryRepository.findById(categoryId).get();
+            Category categoryEntity = categoryRepository.findById(categoryId).orElseThrow(CategoryNotFoundException::new);
             categoryEntity.setCategoryName(c.getName());
             categoryEntity.setCategorySeq(i+1);
         }
@@ -54,7 +56,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Transactional
     @Override
     public void deleteCategory(Long categoryId) {
-        Category category = categoryRepository.findById(categoryId).get();
+        Category category = categoryRepository.findById(categoryId).orElseThrow(CategoryNotFoundException::new);
         categoryRepository.delete(category);
     }
 }

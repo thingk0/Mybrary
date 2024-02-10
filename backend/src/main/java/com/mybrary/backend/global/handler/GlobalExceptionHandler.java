@@ -1,11 +1,14 @@
 package com.mybrary.backend.global.handler;
 
-import com.mybrary.backend.global.exception.PickBookNotFoundException;
+import com.mybrary.backend.global.exception.bookshelf.BookshelfNotFoundException;
+import com.mybrary.backend.global.exception.chat.ChatJoinMemberNotFoundException;
+import com.mybrary.backend.global.exception.chat.ChatRoomNotFoundException;
+import com.mybrary.backend.global.exception.pickbook.PickBookNotFoundException;
 import com.mybrary.backend.global.exception.book.BookAlreadySubscribeException;
 import com.mybrary.backend.global.exception.book.BookCreateException;
-import com.mybrary.backend.global.exception.ImageNotFoundException;
-import com.mybrary.backend.global.exception.MybraryNotFoundException;
-import com.mybrary.backend.global.exception.NotMybraryException;
+import com.mybrary.backend.global.exception.image.ImageNotFoundException;
+import com.mybrary.backend.global.exception.mybrary.MybraryNotFoundException;
+import com.mybrary.backend.global.exception.mybrary.NotMybraryException;
 import com.mybrary.backend.global.exception.book.BookDeleteException;
 import com.mybrary.backend.global.exception.book.BookNotFoundException;
 import com.mybrary.backend.global.exception.book.BookSubscribeException;
@@ -201,4 +204,30 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         log.error("ScrapNotFoundException = {}", e.getErrorCode().getMessage());
         return response.error(e.getErrorCode());
     }
+
+    @ExceptionHandler(BookshelfNotFoundException.class)
+    protected ResponseEntity<?> handle(BookshelfNotFoundException e) {
+        log.error("BookshelfNotFoundException = {}", e.getErrorCode().getMessage());
+        return response.error(e.getErrorCode());
+    }
+
+    @ExceptionHandler(ChatRoomNotFoundException.class)
+    protected ResponseEntity<?> handle(ChatRoomNotFoundException e) {
+        log.error("ChatRoomNotFoundException = {}", e.getErrorCode().getMessage());
+        return response.error(e.getErrorCode());
+    }
+
+    @ExceptionHandler(ChatJoinMemberNotFoundException.class)
+    protected ResponseEntity<?> handle(ChatJoinMemberNotFoundException e) {
+        log.error("ChatJoinMemberNotFoundException = {}", e.getErrorCode().getMessage());
+        return response.error(e.getErrorCode());
+    }
+
+
+
+
+
+
+
+
 }

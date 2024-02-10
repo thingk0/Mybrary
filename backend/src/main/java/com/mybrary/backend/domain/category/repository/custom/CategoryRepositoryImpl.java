@@ -21,9 +21,9 @@ public class CategoryRepositoryImpl implements CategoryRepositoryCustom {
 
 
     @Override
-    public List<CategoryGetDto> getAllCategory(Long bookshelfId) {
+    public Optional<List<CategoryGetDto>> getAllCategory(Long bookshelfId) {
 
-        return query.select(
+        return Optional.ofNullable(query.select(
                         Projections.constructor(CategoryGetDto.class, category.id, category.categoryName,
                                                 category.categorySeq, pickBook.count().intValue())
                     )
@@ -32,7 +32,7 @@ public class CategoryRepositoryImpl implements CategoryRepositoryCustom {
                     .where(category.bookshelf.id.eq(bookshelfId))
                     .groupBy(category.id)
                     .orderBy(category.categorySeq.asc())
-                    .fetch();
+                    .fetch());
 
     }
 

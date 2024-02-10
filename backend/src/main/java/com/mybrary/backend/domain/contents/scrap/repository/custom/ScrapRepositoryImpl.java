@@ -36,5 +36,12 @@ public class ScrapRepositoryImpl implements ScrapRepositoryCustom {
             );
       }
 
+      @Override
+      public Optional<Integer> findLastPaperSeq(Long bookId) {
+            return Optional.ofNullable(query.select(scrap.paperSeq.max())
+                                           .from(scrap)
+                                           .where(scrap.book.id.eq(bookId)).fetchOne());
+      }
+
 
 }
