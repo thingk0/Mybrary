@@ -30,9 +30,6 @@ public class SecurityConfig {
     private final EmailVerificationFilter emailVerificationFilter;
     private final TokenRefreshRequestFilter tokenRefreshRequestFilter;
 
-    @Value("${cors.allowed.origin}")
-    private String CORS_ALLOWED_URL;
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -44,7 +41,7 @@ public class SecurityConfig {
         security
             .httpBasic(basic -> basic.disable())
             .csrf(csrf -> csrf.disable())
-            .cors(cors -> cors.configurationSource(request -> getCorsConfiguration()))
+            .cors(cors -> cors.disable())
         ;
 
         security
@@ -94,17 +91,16 @@ public class SecurityConfig {
         return security.build();
     }
 
-
-    private CorsConfiguration getCorsConfiguration() {
-        CorsConfiguration config = new CorsConfiguration();
+//    private CorsConfiguration getCorsConfiguration() {
+//        CorsConfiguration config = new CorsConfiguration();
 //        config.setAllowedOrigins(Collections.singletonList(CORS_ALLOWED_URL));
 //        config.setAllowedOrigins(Collections.singletonList("*"));
-        config.setAllowedOriginPatterns(Collections.singletonList("*"));
-        config.setAllowedMethods(Collections.singletonList("*"));
-        config.setAllowedHeaders(Collections.singletonList("*"));
-        config.setAllowCredentials(true);
-        config.setMaxAge(3600L);
-        return config;
-    }
+//        config.setAllowedOriginPatterns(Collections.singletonList("*"));
+//        config.setAllowedMethods(Collections.singletonList("*"));
+//        config.setAllowedHeaders(Collections.singletonList("*"));
+//        config.setAllowCredentials(true);
+//        config.setMaxAge(3600L);
+//        return config;
+//    }
 
 }
