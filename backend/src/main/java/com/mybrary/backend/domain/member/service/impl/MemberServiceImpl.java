@@ -35,6 +35,8 @@ import com.mybrary.backend.domain.rollingpaper.repository.RollingPaperRepository
 import com.mybrary.backend.global.exception.image.ImageNotFoundException;
 import com.mybrary.backend.global.exception.member.DuplicateEmailException;
 import com.mybrary.backend.global.exception.member.EmailNotFoundException;
+import com.mybrary.backend.global.exception.member.FollowerNotFoundException;
+import com.mybrary.backend.global.exception.member.FollowingNotFoundException;
 import com.mybrary.backend.global.exception.member.InvalidLoginAttemptException;
 import com.mybrary.backend.global.exception.member.PasswordMismatchException;
 import com.mybrary.backend.global.exception.member.ProfileUpdateException;
@@ -168,68 +170,70 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public List<MyFollowingDto> getAllMyFollowing(Long myId) {
-        List<Member> myFollowing = memberRepository.getAllFollowing(myId);
 
-        List<MyFollowingDto> list = new ArrayList<>();
-        for (Member member : myFollowing) {
-            list.add(new MyFollowingDto(member.getId(), member.getName(), member.getNickname(), null));
-        }
-
-        return list;
+        List<MyFollowingDto> myFollowing = memberRepository.getAllMyFollowing(myId).orElseThrow(FollowingNotFoundException::new);
+        return myFollowing;
     }
 
     @Override
     public List<MyFollowerDto> getAllMyFollower(Long myId) {
 
-        List<Member> myFollower = memberRepository.getAllFollower(myId);
+        List<MyFollowerDto> myFollower = memberRepository.getAllMyFollower(myId).orElseThrow(FollowerNotFoundException::new);
 
-        List<MyFollowerDto> list = new ArrayList<>();
-        for (Member member : myFollower) {
-            Follow follow = memberRepository.isFollowed(myId, member.getId());
-            boolean isFollowed = false;
-            if (follow != null) {
-                isFollowed = true;
+        for(int i = 0;i<myFollower.size();i++){
+            MyFollowerDto follower = myFollower.get(i);
+
+            if(memberRepository.isFollowed(myId, follower.getMemberId()).orElse(null)!=null){
+                myFollower.get(i).setFollowStatus(1);
+            } else if(memberRepository.isRequested(myId, follower.getMemberId()).orElse(null)!=null){
+                myFollower.get(i).setFollowStatus(2);
+            } else{
+                myFollower.get(i).setFollowStatus(3);
             }
-            list.add(new MyFollowerDto(member.getId(), member.getName(), member.getNickname(), null, isFollowed));
         }
 
-        return list;
+        return myFollower;
     }
 
     @Override
     public List<FollowingDto> getAllFollowing(Long myId, Long memberId) {
 
-        List<Member> Following = memberRepository.getAllFollowing(memberId);
+        List<FollowingDto> myFollowing = memberRepository.getAllFollowing(memberId).orElseThrow(FollowingNotFoundException::new);
 
-        List<FollowingDto> list = new ArrayList<>();
-        for (Member member : Following) {
-            Follow follow = memberRepository.isFollowed(myId, member.getId());
-            boolean isFollowed = false;
-            if (follow != null) {
-                isFollowed = true;
+        for(int i = 0;i<myFollowing.size();i++){
+            FollowingDto following = myFollowing.get(i);
+
+            if(memberRepository.isFollowed(myId, following.getMemberId()).orElse(null)!=null){
+                myFollowing.get(i).setFollowStatus(1);
+            } else if(memberRepository.isRequested(myId, following.getMemberId()).orElse(null)!=null){
+                myFollowing.get(i).setFollowStatus(2);
+            } else{
+                myFollowing.get(i).setFollowStatus(3);
             }
-            list.add(new FollowingDto(member.getId(), member.getName(), member.getNickname(), null, isFollowed));
         }
 
-        return list;
+        return myFollowing;
 
     }
 
     @Override
     public List<FollowerDto> getAllFollower(Long myId, Long memberId) {
-        List<Member> myFollower = memberRepository.getAllFollower(memberId);
 
-        List<FollowerDto> list = new ArrayList<>();
-        for (Member member : myFollower) {
-            Follow follow = memberRepository.isFollowed(myId, member.getId());
-            boolean isFollowed = false;
-            if (follow != null) {
-                isFollowed = true;
+        List<FollowerDto> myFollower = memberRepository.getAllFollower(memberId).orElseThrow(FollowerNotFoundException::new);
+
+        for(int i = 0;i<myFollower.size();i++){
+            FollowerDto follower = myFollower.get(i);
+
+            if(memberRepository.isFollowed(myId, follower.getMemberId()).orElse(null)!=null){
+                myFollower.get(i).setFollowStatus(1);
+            } else if(memberRepository.isRequested(myId, follower.getMemberId()).orElse(null)!=null){
+                myFollower.get(i).setFollowStatus(2);
+            } else{
+                myFollower.get(i).setFollowStatus(3);
             }
-            list.add(new FollowerDto(member.getId(), member.getName(), member.getNickname(), null, isFollowed));
         }
 
-        return list;
+        return myFollower;
     }
 
     @Transactional

@@ -46,8 +46,8 @@ public class BookRepositoryImpl implements BookRepositoryCustom {
         return Optional.ofNullable(query.select(
                                             Projections.constructor(BookGetDto.class, book.id,
                                                                     Projections.constructor(MemberInfoDto.class, member.id, member.nickname, member.intro,
-                                                                                            image2.url),
-                                                                    book.coverTitle, image1.url, book.coverLayout,
+                                                                                            image2.id, image2.url),
+                                                                    book.coverTitle, image1.id, image1.url, book.coverLayout,
                                                                     book.coverColor, bookMarker.bookMarkerIndex))
                                         .from(book)
                                         .leftJoin(image1)
@@ -80,7 +80,7 @@ public class BookRepositoryImpl implements BookRepositoryCustom {
     public Optional<List<BookListGetFromPaperDto>> getBookListFromPaper(Long paperId) {
         return Optional.ofNullable(query.select(Projections.constructor(BookListGetFromPaperDto.class,
                                                                         book.id, book.coverTitle, member.id, member.nickname,
-                                                                        image.url))
+                                                                        image.id, image.url))
                                         .from(paper)
                                         .leftJoin(scrap).on(scrap.paper.id.eq(paper.id))
                                         .leftJoin(book).on(scrap.book.id.eq(book.id))

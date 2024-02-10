@@ -44,7 +44,7 @@ public class NotificationServiceImpl implements NotificationService {
             // 알림을 보낸 사람 조회
             Member member = notify.getSender();
             MemberInfoDto sender = new MemberInfoDto(member.getId(), member.getNickname(),
-                                                     member.getIntro(), null);
+                                                     member.getIntro(), member.getProfileImage().getId(), member.getProfileImage().getUrl());
 
             // DTO에 맞게 저장
             list.add(new NotificationGetDto(notify.getId(), sender, notify.getNotifyType(),
@@ -92,7 +92,7 @@ public class NotificationServiceImpl implements NotificationService {
         Notification savedNotification = notificationRepository.save(newNotification);
 
         // 알림 수신자의 알림구독주소에 저장된 알림 객체 반환하기
-        MemberInfoDto senderDto = new MemberInfoDto(sender.getId(), sender.getNickname(), sender.getIntro(), null);
+        MemberInfoDto senderDto = new MemberInfoDto(sender.getId(), sender.getNickname(), sender.getIntro(), sender.getProfileImage().getId(), sender.getProfileImage().getUrl());
         String bookTitle = null;
         if(savedNotification.getBookId() != null){
             Book book = bookRepository.findById(savedNotification.getBookId()).get();

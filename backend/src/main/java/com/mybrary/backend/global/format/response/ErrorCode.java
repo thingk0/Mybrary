@@ -47,6 +47,9 @@ public enum ErrorCode {
 
     PROFILE_UPDATE_FAILED(HttpStatus.BAD_REQUEST, "회원정보를 수정할 수 없습니다."),
 
+    // 팔로우 관련 예외 처리
+    FOLLOWING_NOT_FOUND(HttpStatus.NOT_FOUND, "팔로잉 리스트를 찾을 수 없습니다."),
+    FOLLOWER_NOT_FOUND(HttpStatus.NOT_FOUND, "팔로워 리스트를 찾을 수 없습니다."),
 
     // 마이브러리 예외 처리
     MYBRARY_NOT_FOUND(HttpStatus.NOT_FOUND, "마이브러리를 찾을 수 없습니다."),

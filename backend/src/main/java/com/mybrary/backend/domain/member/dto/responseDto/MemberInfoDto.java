@@ -21,7 +21,8 @@ public class MemberInfoDto {
     private Long memberId;
     private String nickname;
     private String intro;
-    private String url;
+    private Long imageId;
+    private String imageUrl;
 
     public MemberInfoDto(Long memberId) {
         this.memberId = memberId;

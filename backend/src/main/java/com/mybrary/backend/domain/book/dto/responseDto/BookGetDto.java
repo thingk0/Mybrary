@@ -20,7 +20,8 @@ public class BookGetDto {
     private Long bookId;
     private MemberInfoDto writer;
     private String coverTitle;
-    private String url;
+    private Long imageId;
+    private String imageUrl;
     private int coverLayout;
     private int coverColorCode;
     private int bookMarkerIndex;

@@ -20,6 +20,7 @@ public class MyFollowingDto {
     private Long memberId;
     private String name;
     private String nickname;
+    private Long profileImageId;
     private String profileImageUrl;
 
 }

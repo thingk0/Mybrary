@@ -21,7 +21,15 @@ public class MyFollowerDto {
     private Long memberId;
     private String name;
     private String nickname;
+    private Long profileImageId;
     private String profileImageUrl;
-    private boolean isFollowed;
+    private int followStatus;
 
+    public MyFollowerDto(Long memberId, String name, String nickname, Long profileImageId, String profileImageUrl) {
+        this.memberId = memberId;
+        this.name = name;
+        this.nickname = nickname;
+        this.profileImageId = profileImageId;
+        this.profileImageUrl = profileImageUrl;
+    }
 }

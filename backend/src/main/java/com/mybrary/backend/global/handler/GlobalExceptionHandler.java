@@ -3,6 +3,8 @@ package com.mybrary.backend.global.handler;
 import com.mybrary.backend.global.exception.bookshelf.BookshelfNotFoundException;
 import com.mybrary.backend.global.exception.chat.ChatJoinMemberNotFoundException;
 import com.mybrary.backend.global.exception.chat.ChatRoomNotFoundException;
+import com.mybrary.backend.global.exception.member.FollowerNotFoundException;
+import com.mybrary.backend.global.exception.member.FollowingNotFoundException;
 import com.mybrary.backend.global.exception.pickbook.PickBookNotFoundException;
 import com.mybrary.backend.global.exception.book.BookAlreadySubscribeException;
 import com.mybrary.backend.global.exception.book.BookCreateException;
@@ -223,6 +225,17 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return response.error(e.getErrorCode());
     }
 
+    @ExceptionHandler(FollowingNotFoundException.class)
+    protected ResponseEntity<?> handle(FollowingNotFoundException e) {
+        log.error("FollowingNotFoundException = {}", e.getErrorCode().getMessage());
+        return response.error(e.getErrorCode());
+    }
+
+    @ExceptionHandler(FollowerNotFoundException.class)
+    protected ResponseEntity<?> handle(FollowerNotFoundException e) {
+        log.error("FollowerNotFoundException = {}", e.getErrorCode().getMessage());
+        return response.error(e.getErrorCode());
+    }
 
 
 

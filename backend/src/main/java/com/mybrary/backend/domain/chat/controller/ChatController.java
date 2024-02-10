@@ -44,22 +44,6 @@ public class ChatController {
     public ResponseEntity<?> getAllChatRoom(
         @Parameter(hidden = true) Authentication authentication, @PageableDefault(page = 0, size = 20) Pageable page) {
 
-        MemberInfoDto joinMember1 = new MemberInfoDto(1L, "wnsgh", "안녕하세요 최준호입니다", "123123");
-        MemberInfoDto joinMember2 = new MemberInfoDto(2L, "aksrl", "안녕하세요 서만기입니다", "666666");
-        MemberInfoDto joinMember3 = new MemberInfoDto(3L, "gPtjs", "안녕하세요 박혜선입니다", "145643");
-        MemberInfoDto joinMember4 = new MemberInfoDto(4L, "thdud", "안녕하세요 최소영입니다", "000000");
-
-        ChatRoomGetDto chatRoom1 = new ChatRoomGetDto(1L, joinMember1, "명성아 넌 천재야", null, 2);
-        ChatRoomGetDto chatRoom2 = new ChatRoomGetDto(2L, joinMember2, "내가 한 거 볼래?", null, 0);
-        ChatRoomGetDto chatRoom3 = new ChatRoomGetDto(3L, joinMember3, "명성아 나 이것 좀 알려줘", null, 6);
-        ChatRoomGetDto chatRoom4 = new ChatRoomGetDto(4L, joinMember4, "게릿힘들어...", null, 3);
-
-        List<ChatRoomGetDto> list = new ArrayList<>();
-        list.add(chatRoom1);
-        list.add(chatRoom2);
-        list.add(chatRoom3);
-        list.add(chatRoom4);
-
         List<ChatRoomGetDto> result = chatService.getAllChatRoom(authentication.getName(), page);
 
         return response.success(ResponseCode.CHATROOM_LIST_FETCHED, result);

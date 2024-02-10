@@ -18,7 +18,7 @@ public interface PaperRepositoryCustom {
 
     Optional<MemberInfoDto> getWriter(Long paperId);
 
-    Optional<String> getImageUrl(Long paperId, int seq);
+    Optional<Long> getImageUrl(Long paperId, int seq);
 
     Optional<Long> getThreadIdByPaperId(Long paperId);
 }

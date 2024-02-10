@@ -14,6 +14,7 @@ public class ThreadInfoGetDto {
     /* 내 thread 조회, 특정 멤버의 thread 조회에 사용 */
 
     private Long threadId;
+    private Long imageId;
     private String imageUrl;
     private int likesCount;
     private int commentCount;

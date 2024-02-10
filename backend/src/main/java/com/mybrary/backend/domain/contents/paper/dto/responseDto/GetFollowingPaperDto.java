@@ -21,7 +21,9 @@ public class GetFollowingPaperDto {
 
     private String content1;
     private String content2;
+    private Long imageId1;
     private String imageUrl1;
+    private Long imageId2;
     private String imageUrl2;
 
     private int likesCount;

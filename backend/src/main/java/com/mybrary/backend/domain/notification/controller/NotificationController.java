@@ -42,21 +42,6 @@ public class NotificationController {
         Member member = memberService.findMember(authentication.getName());
         Long myId = member.getId();
 
-        MemberInfoDto member1 = new MemberInfoDto(1L, "wnsgh", "안녕하세요 최준호입니다", "123123");
-        MemberInfoDto member2 = new MemberInfoDto(2L, "aksrl", "안녕하세요 서만기입니다", "666666");
-        MemberInfoDto member3 = new MemberInfoDto(3L, "gPtjs", "안녕하세요 박혜선입니다", "145643");
-        MemberInfoDto member4 = new MemberInfoDto(4L, "thdud", "안녕하세요 최소영입니다", "000000");
-
-        NotificationGetDto notify1 = new NotificationGetDto(1L, member1, 3, null, null, 3L, 4L, 5L, null);
-        NotificationGetDto notify2 = new NotificationGetDto(2L, member2, 9, null, null, 3L, 4L, null, null);
-        NotificationGetDto notify3 = new NotificationGetDto(3L, member3, 12, null, null, null, null, null, null);
-        NotificationGetDto notify4 = new NotificationGetDto(4L, member4, 9, 1L, "여행책", null, null, null, null);
-
-        List<NotificationGetDto> list = new ArrayList<>();
-        list.add(notify1);
-        list.add(notify2);
-        list.add(notify3);
-        list.add(notify4);
 
         List<NotificationGetDto> result = notificationService.getAllNotification(myId, page);
 

@@ -16,8 +16,8 @@ public class ImageRepositoryImpl implements ImageRepositoryCustom {
 
 
     @Override
-    public Optional<List<String>> findPaperImage(Long paperId) {
-        return Optional.ofNullable(query.select(image.url)
+    public Optional<List<Long>> findPaperImage(Long paperId) {
+        return Optional.ofNullable(query.select(image.id)
                                        .from(image)
                                        .leftJoin(paperImage).on(paperImage.image.id.eq(image.id))
                                        .where(paperImage.paper.id.eq(paperId))

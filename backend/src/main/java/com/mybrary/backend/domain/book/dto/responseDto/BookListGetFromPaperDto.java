@@ -15,6 +15,7 @@ public class BookListGetFromPaperDto {
     private String bookTitle;
     private Long memberId;
     private String nickname;
+    private Long profileImageId;
     private String profileImageUrl;
 
 }

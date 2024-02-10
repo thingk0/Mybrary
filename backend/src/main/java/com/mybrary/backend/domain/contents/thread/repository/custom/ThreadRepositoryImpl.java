@@ -147,6 +147,7 @@ public class ThreadRepositoryImpl implements ThreadRepositoryCustom {
       public ThreadInfoGetDto getSimpleThreadDtoResult(Long threadId){
             return query.select(Projections.constructor(ThreadInfoGetDto.class,
                             paper.thread.id,
+                            image.id,
                             image.url,
                             paper.likeCount,
                             paper.commentCount,
@@ -222,8 +223,8 @@ public class ThreadRepositoryImpl implements ThreadRepositoryCustom {
             QImage threadImage = new QImage("threadImage");
 
             return query.select(Projections.constructor(ThreadShareGetDto.class, thread.id,
-                            threadImage.url, member.id, member.nickname,
-                            writerImage.url))
+                            threadImage.id, threadImage.url, member.id, member.nickname,
+                            writerImage.id, writerImage.url))
                         .from(thread)
                         .leftJoin(mybrary)
                         .on(thread.mybrary.id.eq(mybrary.id))

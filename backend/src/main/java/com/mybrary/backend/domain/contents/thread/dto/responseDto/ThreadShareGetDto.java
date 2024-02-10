@@ -17,9 +17,11 @@ public class ThreadShareGetDto {
      */
 
     private Long threadId;
+    private Long threadImageId;
     private String thumbnailImageUrl;
     private Long writerId;
     private String writerNickname;
+    private Long writerProfileImageId;
     private String writerProfileUrl;
 
     public ThreadShareGetDto(Long threadId) {

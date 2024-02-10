@@ -13,6 +13,7 @@ import com.mybrary.backend.domain.chat.repository.ChatRoomRepository;
 import com.mybrary.backend.domain.chat.service.ChatService;
 import com.mybrary.backend.domain.contents.thread.dto.responseDto.ThreadShareGetDto;
 import com.mybrary.backend.domain.contents.thread.repository.ThreadRepository;
+import com.mybrary.backend.domain.member.dto.login.MemberInfo;
 import com.mybrary.backend.domain.member.dto.responseDto.MemberInfoDto;
 import com.mybrary.backend.domain.member.entity.Member;
 import com.mybrary.backend.domain.member.repository.MemberRepository;
@@ -67,9 +68,7 @@ public class ChatServiceImpl implements ChatService {
             Long chatRoomId = chatRoomIdList.get(i);
 
             // 2. 현재 채팅방에 참여하고 있는 상대방 정보
-            Member member = chatRoomRepository.findJoinMemberByChatRoomId(myId, chatRoomId);
-            MemberInfoDto joinMember = new MemberInfoDto(member.getId(), member.getNickname(),
-                                                         member.getIntro(), null);
+            MemberInfoDto joinMember = chatJoinRepository.getJoinMemberByMemberId(chatRoomId, myId).orElseThrow(ChatJoinMemberNotFoundException::new);
 
             // 3. 현재 채팅방의 최근 메세지
             ChatMessage recentMessage = chatRoomRepository.findRecentMessage(chatRoomId);
@@ -118,7 +117,7 @@ public class ChatServiceImpl implements ChatService {
         for (ChatMessage chatMessage : chatMessages) {
 
             // 2. 상대방 정보
-            Member you = chatJoinRepository.getJoinMemberByMemberId(chatRoomId, myId).orElseThrow(ChatJoinMemberNotFoundException::new);
+            MemberInfoDto you = chatJoinRepository.getJoinMemberByMemberId(chatRoomId, myId).orElseThrow(ChatJoinMemberNotFoundException::new);
 
             // 3. 스레드Id가 null이 아닐 때 스레드 조회
             ThreadShareGetDto thread = null;
@@ -128,11 +127,11 @@ public class ChatServiceImpl implements ChatService {
             }
 
             // 4. sender가 상대방이고 읽음 여부가 false라면 true로 바꾸고 보내기
-            if (chatMessage.getSender().getId().equals(you.getId()) && !chatMessage.isRead()) {
+            if (chatMessage.getSender().getId().equals(you.getMemberId()) && !chatMessage.isRead()) {
                 chatMessage.setRead(true);
             }
 
-            chatMessageList.add(new TChatMessageGetDto(chatMessage.getId(), you.getId(), chatMessage.getMessage(),
+            chatMessageList.add(new TChatMessageGetDto(chatMessage.getId(), you.getMemberId(), chatMessage.getMessage(),
                                            thread, chatMessage.isRead(), chatMessage.getCreatedAt()));
         }
 
@@ -253,11 +252,11 @@ public class ChatServiceImpl implements ChatService {
                 chatRoomRepository.save(chatRoom);
             }
         } else {
-            chatRoom = chatRoomRepository.findById(message.getChatRoomId()).get();
+            chatRoom = chatRoomRepository.findById(message.getChatRoomId()).orElseThrow(ChatRoomNotFoundException::new);
         }
 
         // 받는 회원 엔티티
-        Member receiver = memberRepository.findById(message.getReceiverId()).get();
+        Member receiver = memberRepository.findById(message.getReceiverId()).orElseThrow(MemberNotFoundException::new);
 
         // 채팅 엔티티
         ChatMessage newMessage = ChatMessage.builder()

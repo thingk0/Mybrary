@@ -1,12 +1,21 @@
 package com.mybrary.backend.domain.member.repository.custom;
 
+import static com.mybrary.backend.domain.follow.entity.QFollow.follow;
 import static com.mybrary.backend.domain.image.entity.QImage.image;
 import static com.mybrary.backend.domain.member.entity.QMember.member;
+import static com.mybrary.backend.domain.notification.entity.QNotification.notification;
 
+import com.mybrary.backend.domain.follow.entity.Follow;
+import com.mybrary.backend.domain.member.dto.responseDto.FollowerDto;
+import com.mybrary.backend.domain.member.dto.responseDto.FollowingDto;
 import com.mybrary.backend.domain.member.dto.responseDto.MemberInfoDto;
+import com.mybrary.backend.domain.member.dto.responseDto.MyFollowerDto;
+import com.mybrary.backend.domain.member.dto.responseDto.MyFollowingDto;
 import com.mybrary.backend.domain.member.entity.Member;
+import com.mybrary.backend.domain.notification.entity.Notification;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 
@@ -33,12 +42,68 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
 
     @Override
     public Optional<MemberInfoDto> getMemberInfo(Long myId) {
-        return Optional.ofNullable(query.select(Projections.constructor(MemberInfoDto.class, member.id, member.nickname, member.intro, image.url))
+        return Optional.ofNullable(query.select(Projections.constructor(MemberInfoDto.class, member.id, member.nickname, member.intro, image.id, image.url))
             .from(member)
             .leftJoin(image).on(member.profileImage.id.eq(image.id))
             .where(member.id.eq(myId))
             .fetchOne());
 
+    }
+
+    @Override
+    public Optional<List<MyFollowingDto>> getAllMyFollowing(Long myId) {
+        return Optional.ofNullable(query.select(Projections.constructor(MyFollowingDto.class, member.id, member.name, member.nickname, image.id, image.url))
+                                        .from(follow)
+                                        .leftJoin(member).on(follow.following.id.eq(member.id))
+                                        .leftJoin(image).on(member.profileImage.id.eq(image.id))
+                                        .where(follow.follower.id.eq(myId))
+                                        .fetch());
+    }
+
+    @Override
+    public Optional<List<MyFollowerDto>> getAllMyFollower(Long myId) {
+        return Optional.ofNullable(query.select(Projections.constructor(MyFollowerDto.class, member.id, member.name, member.nickname, image.id, image.url))
+                                       .from(follow)
+                                       .leftJoin(member).on(follow.follower.id.eq(member.id))
+                                       .leftJoin(image).on(member.profileImage.id.eq(image.id))
+                                       .where(follow.following.id.eq(myId))
+                                       .fetch());
+    }
+
+    @Override
+    public Optional<List<FollowingDto>> getAllFollowing(Long memberId) {
+        return Optional.ofNullable(query.select(Projections.constructor(FollowingDto.class, member.id, member.name, member.nickname, image.id, image.url))
+                                        .from(follow)
+                                        .leftJoin(member).on(follow.following.id.eq(member.id))
+                                        .leftJoin(image).on(member.profileImage.id.eq(image.id))
+                                        .where(follow.follower.id.eq(memberId))
+                                        .fetch());
+    }
+
+    @Override
+    public Optional<List<FollowerDto>> getAllFollower(Long memberId) {
+        return Optional.ofNullable(query.select(Projections.constructor(FollowerDto.class, member.id, member.name, member.nickname, image.id, image.url))
+                                        .from(follow)
+                                        .leftJoin(member).on(follow.follower.id.eq(member.id))
+                                        .leftJoin(image).on(member.profileImage.id.eq(image.id))
+                                        .where(follow.following.id.eq(memberId))
+                                        .fetch());
+    }
+
+    @Override
+    public Optional<Follow> isFollowed(Long myId, Long memberId) {
+        return Optional.ofNullable(query.select(follow)
+                                       .from(follow)
+                                       .where(follow.following.id.eq(memberId).and(follow.follower.id.eq(myId)))
+                                       .fetchOne());
+    }
+
+    @Override
+    public Optional<Notification> isRequested(Long myId, Long memberId) {
+        return Optional.ofNullable(query.select(notification)
+                                       .from(notification)
+                                       .where(notification.sender.id.eq(myId).and(notification.receiver.id.eq(memberId).and(notification.notifyType.eq(1))))
+                                       .fetchOne());
     }
 
 

@@ -238,11 +238,16 @@ public class ThreadServiceImpl implements ThreadService {
                 GetFollowingPaperDto paperDto = getFollowingPaperDtoList.get(j);
 
                 /* 좋아요 여부 판단, 태그목록 포함 처리, 이미지 url들 포함 처리*/
-                List<String> imageUrls = imageRepository.findPaperImage(paperDto.getId()).orElseThrow(ImageNotFoundException::new);
+                List<Long> imageUrls = imageRepository.findPaperImage(paperDto.getId()).orElseThrow(ImageNotFoundException::new);
                 System.out.println("4");
 
-                paperDto.setImageUrl1(imageUrls.get(0));
-                if(imageUrls.size()==2) paperDto.setImageUrl2(imageUrls.get(1));
+                paperDto.setImageId1(imageUrls.get(0));
+                paperDto.setImageUrl1(imageRepository.findById(imageUrls.get(0)).orElse(null).getUrl());
+                if(imageUrls.size()==2) {
+                    paperDto.setImageId2(imageUrls.get(1));
+                    paperDto.setImageUrl2(imageRepository.findById(imageUrls.get(1)).orElse(null).getUrl());
+
+                }
 
                 paperDto.setLikesCount(likeRepository.getLikeCount(paperDto.getId()).orElse(0));
                 paperDto.setCommentCount(commentRepository.getCommentCount(paperDto.getId()).orElse(0));

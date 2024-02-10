@@ -7,6 +7,6 @@ import org.springframework.data.repository.query.Param;
 public interface ImageRepositoryCustom {
 
     /* 2개만 조회됨을 보장해야함 */
-    Optional<List<String>> findPaperImage(@Param("paperId") Long paperId);
+    Optional<List<Long>> findPaperImage(Long paperId);
 
 }

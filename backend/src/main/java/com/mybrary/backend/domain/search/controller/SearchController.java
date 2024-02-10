@@ -41,11 +41,6 @@ public class SearchController {
     public ResponseEntity<?> searchByThread(@RequestParam(name = "keyword") String keyword,
                                             @PageableDefault(page = 0, size = 10) Pageable page) {
 
-        MemberInfoDto writer1 = new MemberInfoDto(1L, "wnsgh", "안녕하세요 최준호입니다", "123123");
-        MemberInfoDto writer2 = new MemberInfoDto(2L, "aksrl", "안녕하세요 서만기입니다", "666666");
-        MemberInfoDto writer3 = new MemberInfoDto(3L, "gPtjs", "안녕하세요 박혜선입니다", "145643");
-        MemberInfoDto writer4 = new MemberInfoDto(4L, "thdud", "안녕하세요 최소영입니다", "000000");
-
 
 //        ThreadSimpleGetDto thread1 = new ThreadSimpleGetDto(1L, writer1, "썸네일url", 3132143, 12343, 13134);
 //        ThreadSimpleGetDto thread2 = new ThreadSimpleGetDto(2L, writer2, "썸네일url", 3443, 96354, 999);
@@ -77,25 +72,25 @@ public class SearchController {
     public ResponseEntity<?> searchByBook(@RequestParam(name = "keyword") String keyword,
                                           @PageableDefault(page = 0, size = 10) Pageable page) {
 
-        MemberInfoDto writer1 = new MemberInfoDto(1L, "wnsgh", "안녕하세요 최준호입니다", "123123");
-        MemberInfoDto writer2 = new MemberInfoDto(2L, "aksrl", "안녕하세요 서만기입니다", "666666");
-        MemberInfoDto writer3 = new MemberInfoDto(3L, "gPtjs", "안녕하세요 박혜선입니다", "145643");
-        MemberInfoDto writer4 = new MemberInfoDto(4L, "thdud", "안녕하세요 최소영입니다", "000000");
+//        MemberInfoDto writer1 = new MemberInfoDto(1L, "wnsgh", "안녕하세요 최준호입니다", "123123");
+//        MemberInfoDto writer2 = new MemberInfoDto(2L, "aksrl", "안녕하세요 서만기입니다", "666666");
+//        MemberInfoDto writer3 = new MemberInfoDto(3L, "gPtjs", "안녕하세요 박혜선입니다", "145643");
+//        MemberInfoDto writer4 = new MemberInfoDto(4L, "thdud", "안녕하세요 최소영입니다", "000000");
+//
+//        BookGetDto book1 = new BookGetDto(1L, writer1, "준호의 그림일기", "1234", 2, 4, 0);
+//        BookGetDto book2 = new BookGetDto(2L, writer2, "만기의 지각", "1234", 1, 1, 2);
+//        BookGetDto book3 = new BookGetDto(3L, writer3, "혜선이의 여행", "1234", 4, 2, 1);
+//        BookGetDto book4 = new BookGetDto(4L, writer4, "소영이의 일상", "1234", 3, 1, 0);
 
-        BookGetDto book1 = new BookGetDto(1L, writer1, "준호의 그림일기", "1234", 2, 4, 0);
-        BookGetDto book2 = new BookGetDto(2L, writer2, "만기의 지각", "1234", 1, 1, 2);
-        BookGetDto book3 = new BookGetDto(3L, writer3, "혜선이의 여행", "1234", 4, 2, 1);
-        BookGetDto book4 = new BookGetDto(4L, writer4, "소영이의 일상", "1234", 3, 1, 0);
-
-
-        List<BookGetDto> list = new ArrayList<>();
-        list.add(book1);
-        list.add(book2);
-        list.add(book3);
-        list.add(book4);
+//
+//        List<BookGetDto> list = new ArrayList<>();
+//        list.add(book1);
+//        list.add(book2);
+//        list.add(book3);
+//        list.add(book4);
 
         HashMap<String, Object> map = new HashMap<>();
-        map.put("bookList", list);
+//        map.put("bookList", list);
         map.put("page", page);
 
         return response.success(ResponseCode.BOOKS_SEARCHED, map);

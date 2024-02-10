@@ -79,12 +79,10 @@ public class PaperRepositoryImpl implements PaperRepositoryCustom {
     }
 
     @Override
-    public Optional<String> getImageUrl(Long paperId, int seq) {
-        return Optional.ofNullable(query.select(image.url)
-                                       .from(paper)
-                                       .leftJoin(paperImage).on(paperImage.paper.id.eq(paper.id))
-                                       .leftJoin(image).on(paperImage.image.id.eq(image.id))
-                                       .where(paper.id.eq(paperId).and(paperImage.imageSeq.eq(seq)))
+    public Optional<Long> getImageUrl(Long paperId, int seq) {
+        return Optional.ofNullable(query.select(paperImage.image.id)
+                                       .from(paperImage)
+                                       .where(paperImage.paper.id.eq(paperId).and(paperImage.imageSeq.eq(seq)))
                                        .fetchOne()
         );
     }
@@ -107,8 +105,10 @@ public class PaperRepositoryImpl implements PaperRepositoryCustom {
                                            paper.layoutType.as("layoutType"),
                                            paper.content1.as("content1"),
                                            paper.content2.as("content2"),
-                                           image.url.as("image1Url"),
-                                           image.url.as("image2Url"),
+                                           image.id.as("imageId1"),
+                                           image.url.as("imageUrl1"),
+                                           image.id.as("imageId2"),
+                                           image.url.as("imageUrl2"),
                                            paper.likeCount.as("likeCount"),
                                            paper.commentCount.as("commentCount"),
                                            paper.scrapCount.as("scrapCount")
