@@ -66,142 +66,107 @@ public class ThreadServiceImpl implements ThreadService {
 
     /* 예외 처리 상황별로 추후 추가할예정 */
 
-    @Transactional
-    @Override
-    public Long createThread(Long myId, ThreadPostDto threadPostDto) {
-        log.info("createThread 살행");
-        Thread thread = Thread.builder()
-                              .mybrary(mybraryRepository.searchByMemberId(myId))
-                              .build();
-        threadRepository.save(thread);
-        log.info("sp1");
-        /* paper 객체 하나씩 생성하고 저장 */
-        List<PostPaperDto> postPaperDtoList = threadPostDto.getPostPaperDto();
-        log.info("sp2");
-
-        // bookId가 null이 아닐 때
-        // book의 마지막 페이지 번호
-        int paperSeq = 0;   // 페이퍼 순서
-        if (threadPostDto.getBookId() != null) {
-            paperSeq = scrapRepository.findLastPaperSeq(threadPostDto.getBookId()).orElse(0);
-        }
-
-        Member member = memberRepository.findById(myId)
-                                        .orElseThrow(NullPointerException::new);
-
-        log.info("memberId = {} / email = {} / nickname = {}", member.getId(), member.getEmail(), member.getNickname());
-
-        for (PostPaperDto dto : postPaperDtoList) {
-            /* paper 객체 생성 */
-            Paper paper = Paper.builder()
-                               .member(member)
-                               .thread(thread)
-                               .layoutType(dto.getLayoutType())
-                               .content1(dto.getContent1())
-                               .content2(dto.getContent2())
-                               .isPaperPublic(threadPostDto.isPaperPublic())
-                               .isScrapEnabled(threadPostDto.isScrapEnable())
-                               .build();
-            paperRepository.save(paper);
-
-            /* paperImage 객체 생성 */
-            Image image1 = imageRepository.findById(dto.getImage1()).orElse(null);
-            Image image2 = imageRepository.findById(dto.getImage2()).orElse(null);
-
-            if (image1 != null) {
-                PaperImage paperImage1 = PaperImage.builder()
-                                                   .paper(paper)
-                                                   .image(image1)
-                                                   .imageSeq(1)
-                                                   .build();
-                paperImageRepository.save(paperImage1);
-            }
-
-            // 이미지가 두개일 때
-            if (image2 != null) {
-                PaperImage paperImage2 = PaperImage.builder()
-                                                   .paper(paper)
-                                                   .image(image2)
-                                                   .imageSeq(2)
-                                                   .build();
-                paperImageRepository.save(paperImage2);
-            }
-
-            log.info("paper 저장 이후");
-            /* bookid가 있는경우에만 scrap 생성 */
+      @Transactional
+      @Override
+      public Long createThread(Long myId, ThreadPostDto threadPostDto) {
+            log.info("createThread 살행");
+            Thread thread = Thread.builder()
+                                  .mybrary(mybraryRepository.searchByMemberId(myId))
+                                  .build();
+            threadRepository.save(thread);
+            log.info("sp1");
+            /* paper 객체 하나씩 생성하고 저장 */
+            List<PostPaperDto> postPaperDtoList = threadPostDto.getPostPaperDto();
+            log.info("sp2");
+            // bookId가 null이 아닐 때
+            // book의 마지막 페이지 번호
+            int paperSeq = 0;   // 페이퍼 순서
             if (threadPostDto.getBookId() != null) {
-                Book book = bookRepository.findById(threadPostDto.getBookId())
-                                          .orElseThrow(BookNotFoundException::new);
-                Scrap scrap = Scrap.builder()
-                                   .paper(paper)
-                                   .book(book)
-                                   .paperSeq(++paperSeq)
-                                   .build();
-                scrapRepository.save(scrap);
+                  paperSeq = scrapRepository.findLastPaperSeq(threadPostDto.getBookId()).orElse(0);
             }
+            Member member = memberRepository.findById(myId)
+                                            .orElseThrow(NullPointerException::new);
+            log.info("memberId = {} / email = {} / nickname = {}", member.getId(), member.getEmail(), member.getNickname());
+            for (PostPaperDto dto : postPaperDtoList) {
+                  /* paper 객체 생성 */
+                  Paper paper = Paper.builder()
+                                     .member(member)
+                                     .thread(thread)
+                                     .layoutType(dto.getLayoutType())
+                                     .content1(dto.getContent1())
+                                     .content2(dto.getContent2())
+                                     .isPaperPublic(threadPostDto.isPaperPublic())
+                                     .isScrapEnabled(threadPostDto.isScrapEnable())
+                                     .build();
+                  paperRepository.save(paper);
+                  /* paperImage 객체 생성 */
+                  Image image1 = imageRepository.findById(dto.getImage1()).orElse(null);
+                  Image image2 = imageRepository.findById(dto.getImage2()).orElse(null);
+                  if (image1 != null) {
+                        PaperImage paperImage1 = PaperImage.builder()
+                                                           .paper(paper)
+                                                           .image(image1)
+                                                           .imageSeq(1)
+                                                           .build();
+                        paperImageRepository.save(paperImage1);
+                  }
+                  // 이미지가 두개일 때
+                  if (image2 != null) {
+                        PaperImage paperImage2 = PaperImage.builder()
+                                                           .paper(paper)
+                                                           .image(image2)
+                                                           .imageSeq(2)
+                                                           .build();
+                        paperImageRepository.save(paperImage2);
+                  }
+                  log.info("paper 저장 이후");
+                  /* bookid가 있는경우에만 scrap 생성 */
+                  if (threadPostDto.getBookId() != null) {
+                        Book book = bookRepository.findById(threadPostDto.getBookId())
+                                                  .orElseThrow(BookNotFoundException::new);
+                        Scrap scrap = Scrap.builder()
+                                           .paper(paper)
+                                           .book(book)
+                                           .paperSeq(++paperSeq)
+                                           .build();
+                        scrapRepository.save(scrap);
+                  }
+                  /* tag 목록 생성 */
+                  List<String> tagNameList = dto.getTagList();
+                  List<Tag> tagEntityList = new ArrayList<>();
+                  for (String tagNames : tagNameList) {
+                        /* paperId, tag명 */
+                        Tag tag = Tag.builder()
+                                     .tagName(tagNames)
+                                     .paper(paper)
+                                     .build();
+                        tagEntityList.add(tag);
+                  }
+                  tagRepository.saveAll(tagEntityList);
+                  log.info("tag목록 생성 이후 ");
 
-            /* tag 목록 생성 */
-            List<String> tagNameList = dto.getTagList();
-            List<Tag> tagEntityList = new ArrayList<>();
-            for (String tagNames : tagNameList) {
-                /* paperId, tag명 */
-                Tag tag = Tag.builder()
-                             .tagName(tagNames)
-                             .paper(paper)
-                             .build();
-                tagEntityList.add(tag);
-            }
-            tagRepository.saveAll(tagEntityList);
-            log.info("tag목록 생성 이후 ");
+                  /* 여기서 페이퍼에 대한 멘션 알림 보내는 로직 */
+                  /* 쓰레드를 생성한 멤버가 sender, 멘션된 회원이 receiver, 알람타입은  */
+//                  List<Long> mentionedIdList = dto.getMentionList();
+//                  for (Long mentiondedId : mentionedIdList) {
+//                        NotificationPostDto mentionNotificationPostDto =
+//                            NotificationPostDto.builder()
+//                                               .notifyType(2)
+//                                               .senderId(member.getId())
+//                                               .receiverId(mentiondedId)
+//                                               .build();
+//                        notificationService.saveNotification(mentionNotificationPostDto);
+//                  }
 
-            /* 여기서 페이퍼에 대한 멘션 알림 보내는 로직 */
-            /* 쓰레드를 생성한 멤버가 sender, 멘션된 회원이 receiver, 알람타입은  */
-//            List<Long> mentionedIdList = dto.getMentionList();
-//            for(Long mentiondedId : mentionedIdList) {
-//                NotificationPostDto mentionNotificationPostDto =
-//                    NotificationPostDto.builder()
-//                    .notifyType(2)
-//                    .senderId(member.getId())
-//                    .receiverId(mentiondedId)
-//                    .build();
-//                notificationService.saveNotification(mentionNotificationPostDto);
-//            }
 
-            /* image 객체 두장 생성, paperImage 객체도 생성 */
-//            Long image1 = imageService.uploadImage(fileList.get(imageSeq));
-//            Long image2 = imageService.uploadImage(fileList.get(imageSeq + 1));
+            } /* paper생성 for문 끝 */
 
-//                  Long imageId1 = imageService.uploadImage();
-//                  Long imageId2 = imageService.uploadImage();
+            return thread.getId();
+      }
 
-            /* paperImage 객체 생성 */
-//                  Image image1 = imageRepository.findById(imageId1)
-//                                                .orElse(new Image());
-//                  Image image2 = imageRepository.findById(imageId2)
-//                                                .orElse(NullPointerException::new);
-//
-//                  PaperImage paperImage1 = PaperImage.builder()
-//                                                     .paper(paper)
-//                                                     .image(image1)
-//                                                     .imageSeq(imageSeq)
-//                                                     .build();
-//
-//                  PaperImage paperImage2 = PaperImage.builder()
-//                                                     .paper(paper)
-//                                                     .image(image2)
-//                                                     .imageSeq(imageSeq + 1)
-//                                                     .build();
-//
-//                  paperImageRepository.save(paperImage1);
-//                  paperImageRepository.save(paperImage2);
-//
-//                  imageSeq = imageSeq + 2;
-        }
 
-        return thread.getId();
-    }
 
-    /* 메인 피드 thread 조회하기 */
+          /* 메인 피드 thread 조회하기 */
     @Transactional
     @Override
     public List<GetThreadDto> getMainAllThread(Long myId, Pageable pageable) {
@@ -233,81 +198,101 @@ public class ThreadServiceImpl implements ThreadService {
                                                .build();
             }
 
-
         }
         return threadDtoList;
     }
 
 
-    /* 나의 thread들만 조회하기 */
-    @Transactional
-    @Override
-    public List<ThreadInfoGetDto> getMyAllThread(Long myId, Pageable pageable) {
-        /* 나의 thread 정보들 가져와 dto 생성 */
+      /* 나의 모든 thread들만 조회하기 */
+      @Transactional
+      @Override
+      public List<ThreadInfoGetDto> getMyAllThread(Long myId, Pageable pageable) {
+            Member member = memberRepository.findById(myId)
+                                            .orElseThrow(NullPointerException::new);
+            log.info("memeberId:" + myId);
 
-        Member member = memberRepository.findById(myId)
-                                        .orElseThrow(NullPointerException::new);
+            List<Thread> threadList = threadRepository.getThreadsByMemberId(myId, pageable);
+            log.info(threadList.size() + " " + threadList.get(0).getId());
 
-        return threadRepository.getSimpleThreadDtoResults(myId, pageable);
-    }
-
-
-    /* 특정 member의 모든 thread들만 조회하기 */
-    @Transactional
-    @Override
-    public List<ThreadInfoGetDto> getOtherAllThread(Long memberId, Pageable pageable) {
-
-        Member member = memberRepository.findById(memberId)
-                                        .orElseThrow(NullPointerException::new);
-        log.info("memeberId:" + memberId);
-
-        List<ThreadInfoGetDto> list = threadRepository.getSimpleThreadDtoResults(memberId, pageable);
-        return threadRepository.getSimpleThreadDtoResults(memberId, pageable);
-    }
-
-    @Transactional
-    @Override
-    public ThreadGetDto getThread(Long memberId, Long threadId) {
-
-        /* paperGetDtoList 정보 조회 및 생성 */
-        List<PaperGetDto> paperGetDtoList = paperRepository.getPaperGetDto(threadId).orElseThrow(PaperListNotFoundException::new);
-        /**/
-        log.info("2");
-
-        for (PaperGetDto paperGetDto : paperGetDtoList) {
-            paperGetDto.updateIsLiked(likeService.checkIsLiked(paperGetDto.getPaperId(), memberId));
-            List<Tag> tagList = tagRepository.getTagsByPaperId(paperGetDto.getPaperId())
-                                             .orElse(Collections.emptyList());
-            /**/
-            log.info("3");
-            List<String> tagNameList = new ArrayList<>();
-
-            if (!tagList.isEmpty()) {
-                tagNameList = tagList.stream()
-                                     .map(Tag::getTagName)
-                                     .toList();
+            List<ThreadInfoGetDto> threadInfoGetDtoList = new ArrayList<>();
+            for(Thread thread : threadList){
+                  threadInfoGetDtoList.add(threadRepository.getSimpleThreadDtoResult(thread.getId()));
             }
-            paperGetDto.updateTagList(tagNameList);
-        }
-        /**/
-        log.info("4");
 
-        /* ThreadGetDto 생성 */
+            return threadInfoGetDtoList;
+      }
 
-        Paper firstPaper = paperRepository.findById(paperGetDtoList.get(0).getPaperId())
-                                          .orElseThrow(NullPointerException::new);
-        MemberInfoDto memberInfoDto = memberRepository.getMemberInfo(memberId).orElseThrow(MemberNotFoundException::new);
 
-        ThreadGetDto threadGetDto = ThreadGetDto.builder()
-                                                .threadId(threadId)
-                                                .member(memberInfoDto)
-                                                .paperList(paperGetDtoList)
-                                                .build();
-        threadGetDto.updateIsPublicEnable(firstPaper.isPaperPublic());
-        threadGetDto.updateIsScrapEnable(firstPaper.isScrapEnabled());
+      /* 특정 member의 모든 thread들만 조회하기 */
+      @Transactional
+      @Override
+      public List<ThreadInfoGetDto> getOtherAllThread(Long memberId, Pageable pageable) {
 
-        return threadGetDto;
-    }
+            Member member = memberRepository.findById(memberId)
+                                            .orElseThrow(NullPointerException::new);
+            log.info("memeberId:" + memberId);
+
+            List<Thread> threadList = threadRepository.getThreadsByMemberId(memberId, pageable);
+            log.info(threadList.size() + " " + threadList.get(0).getId());
+
+            List<ThreadInfoGetDto> threadInfoGetDtoList = new ArrayList<>();
+            for(Thread thread : threadList){
+                  threadInfoGetDtoList.add(threadRepository.getSimpleThreadDtoResult(thread.getId()));
+            }
+
+            return threadInfoGetDtoList;
+      }
+
+
+      /* 쓰레드 아이디로 쓰레드 단건조회 */
+      @Transactional
+      @Override
+      public ThreadGetDto getThread(Long memberId, Long threadId) {
+
+            /* paperGetDtoList 정보 조회 및 생성 */
+            List<PaperGetDto> paperGetDtoList = paperRepository.getPaperGetDto(threadId).orElseThrow(PaperListNotFoundException::new);
+
+            /* 페이퍼별 이미지 url 노드서버로부터 반환 요청, image id -> image url  */
+
+            /**/
+            log.info("2");
+            log.info(paperGetDtoList.size());
+            for (PaperGetDto paperGetDto : paperGetDtoList) {
+                  paperGetDto.updateIsLiked(likeService.checkIsLiked(paperGetDto.getPaperId(), memberId));
+                  List<Tag> tagList = tagRepository.getTagsByPaperId(paperGetDto.getPaperId())
+                                                   .orElse(Collections.emptyList());
+                  /**/
+                  log.info("3");
+                  List<String> tagNameList = new ArrayList<>();
+
+                  if (!tagList.isEmpty()) {
+                        tagNameList = tagList.stream()
+                                             .map(Tag::getTagName)
+                                             .toList();
+                  }
+                  paperGetDto.updateTagList(tagNameList);
+            }
+            /**/
+            log.info("4");
+
+            /* ThreadGetDto 생성 */
+
+            Paper firstPaper = paperRepository.findById(paperGetDtoList.get(0).getPaperId())
+                                              .orElseThrow(NullPointerException::new);
+            MemberInfoDto memberInfoDto = memberRepository.getMemberInfo(memberId).orElseThrow(MemberNotFoundException::new);
+
+            ThreadGetDto threadGetDto = ThreadGetDto.builder()
+                                                    .threadId(threadId)
+                                                    .member(memberInfoDto)
+                                                    .paperList(paperGetDtoList)
+                                                    .build();
+            threadGetDto.updateIsPublicEnable(firstPaper.isPaperPublic());
+            threadGetDto.updateIsScrapEnable(firstPaper.isScrapEnabled());
+
+            return threadGetDto;
+      }
+
+
 
 
     @Transactional

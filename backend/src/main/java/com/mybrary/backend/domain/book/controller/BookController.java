@@ -117,7 +117,7 @@ public class BookController {
     }
 
     @Operation(summary = "페이퍼가 포함된 책 목록 조회", description = "해당 페이퍼가 들어있는 책 정보 목록을 반환")
-    @DeleteMapping("/list/{id}")
+    @GetMapping("/list/{id}")
     public ResponseEntity<?> getBookListFromPaper(
         @Parameter(hidden = true) Authentication authentication,
         @PathVariable(name = "id") Long paperId) {
