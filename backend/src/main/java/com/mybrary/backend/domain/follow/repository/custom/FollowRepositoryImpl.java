@@ -2,6 +2,7 @@ package com.mybrary.backend.domain.follow.repository.custom;
 
 import static com.mybrary.backend.domain.follow.entity.QFollow.follow;
 
+import com.mybrary.backend.domain.follow.entity.Follow;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -27,5 +28,13 @@ public class FollowRepositoryImpl implements FollowRepositoryCustom {
                                          .where(follow.follower.id.eq(myId))
                                          .fetchOne()
         );
+    }
+
+    @Override
+    public Optional<Follow> findFollow(Long myId, Long memberId) {
+        return Optional.ofNullable(query.select(follow)
+                                       .from(follow)
+                                       .where(follow.follower.id.eq(myId).and(follow.following.id.eq(memberId)))
+                                       .fetchOne());
     }
 }

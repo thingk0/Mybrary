@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface CategoryService {
 
-    List<CategoryGetDto> getAllCategory(Long bookshelfId);
+    List<CategoryGetDto> getAllCategory(String email, Long bookshelfId);
 
     Long createCategory(CategoryPostDto category);
 

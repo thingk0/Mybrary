@@ -19,7 +19,7 @@ public interface ThreadService {
 
     List<ThreadInfoGetDto> getMyAllThread(Long myId, Pageable pageable);
 
-    List<ThreadInfoGetDto> getOtherAllThread(Long memberId, Pageable pageable);
+    List<ThreadInfoGetDto> getOtherAllThread(String email, Long memberId, Pageable pageable);
 
-    Object getThread(Long memberId, Long threadId);
+    Object getThread(String email, Long memberId, Long threadId);
 }

@@ -30,4 +30,6 @@ public interface MemberRepositoryCustom {
     Optional<Follow> isFollowed(Long myId, Long memberId);
 
     Optional<Notification> isRequested(Long myId, Long memberId);
+
+    Optional<Member> findByCategoryId(Long categoryId);
 }

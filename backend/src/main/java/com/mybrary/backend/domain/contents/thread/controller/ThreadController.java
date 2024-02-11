@@ -77,7 +77,7 @@ public class ThreadController {
         Member me = memberService.findMember(authentication.getName());
         Long myId = me.getId();
         return response.success(ResponseCode.MY_THREAD_LIST_FETCHED,
-            threadService.getOtherAllThread(memberId, page));
+            threadService.getOtherAllThread(authentication.getName(), memberId, page));
     }
     @Operation(summary = "쓰레드 수정", description = "쓰레드 수정")
     @PutMapping
@@ -105,7 +105,7 @@ public class ThreadController {
         Member me = memberService.findMember(authentication.getName());
         Long myId = me.getId();
         return response.success(ResponseCode.THREAD_SEARCHED,
-                                threadService.getThread(myId, threadId));
+                                threadService.getThread(authentication.getName(), myId, threadId));
 
     }
 

@@ -25,7 +25,7 @@ public interface BookService {
 
     Long unsubscribeBook(String email, Long bookId);
 
-    List<BookGetDto> getAllBookByCategoryId(Long categoryId);
+    List<BookGetDto> getAllBookByCategoryId(String email, Long categoryId);
 
     void deletePaperFromBook(String email, Long bookId, Long paperId);
 

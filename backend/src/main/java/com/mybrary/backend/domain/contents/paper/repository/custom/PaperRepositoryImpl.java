@@ -77,7 +77,7 @@ public class PaperRepositoryImpl implements PaperRepositoryCustom {
     @Override
     public Optional<MemberInfoDto> getWriter(Long paperId) {
         return Optional.ofNullable(
-            query.select(Projections.constructor(MemberInfoDto.class, member.id, member.nickname, member.intro, image.url))
+            query.select(Projections.constructor(MemberInfoDto.class, member.id, member.nickname, member.intro, image.id, image.url))
                  .from(paper)
                  .leftJoin(member).on(paper.member.id.eq(member.id))
                  .leftJoin(image).on(member.profileImage.id.eq(image.id))

@@ -41,7 +41,7 @@ public class CategoryController {
         @Parameter(hidden = true) Authentication authentication,
         @RequestParam(name = "bookshelfId") Long bookshelfId) {
 
-        List<CategoryGetDto> result = categoryService.getAllCategory(bookshelfId);
+        List<CategoryGetDto> result = categoryService.getAllCategory(authentication.getName(), bookshelfId);
         return response.success(ResponseCode.CATEGORIES_FETCHED, result);
     }
 
@@ -51,7 +51,7 @@ public class CategoryController {
         @Parameter(hidden = true) Authentication authentication,
         @PathVariable(name = "id") Long categoryId) {
 
-        List<BookGetDto> result = bookService.getAllBookByCategoryId(categoryId);
+        List<BookGetDto> result = bookService.getAllBookByCategoryId(authentication.getName(), categoryId);
         return response.success(ResponseCode.CATEGORY_BOOKS_FETCHED, result);
     }
 

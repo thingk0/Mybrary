@@ -35,6 +35,7 @@ import com.mybrary.backend.domain.rollingpaper.repository.RollingPaperRepository
 import com.mybrary.backend.global.exception.image.ImageNotFoundException;
 import com.mybrary.backend.global.exception.member.DuplicateEmailException;
 import com.mybrary.backend.global.exception.member.EmailNotFoundException;
+import com.mybrary.backend.global.exception.member.FollowNotFoundException;
 import com.mybrary.backend.global.exception.member.FollowerNotFoundException;
 import com.mybrary.backend.global.exception.member.FollowingNotFoundException;
 import com.mybrary.backend.global.exception.member.InvalidLoginAttemptException;
@@ -284,14 +285,14 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     @Override
     public void unfollow(Long myId, Long memberId) {
-        Follow follow = followRepository.findFollow(myId, memberId);
+        Follow follow = followRepository.findFollow(myId, memberId).orElseThrow(FollowNotFoundException::new);
         followRepository.delete(follow);
     }
 
     @Transactional
     @Override
     public void deleteFollower(Long myId, Long memberId) {
-        Follow follow = followRepository.findFollow(memberId, myId);
+        Follow follow = followRepository.findFollow(memberId, myId).orElseThrow(FollowNotFoundException::new);
         followRepository.delete(follow);
     }
 

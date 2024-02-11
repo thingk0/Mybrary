@@ -1,10 +1,15 @@
 package com.mybrary.backend.global.handler;
 
+import com.mybrary.backend.global.exception.book.BookAccessDeniedException;
 import com.mybrary.backend.global.exception.bookshelf.BookshelfNotFoundException;
+import com.mybrary.backend.global.exception.category.CategoryAccessDeniedException;
 import com.mybrary.backend.global.exception.chat.ChatJoinMemberNotFoundException;
 import com.mybrary.backend.global.exception.chat.ChatRoomNotFoundException;
+import com.mybrary.backend.global.exception.member.FollowNotFoundException;
 import com.mybrary.backend.global.exception.member.FollowerNotFoundException;
 import com.mybrary.backend.global.exception.member.FollowingNotFoundException;
+import com.mybrary.backend.global.exception.mybrary.MybraryAccessDeniedException;
+import com.mybrary.backend.global.exception.paper.PaperAccessDeniedException;
 import com.mybrary.backend.global.exception.pickbook.PickBookNotFoundException;
 import com.mybrary.backend.global.exception.book.BookAlreadySubscribeException;
 import com.mybrary.backend.global.exception.book.BookCreateException;
@@ -30,6 +35,7 @@ import com.mybrary.backend.global.exception.member.PasswordMismatchException;
 import com.mybrary.backend.global.exception.member.ProfileUpdateException;
 import com.mybrary.backend.global.exception.scrap.ScrapNotFoundException;
 import com.mybrary.backend.global.exception.tag.TagNotFoundException;
+import com.mybrary.backend.global.exception.thread.ThreadAccessDeniedException;
 import com.mybrary.backend.global.exception.thread.ThreadIdNotFoundException;
 import com.mybrary.backend.global.format.code.ApiResponse;
 import com.mybrary.backend.global.format.response.ErrorCode;
@@ -234,6 +240,42 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(FollowerNotFoundException.class)
     protected ResponseEntity<?> handle(FollowerNotFoundException e) {
         log.error("FollowerNotFoundException = {}", e.getErrorCode().getMessage());
+        return response.error(e.getErrorCode());
+    }
+
+    @ExceptionHandler(FollowNotFoundException.class)
+    protected ResponseEntity<?> handle(FollowNotFoundException e) {
+        log.error("FollowNotFoundException = {}", e.getErrorCode().getMessage());
+        return response.error(e.getErrorCode());
+    }
+
+    @ExceptionHandler(ThreadAccessDeniedException.class)
+    protected ResponseEntity<?> handle(ThreadAccessDeniedException e) {
+        log.error("ThreadAccessDeniedException = {}", e.getErrorCode().getMessage());
+        return response.error(e.getErrorCode());
+    }
+
+    @ExceptionHandler(PaperAccessDeniedException.class)
+    protected ResponseEntity<?> handle(PaperAccessDeniedException e) {
+        log.error("PaperAccessDeniedException = {}", e.getErrorCode().getMessage());
+        return response.error(e.getErrorCode());
+    }
+
+    @ExceptionHandler(MybraryAccessDeniedException.class)
+    protected ResponseEntity<?> handle(MybraryAccessDeniedException e) {
+        log.error("MybraryAccessDeniedException = {}", e.getErrorCode().getMessage());
+        return response.error(e.getErrorCode());
+    }
+
+    @ExceptionHandler(CategoryAccessDeniedException.class)
+    protected ResponseEntity<?> handle(CategoryAccessDeniedException e) {
+        log.error("CategoryAccessDeniedException = {}", e.getErrorCode().getMessage());
+        return response.error(e.getErrorCode());
+    }
+
+    @ExceptionHandler(BookAccessDeniedException.class)
+    protected ResponseEntity<?> handle(BookAccessDeniedException e) {
+        log.error("BookAccessDeniedException = {}", e.getErrorCode().getMessage());
         return response.error(e.getErrorCode());
     }
 

@@ -10,6 +10,7 @@ import com.mybrary.backend.domain.book.dto.responseDto.MyBookGetDto;
 import com.mybrary.backend.domain.book.entity.Book;
 import com.mybrary.backend.domain.book.repository.BookRepository;
 import com.mybrary.backend.domain.book.service.BookService;
+import com.mybrary.backend.domain.bookshelf.entity.Bookshelf;
 import com.mybrary.backend.domain.category.dto.responseDto.MyCategoryGetDto;
 import com.mybrary.backend.domain.category.entity.Category;
 import com.mybrary.backend.domain.category.repository.CategoryRepository;
@@ -21,6 +22,8 @@ import com.mybrary.backend.domain.contents.paper.repository.PaperRepository;
 import com.mybrary.backend.domain.contents.scrap.entity.Scrap;
 import com.mybrary.backend.domain.contents.scrap.repository.ScrapRepository;
 import com.mybrary.backend.domain.contents.tag.repository.TagRepository;
+import com.mybrary.backend.domain.follow.entity.Follow;
+import com.mybrary.backend.domain.follow.repository.FollowRepository;
 import com.mybrary.backend.domain.image.entity.Image;
 import com.mybrary.backend.domain.image.repository.ImageRepository;
 import com.mybrary.backend.domain.member.dto.responseDto.MemberInfoDto;
@@ -29,6 +32,7 @@ import com.mybrary.backend.domain.member.repository.MemberRepository;
 import com.mybrary.backend.domain.member.service.MemberService;
 import com.mybrary.backend.domain.pickbook.entity.PickBook;
 import com.mybrary.backend.domain.pickbook.repository.PickBookRepository;
+import com.mybrary.backend.global.exception.book.BookAccessDeniedException;
 import com.mybrary.backend.global.exception.image.ImageNotFoundException;
 import com.mybrary.backend.global.exception.pickbook.PickBookNotFoundException;
 import com.mybrary.backend.global.exception.book.BookAlreadySubscribeException;
@@ -55,7 +59,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class BookServiceImpl implements BookService {
 
-    private final MemberService memberService;
     private final BookRepository bookRepository;
     private final CategoryRepository categoryRepository;
     private final PickBookRepository pickBookRepository;
@@ -65,6 +68,8 @@ public class BookServiceImpl implements BookService {
     private final LikeRepository likeRepository;
     private final CommentRepository commentRepository;
     private final ScrapRepository scrapRepository;
+    private final FollowRepository followRepository;
+    private final MemberRepository memberRepository;
 
 
     @Override
@@ -88,7 +93,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public Long createBook(String email, BookPostDto bookPostDto) {
 
-        Member member = memberService.findMember(email);
+        Member member = memberRepository.searchByEmail(email).orElseThrow(MemberNotFoundException::new);
 
         Image image = imageRepository.findById(bookPostDto.getCoverImageId()).orElseThrow(ImageNotFoundException::new);
         Category category = categoryRepository.findById(bookPostDto.getCategoryId()).orElseThrow(CategoryNotFoundException::new);
@@ -120,7 +125,13 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookPaperGetDto getBookInfo(String email, Long bookId) {
 
-        Long myId = memberService.findMember(email).getId();
+        /* 책 접근 권한 판단 */
+        Long myId = memberRepository.searchByEmail(email).orElseThrow(MemberNotFoundException::new).getId();
+        Member bookWriter = bookRepository.findById(bookId).orElseThrow(BookNotFoundException::new).getMember();
+        if(!bookWriter.isProfilePublic()){
+            Follow follow = followRepository.findFollow(myId, bookWriter.getId()).orElseThrow(BookAccessDeniedException::new);
+        }
+
         List<PaperInBookGetDto> paperList = paperRepository.getPaperList(bookId).orElseThrow(PaperListNotFoundException::new);
 
         for (int i = 0;i<paperList.size();i++) {
@@ -166,7 +177,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public Long updateBook(String email, BookUpdateDto bookUpdateDto) {
 
-        Member member = memberService.findMember(email);
+        Member member = memberRepository.searchByEmail(email).orElseThrow(MemberNotFoundException::new);
         Book book = bookRepository.findById(bookUpdateDto.getBookId()).orElseThrow(BookCreateException::new);
         if(!book.getMember().getId().equals(member.getId())){
             throw new BookUpdateException();
@@ -199,7 +210,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public void deleteBook(String email, Long bookId) {
 
-        Member member = memberService.findMember(email);
+        Member member = memberRepository.searchByEmail(email).orElseThrow(MemberNotFoundException::new);
         Book book = bookRepository.findById(bookId).orElseThrow(BookNotFoundException::new);
 
         // 책 작성자가 본인이 아니면 지울 수 없음
@@ -223,7 +234,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public Long subscribeBook(String email, BookSubscribeDto bookSubscribeDto) {
 
-        Member member = memberService.findMember(email);
+        Member member = memberRepository.searchByEmail(email).orElseThrow(MemberNotFoundException::new);
         Book book = bookRepository.findById(bookSubscribeDto.getBookId()).orElseThrow(BookNotFoundException::new);
         Category category = categoryRepository.findById(bookSubscribeDto.getCategoryId()).orElseThrow(CategoryNotFoundException::new);
         Long categoryOwnerId = categoryRepository.findCategoryOwnerId(category.getId()).orElseThrow(CategoryOwnerNotFoundException::new);
@@ -252,7 +263,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public Long unsubscribeBook(String email, Long bookId) {
 
-        Member member = memberService.findMember(email);
+        Member member = memberRepository.searchByEmail(email).orElseThrow(MemberNotFoundException::new);
 
         List<PickBook> pickBookList = pickBookRepository.getPickBookList(member.getId(), bookId).orElseThrow(PickBookNotFoundException::new);
         pickBookRepository.deleteAll(pickBookList);
@@ -261,14 +272,22 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<BookGetDto> getAllBookByCategoryId(Long categoryId) {
+    public List<BookGetDto> getAllBookByCategoryId(String email, Long categoryId) {
+
+        /* 책 접근 권한 판단 */
+        Long myId = memberRepository.searchByEmail(email).orElseThrow(MemberNotFoundException::new).getId();
+        Member owner = memberRepository.findByCategoryId(categoryId).orElseThrow(BookNotFoundException::new);
+        if(!owner.isProfilePublic()){
+            Follow follow = followRepository.findFollow(myId, owner.getId()).orElseThrow(BookAccessDeniedException::new);
+        }
+
         return bookRepository.getAllBookByCategoryId(categoryId).orElseThrow(BookNotFoundException::new);
     }
 
     @Override
     public void deletePaperFromBook(String email, Long bookId, Long paperId) {
 
-        Member member = memberService.findMember(email);
+        Member member = memberRepository.searchByEmail(email).orElseThrow(MemberNotFoundException::new);
         Book book = bookRepository.findById(bookId).orElseThrow(BookNotFoundException::new);
         Long bookOwnerId = book.getMember().getId();
 

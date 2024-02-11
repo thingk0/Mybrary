@@ -3,6 +3,7 @@ package com.mybrary.backend.domain.mybrary.service.impl;
 
 import com.mybrary.backend.domain.book.repository.BookRepository;
 import com.mybrary.backend.domain.contents.thread.repository.ThreadRepository;
+import com.mybrary.backend.domain.follow.entity.Follow;
 import com.mybrary.backend.domain.follow.repository.FollowRepository;
 import com.mybrary.backend.domain.image.entity.Image;
 import com.mybrary.backend.domain.image.repository.ImageRepository;
@@ -16,8 +17,11 @@ import com.mybrary.backend.domain.mybrary.entity.Mybrary;
 import com.mybrary.backend.domain.mybrary.repository.MybraryRepository;
 import com.mybrary.backend.domain.mybrary.service.MybraryService;
 import com.mybrary.backend.global.exception.image.ImageNotFoundException;
+import com.mybrary.backend.global.exception.member.MemberNotFoundException;
+import com.mybrary.backend.global.exception.mybrary.MybraryAccessDeniedException;
 import com.mybrary.backend.global.exception.mybrary.MybraryNotFoundException;
 import com.mybrary.backend.global.exception.mybrary.NotMybraryException;
+import com.mybrary.backend.global.exception.thread.ThreadAccessDeniedException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -50,7 +54,14 @@ public class MybraryServiceImpl implements MybraryService {
 
     @Override
     public MybraryOtherGetDto getOtherMybrary(String myEmail, Long memberId) {
-        Long myId = memberService.findMember(myEmail).getId();
+
+        /* 마이브러리 접근 권한 판단 */
+        Long myId = memberRepository.searchByEmail(myEmail).orElseThrow(MemberNotFoundException::new).getId();
+        Member Owner = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
+        if(!Owner.isProfilePublic()){
+            Follow follow = followRepository.findFollow(myId, Owner.getId()).orElseThrow(MybraryAccessDeniedException::new);
+        }
+
         MybraryOtherGetDto mybrary = mybraryRepository.getOtherMybrary(memberId).orElseThrow(MybraryNotFoundException::new);
         mybrary.setThreadCount(threadRepository.countMyThread(mybrary.getMybraryId()).orElse(0));
         mybrary.setBookCount(bookRepository.countMyBook(mybrary.getBookShelfId()).orElse(0));

@@ -1,8 +1,11 @@
 package com.mybrary.backend.domain.member.repository.custom;
 
+import static com.mybrary.backend.domain.bookshelf.entity.QBookshelf.bookshelf;
+import static com.mybrary.backend.domain.category.entity.QCategory.category;
 import static com.mybrary.backend.domain.follow.entity.QFollow.follow;
 import static com.mybrary.backend.domain.image.entity.QImage.image;
 import static com.mybrary.backend.domain.member.entity.QMember.member;
+import static com.mybrary.backend.domain.mybrary.entity.QMybrary.mybrary;
 import static com.mybrary.backend.domain.notification.entity.QNotification.notification;
 
 import com.mybrary.backend.domain.follow.entity.Follow;
@@ -103,6 +106,16 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
         return Optional.ofNullable(query.select(notification)
                                        .from(notification)
                                        .where(notification.sender.id.eq(myId).and(notification.receiver.id.eq(memberId).and(notification.notifyType.eq(1))))
+                                       .fetchOne());
+    }
+
+    @Override
+    public Optional<Member> findByCategoryId(Long categoryId) {
+        return Optional.ofNullable(query.select(member)
+                                       .from(category)
+                                       .leftJoin(bookshelf).on(category.bookshelf.id.eq(bookshelf.id))
+                                       .leftJoin(mybrary).on(bookshelf.mybrary.id.eq(member.id))
+                                       .leftJoin(member).on(mybrary.member.id.eq(member.id))
                                        .fetchOne());
     }
 
