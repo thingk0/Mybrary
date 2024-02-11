@@ -101,10 +101,14 @@ export default function MybraryPage() {
       },
     }));
   };
+  const easelImgs = [easel1, easel2, easel3, easel4, easel5, easel6];
+  const tableImgs = [table1, table2, table3, table4, table5, table6];
+  const bookshelfImgs = [shelf1, shelf2, shelf3, shelf4, shelf5, shelf6];
 
   useEffect(() => {
     const nowuser = Params.userid;
     setCheckme(false);
+
     async function fetchMybraryData() {
       setShowListType(null);
       try {
@@ -133,6 +137,7 @@ export default function MybraryPage() {
           console.log("상대방의라이브러리입니다");
           setTestuser(response);
           setBgColor(response.data.backgroundColor);
+          console.log(response.data);
           setEsColor(easelImgs[response.data.easelColor - 1]);
           setEaselnum(response.data.easelColor);
           setTbColor(tableImgs[response.data.deskColor - 1]);
@@ -170,9 +175,6 @@ export default function MybraryPage() {
     "12",
     "13",
   ];
-  const easelImgs = [easel1, easel2, easel3, easel4, easel5, easel6];
-  const tableImgs = [table1, table2, table3, table4, table5, table6];
-  const bookshelfImgs = [shelf1, shelf2, shelf3, shelf4, shelf5, shelf6];
 
   //완료버튼을 눌렀을때 실행하는 함수
   const handleSelect = async () => {
