@@ -38,6 +38,7 @@ import FollowList from "../components/mybrary/FollowList";
 import FollowerList from "../components/mybrary/FollowerList";
 import FileInput from "../components/common/FileInput";
 import { uplodaImage } from "../api/image/Image";
+import { deleteFollow, follow, followCancel } from "../api/member/Follow";
 
 export default function MybraryPage() {
   // 유저 관련
@@ -65,7 +66,7 @@ export default function MybraryPage() {
 
   // 마이브러리의 유저 정보
   const [userInfo, setUserInfo] = useState({});
-  const [followed, setFollowed] = useState("나예요");
+  const [followStatus, setFollowStatus] = useState("나예요");
 
   // 호버했을때 나오는 글씨
   const [show, setShow] = useState({
@@ -235,7 +236,7 @@ export default function MybraryPage() {
           setFrameimgurl(
             `https://jingu.s3.ap-northeast-2.amazonaws.com/${response.data.frameImageUrl}`
           );
-          setFollowed(response.data.followed);
+          setFollowStatus(response.data.followStatus);
           setIsLoading(false);
         }
       } catch (error) {
@@ -299,11 +300,32 @@ export default function MybraryPage() {
   }
 
   // 팔로우하는 함수
-  const handleFollow = (id) => {};
+  const handleFollow = async () => {
+    await follow(nowuser);
+    if (userInfo.profilePublic) {
+      setFollowStatus(3);
+      setUserInfo((prev) => ({
+        ...prev,
+        followerCount: userInfo.followerCount + 1,
+      }));
+    } else {
+      setFollowStatus(2);
+    }
+  };
   // 팔로우 요청 취소하는 함수
-  const handleCancelFollow = (id) => {};
+  const handleCancelFollow = async () => {
+    await followCancel(nowuser);
+    setFollowStatus(1);
+  };
   // 팔로우 취소하는 함수
-  const handleUnFollow = (id) => {};
+  const handleUnFollow = async () => {
+    await deleteFollow(nowuser);
+    setFollowStatus(1);
+    setUserInfo((prev) => ({
+      ...prev,
+      followerCount: userInfo.followerCount - 1,
+    }));
+  };
 
   return (
     <>
@@ -508,16 +530,16 @@ export default function MybraryPage() {
                 <div
                   className={styles.editButton}
                   onClick={() =>
-                    followed === 1
+                    followStatus === 1
                       ? handleFollow()
-                      : followed === 2
+                      : followStatus === 2
                       ? handleCancelFollow()
                       : handleUnFollow()
                   }
                 >
-                  {followed === 1
+                  {followStatus === 1
                     ? "팔로우"
-                    : followed === 2
+                    : followStatus === 2
                     ? "팔로우요청취소"
                     : "팔로잉"}
                 </div>

@@ -10,6 +10,16 @@ export async function follow(id) {
   }
 }
 
+/* 특정 회원 팔로우요청취소 */
+export async function followCancel(id) {
+  try {
+    const response = await axios.post(BASE_URL + `member/${id}/follow/cancel`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
 /* 특정 회원 팔로잉 리스트 조회 */
 export async function getFollowingList(id) {
   try {

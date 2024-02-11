@@ -9,7 +9,7 @@ import useUserStore from "../../store/useUserStore";
 import { uplodaImage } from "../../api/image/Image";
 import { createBook } from "../../api/book/Book";
 
-export default function BookCreate({ booklist }) {
+export default function BookCreate({ setBookList, booklist }) {
   const layouts = [1, 2, 3, 4, 5, 6];
   const colors = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
   const [categorys, setCategorys] = useState([]);
@@ -50,20 +50,37 @@ export default function BookCreate({ booklist }) {
     setTitle(category.name);
     setOpen(false);
   };
+  const addNewBookToCategory = (categoryId, newBook) => {
+    const updatedBookList = booklist.map((category) => {
+      if (category.categoryId === categoryId) {
+        return {
+          ...category,
+          bookList: [...category.bookList, newBook],
+        };
+      }
+      return category;
+    });
+    setBookList(updatedBookList);
+  };
 
   const handleSubmit = async () => {
     const formData = new FormData();
     formData.append("images", value.coverImage);
     const coverImageId = await uplodaImage(formData);
     console.log(coverImageId.imageIds[0]);
-    const bookid = await createBook({
+    const bookId = await createBook({
       title: value.title,
       coverImageId: coverImageId.imageIds[0],
       coverLayout: value.coverLayout,
       coverColorCode: value.coverColorCode,
       categoryId: value.categoryId,
     });
-    console.log(bookid);
+    const newBook = {
+      bookId: bookId,
+      title: value.title,
+      paperCount: 0,
+    };
+    addNewBookToCategory(value.categoryId, newBook);
   };
 
   return (
