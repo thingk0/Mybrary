@@ -12,8 +12,6 @@ export default function WelcomePage() {
   const navigate = useNavigate();
   const token = localStorage.getItem("accessToken");
   const user = useUserStore((state) => state.user);
-  console.log(token);
-  console.log(user);
   const handleStart = () => {
     if (token && user.memberId) {
       navigate(`/mybrary/${user.memberId}`);

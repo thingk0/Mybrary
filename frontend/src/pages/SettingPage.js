@@ -1,51 +1,47 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Container from "../components/frame/Container";
 //아직 안써서 주석처리
 import styles from "./style/SettingPage.module.css";
 import 설정옆이미지 from "../assets/설정옆이미지.png";
+import Iconuser2 from "../assets/icon/Iconuser2.png";
 //현재유저를 가져오기위해
 import useUserStore from "../store/useUserStore";
 //현재유저를통해 정보를가져오기위해
 import { getMyMybrary } from "../api/mybrary/Mybrary";
 import { checkNickName } from "../api/member/SignUp";
-import { updateProfile } from "../api/member/Account";
+import { updatePassword, updateProfile } from "../api/member/Account";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { uplodaImage } from "../api/image/Image";
-import { useNavigate } from "react-router-dom";
+import { useAsyncError, useNavigate } from "react-router-dom";
+
 export default function SettingPage() {
-  const user = useUserStore((state) => state.user);
-
-  const [testuser, setTestuser] = useState({
-    data: {},
-  });
-
+  const [file, setFile] = useState(null);
   const [name, setName] = useState("");
   const [nickname, setNickname] = useState("");
   const [intro, setIntro] = useState("");
-  const [profileimg, setProfileimg] = useState("");
-  const [profilepublic, setProfilepublic] = useState(true);
-  const [notifyenable, setNotifyenable] = useState(true);
-
-  const [formErrors, setFormErrors] = useState({});
-  const [isNickNameChecked, setIsNickNameChecked] = useState(false); // 중복검사를 해야만 회원가입 가능
-
-  const [formData, setFormData] = useState({
-    member: {
-      memberId: "",
-      profileImageId: "",
-      nickname: "",
-      intro: "",
-      profilePublic: true,
-      notifyEnable: true,
-    },
+  const [profileImageId, setProfileImageId] = useState("");
+  const [profileImageUrl, setProfileImageUrl] = useState("");
+  const [profilePublic, setProfilePublic] = useState(true);
+  const [notifyEnable, setNotifyEnable] = useState(true);
+  const [form, setForm] = useState({
+    memberId: 0,
+    profileImageId: 0,
+    nickname: "",
+    intro: "string",
+    notifyEnable: true,
+    profilePublic: true,
   });
+
+  const [isNickNameChecked, setIsNickNameChecked] = useState(true); // 너가 true여야만 정보 수정 가능. 기본값은 true
+  const fileInputRef = useRef(null); // 파일 입력 참조
 
   /* 유효성검사 정규표현식 */
   const regex = {
     password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*\d).{8,20}$/,
     nickname: /^[a-zA-Z0-9_]{3,15}$/,
   };
+
   const navigate = useNavigate();
   const navigateToErrorPage = () => {
     navigate("/error");
@@ -65,6 +61,7 @@ export default function SettingPage() {
       position: "top-center",
     });
   };
+
   const handleNickNameChange = (e) => {
     setIsNickNameChecked(false);
     setNickname(e.target.value);
@@ -74,29 +71,16 @@ export default function SettingPage() {
     e.preventDefault();
     //닉네임 중복검사는 몇번이든 할 수 있다. 유효성 검증을 하고, 응답에 따라 상태를 바꾼다.
 
-    setFormErrors((prevFormErrors) => {
-      const { nickname, ...rest } = prevFormErrors;
-      return rest;
-    });
-
     if (!nname) {
-      setTimeout(
-        () =>
-          setFormErrors((prevFormErrors) => ({
-            ...prevFormErrors,
-            nickname: "닉네임을 입력해주세요",
-          })),
-        5
-      );
+      toast.error("닉네임을 입력해주세요", {
+        position: "top-center",
+      });
     } else if (!regex.nickname.test(nname)) {
-      setTimeout(
-        () =>
-          setFormErrors((prevFormErrors) => ({
-            ...prevFormErrors,
-            nickname:
-              "닉네임은 영어, 숫자, 언더바만 사용하여 3~15자 입력해야 합니다",
-          })),
-        5
+      toast.error(
+        "닉네임은 영어, 숫자, 언더바만 사용하여 3~15자 입력해야 합니다",
+        {
+          position: "top-center",
+        }
       );
     } else {
       try {
@@ -104,22 +88,19 @@ export default function SettingPage() {
         /* 중복이 아닐 경우 */
 
         if (data.message === "사용 가능한 닉네임입니다") {
-          setFormErrors((prevFormErrors) => {
-            const { nickname, ...rest } = prevFormErrors;
-            return rest;
-          });
           setIsNickNameChecked(true);
 
           showToast("사용 가능한 닉네임입니다");
         } else if (data.message === "중복된 닉네임입니다") {
           /* 중복 닉네임인 경우 */
-          setFormErrors((prevFormErrors) => ({
-            ...prevFormErrors,
-            nickname: "중복된 닉네임입니다",
-          }));
-          showToast("중복된 닉네임입니다"); // 중복 닉네임일 경우 토스트 표시 추가
+
+          toast.error("중복된 닉네임입니다", {
+            position: "top-center",
+          }); // 중복 닉네임일 경우 토스트 표시 추가
         } else {
-          showToast("사용할 수 없는 닉네임입니다");
+          toast.error("사용할 수 없는 닉네임입니다", {
+            position: "top-center",
+          });
         }
       } catch (e) {
         console.log(e);
@@ -134,20 +115,187 @@ export default function SettingPage() {
     async function fetchData() {
       try {
         const response = await getMyMybrary();
-        console.log(response);
-        setTestuser(response);
         setName(response.data.name);
         setNickname(response.data.nickname);
         setIntro(response.data.intro);
-        setProfileimg(response.data.profileImageUrl);
-        setProfilepublic(response.data.profilePublic);
-        setNotifyenable(response.data.notifyEnable);
+        setProfileImageUrl(
+          `https://jingu.s3.ap-northeast-2.amazonaws.com/${response.data.profileImageUrl}`
+        );
+        setProfilePublic(response.data.profilePublic);
+        setNotifyEnable(response.data.notifyEnable);
+        setForm({
+          memberId: response.data.memberId,
+          profileImageId: response.data.profileImageId,
+          nickname: response.data.nickname,
+          intro: response.data.intro,
+          notifyEnable: response.data.notifyEnable,
+          profilePublic: response.data.notifyEnable,
+        });
       } catch (error) {
-        console.error("데이터를 가져오는데 실패하였다", error);
+        navigateToErrorPage();
       }
     }
     fetchData();
   }, []);
+
+  const handleImageChange = (e) => {
+    setFile(e.target.files[0]);
+    if (e.target.files[0]) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setProfileImageUrl(e.target.result); // 미리보기 URL 설정
+      };
+      reader.readAsDataURL(e.target.files[0]); // 파일 읽기
+    } else {
+      toast.error("이미지 파일만 업로드 가능합니다.", {
+        position: "top-center",
+      });
+    }
+  };
+
+  // 이미지 클릭 시 파일 입력 활성화
+  const handleImageClick = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleImageUpdate = async () => {
+    try {
+      if (file) {
+        const formData = new FormData();
+        formData.append("images", file);
+        const res = await uplodaImage(formData);
+        const id = res.imageIds[0];
+
+        console.log(id);
+        setForm((prev) => ({
+          ...prev,
+          profileImageId: id,
+        }));
+
+        await updateProfile({
+          ...form,
+          profileImageId: id,
+        });
+        showToast("이미지를 변경했습니다");
+      }
+    } catch (e) {
+      toast.error("이미지 변경에 실패했습니다", {
+        position: "top-center",
+      });
+    }
+  };
+
+  const handleNickNameUpdate = async () => {
+    if (!isNickNameChecked) {
+      toast.error("닉네임 중복체크를 진행해주세요", {
+        position: "top-center",
+      });
+    } else {
+      // 닉네임
+      try {
+        setForm((prev) => ({
+          ...prev,
+          nickname: nickname,
+        }));
+        const res = await updateProfile({
+          ...form,
+          nickname: nickname,
+        });
+        console.log(res);
+        console.log(form);
+        if (res.status === "SUCCESS") {
+          showToast("닉네임을 변경했습니다");
+        } else {
+          throw new Error();
+        }
+      } catch (e) {
+        toast.error("닉네임 변경에 실패했습니다", {
+          position: "top-center",
+        });
+      }
+    }
+  };
+
+  const handleIntroUpdate = async () => {
+    if (intro.length > 30) {
+      toast.error("한줄소개는 최대 30자까지 입력 가능합니다", {
+        position: "top-center",
+      });
+    } else {
+      setForm((prev) => ({
+        ...prev,
+        intro: intro,
+      }));
+
+      try {
+        const res = await updateProfile({
+          ...form,
+          intro: intro,
+        });
+        if (res.status === "SUCCESS") {
+          showToast("한줄소개를 변경했습니다");
+        } else {
+          throw new Error();
+        }
+      } catch (e) {
+        toast.error("한줄소개 변경에 실패했습니다", {
+          position: "top-center",
+        });
+      }
+    }
+  };
+
+  const handleNotifyUpdate = async () => {
+    await updateProfile({
+      ...form,
+      notifyEnable: !notifyEnable,
+    });
+    setNotifyEnable((prev) => !prev);
+  };
+
+  const handleProfilePublicUpdate = async () => {
+    await updateProfile({
+      ...form,
+      profilePublic: !profilePublic,
+    });
+    setProfilePublic((prev) => !prev);
+  };
+
+  const handlePasswordUpdate = async () => {
+    if (password !== checkpassword) {
+      toast.error("비밀번호가 일치하지 않습니다", {
+        position: "top-center",
+      });
+    } else {
+      if (!regex.password.test(checkpassword)) {
+        toast.error(
+          "비밀번호는 8자 이상, 15자 이하의 숫자, 소문자, 대문자, 특수문자를 모두 포함해야 합니다",
+          {
+            position: "top-center",
+          }
+        );
+      } else {
+        // 변경요청 보내기
+        try {
+          const res = await updatePassword({
+            password: password,
+            passwordConfirm: checkpassword,
+          });
+          // console.log(res);
+          if (res.status === "SUCCESS") {
+            showToast("비밀번호를 변경했습니다");
+          } else {
+            throw new Error();
+          }
+        } catch (e) {
+          toast.error("비밀번호 변경에 실패했습니다", {
+            position: "top-center",
+          });
+        }
+      }
+    }
+  };
+
   return (
     <>
       <Container>
@@ -163,8 +311,44 @@ export default function SettingPage() {
             <div className={styles.설정친구들}>
               <div className={styles.설정한줄크기}>
                 <div className={styles.고정크기}>
+                  <span>프로필이미지변경</span>
+                </div>
+
+                <div
+                  className={styles.중간크기조정}
+                  style={{ display: "flex", alignItems: "center" }}
+                >
+                  <img
+                    src={profileImageUrl || Iconuser2} // 선택된 이미지 또는 기본 이미지
+                    alt="프로필"
+                    style={{
+                      width: "50px",
+                      height: "50px",
+                      objectFit: "cover",
+                      borderRadius: "50%",
+                    }}
+                    onClick={handleImageClick} // 이미지 클릭 시 핸들러
+                  />
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/jpg, image/png, image/jfif, image/jpeg"
+                    onChange={handleImageChange}
+                  />
+                </div>
+
+                <button
+                  className={styles.확인버튼}
+                  onClick={() => handleImageUpdate()}
+                >
+                  확인
+                </button>
+              </div>
+              <div className={styles.설정한줄크기}>
+                <div className={styles.고정크기}>
                   <span>닉네임변경</span>
                 </div>
+
                 <div className={styles.중간크기조정}>
                   <input
                     type="text"
@@ -174,13 +358,20 @@ export default function SettingPage() {
                     className={styles.input}
                     onChange={handleNickNameChange}
                   />
-                  <button onClick={(e) => handleCheckNickName(e, nickname)}>
+                  <button
+                    onClick={(e) => handleCheckNickName(e, nickname)}
+                    style={{ padding: "0 5px" }}
+                  >
                     중복체크
                   </button>
                 </div>
-                {isNickNameChecked && (
-                  <button className={styles.확인버튼}>확인</button>
-                )}
+
+                <button
+                  className={styles.확인버튼}
+                  onClick={() => handleNickNameUpdate()}
+                >
+                  확인
+                </button>
               </div>
               <div className={styles.설정한줄크기}>
                 <div className={styles.고정크기}>
@@ -196,9 +387,14 @@ export default function SettingPage() {
                     onChange={(e) => setIntro(e.target.value)}
                   />
                 </div>
-                <button className={styles.확인버튼}>확인</button>
+                <button
+                  className={styles.확인버튼}
+                  onClick={() => handleIntroUpdate()}
+                >
+                  확인
+                </button>
               </div>
-              <div className={styles.설정한줄크기}>
+              {/* <div className={styles.설정한줄크기}>
                 <div className={styles.고정크기}>
                   <span>이름변경</span>
                 </div>
@@ -213,7 +409,7 @@ export default function SettingPage() {
                   />
                 </div>
                 <button className={styles.확인버튼}>확인</button>
-              </div>
+              </div> */}
               <div className={styles.설정한줄크기}>
                 <div className={styles.고정크기}>
                   <span>비밀번호변경</span>
@@ -236,7 +432,12 @@ export default function SettingPage() {
                     onChange={(e) => setCheckpassword(e.target.value)}
                   />
                 </div>
-                <button className={styles.확인버튼}>확인</button>
+                <button
+                  className={styles.확인버튼}
+                  onClick={() => handlePasswordUpdate()}
+                >
+                  확인
+                </button>
               </div>
               <div className={styles.설정한줄크기}>
                 <div className={styles.고정크기}>
@@ -244,14 +445,20 @@ export default function SettingPage() {
                 </div>
                 <div className={styles.공개비공개버튼}>
                   <button
-                    onClick={() => setProfilepublic(true)}
-                    className={profilepublic ? styles.버튼1 : styles.버튼2}
+                    onClick={() => {
+                      showToast("계정이 공개상태로 변경되었습니다");
+                      handleProfilePublicUpdate();
+                    }}
+                    className={profilePublic ? styles.버튼1 : styles.버튼2}
                   >
                     공개
                   </button>
                   <button
-                    onClick={() => setProfilepublic(false)}
-                    className={profilepublic ? styles.버튼2 : styles.버튼1}
+                    onClick={() => {
+                      showToast("계정이 비공개상태로 변경되었습니다");
+                      handleProfilePublicUpdate();
+                    }}
+                    className={profilePublic ? styles.버튼2 : styles.버튼1}
                   >
                     비공개
                   </button>
@@ -269,23 +476,48 @@ export default function SettingPage() {
                 </div>
                 <div className={styles.공개비공개버튼}>
                   <button
-                    onClick={() => setNotifyenable(true)}
-                    className={notifyenable ? styles.버튼1 : styles.버튼2}
+                    onClick={() => {
+                      showToast("알림이 허용되었습니다");
+                      handleNotifyUpdate();
+                    }}
+                    className={notifyEnable ? styles.버튼1 : styles.버튼2}
                   >
                     허용
                   </button>
                   <button
-                    onClick={() => setNotifyenable(false)}
-                    className={notifyenable ? styles.버튼2 : styles.버튼1}
+                    onClick={() => {
+                      showToast("알림이 비허용되었습니다");
+                      handleNotifyUpdate();
+                    }}
+                    className={notifyEnable ? styles.버튼2 : styles.버튼1}
                   >
                     비허용
                   </button>
                 </div>
               </div>
             </div>
+            <div className={styles.설정과이미지}>
+              <span>계정탈퇴</span>
+              <img className={styles.설정옆이미지} src={설정옆이미지} alt="" />
+            </div>
+            <div
+              className={styles.설정친구들}
+              style={{ paddingBottom: "100px" }}
+            >
+              <div className={styles.설정한줄크기}>
+                <div className={styles.고정크기}>
+                  <span>계정탈퇴</span>
+                </div>
+
+                <button
+                  className={styles.확인버튼}
+                  onClick={() => showToast("당신의 추억과 영원히 함께 하세요")}
+                >
+                  탈퇴
+                </button>
+              </div>
+            </div>
           </div>
-          <button>회원탈퇴</button>
-          <button>완료</button>
         </div>
       </Container>
     </>

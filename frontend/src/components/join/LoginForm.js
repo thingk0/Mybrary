@@ -61,6 +61,7 @@ function LoginForm() {
           }
         }
         await socketConnect();
+
         await setUser({
           email: res.data.memberInfo.email,
           memberId: res.data.memberInfo.memberId,
@@ -120,7 +121,7 @@ function LoginForm() {
               <div className={styles.각각의폼디브} style={{ marginTop: "3px" }}>
                 <input
                   className={styles.인풋창}
-                  type="text"
+                  type="password"
                   name="password"
                   placeholder="비밀번호를 입력하세요"
                   value={formData.password}

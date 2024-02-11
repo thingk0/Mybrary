@@ -13,11 +13,41 @@ import { useNavigate } from "react-router-dom";
 import { doLogout } from "../../api/member/Logout";
 import useUserStore from "../../store/useUserStore";
 import BigModal from "../common/BigModal";
+import { login } from "../../api/member/Login";
+import toast from "react-hot-toast";
 
 export default function Nav() {
   const user = useUserStore((state) => state.user);
   const [active, setActive] = useState([true, false, false, false]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [password, setPassword] = useState("");
+
+  const handleChange = (e) => {
+    setPassword(e.target.value);
+  };
+
+  const handlePasswordCheck = async () => {
+    try {
+      const res = await login({
+        email: user.email,
+        password: password,
+      });
+      //console.log(res);
+      if (res.status === "SUCCESS") {
+        localStorage.setItem("accessToken", res.data.token);
+        localStorage.setItem("tokenTimestamp", Date.now());
+        setModalIsOpen(false);
+        navigate("/account");
+      } else {
+        throw new Error();
+      }
+    } catch (e) {
+      toast.error("비밀번호를 확인해주세요", {
+        position: "top-center",
+      });
+    }
+  };
+
   const hasNewNotification = useNotificationStore(
     (state) => state.hasNewNotification
   );
@@ -140,9 +170,15 @@ export default function Nav() {
           <h2>비밀번호룰 확인한다요</h2>
           <div>본인확인을 위해 비밀본호를 다시 입력해주요!!</div>
           <div>
-            <input type="password" placeholder="비밀본호룰 이ㅏㅂ룍해라" />
+            <input
+              type="password"
+              placeholder="비밀본호룰 이ㅏㅂ룍해라"
+              name="password"
+              value={password}
+              onChange={handleChange}
+            />
           </div>
-          <div>확인</div>
+          <div onClick={() => handlePasswordCheck()}>확인</div>
         </div>
       </BigModal>
     </>
