@@ -26,4 +26,19 @@ public class ThreadInfoGetDto {
     private boolean isPaperPublic;
     private boolean isScrapEnabled;
 
+
+    public ThreadInfoGetDto(Long threadId, LocalDateTime threadCreatedAt, Long imageId,
+        String imageUrl, boolean isPaperPublic, boolean isScrapEnabled) {
+        this.threadId = threadId;
+        this.threadCreatedAt = threadCreatedAt;
+        this.imageId = imageId;
+        this.imageUrl = imageUrl;
+        this.likesCount = likesCount;
+        this.commentCount = commentCount;
+        this.scrapCount = scrapCount;
+        this.isPaperPublic = isPaperPublic;
+        this.isScrapEnabled = isScrapEnabled;
+    }
+
+
 }
