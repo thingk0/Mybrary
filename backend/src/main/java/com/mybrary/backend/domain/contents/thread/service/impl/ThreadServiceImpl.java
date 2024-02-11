@@ -419,7 +419,6 @@ public class ThreadServiceImpl implements ThreadService {
                               Integer lastSeq = scrapRepository.findLastPaperSeq(updateBookId)
                                                                .orElseThrow(BookNotFoundException::new);
                               getScrap.updateBook(updateBook);
-                              getScrap.updatePaperSeq(lastSeq+1);
 
                         }else{
                               /*이전에 책스크랩을 했는데 이번에는 스크랩을 하지 않으려는 경우 */
