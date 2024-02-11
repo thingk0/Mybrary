@@ -38,6 +38,7 @@ import com.mybrary.backend.global.exception.member.EmailNotFoundException;
 import com.mybrary.backend.global.exception.member.FollowerNotFoundException;
 import com.mybrary.backend.global.exception.member.FollowingNotFoundException;
 import com.mybrary.backend.global.exception.member.InvalidLoginAttemptException;
+import com.mybrary.backend.global.exception.member.MemberNotFoundException;
 import com.mybrary.backend.global.exception.member.PasswordMismatchException;
 import com.mybrary.backend.global.exception.member.ProfileUpdateException;
 import com.mybrary.backend.global.jwt.TokenInfo;
@@ -184,11 +185,11 @@ public class MemberServiceImpl implements MemberService {
             MyFollowerDto follower = myFollower.get(i);
 
             if(memberRepository.isFollowed(myId, follower.getMemberId()).orElse(null)!=null){
-                myFollower.get(i).setFollowStatus(1);
+                myFollower.get(i).setFollowStatus(3);
             } else if(memberRepository.isRequested(myId, follower.getMemberId()).orElse(null)!=null){
                 myFollower.get(i).setFollowStatus(2);
             } else{
-                myFollower.get(i).setFollowStatus(3);
+                myFollower.get(i).setFollowStatus(1);
             }
         }
 
@@ -204,11 +205,11 @@ public class MemberServiceImpl implements MemberService {
             FollowingDto following = myFollowing.get(i);
 
             if(memberRepository.isFollowed(myId, following.getMemberId()).orElse(null)!=null){
-                myFollowing.get(i).setFollowStatus(1);
+                myFollowing.get(i).setFollowStatus(3);
             } else if(memberRepository.isRequested(myId, following.getMemberId()).orElse(null)!=null){
                 myFollowing.get(i).setFollowStatus(2);
             } else{
-                myFollowing.get(i).setFollowStatus(3);
+                myFollowing.get(i).setFollowStatus(1);
             }
         }
 
@@ -225,11 +226,11 @@ public class MemberServiceImpl implements MemberService {
             FollowerDto follower = myFollower.get(i);
 
             if(memberRepository.isFollowed(myId, follower.getMemberId()).orElse(null)!=null){
-                myFollower.get(i).setFollowStatus(1);
+                myFollower.get(i).setFollowStatus(3);
             } else if(memberRepository.isRequested(myId, follower.getMemberId()).orElse(null)!=null){
                 myFollower.get(i).setFollowStatus(2);
             } else{
-                myFollower.get(i).setFollowStatus(3);
+                myFollower.get(i).setFollowStatus(1);
             }
         }
 
@@ -241,7 +242,7 @@ public class MemberServiceImpl implements MemberService {
     public void follow(String email, Long memberId, boolean accept) {
 
         Member me = findMember(email);
-        Member you = memberRepository.findById(memberId).get();
+        Member you = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
 
         // 팔로우를 하려는 상대방의 계정이 공개일 때 -> 바로 팔로우
         // or 요청을 수락했을 때 -> 팔로우

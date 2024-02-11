@@ -5,6 +5,7 @@ import com.mybrary.backend.domain.book.repository.BookRepository;
 import com.mybrary.backend.domain.member.dto.responseDto.MemberInfoDto;
 import com.mybrary.backend.domain.member.entity.Member;
 import com.mybrary.backend.domain.member.repository.MemberRepository;
+import com.mybrary.backend.domain.member.service.MemberService;
 import com.mybrary.backend.domain.notification.dto.NotificationGetDto;
 import com.mybrary.backend.domain.notification.dto.NotificationPostDto;
 import com.mybrary.backend.domain.notification.entity.Notification;
@@ -27,6 +28,7 @@ public class NotificationServiceImpl implements NotificationService {
     private final MemberRepository memberRepository;
     private final BookRepository bookRepository;
     private final SimpMessagingTemplate messagingTemplate;
+    private final MemberService memberService;
 
     @Transactional(readOnly = true)
     @Override
@@ -107,21 +109,26 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public String findFollower(Long notificationId) {
-        Notification notification = notificationRepository.findById(notificationId).get();
-        return notification.getSender().getEmail();
-    }
-
-    @Override
-    public Long findFollowing(Long notificationId) {
-        Notification notification = notificationRepository.findById(notificationId).get();
-        return notification.getReceiver().getId();
-    }
-
-    @Override
     public void followRefuse(Long notificationId) {
         Notification notification = notificationRepository.findById(notificationId).get();
         notificationRepository.delete(notification);
+    }
+
+    @Override
+    public int followAccept(Long notificationId) {
+
+        Notification notification = notificationRepository.findById(notificationId).orElse(null);
+
+        if (notification != null) {
+            String followerEmail = notification.getSender().getEmail(); // sender
+            Long followingId = notification.getReceiver().getId(); // receiver
+            memberService.follow(followerEmail, followingId, true);
+
+            notificationRepository.delete(notification);
+
+            return 1;
+        }
+        return 0;
     }
 
 }

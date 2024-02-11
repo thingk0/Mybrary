@@ -76,10 +76,10 @@ public class NotificationController {
     public ResponseEntity<?> followAccept(@Parameter(hidden = true) Authentication authentication,
                                           @PathVariable(name = "id") Long notificationId) {
 
-        String followerEmail = notificationService.findFollower(notificationId); // sender
-        Long followingId = notificationService.findFollowing(notificationId); // receiver
-        memberService.follow(followerEmail, followingId, true);
-        return response.success(ResponseCode.FOLLOWER_DELETE_SUCCESS.getMessage());
+
+
+        int data = notificationService.followAccept(notificationId);
+        return response.success(ResponseCode.FOLLOWER_DELETE_SUCCESS, data);
 
     }
 

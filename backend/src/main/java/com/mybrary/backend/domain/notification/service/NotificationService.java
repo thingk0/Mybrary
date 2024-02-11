@@ -15,9 +15,7 @@ public interface NotificationService {
 
     void saveNotification(NotificationPostDto notification);
 
-    String findFollower(Long notificationId);
-
-    Long findFollowing(Long notificationId);
-
     void followRefuse(Long notificationId);
+
+    int followAccept(Long notificationId);
 }
