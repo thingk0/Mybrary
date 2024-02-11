@@ -35,9 +35,9 @@ export default function BookCreate({ booklist }) {
   };
 
   const loadCategory = async () => {
-    const list = await getCategoryList(user.bookshelfId);
+    const list = await getCategoryList(user.memberId);
     setCategorys(list.data);
-    console.log(user.bookshelfId);
+    console.log(user.memberId);
   };
 
   useEffect(() => {

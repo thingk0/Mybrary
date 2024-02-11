@@ -15,7 +15,7 @@ export default function FeedPage() {
     async function fetchMainFeedData() {
       try {
         const response = await getThreadList();
-        // console.log(response.data);
+        console.log(response.data);
         setThreadList(response.data);
 
         setList(response.data);

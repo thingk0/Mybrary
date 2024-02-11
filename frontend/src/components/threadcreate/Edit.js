@@ -45,13 +45,13 @@ export default function Edit({
 
   useEffect(() => {
     if (Math.floor(papers[currentPage].layoutType / 1000) === 1) {
-      papers[currentPage].image1 === null
+      papers[currentPage].imageId1 === null
         ? setPostPossible(false)
         : setPostPossible(true);
     } else {
-      papers[currentPage].image1 === null
+      papers[currentPage].imageId1 === null
         ? setPostPossible(false)
-        : papers[currentPage].image2 === null
+        : papers[currentPage].imageId2 === null
         ? setPostPossible(false)
         : setPostPossible(true);
     }
@@ -133,14 +133,14 @@ export default function Edit({
       <FileInput
         className={item[`img2_${papers[currentPage].layoutType}`]}
         name="image2"
-        value={papers[currentPage].image2}
+        value={papers[currentPage].imageId2}
         onChange={handleChange}
       />
 
       <FileInput
         className={item[`img1_${papers[currentPage].layoutType}`]}
         name="image1"
-        value={papers[currentPage].image1}
+        value={papers[currentPage].imageId1}
         onChange={handleChange}
       />
     </div>

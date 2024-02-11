@@ -14,16 +14,18 @@ import { getMYBooks } from "../api/book/Book";
 import BookSelect from "../components/threadcreate/BookSelect";
 import { uplodaImage } from "../api/image/Image";
 import toast from "react-hot-toast";
+import { createThread } from "../api/thread/Thread";
+
 const initialPaper = () => ({
   layoutType: 1101,
   editorState: EditorState.createEmpty(),
   editorState2: EditorState.createEmpty(),
   content1: null,
   content2: null,
-  image1: null,
-  image2: null,
+  imageId1: null,
+  imageId2: null,
   tagList: [],
-  mentionIdList: [],
+  mentionList: [],
 });
 export default function ThreadCreatePage() {
   const [papers, setPapers] = useState([initialPaper()]);
@@ -49,10 +51,10 @@ export default function ThreadCreatePage() {
     const formData = new FormData();
     for (let paper of papers) {
       if (Math.floor(paper.layoutType / 1000) === 1) {
-        formData.append("images", paper.image1);
+        formData.append("images", paper.imageId1);
       } else if (Math.floor(paper.layoutType / 1000) === 2) {
-        formData.append("images", paper.image1);
-        formData.append("images", paper.image2);
+        formData.append("images", paper.imageId1);
+        formData.append("images", paper.imageId2);
       }
     }
     const coverImageId = await uplodaImage(formData);
@@ -66,13 +68,13 @@ export default function ThreadCreatePage() {
         content2: draftToHtml(
           convertToRaw(paper.editorState2.getCurrentContent())
         ),
-        image1: coverImageId.imageIds[a++],
-        image2:
+        imageId1: coverImageId.imageIds[a++],
+        imageId2:
           Math.floor(paper.layoutType / 1000) === 1
-            ? -1
+            ? null
             : coverImageId.imageIds[a++],
         tagList: paper.tagList,
-        mentionIdList: paper.mentionIdList,
+        mentionList: paper.mentionList,
       };
     });
 
@@ -236,7 +238,7 @@ export default function ThreadCreatePage() {
               className={s(styles.postButton)}
               onClick={() => {
                 postPossible ? saveContent() : noneImg();
-                setModalIsOpen(true);
+                // setModalIsOpen(true);
               }}
             >
               게시

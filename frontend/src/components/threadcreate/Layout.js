@@ -17,7 +17,7 @@ export default function Layout({
   const handleFilter = (filterType) => {
     setFilter(filterType);
     if (filterType === "1CUT") {
-      papers[currentPage].image2 = null;
+      papers[currentPage].imageId2 = null;
     }
   };
 
