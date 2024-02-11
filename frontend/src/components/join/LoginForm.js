@@ -50,10 +50,6 @@ function LoginForm() {
         // useStore에 data안에 들어있는 기본 정보들을 저장해라
         localStorage.setItem("accessToken", res.data.token);
         localStorage.setItem("tokenTimestamp", Date.now());
-<<<<<<<<< Temporary merge branch 1
-=========
-        await setUser(data.data.memberInfo);
->>>>>>>>> Temporary merge branch 2
 
         async function socketConnect() {
           try {
@@ -69,7 +65,7 @@ function LoginForm() {
           email: res.data.memberInfo.email,
           memberId: res.data.memberInfo.memberId,
           nickname: res.data.memberInfo.nickname,
-          profileImageUrl: res.data.memberInfo.nickname,
+          profileImageUrl: res.data.memberInfo.profileImageUrl,
         });
 
         navigate(`/mybrary/${res.data.memberInfo.memberId}`);
