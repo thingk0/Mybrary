@@ -27,7 +27,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import useUserStore from "../store/useUserStore";
 import useStompStore from "../store/useStompStore";
 import 혜선누나 from "../assets/혜선누나.jpg";
-import { getMyMybrary, updateMybrary } from "../api/mybrary/Mybrary";
+import {
+  getMyMybrary,
+  getMybrary,
+  updateMybrary,
+} from "../api/mybrary/Mybrary";
 import gomimg from "../assets/곰탱이.png";
 import BigModal from "../components/common/BigModal";
 import axios from "axios";
@@ -97,9 +101,16 @@ export default function MybraryPage() {
       },
     }));
   };
+  const easelImgs = [easel1, easel2, easel3, easel4, easel5, easel6];
+  const tableImgs = [table1, table2, table3, table4, table5, table6];
+  const bookshelfImgs = [shelf1, shelf2, shelf3, shelf4, shelf5, shelf6];
 
   useEffect(() => {
+    const nowuser = Params.userid;
+    setCheckme(false);
+
     async function fetchMybraryData() {
+      setShowListType(null);
       try {
         const memberId = user.memberId;
         console.log(memberId);
@@ -121,10 +132,12 @@ export default function MybraryPage() {
 
           setIsLoading(false);
         } else {
-          const response = await getMyMybrary(nowuser);
+          console.log(nowuser);
+          const response = await getMybrary(nowuser);
           console.log("상대방의라이브러리입니다");
           setTestuser(response);
-          setBgColor(response.data.backgroundColor - 1);
+          setBgColor(response.data.backgroundColor);
+          console.log(response.data);
           setEsColor(easelImgs[response.data.easelColor - 1]);
           setEaselnum(response.data.easelColor);
           setTbColor(tableImgs[response.data.deskColor - 1]);
@@ -141,7 +154,7 @@ export default function MybraryPage() {
     }
 
     fetchMybraryData();
-  }, []);
+  }, [nowuser]);
 
   if (isLoading) {
     return <Loading></Loading>; // 로딩 중일 때 보여줄 컴포넌트 또는 메시지
@@ -162,9 +175,6 @@ export default function MybraryPage() {
     "12",
     "13",
   ];
-  const easelImgs = [easel1, easel2, easel3, easel4, easel5, easel6];
-  const tableImgs = [table1, table2, table3, table4, table5, table6];
-  const bookshelfImgs = [shelf1, shelf2, shelf3, shelf4, shelf5, shelf6];
 
   //완료버튼을 눌렀을때 실행하는 함수
   const handleSelect = async () => {

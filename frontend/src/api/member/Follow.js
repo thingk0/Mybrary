@@ -1,5 +1,5 @@
 import axios from "axios";
-const BASE_URL = "http://thingk0.duckdns.org:8080/api/v1/";
+const BASE_URL = "https://i10b207.p.ssafy.io/api/v1/";
 /* 특정 회원 팔로우 */
 export async function follow(id) {
   try {

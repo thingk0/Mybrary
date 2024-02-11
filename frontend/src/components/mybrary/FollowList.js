@@ -7,6 +7,7 @@ import {
 import styles from "./FollowList.module.css";
 import Iconuser2 from "../../assets/icon/Iconuser2.png";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 export default function FollowList({
   updateFollowingCount,
@@ -37,13 +38,20 @@ export default function FollowList({
   }, []);
   const handleDeleteFollow = async (memberId) => {
     try {
-      const response = await deleteFollow(memberId);
+      const response2 = await deleteFollow(memberId);
+
       // 팔로우 삭제 성공 후 상태 업데이트
-      const updatedFollowerList = followList.filter(
-        (follow) => follow.memberId !== memberId
-      );
-      setFollowList(updatedFollowerList);
-      updateFollowingCount(updatedFollowerList.length);
+      if (me == nowuser) {
+        const updatedFollowerList = followList.filter(
+          (follow) => follow.memberId !== memberId
+        );
+        setFollowList(updatedFollowerList);
+        updateFollowingCount(updatedFollowerList.length);
+      } else {
+        const response = await getFollowingList(nowuser);
+        console.log(response.data);
+        setFollowList(response.data);
+      }
       toast.success("팔로잉삭제 되었습니다.", {
         style: {
           border: "1px solid #713200",
@@ -62,6 +70,7 @@ export default function FollowList({
       toast.error("변경 실패: " + error.message);
     }
   };
+  const navigate = useNavigate();
 
   return (
     <>
@@ -74,7 +83,11 @@ export default function FollowList({
         </div>
         <div className={styles.followbox}>
           {followList.map((follow) => (
-            <div key={follow.memberId} className={styles.팔로우리스트}>
+            <div
+              onClick={() => navigate(`/mybrary/${follow.memberId}`)}
+              key={follow.memberId}
+              className={styles.팔로우리스트}
+            >
               <div className={styles.userimg}>
                 <img
                   className={styles.img}
@@ -86,14 +99,16 @@ export default function FollowList({
                 <span>{follow.nickname}</span>
                 <span className={styles.사용자이름}>{follow.name}</span>
               </div>
-              <div className={styles.팔로잉박스}>
-                <span
-                  onClick={() => handleDeleteFollow(follow.memberId)}
-                  className={styles.팔로잉글자}
-                >
-                  팔로잉
-                </span>
-              </div>
+              {follow.memberId != me && (
+                <div className={styles.팔로잉박스}>
+                  <span
+                    onClick={() => handleDeleteFollow(follow.memberId)}
+                    className={styles.팔로잉글자}
+                  >
+                    팔로잉
+                  </span>
+                </div>
+              )}
             </div>
           ))}
         </div>

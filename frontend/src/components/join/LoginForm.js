@@ -5,7 +5,7 @@ import useUserStore from "../../store/useUserStore";
 import useStompStore from "../../store/useStompStore";
 import useNotificationStore from "../../store/useNotificationStore";
 import styles from "./LoginForm.module.css";
-
+import toast, { useToaster } from "react-hot-toast";
 
 function LoginForm() {
   /* 로그인하고 바로 stompClient 초기화. */
@@ -13,9 +13,6 @@ function LoginForm() {
   const { setNewNotification } = useNotificationStore();
   /* 오류페이지 이동 */
   const navigate = useNavigate();
-  const navigateToErrorPage = () => {
-    navigate("/error");
-  };
 
   // 유저상태 전역 관리를 위한 코드
   const setUser = useUserStore((state) => state.setUser);
@@ -25,7 +22,6 @@ function LoginForm() {
     email: "",
     password: "",
   });
-  const [isLoginFail, setIsLoginFail] = useState(false);
 
   /* 메서드 */
   const handleChange = (e) => {
@@ -49,35 +45,60 @@ function LoginForm() {
     try {
       // 로그인 요청 보내기
 
-      const data = await login(formData);
-      if (data.status === "SUCCESS") {
+      const res = await login(formData);
+      if (res.status === "SUCCESS") {
         // useStore에 data안에 들어있는 기본 정보들을 저장해라
-        localStorage.setItem("accessToken", data.data.token);
+        localStorage.setItem("accessToken", res.data.token);
         localStorage.setItem("tokenTimestamp", Date.now());
+<<<<<<<<< Temporary merge branch 1
+=========
         await setUser(data.data.memberInfo);
+>>>>>>>>> Temporary merge branch 2
 
         async function socketConnect() {
           try {
-            if (formData.email) {
-              await connect(formData.email, setNewNotification);
-            }
+            await connect(res.data.memberInfo.email, setNewNotification);
           } catch (e) {
             //웹소켓 연결 실패
           } finally {
-            setFormData({});
+            setFormData({}); // 로그인이 성공했으므로, 무조건 setFormData는 초기화
           }
         }
         await socketConnect();
-        navigate(`/mybrary/${data.data.memberInfo.memberId}`);
+        await setUser({
+          email: res.data.memberInfo.email,
+          memberId: res.data.memberInfo.memberId,
+          nickname: res.data.memberInfo.nickname,
+          profileImageUrl: res.data.memberInfo.nickname,
+        });
+
+        navigate(`/mybrary/${res.data.memberInfo.memberId}`);
       } else {
         // 이메일, 비밀번호 불일치
-        setIsLoginFail(true);
+        showToast("아이디와 비밀번호를 확인해주세요.");
       }
     } catch (e) {
       // 전송 오류 발생 시
       // 서버에러. 에러페이지로 이동
-      navigateToErrorPage();
+      navigate("/error");
     }
+  };
+
+  /* 알림 함수 */
+  const showToast = (string) => {
+    toast.error(`${string}`, {
+      style: {
+        border: "1px solid #713200",
+        padding: "16px",
+        color: "#713200",
+        zIndex: "100",
+      },
+      iconTheme: {
+        primary: "#713200",
+        secondary: "#FFFAEE",
+      },
+      position: "top-center",
+    });
   };
 
   return (
@@ -87,7 +108,7 @@ function LoginForm() {
           <form onSubmit={handleSubmit}>
             <div>
               <label>email</label>
-              <div className={styles.각각의폼디브}>
+              <div className={styles.각각의폼디브} style={{ marginTop: "3px" }}>
                 <input
                   className={styles.인풋창}
                   type="text"
@@ -100,7 +121,7 @@ function LoginForm() {
             </div>
             <div>
               <label>비밀번호</label>
-              <div className={styles.각각의폼디브}>
+              <div className={styles.각각의폼디브} style={{ marginTop: "3px" }}>
                 <input
                   className={styles.인풋창}
                   type="text"
@@ -116,11 +137,6 @@ function LoginForm() {
                 로그인
               </button>
             </div>
-            {isLoginFail && (
-              <span className={styles.에러메시지}>
-                아이디와 비밀번호를 확인해주세요.
-              </span>
-            )}
           </form>
         </div>
       </div>

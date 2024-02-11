@@ -1,5 +1,5 @@
 import axios from "axios";
-const BASE_URL = "http://thingk0.duckdns.org:8080/api/v1/";
+const BASE_URL = "https://i10b207.p.ssafy.io/api/v1/";
 /* 책 수정 */
 export async function updateBook(object) {
   try {
@@ -14,7 +14,7 @@ export async function updateBook(object) {
 export async function createBook(object) {
   try {
     const response = await axios.post(BASE_URL + "book", object);
-    return response.data;
+    return response.data.data;
   } catch (error) {
     throw error;
   }

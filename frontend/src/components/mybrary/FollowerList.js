@@ -10,6 +10,7 @@ import {
 import styles from "./FollowerList.module.css";
 import Iconuser2 from "../../assets/icon/Iconuser2.png";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 export default function FollowerList({
   updateFollowerCount,
   updateFollowingCount,
@@ -62,10 +63,16 @@ export default function FollowerList({
   const handleFollow = async (memberId) => {
     try {
       const response2 = await follow(memberId);
-      const response = await getMyFollowerList();
-      console.log(response.data);
-      setFollowerList(response.data);
-      updateFollowingCount(followList.length + 1);
+      if (me == nowuser) {
+        const response = await getMyFollowerList();
+        console.log(response.data);
+        setFollowerList(response.data);
+        updateFollowingCount(followList.length + 1);
+      } else {
+        const response = await getFollowerList(nowuser);
+        console.log(response.data);
+        setFollowerList(response.data);
+      }
 
       toast.success("팔로우 완료 되었습니다.", {
         style: {
@@ -89,11 +96,17 @@ export default function FollowerList({
     try {
       const response = await deleteFollower(memberId);
       // 팔로우 삭제 성공 후 상태 업데이트
-      const updatedFollowerList = followerList.filter(
-        (follower) => follower.memberId !== memberId
-      );
-      setFollowerList(updatedFollowerList);
-      updateFollowerCount(updatedFollowerList.length);
+      if (me == nowuser) {
+        const updatedFollowerList = followerList.filter(
+          (follower) => follower.memberId !== memberId
+        );
+        setFollowerList(updatedFollowerList);
+        updateFollowerCount(updatedFollowerList.length);
+      } else {
+        const response = await getFollowerList(nowuser);
+        console.log(response.data);
+        setFollowerList(response.data);
+      }
       toast.success("팔로우삭제 되었습니다.", {
         style: {
           border: "1px solid #713200",
@@ -112,6 +125,7 @@ export default function FollowerList({
       toast.error("변경 실패: " + error.message);
     }
   };
+  const navigate = useNavigate();
   return (
     <>
       <div className={styles.mainbox}>
@@ -123,7 +137,11 @@ export default function FollowerList({
         </div>
         <div className={styles.followbox}>
           {followerList.map((follow) => (
-            <div key={follow.memberId} className={styles.팔로우리스트}>
+            <div
+              onClick={() => navigate(`/mybrary/${follow.memberId}`)}
+              key={follow.memberId}
+              className={styles.팔로우리스트}
+            >
               <div className={styles.userimg}>
                 <img
                   className={styles.img}
@@ -136,23 +154,26 @@ export default function FollowerList({
                   <span>{follow.nickname}</span>
                   <span className={styles.사용자이름}>{follow.name}</span>
                 </div>
-                {follow.followed === false ? (
+                {follow.memberId != me &&
+                  (follow.followed === false ? (
+                    <span
+                      onClick={() => handleFollow(follow.memberId)}
+                      className={styles.팔로우글자}
+                    >
+                      팔로우
+                    </span>
+                  ) : null)}
+              </div>
+              {me == nowuser && follow.memberId != me && (
+                <div className={styles.팔로잉박스}>
                   <span
-                    onClick={() => handleFollow(follow.memberId)}
-                    className={styles.팔로우글자}
+                    onClick={() => handleDeleteFollower(follow.memberId)}
+                    className={styles.삭제글자}
                   >
-                    팔로우
+                    삭제
                   </span>
-                ) : null}
-              </div>
-              <div className={styles.팔로잉박스}>
-                <span
-                  onClick={() => handleDeleteFollower(follow.memberId)}
-                  className={styles.삭제글자}
-                >
-                  삭제
-                </span>
-              </div>
+                </div>
+              )}
             </div>
           ))}
         </div>
