@@ -65,6 +65,9 @@ public class Paper extends BaseEntity {
     @Column(name = "like_count")
     private int likeCount;
 
+    @Column(name = "mention_list")
+    private String mentionList;
+
     @Builder.Default()
     @Column(name = "is_scrap_enabled")
     private boolean isScrapEnabled = true;
@@ -89,6 +92,10 @@ public class Paper extends BaseEntity {
 
     public void updateContent2(String content){
         content2 = content;
+    }
+
+    public void updateMentionList(String mentionList){
+        this.mentionList = mentionList;
     }
 
     public void updateScrapEnabled(boolean enabled){

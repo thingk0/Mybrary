@@ -7,4 +7,6 @@ public interface LikeRepositoryCustom {
     Optional<Like> isLikedPaper(Long paperId, Long memberId);
 
     Optional<Integer> getLikeCount(Long paperId);
+
+    Optional<Integer> getThreadtLikeCount(Long threadId);
 }

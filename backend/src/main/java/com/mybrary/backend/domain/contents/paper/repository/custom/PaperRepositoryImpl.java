@@ -42,9 +42,10 @@ public class PaperRepositoryImpl implements PaperRepositoryCustom {
 
         return Optional.ofNullable(query.select(
                                             Projections.constructor(GetFollowingPaperDto.class, paper.id, paper.layoutType,
-                                                paper.content1, paper.content2,  paper.likeCount.as("likeCount"),
-                                                paper.commentCount.as("commentCount"),
-                                                paper.scrapCount.as("scrapCount"), paper.isPaperPublic, paper.isScrapEnabled))
+                                                                    paper.content1, paper.content2, paper.likeCount.as("likeCount"),
+                                                                    paper.commentCount.as("commentCount"),
+                                                                    paper.scrapCount.as("scrapCount"), paper.mentionList, paper.isPaperPublic,
+                                                                    paper.isScrapEnabled))
                                         .from(paper)
                                         .where(paper.thread.id.eq(threadId))
                                         .fetch());
@@ -61,42 +62,45 @@ public class PaperRepositoryImpl implements PaperRepositoryCustom {
     @Override
     public Optional<List<PaperInBookGetDto>> getPaperList(Long bookId) {
 
-        return Optional.ofNullable(query.select(Projections.constructor(PaperInBookGetDto.class, paper.id, paper.createdAt, paper.layoutType, paper.content1, paper.content2))
-                                       .from(paper)
-                                       .leftJoin(scrap).on(scrap.paper.id.eq(paper.id))
-                                       .leftJoin(book).on(scrap.book.id.eq(book.id))
-                                       .where(book.id.eq(bookId))
-                                       .orderBy(scrap.paperSeq.asc())
-                                       .fetch()
+        return Optional.ofNullable(query.select(
+                                            Projections.constructor(PaperInBookGetDto.class, paper.id, paper.createdAt, paper.layoutType, paper.content1,
+                                                                    paper.content2))
+                                        .from(paper)
+                                        .leftJoin(scrap).on(scrap.paper.id.eq(paper.id))
+                                        .leftJoin(book).on(scrap.book.id.eq(book.id))
+                                        .where(book.id.eq(bookId))
+                                        .orderBy(scrap.paperSeq.asc())
+                                        .fetch()
         );
     }
 
     @Override
     public Optional<MemberInfoDto> getWriter(Long paperId) {
-        return Optional.ofNullable(query.select(Projections.constructor(MemberInfoDto.class,member.id, member.nickname, member.intro, image.url))
-                                       .from(paper)
-                                       .leftJoin(member).on(paper.member.id.eq(member.id))
-                                       .leftJoin(image).on(member.profileImage.id.eq(image.id))
-                                       .where(paper.id.eq(paperId))
-                                       .fetchOne()
+        return Optional.ofNullable(
+            query.select(Projections.constructor(MemberInfoDto.class, member.id, member.nickname, member.intro, image.url))
+                 .from(paper)
+                 .leftJoin(member).on(paper.member.id.eq(member.id))
+                 .leftJoin(image).on(member.profileImage.id.eq(image.id))
+                 .where(paper.id.eq(paperId))
+                 .fetchOne()
         );
     }
 
     @Override
     public Optional<Long> getImageUrl(Long paperId, int seq) {
         return Optional.ofNullable(query.select(paperImage.image.id)
-                                       .from(paperImage)
-                                       .where(paperImage.paper.id.eq(paperId).and(paperImage.imageSeq.eq(seq)))
-                                       .fetchOne()
+                                        .from(paperImage)
+                                        .where(paperImage.paper.id.eq(paperId).and(paperImage.imageSeq.eq(seq)))
+                                        .fetchOne()
         );
     }
 
     @Override
     public Optional<Long> getThreadIdByPaperId(Long paperId) {
         return Optional.ofNullable(query.select(paper.thread.id)
-                                       .from(paper)
-                                       .where(paper.id.eq(paperId))
-                                       .fetchOne()
+                                        .from(paper)
+                                        .where(paper.id.eq(paperId))
+                                        .fetchOne()
         );
     }
 
@@ -104,18 +108,12 @@ public class PaperRepositoryImpl implements PaperRepositoryCustom {
     public Optional<List<PaperGetDto>> getPaperGetDto(Long threadId) {
         return Optional.ofNullable(query.select(
                                             Projections.fields(PaperGetDto.class,
-                                                paper.id.as("paperId"),
-                                                paper.createdAt.as("createdAt"),
-                                                paper.layoutType.as("layoutType"),
-                                                paper.content1.as("content1"),
-                                                paper.content2.as("content2"),
-//                                                image.id.as("imageId1"),
-//                                                image.url.as("imageUrl1"),
-//                                                image.id.as("imageId2"),
-//                                                image.url.as("imageUrl2"),
-                                                paper.likeCount.as("likeCount"),
-                                                paper.commentCount.as("commentCount"),
-                                                paper.scrapCount.as("scrapCount")
+                                                               paper.id.as("paperId"),
+                                                               paper.createdAt.as("createdAt"),
+                                                               paper.layoutType.as("layoutType"),
+                                                               paper.content1.as("content1"),
+                                                               paper.content2.as("content2"),
+                                                               paper.mentionList.as("mentionListString")
                                             ))
                                         .from(paper)
 //                                        .leftJoin(paperImage).on(paperImage.paper.id.eq(paper.id).and(thread.id.eq(threadId)))

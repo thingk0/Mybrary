@@ -7,6 +7,7 @@ import com.mybrary.backend.domain.follow.repository.FollowRepository;
 import com.mybrary.backend.domain.image.entity.Image;
 import com.mybrary.backend.domain.image.repository.ImageRepository;
 import com.mybrary.backend.domain.member.entity.Member;
+import com.mybrary.backend.domain.member.repository.MemberRepository;
 import com.mybrary.backend.domain.member.service.MemberService;
 import com.mybrary.backend.domain.mybrary.dto.MybraryGetDto;
 import com.mybrary.backend.domain.mybrary.dto.MybraryOtherGetDto;
@@ -34,6 +35,7 @@ public class MybraryServiceImpl implements MybraryService {
     private final BookRepository bookRepository;
     private final FollowRepository followRepository;
     private final ImageRepository imageRepository;
+    private final MemberRepository memberRepository;
 
     @Override
     public MybraryGetDto getMybrary(String email) {
@@ -47,15 +49,19 @@ public class MybraryServiceImpl implements MybraryService {
     }
 
     @Override
-    public MybraryOtherGetDto getOtherMybrary(String myEmail, Long memberid) {
+    public MybraryOtherGetDto getOtherMybrary(String myEmail, Long memberId) {
         Long myId = memberService.findMember(myEmail).getId();
-        MybraryOtherGetDto mybrary = mybraryRepository.getOtherMybrary(memberid).orElseThrow(MybraryNotFoundException::new);
+        MybraryOtherGetDto mybrary = mybraryRepository.getOtherMybrary(memberId).orElseThrow(MybraryNotFoundException::new);
         mybrary.setThreadCount(threadRepository.countMyThread(mybrary.getMybraryId()).orElse(0));
         mybrary.setBookCount(bookRepository.countMyBook(mybrary.getBookShelfId()).orElse(0));
-        mybrary.setFollowerCount(followRepository.countMyFollower(memberid).orElse(0));
-        mybrary.setFollowingCount(followRepository.countMyFollowing(memberid).orElse(0));
-        if (followRepository.findFollow(myId, memberid) != null) {
-            mybrary.setFollowed(true);
+        mybrary.setFollowerCount(followRepository.countMyFollower(memberId).orElse(0));
+        mybrary.setFollowingCount(followRepository.countMyFollowing(memberId).orElse(0));
+        if(memberRepository.isFollowed(myId, memberId).orElse(null)!=null){
+            mybrary.setFollowStatus(3);
+        } else if(memberRepository.isRequested(myId, memberId).orElse(null)!=null){
+            mybrary.setFollowStatus(2);
+        } else{
+            mybrary.setFollowStatus(1);
         }
         return mybrary;
     }

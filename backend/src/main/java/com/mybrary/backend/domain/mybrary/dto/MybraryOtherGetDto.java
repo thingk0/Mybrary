@@ -37,7 +37,7 @@ public class MybraryOtherGetDto {
     private int bookCount;
     private int followerCount;
     private int followingCount;
-    private boolean isFollowed = false;
+    private int followStatus;
     private Long bookShelfId;
     private Long rollingPaperId;
 

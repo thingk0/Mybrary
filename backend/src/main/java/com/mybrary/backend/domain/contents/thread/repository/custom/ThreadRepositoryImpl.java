@@ -12,6 +12,7 @@ import com.mybrary.backend.domain.contents.thread.dto.responseDto.GetThreadDto;
 import com.mybrary.backend.domain.contents.thread.dto.responseDto.ThreadInfoGetDto;
 import com.mybrary.backend.domain.contents.thread.dto.responseDto.ThreadShareGetDto;
 import com.mybrary.backend.domain.contents.thread.entity.Thread;
+import com.mybrary.backend.domain.follow.entity.QFollow;
 import com.mybrary.backend.domain.image.entity.QImage;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -50,13 +51,13 @@ public class ThreadRepositoryImpl implements ThreadRepositoryCustom {
       public Optional<List<GetThreadDto>> getFollowingThreadDtoResults(Long memberId,
           Pageable pageable) {
 
-            return Optional.ofNullable(query.select(Projections.constructor(GetThreadDto.class, thread.id, thread.createdAt, member.id, member.name, member.nickname, member.profileImage.image.url, member.profileImage.image.id))
+            return Optional.ofNullable(query.select(Projections.constructor(GetThreadDto.class, thread.id, thread.createdAt, member.id, member.name, member.nickname, image.url, image.id, thread.isPaperPublic, thread.isScrapEnabled))
                                             .from(thread)
                                             .leftJoin(mybrary).on(thread.mybrary.id.eq(mybrary.id))
                                             .leftJoin(member).on(mybrary.member.id.eq(member.id))
                                             .leftJoin(image).on(member.profileImage.id.eq(image.id))
                                             .leftJoin(follow).on(follow.following.id.eq(member.id))
-                                            .where(follow.follower.id.eq(memberId).or(member.id.eq(memberId)))
+                                            .where((follow.follower.id.eq(memberId).or(member.id.eq(memberId)).and(thread.isPaperPublic.eq(true))))
                                             .groupBy(thread.id)
                                             .orderBy(thread.createdAt.desc())
                                             .offset(pageable.getOffset())
@@ -68,13 +69,15 @@ public class ThreadRepositoryImpl implements ThreadRepositoryCustom {
       @Override
       public Optional<List<GetThreadDto>> getRandomThreadDtoResults(Long memberId, Pageable pageable, int count) {
 
-            return Optional.ofNullable(query.select(Projections.constructor(GetThreadDto.class, thread.id, thread.createdAt, member.id, member.name, member.nickname, member.profileImage.image.url, member.profileImage.image.id))
+            QFollow followSub = new QFollow("followSub");
+
+            return Optional.ofNullable(query.select(Projections.constructor(GetThreadDto.class, thread.id, thread.createdAt, member.id, member.name, member.nickname, image.url, image.id, thread.isPaperPublic, thread.isScrapEnabled))
                                             .from(thread)
                                             .leftJoin(mybrary).on(thread.mybrary.id.eq(mybrary.id))
                                             .leftJoin(member).on(mybrary.member.id.eq(member.id))
                                             .leftJoin(image).on(member.profileImage.id.eq(image.id))
                                             .leftJoin(follow).on(follow.following.id.eq(member.id))
-                                            .where(follow.follower.id.ne(memberId).and(member.id.ne(memberId)).and(member.isProfilePublic.eq(true)))
+                                            .where(member.id.notIn(query.select(followSub.id).from(followSub).where(followSub.follower.id.eq(memberId))).and(member.id.ne(memberId)).and(member.isProfilePublic.eq(true).and(thread.isPaperPublic.eq(true))))
                                             .groupBy(thread.id)
                                             .orderBy(thread.createdAt.desc())
                                             .offset(pageable.getOffset())
@@ -163,9 +166,6 @@ public class ThreadRepositoryImpl implements ThreadRepositoryCustom {
                             paper.thread.id,
                             image.id,
                             image.url,
-                            paper.likeCount,
-                            paper.commentCount,
-                            paper.scrapCount,
                             paper.isPaperPublic,
                             paper.isScrapEnabled))
                         .from(paper)

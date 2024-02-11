@@ -28,7 +28,7 @@ public class CategoryRepositoryImpl implements CategoryRepositoryCustom {
                                                 category.categorySeq, pickBook.count().intValue())
                     )
                     .from(category)
-                    .leftJoin(pickBook).on(pickBook.category.id.eq(category.id))
+                    .leftJoin(pickBook).on(pickBook.category.id.eq(category.id).and(pickBook.isDeleted.eq(false)))
                     .where(category.bookshelf.id.eq(bookshelfId))
                     .groupBy(category.id)
                     .orderBy(category.categorySeq.asc())

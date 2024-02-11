@@ -27,5 +27,6 @@ public class PaperUpdateDto {
     private Long imageId1;
     private Long imageId2;
     private List<String> tagList;
+    private List<Long> mentionList;
 
 }

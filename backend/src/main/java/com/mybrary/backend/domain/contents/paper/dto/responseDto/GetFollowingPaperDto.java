@@ -31,12 +31,14 @@ public class GetFollowingPaperDto {
     private int scrapCount;
     private boolean isLiked;
     private List<String> tagList;
+    private String mentionListString;
+    private List<MentionListDto> mentionList;
 
     private boolean isPaperPublic;
     private boolean isScrapEnable;
 
     public GetFollowingPaperDto(Long paperId, int layoutType, String content1, String content2,
-        int likesCount, int commentCount, int scrapCount, boolean isPaperPublic, boolean isScrapEnable) {
+        int likesCount, int commentCount, int scrapCount, String mentionListString, boolean isPaperPublic, boolean isScrapEnable) {
         this.id = paperId;
         this.layoutType = layoutType;
         this.content1 = content1;
@@ -44,6 +46,7 @@ public class GetFollowingPaperDto {
         this.likesCount = likesCount;
         this.commentCount = commentCount;
         this.scrapCount = scrapCount;
+        this.mentionListString = mentionListString;
         this.isPaperPublic = isPaperPublic;
         this.isScrapEnable = isScrapEnable;
     }

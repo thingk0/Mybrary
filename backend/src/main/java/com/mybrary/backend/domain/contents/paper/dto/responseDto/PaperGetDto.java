@@ -6,8 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -33,18 +35,18 @@ public class PaperGetDto {
     private int scrapCount;
     private boolean isLiked;
     private List<String> tagList;
+    private String mentionListString;
+    private List<MentionListDto> mentionList;
 
     /* isLiked, tagList는 따로 바인딩 */
-    public PaperGetDto(Long paperId, LocalDateTime createdAt, int layoutType, String content1, String content2, int likeCount, int commentCount, int scrapCount) {
+    public PaperGetDto(Long paperId, LocalDateTime createdAt, int layoutType, String content1, String content2, String mentionListString) {
 
         this.paperId = paperId;
         this.createdAt = createdAt;
         this.layoutType = layoutType;
         this.content1 = content1;
         this.content2 = content2;
-        this.likeCount = likeCount;
-        this.commentCount = commentCount;
-        this.scrapCount = scrapCount;
+        this.mentionListString = mentionListString;
     }
 
     public void updateIsLiked(boolean bool){

@@ -1,5 +1,7 @@
 package com.mybrary.backend.domain.contents.scrap.repository.custom;
 
+import static com.mybrary.backend.domain.contents.like.entity.QLike.like;
+import static com.mybrary.backend.domain.contents.paper.entity.QPaper.paper;
 import static com.mybrary.backend.domain.contents.scrap.entity.QScrap.scrap;
 
 import com.mybrary.backend.domain.contents.scrap.entity.Scrap;
@@ -39,6 +41,15 @@ public class ScrapRepositoryImpl implements ScrapRepositoryCustom {
                                            .where(scrap.book.id.eq(bookId)).fetchOne());
       }
 
+      @Override
+      public Optional<Integer> getThreadScrapCount(Long threadId) {
+            return Optional.ofNullable(query.select(scrap.count().intValue())
+                                            .from(scrap)
+                                            .leftJoin(paper).on(scrap.paper.id.eq(paper.id))
+                                            .where(paper.thread.id.eq(threadId))
+                                            .fetchOne()
+            );
+      }
 
 
 }
