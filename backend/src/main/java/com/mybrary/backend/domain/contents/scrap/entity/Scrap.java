@@ -47,6 +47,7 @@ public class Scrap extends BaseEntity {
     public void updateBook(Book book){
         this.book = book;
     }
+    public void updatePaperSeq(int seq){ this.paperSeq = seq; }
 }
 
 
