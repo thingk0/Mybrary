@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import styles from "./style/WelcomePage.module.css";
 import line1 from "../assets/line1.png";
-import line2 from "../assets/line2.png";
 import line3 from "../assets/line3.png";
 import top from "../assets/top.png";
 import left from "../assets/left.png";
