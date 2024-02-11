@@ -30,7 +30,7 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom {
                 ))
             .from(comment)
             .leftJoin(member).on(comment.member.id.eq(member.id))
-                                        .where(comment.paper.id.eq(paperId))
+                                        .where(comment.paper.id.eq(paperId).and(comment.parentComment.isNull()))
             .fetch());
     }
 
