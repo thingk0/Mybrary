@@ -236,6 +236,7 @@ export default function ThreadCreatePage() {
               className={s(styles.postButton)}
               onClick={() => {
                 postPossible ? saveContent() : noneImg();
+                setModalIsOpen(true);
               }}
             >
               게시

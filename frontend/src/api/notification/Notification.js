@@ -1,5 +1,6 @@
 import axios from "axios";
 const BASE_URL = "https://i10b207.p.ssafy.io/api/v1/";
+
 /* 나의 알림 조회 */
 export async function getMessageList(id) {
   try {

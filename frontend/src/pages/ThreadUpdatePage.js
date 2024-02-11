@@ -111,7 +111,6 @@ export default function ThreadUpdatePage() {
         ),
         image1: paper.image1,
         image2: paper.image2,
-        layoutType: paper.layoutType,
         tagList: paper.tagList,
         mentionIdList: paper.mentionIdList,
       };

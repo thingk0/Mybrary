@@ -1,5 +1,6 @@
 import axios from "axios";
 const BASE_URL = "https://i10b207.p.ssafy.io/api/v1/";
+
 /* 페이퍼 댓글 조회 */
 export async function getBookList(paperid) {
   const params = {
