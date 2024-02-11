@@ -11,6 +11,8 @@ import com.mybrary.backend.domain.member.entity.Member;
 import com.mybrary.backend.domain.member.repository.MemberRepository;
 import com.mybrary.backend.domain.notification.dto.NotificationPostDto;
 import com.mybrary.backend.domain.notification.service.NotificationService;
+import jakarta.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,51 +27,63 @@ public class CommentServiceImpl implements CommentService {
     private final MemberRepository memberRepository;
     private final NotificationService notificationService;
 
+    @Transactional
     @Override
-    public Long createComment(CommentPostDto commentPostDto) {
+    public Long createComment(Long myId, CommentPostDto commentPostDto) {
 
         Paper paper = paperRepository.findById(commentPostDto.getPaperId())
                                      .orElseThrow(NullPointerException::new);
-        Member member = memberRepository.findById(commentPostDto.getMemberid())
+        Member member = memberRepository.findById(myId)
                                         .orElseThrow(NullPointerException::new);
-        Comment parentComment = commentRepository
-            .findById(commentPostDto.getParentCommentId())
-            .orElseThrow(NullPointerException::new);
 
-        Comment comment = Comment.builder()
-                                 .paper(paper)
-                                 .content(commentPostDto.getContent())
-                                 .member(member)
-                                 .parentComment(parentComment)
-                                 .colorCode(commentPostDto.getColorCode())
-                                 .build();
+        Long parentCommentId = commentPostDto.getParentCommentId();
+        Comment comment;
 
-        Comment savedComment = commentRepository.save(comment);
 
-        /*    웹소켓 코드    */
+        if(parentCommentId == null){
+            /* 댓글인경우 */
+            comment = Comment.builder()
+                                     .paper(paper)
+                                     .content(commentPostDto.getContent())
+                                     .member(member)
+                                     .colorCode(commentPostDto.getColorCode())
+                                     .build();
+            Comment savedComment = commentRepository.save(comment);
 
-        // 게시글 작성자 Id
-        Long paperWirterId = paper.getMember().getId();
-        // 댓글 작성자 Id
-        Long commentWriterId = parentComment.getMember().getId();
+            // 게시글 작성자 Id
+            Long paperWriterId = paper.getMember().getId();
 
-        // 댓글이랑 대댓글로 구분
-        if (commentPostDto.getParentCommentId() == null) {
-
-            // 댓글일 때
+            /* 웹소켓 알림 관련 */
             // 댓글 작성자를 sender, 게시글 작성자를 receiver 로 하는 type3 알림 보내기
             NotificationPostDto notification = NotificationPostDto.builder()
                                                                   .senderId(member.getId())
-                                                                  .receiverId(paperWirterId)
+                                                                  .receiverId(paperWriterId)
                                                                   .notifyType(3)
                                                                   .threadId(paper.getThread().getId())
                                                                   .paperId(paper.getId())
                                                                   .commentId(savedComment.getId())
                                                                   .build();
             notificationService.saveNotification(notification);
-        } else {
 
-            // 대댓글 일 때
+        }else{
+            /* 대댓글인경우 */
+            Comment parentComment = commentRepository.findById(parentCommentId)
+                                                     .orElseThrow(NullPointerException::new);
+
+            comment = Comment.builder()
+                                     .paper(paper)
+                                     .content(commentPostDto.getContent())
+                                     .member(member)
+                                     .parentComment(parentComment)
+                                     .colorCode(commentPostDto.getColorCode())
+                                     .build();
+            Comment savedComment = commentRepository.save(comment);
+
+            // 게시글 작성자 Id
+            Long paperWirterId = paper.getMember().getId();
+            // 댓글 작성자 Id
+            Long commentWriterId = parentComment.getMember().getId();
+
             // 1. 대댓글 작성자를 sender, 부모댓글 작성자를 receiver 로 하는 type4 알림 보내기
             NotificationPostDto notification1 = NotificationPostDto.builder()
                                                                    .senderId(member.getId())
@@ -99,6 +113,7 @@ public class CommentServiceImpl implements CommentService {
         return comment.getId();
     }
 
+    @Transactional
     @Override
     public Long deleteComment(Long commentId) {
         paperRepository.deleteById(commentId);
@@ -106,27 +121,39 @@ public class CommentServiceImpl implements CommentService {
     }
 
     /* */
+    @Transactional
     @Override
-    public CommentGetAllDto getAllComment(Long memberId, Long paperId) {
+    public CommentGetAllDto getAllComment(Long myId, Long paperId) {
 
         List<CommentGetDto> commentGetDtoList = commentRepository.getCommentGetDtoListByPaperId(paperId)
-                                                                 .orElseThrow(NullPointerException::new);
+                                                                 .orElse(new ArrayList<>());
+
+        if(!commentGetDtoList.isEmpty()){
+            /* 작성자여부는 따로 구하기 */
+            for (CommentGetDto commentGetDto : commentGetDtoList) {
+                boolean isOwnerTrue = commentGetDto.getOwnerId().equals(myId);
+                commentGetDto.updateIsOwner(isOwnerTrue);
+            }
+        }
         CommentGetAllDto commentGetAllDto = CommentGetAllDto.builder()
                                                             .commentGetDtoList(commentGetDtoList)
                                                             .paperId(paperId)
                                                             .build();
 
-        /* 작성자여부는 따로 구하기 */
-        for (CommentGetDto commentGetDto : commentGetDtoList) {
-            boolean isOwnerTrue = commentGetDto.getOwnerId().equals(memberId);
-            commentGetDto.updateIsOwner(isOwnerTrue);
-        }
-
         return commentGetAllDto;
     }
-
+    @Transactional
     @Override
-    public Long getChildComments(Long commentId) {
-        return null;
+    public CommentGetAllDto getChildComments(Long commentId) {
+        Comment comment = commentRepository.findById(commentId).orElseThrow(NullPointerException::new);
+        Paper paper = comment.getPaper();
+        List<CommentGetDto> commentGetDtoList = commentRepository.getChildCommentGetDtoList(commentId)
+                                                                 .orElse(new ArrayList<>());
+        CommentGetAllDto commentGetAllDto = CommentGetAllDto.builder()
+                                                            .commentGetDtoList(commentGetDtoList)
+                                                            .paperId(paper.getId())
+                                                            .build();
+
+        return commentGetAllDto;
     }
 }

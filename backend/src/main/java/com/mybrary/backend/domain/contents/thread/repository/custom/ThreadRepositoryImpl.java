@@ -147,8 +147,8 @@ public class ThreadRepositoryImpl implements ThreadRepositoryCustom {
 
 
       /* 쓰레드 목록 조회하기에서 사용, 먼저 쓰레드부터 조회 */
-      public List<Thread> getThreadsByMemberId(Long memberId, Pageable pageable){
-            return query.select(thread)
+      public Optional<List<Thread>> getThreadsByMemberId(Long memberId, Pageable pageable){
+            return Optional.ofNullable(query.select(thread)
                         .from(paper)
                         .leftJoin(thread)
                         .on(paper.thread.id.eq(thread.id))
@@ -156,7 +156,7 @@ public class ThreadRepositoryImpl implements ThreadRepositoryCustom {
                         .orderBy(thread.createdAt.desc(), paper.createdAt.asc())
                         .offset(pageable.getOffset())
                         .limit(pageable.getPageSize())
-                        .fetch();
+                        .fetch());
       }
 
       /* 이것도 쓰레드 목록 조회하기에서 사용, 쓰레드별로 페이퍼 하나에 대한 정보를 조회하도록 함 */
@@ -164,6 +164,7 @@ public class ThreadRepositoryImpl implements ThreadRepositoryCustom {
       public ThreadInfoGetDto getSimpleThreadDtoResult(Long threadId){
             return query.select(Projections.constructor(ThreadInfoGetDto.class,
                             paper.thread.id,
+                            thread.createdAt,
                             image.id,
                             image.url,
                             paper.isPaperPublic,

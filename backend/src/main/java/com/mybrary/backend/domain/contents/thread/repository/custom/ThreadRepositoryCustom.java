@@ -21,7 +21,7 @@ public interface ThreadRepositoryCustom {
     Optional<List<GetThreadDto>> getRandomThreadDtoResults(Long memberId, Pageable pageable, int count);
 
     /* 이 두개는 쓰레드 목록 조회에 사용됨 */
-        List<Thread> getThreadsByMemberId(Long memberId, Pageable pageable);
+        Optional<List<Thread>> getThreadsByMemberId(Long memberId, Pageable pageable);
         ThreadInfoGetDto getSimpleThreadDtoResult(Long threadId);
     /* */
 //    List<ThreadInfoGetDto> getSimpleThreadDtoResults(Long memberId, Pageable pageable);

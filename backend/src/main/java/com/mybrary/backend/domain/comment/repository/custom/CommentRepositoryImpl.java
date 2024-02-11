@@ -1,9 +1,9 @@
 package com.mybrary.backend.domain.comment.repository.custom;
 
 import static com.mybrary.backend.domain.comment.entity.QComment.comment;
-import static com.mybrary.backend.domain.contents.like.entity.QLike.like;
 import static com.mybrary.backend.domain.contents.paper.entity.QPaper.paper;
 import static com.mybrary.backend.domain.member.entity.QMember.member;
+
 import com.mybrary.backend.domain.comment.dto.responseDto.CommentGetDto;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -19,14 +19,6 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom {
     private final JPAQueryFactory query;
     public Optional<List<CommentGetDto>> getCommentGetDtoListByPaperId(Long paperId) {
 
-//        private Long commentId;
-//        private Long ownerId;
-//        private String ownerNickname;
-//        private boolean isOwner;
-//        private String content;
-//        private int colorCode;
-//        private String time;
-
         return Optional.ofNullable(query.select(
                 Projections.fields(CommentGetDto.class,
                     comment.id.as("commentId"),
@@ -37,8 +29,8 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom {
                     comment.createdAt.as("time")
                 ))
             .from(comment)
-            .leftJoin(paper).on(comment.paper.id.eq(paperId))
             .leftJoin(member).on(comment.member.id.eq(member.id))
+                                        .where(comment.paper.id.eq(paperId))
             .fetch());
     }
 
@@ -51,14 +43,34 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom {
         );
     }
 
-    @Override
     public Optional<Integer> getThreadCommentCount(Long threadId) {
-        return Optional.ofNullable(query.select(comment.count().intValue())
+        return Optional.ofNullable(query.select(comment.count()
+                                                       .intValue())
                                         .from(comment)
-                                        .leftJoin(paper).on(comment.paper.id.eq(paper.id))
+                                        .leftJoin(paper)
+                                        .on(comment.paper.id.eq(paper.id))
                                         .where(paper.thread.id.eq(threadId))
                                         .fetchOne()
         );
     }
+
+        @Override
+        public Optional<List<CommentGetDto>> getChildCommentGetDtoList (Long commentId){
+            return Optional.ofNullable(query.select(
+                                                Projections.fields(CommentGetDto.class,
+                                                    comment.id.as("commentId"),
+                                                    member.id.as("ownerId"),
+                                                    member.nickname.as("ownerNickname"),
+                                                    comment.content.as("content"),
+                                                    comment.colorCode.as("colorCode"),
+                                                    comment.createdAt.as("createdAt")
+                                                ))
+                                            .from(comment)
+                                            .leftJoin(member)
+                                            .on(comment.member.id.eq(member.id))
+                                            .where(comment.parentComment.id.eq(commentId))
+                                            .fetch());
+
+        }
 
 }

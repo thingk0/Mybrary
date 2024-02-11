@@ -1,6 +1,5 @@
 package com.mybrary.backend.domain.comment.dto.requestDto;
 
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,7 +18,6 @@ public class CommentPostDto {
      *  대댓글 아니면 parentCommentId는 null
      */
 
-    private Long memberid;
     private Long paperId;
     private Long parentCommentId;
     private String content;

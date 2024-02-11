@@ -1,5 +1,6 @@
 package com.mybrary.backend.domain.comment.dto.responseDto;
 
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,16 +31,16 @@ public class CommentGetDto {
     private boolean isOwner;
     private String content;
     private int colorCode;
-    private String time;
+    private LocalDateTime createdAt;
 
     public CommentGetDto(Long commentId, Long ownerId, String ownerNickname,
-        String content, int colorCode, String time) {
+        String content, int colorCode, LocalDateTime createdAt) {
         this.commentId = commentId;
         this.ownerId = ownerId;
         this.ownerNickname = ownerNickname;
         this.content = content;
         this.colorCode = colorCode;
-        this.time = time;
+        this.createdAt = createdAt;
     }
 
     public void updateIsOwner(boolean bool){

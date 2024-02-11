@@ -1,17 +1,17 @@
 package com.mybrary.backend.domain.comment.service;
 
-import com.mybrary.backend.domain.comment.dto.responseDto.CommentGetAllDto;
 import com.mybrary.backend.domain.comment.dto.requestDto.CommentPostDto;
+import com.mybrary.backend.domain.comment.dto.responseDto.CommentGetAllDto;
 
 public interface CommentService {
 
-    Long createComment(CommentPostDto commentPostDto);
+    Long createComment(Long myId, CommentPostDto commentPostDto);
 
     Long deleteComment(Long commentId);
 
-    CommentGetAllDto getAllComment(Long memberId, Long paperId);
+    CommentGetAllDto getAllComment(Long myId, Long paperId);
 
-    Long getChildComments(Long commentId);
+    CommentGetAllDto getChildComments(Long commentId);
 
 
 }

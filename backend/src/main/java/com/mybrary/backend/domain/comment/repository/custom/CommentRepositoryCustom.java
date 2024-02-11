@@ -10,5 +10,6 @@ public interface CommentRepositoryCustom {
 
     Optional<Integer> getCommentCount(Long paperId);
 
-    Optional<Integer> getThreadCommentCount(Long threadId);
+    Optional<List<CommentGetDto>> getChildCommentGetDtoList(Long commentId);
+
 }

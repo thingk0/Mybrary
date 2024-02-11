@@ -1,5 +1,6 @@
 package com.mybrary.backend.domain.contents.thread.dto.responseDto;
 
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,6 +17,7 @@ public class ThreadInfoGetDto {
     /* 내 thread 조회, 특정 멤버의 thread 조회에 사용 */
 
     private Long threadId;
+    private LocalDateTime threadCreatedAt;
     private Long imageId;
     private String imageUrl;
     private int likesCount;

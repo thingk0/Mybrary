@@ -1,13 +1,17 @@
 package com.mybrary.backend.domain.comment.controller;
 
 import com.mybrary.backend.domain.comment.dto.requestDto.CommentPostDto;
- import com.mybrary.backend.domain.comment.service.CommentService;
+import com.mybrary.backend.domain.comment.service.CommentService;
+import com.mybrary.backend.domain.member.entity.Member;
+import com.mybrary.backend.domain.member.service.MemberService;
 import com.mybrary.backend.global.format.code.ApiResponse;
 import com.mybrary.backend.global.format.response.ResponseCode;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,30 +29,43 @@ public class CommentController {
 
     private final ApiResponse response;
     private final CommentService commentService;
+    private final MemberService memberService;
 
     @Operation(summary = "댓글 생성", description = "페이퍼에 대한 댓글 생성")
     @PostMapping
-    public ResponseEntity<?> createComment(@RequestBody CommentPostDto commentPostDto) {
+    public ResponseEntity<?> createComment(
+        @Parameter(hidden = true) Authentication authentication,
+        @RequestBody CommentPostDto commentPostDto) {
 
-        return response.success(ResponseCode.COMMENT_CREATED, commentService.createComment(commentPostDto));
+        Member member = memberService.findMember(authentication.getName());
+        Long myId = member.getId();
+        return response.success(ResponseCode.COMMENT_CREATED, commentService.createComment(myId, commentPostDto));
     }
 
     @Operation(summary = "댓글 삭제", description = "댓글 아이디를 통한 댓글 삭제")
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteComment(@PathVariable(name = "id") Long commentId) {
+    public ResponseEntity<?> deleteComment(
+        @Parameter(hidden = true) Authentication authentication,
+        @PathVariable(name = "id") Long commentId) {
         return response.success(ResponseCode.COMMENT_DELETED, commentService.deleteComment(commentId));
     }
 
     @Operation(summary = "페이퍼 대댓글 조회", description = "페이퍼 아이디, 댓글 아이디를 통한 페이퍼의 대댓글 조회")
     @GetMapping("/{id}/child")
-    public ResponseEntity<?> getChildComments(@PathVariable(name = "id") Long commentId) {
+    public ResponseEntity<?> getChildComments(
+        @Parameter(hidden = true) Authentication authentication,
+        @PathVariable(name = "id") Long commentId) {
         return response.success(ResponseCode.COMMENTS_FETCHED, commentService.getChildComments(commentId));
     }
 
     @Operation(summary = "페이퍼 댓글 조회", description = "페이퍼 아이디를 통한 페이퍼의 모든 댓글 조회")
     @GetMapping
-    public ResponseEntity<?> getAllComment(@RequestParam Long paperId, @RequestBody Long memberId) {
-        return response.success(ResponseCode.COMMENTS_FETCHED, commentService.getAllComment(memberId, paperId));
+    public ResponseEntity<?> getAllComment(
+        @Parameter(hidden = true) Authentication authentication,
+        @RequestParam(name = "id") Long paperId) {
+        Member member = memberService.findMember(authentication.getName());
+        Long myId = member.getId();
+        return response.success(ResponseCode.COMMENTS_FETCHED, commentService.getAllComment(myId, paperId));
     }
 
 
