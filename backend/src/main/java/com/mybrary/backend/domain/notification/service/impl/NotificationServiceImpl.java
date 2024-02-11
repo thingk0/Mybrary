@@ -2,6 +2,8 @@ package com.mybrary.backend.domain.notification.service.impl;
 
 import com.mybrary.backend.domain.book.entity.Book;
 import com.mybrary.backend.domain.book.repository.BookRepository;
+import com.mybrary.backend.domain.follow.entity.Follow;
+import com.mybrary.backend.domain.follow.repository.FollowRepository;
 import com.mybrary.backend.domain.member.dto.responseDto.MemberInfoDto;
 import com.mybrary.backend.domain.member.entity.Member;
 import com.mybrary.backend.domain.member.repository.MemberRepository;
@@ -11,6 +13,7 @@ import com.mybrary.backend.domain.notification.dto.NotificationPostDto;
 import com.mybrary.backend.domain.notification.entity.Notification;
 import com.mybrary.backend.domain.notification.repository.NotificationRepository;
 import com.mybrary.backend.domain.notification.service.NotificationService;
+import com.mybrary.backend.global.exception.member.MemberNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +31,7 @@ public class NotificationServiceImpl implements NotificationService {
     private final MemberRepository memberRepository;
     private final BookRepository bookRepository;
     private final SimpMessagingTemplate messagingTemplate;
-    private final MemberService memberService;
+    private final FollowRepository followRepository;
 
     @Transactional(readOnly = true)
     @Override
@@ -120,9 +123,16 @@ public class NotificationServiceImpl implements NotificationService {
         Notification notification = notificationRepository.findById(notificationId).orElse(null);
 
         if (notification != null) {
-            String followerEmail = notification.getSender().getEmail(); // sender
+            Long followerId = notification.getSender().getId(); // sender
             Long followingId = notification.getReceiver().getId(); // receiver
-            memberService.follow(followerEmail, followingId, true);
+
+            Member follower = memberRepository.findById(followerId).orElseThrow(MemberNotFoundException::new);
+            Member following = memberRepository.findById(followingId).orElseThrow(MemberNotFoundException::new);
+            Follow follow = Follow.builder()
+                                  .following(following)
+                                  .follower(follower)
+                                  .build();
+            followRepository.save(follow);
 
             notificationRepository.delete(notification);
 

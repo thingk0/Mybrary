@@ -119,7 +119,7 @@ public class PaperRepositoryImpl implements PaperRepositoryCustom {
                                             ))
                                         .from(paper)
 //                                        .leftJoin(paperImage).on(paperImage.paper.id.eq(paper.id).and(thread.id.eq(threadId)))
-                                        .leftJoin(thread).on(paper.thread.id.eq(thread.id))
+                                        .leftJoin(thread).on(paper.thread.id.eq(thread.id).and(thread.id.eq(threadId)))
                                         .fetch());
     }
 

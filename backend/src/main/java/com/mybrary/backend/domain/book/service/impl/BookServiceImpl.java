@@ -55,12 +55,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class BookServiceImpl implements BookService {
 
+    private final MemberService memberService;
     private final BookRepository bookRepository;
     private final CategoryRepository categoryRepository;
     private final PickBookRepository pickBookRepository;
     private final ImageRepository imageRepository;
-    private final MemberService memberService;
-    private final MemberRepository memberRepository;
     private final PaperRepository paperRepository;
     private final TagRepository tagRepository;
     private final LikeRepository likeRepository;
