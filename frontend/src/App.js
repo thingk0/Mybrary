@@ -1,4 +1,4 @@
-import { Outlet, useLocation } from "react-router-dom";
+import { useNavigate, Navigate, Outlet, useLocation } from "react-router-dom";
 import Nav from "./components/atom/Nav";
 import "./App.css";
 import axios from "axios";
@@ -8,6 +8,7 @@ import useUserStore from "./store/useUserStore";
 import useNotificationStore from "./store/useNotificationStore";
 import { Toaster } from "react-hot-toast";
 import { isTokenExpired, renewToken } from "./api/common/Token";
+import toast from "react-hot-toast";
 
 axios.defaults.withCredentials = true;
 
@@ -44,14 +45,25 @@ export default function App() {
   const { connect } = useStompStore();
   const { setNewNotification } = useNotificationStore();
   const email = useUserStore((state) => state.user?.email);
+  const navigate = useNavigate();
 
   useEffect(() => {
+    const tokenTimestamp = localStorage.getItem("tokenTimestamp");
+    if (tokenTimestamp) {
+      const now = Date.now();
+      const timeElapsed = (now - tokenTimestamp) / 1000; // 분 단위로 변환
+      if (timeElapsed > 900) {
+        toast.error("로그인 토큰이 만료되었습니다.", {
+          position: "top-center",
+        });
+        navigate("/join");
+      }
+    }
+
     async function socketConnect() {
-      const token = localStorage.getItem("accessToken");
-      const header = { Authorization: "Bearer " + token };
       try {
         if (email) {
-          await connect(header, email, setNewNotification);
+          await connect(email, setNewNotification);
         }
       } catch (e) {
         //웹소켓 연결 실패
