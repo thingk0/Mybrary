@@ -41,20 +41,18 @@ export default function FeedContent({
             <div className={styles.user_profile}>
               <img src={user_img} alt="" className={styles.user_img} />
               <div className={styles.user_nickdate}>
-                <div className={styles.user_nickname}>
-                  {thread.owner.nickname}
-                </div>
-                <div className={styles.user_date}>{thread.time}</div>
+                <div className={styles.user_nickname}>{thread.memberName}</div>
+                <div className={styles.user_date}>{thread.threadCreatedAt}</div>
               </div>
             </div>
             <div className={styles.user_follow}>
-              {thread.owner.isFollowed ? "팔로잉" : "팔로우"}
+              {thread.followed ? "팔로잉" : "팔로우"}
             </div>
           </div>
           <div className={styles.icon_container}>
             <div className={styles.icon_left}>
               <img src={icon_nolike} alt="" />
-              <div>{paper.likeCount}</div>
+              <div>{paper.likesCount}</div>
               <img
                 src={icon_comment}
                 alt=""

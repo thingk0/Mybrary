@@ -25,15 +25,19 @@ export default function ThreadsPage() {
   - 생성날짜(createdDate)
   ] 
   */
+    // "data": [
+    //   {
+    //     "threadId": 5,
+    //     "imageId": 3,
+    //     "imageUrl": "a1s2d3f4",
+    //     "likesCount": 0,
+    //     "commentCount": 0,
+    //     "scrapCount": 0,
+    //     "paperPublic": true,
+    //     "scrapEnabled": true
+    //   }
+    // ]
     const threadList = [
-      {
-        threadId: 1,
-        imageUrl: bearImage,
-        likeCount: 10,
-        commentCount: 5,
-        scrapCount: 3,
-        createdDate: "2023-08-01T12:00:00.000Z",
-      },
       {
         threadId: 2,
         imageUrl: bearImage,

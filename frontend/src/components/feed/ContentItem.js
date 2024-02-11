@@ -43,7 +43,7 @@ export default function ContentItem({ paper }) {
           backgroundSize: "cover",
         }}
       >
-        {paper.thumbnail1Url}
+        {paper.imageUrl1}
       </div>
       <div
         className={styles[`img2_${paper.layoutType}`]}
@@ -54,7 +54,7 @@ export default function ContentItem({ paper }) {
           backgroundSize: "cover",
         }}
       >
-        {paper.thumbnail2Url}
+        {paper.imageUrl2}
       </div>
     </div>
   );
