@@ -3,6 +3,7 @@ package com.mybrary.backend.domain.mybrary.entity;
 import com.mybrary.backend.domain.base.BaseEntity;
 import com.mybrary.backend.domain.image.entity.Image;
 import com.mybrary.backend.domain.member.entity.Member;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -35,7 +36,7 @@ public class Mybrary extends BaseEntity {
     @JoinColumn(name = "member_id")
     private Member member;
     @Setter
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE})
     @JoinColumn(name = "photo_frame_image_id")
     private Image photoFrameImage;
     @Setter

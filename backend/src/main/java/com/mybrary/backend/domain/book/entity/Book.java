@@ -41,7 +41,7 @@ public class Book extends BaseEntity {
     private Long id;
 
     @Setter
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE})
     @JoinColumn(name = "cover_image_id")
     private Image coverImage;
 

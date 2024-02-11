@@ -51,7 +51,7 @@ public class Member extends BaseEntity {
     @Column(name = "email", length = 50, updatable = false, unique = true)
     private String email;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE})
     @JoinColumn(name = "image_id")
     private Image profileImage;
 

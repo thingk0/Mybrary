@@ -1,7 +1,10 @@
 package com.mybrary.backend.domain.contents.paper.entity;
 
 import com.mybrary.backend.domain.base.BaseEntity;
+import com.mybrary.backend.domain.comment.entity.Comment;
+import com.mybrary.backend.domain.contents.like.entity.Like;
 import com.mybrary.backend.domain.contents.scrap.entity.Scrap;
+import com.mybrary.backend.domain.contents.tag.entity.Tag;
 import com.mybrary.backend.domain.contents.thread.entity.Thread;
 import com.mybrary.backend.domain.member.entity.Member;
 import jakarta.persistence.CascadeType;
@@ -80,6 +83,21 @@ public class Paper extends BaseEntity {
     @Builder.Default
     @OneToMany(mappedBy = "paper", cascade = {CascadeType.REMOVE})
     private List<Scrap> scrapList = new ArrayList<>();
+
+    /* comment 양방향 설정 */
+    @Builder.Default
+    @OneToMany(mappedBy = "paper", cascade = {CascadeType.REMOVE})
+    private List<Comment> commentList = new ArrayList<>();
+
+    /* tag 양방향 설정 */
+    @Builder.Default
+    @OneToMany(mappedBy = "paper", cascade = {CascadeType.REMOVE})
+    private List<Tag> tagList = new ArrayList<>();
+
+    /* comment 양방향 설정 */
+    @Builder.Default
+    @OneToMany(mappedBy = "paper", cascade = {CascadeType.REMOVE})
+    private List<Like> likeList = new ArrayList<>();
 
     /* 스레드 수정에 사용 */
     public void updateLayoutType(int type){
