@@ -45,7 +45,7 @@ export default function ThreadCreatePage() {
 
   const [booklist, setBookList] = useState([]);
   const [book, setBook] = useState({}); // 책선택
-  const [bookId, setBookId] = useState(-1); // 책 ID 상태 추가
+  const [bookId, setBookId] = useState(null); // 책 ID 상태 추가
   const saveContent = async () => {
     let a = 0;
     const formData = new FormData();

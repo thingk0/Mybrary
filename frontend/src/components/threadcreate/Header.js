@@ -24,7 +24,7 @@ export default function Header({
         },
         position: "top-center",
       });
-      setBookId(-1);
+      setBookId(null);
     }
   };
   const removePaper = (pageIndex) => {

@@ -10,21 +10,7 @@ export default function FeedPage() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [threadList, setThreadList] = useState([]);
   const [list, setList] = useState([]);
-
-  useEffect(() => {
-    async function fetchMainFeedData() {
-      try {
-        const response = await getThreadList();
-        console.log(response.data);
-        setThreadList(response.data);
-
-        setList(response.data);
-      } catch (error) {
-        console.error("데이터불러오기실패");
-      }
-    }
-    fetchMainFeedData();
-  }, []);
+  const [page, setPage] = useState(0);
 
   // console.log(threadList);
   const [comment, setComment] = useState(false);
@@ -49,9 +35,9 @@ export default function FeedPage() {
     setActiveIndex(activeIndex + 1);
     setComment(false);
     setZIndex(-1);
-    // if (activeIndex === list.length - 3 && list.length - 4 < activeIndex) {
-    //   setList([...list, ...threadList2]);
-    // }
+    if (activeIndex === list.length - 3 && list.length - 4 < activeIndex) {
+      setPage(page + 1);
+    }
   }, [activeIndex, list]);
 
   // useCallback으로 함수 래핑
@@ -89,9 +75,20 @@ export default function FeedPage() {
     };
   }, [handleWheelThrottled]);
 
-  // useEffect(() => {
-  //   setList(threadList);
-  // }, []);
+  useEffect(() => {
+    async function fetchMainFeedData() {
+      try {
+        const response = await getThreadList(page);
+        console.log(response.data);
+        // setThreadList(response.data);
+
+        setList([...list, ...response.data]);
+      } catch (error) {
+        console.error("데이터불러오기실패");
+      }
+    }
+    fetchMainFeedData();
+  }, [page]);
 
   return (
     <>
