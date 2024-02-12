@@ -6,152 +6,49 @@ import bearImage from "../assets/예시이미지2.png";
 import 오른쪽 from "../assets/오른쪽.png";
 import 왼쪽 from "../assets/왼쪽.png";
 import Thread from "../components/common/Thread";
-import { useNavigate } from "react-router-dom";
+import { getMyThreadList, getDeskThread } from "../api/thread/Thread";
+import { getMybrary } from "../api/mybrary/Mybrary";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function ThreadsPage() {
+  const Params = useParams();
+  const nowuser = Params.userid;
+  const [user, setUser] = useState({});
+  console.log(nowuser);
   const navigate = useNavigate();
   const [groupedData, setGroupedData] = useState(new Map());
+  const [threadList, setThreadList] = useState([]);
 
   useEffect(() => {
-    // 목데이터 생성
-    /* 
-  - 스레드 리스트(threadList)
-  [
-  - 스레드ID(threadId)
-  - 스레드대표이미지주소(imageUrl)         
-  - 좋아요수(likeCount)
-  - 댓글수(commentCount)
-  - 스크랩수(scrapCount)
-  - 생성날짜(createdDate)
-  ] 
-  */
-    // "data": [
-    //   {
-    //     "threadId": 5,
-    //     "imageId": 3,
-    //     "imageUrl": "a1s2d3f4",
-    //     "likesCount": 0,
-    //     "commentCount": 0,
-    //     "scrapCount": 0,
-    //     "paperPublic": true,
-    //     "scrapEnabled": true
-    //   }
-    // ]
-    const threadList = [
-      {
-        threadId: 2,
-        imageUrl: bearImage,
-        likeCount: 20,
-        commentCount: 2,
-        scrapCount: 8,
-        createdDate: "2023-06-15T12:00:00.000Z",
-      },
-      {
-        threadId: 3,
-        imageUrl: bearImage,
-        likeCount: 5,
-        commentCount: 1,
-        scrapCount: 2,
-        createdDate: "2023-02-01T12:00:00.000Z",
-      },
-      {
-        threadId: 4,
-        imageUrl: bearImage,
-        likeCount: 5,
-        commentCount: 1,
-        scrapCount: 2,
-        createdDate: "2020-02-01T12:00:00.000Z",
-      },
-      {
-        threadId: 5,
-        imageUrl: bearImage,
-        likeCount: 5,
-        commentCount: 1,
-        scrapCount: 2,
-        createdDate: "2023-01-01T12:00:00.000Z",
-      },
-      {
-        threadId: 6,
-        imageUrl: bearImage,
-        likeCount: 5,
-        commentCount: 1,
-        scrapCount: 2,
-        createdDate: "2023-01-01T12:00:00.000Z",
-      },
-      {
-        threadId: 7,
-        imageUrl: bearImage,
-        likeCount: 5,
-        commentCount: 1,
-        scrapCount: 2,
-        createdDate: "2023-01-01T12:00:00.000Z",
-      },
-      {
-        threadId: 8,
-        imageUrl: bearImage,
-        likeCount: 5,
-        commentCount: 1,
-        scrapCount: 2,
-        createdDate: "2023-01-01T12:00:00.000Z",
-      },
-      {
-        threadId: 9,
-        imageUrl: bearImage,
-        likeCount: 5,
-        commentCount: 1,
-        scrapCount: 2,
-        createdDate: "2023-01-01T12:00:00.000Z",
-      },
-      {
-        threadId: 10,
-        imageUrl: bearImage,
-        likeCount: 5,
-        commentCount: 1,
-        scrapCount: 2,
-        createdDate: "2023-01-01T12:00:00.000Z",
-      },
-      {
-        threadId: 11,
-        imageUrl: bearImage,
-        likeCount: 5,
-        commentCount: 1,
-        scrapCount: 2,
-        createdDate: "2023-08-01T12:00:00.000Z",
-      },
-      {
-        threadId: 12,
-        imageUrl: bearImage,
-        likeCount: 5,
-        commentCount: 1,
-        scrapCount: 2,
-        createdDate: "2022-02-01T12:00:00.000Z",
-      },
-      {
-        threadId: 13,
-        imageUrl: bearImage,
-        likeCount: 5,
-        commentCount: 1,
-        scrapCount: 2,
-        createdDate: "2021-01-01T12:00:00.000Z",
-      },
-    ];
+    async function fetchmyData() {
+      try {
+        const response2 = await getMybrary(nowuser);
+        setUser(response2.data);
+        const response = await getDeskThread(nowuser);
+        console.log(response.data);
+        setThreadList(response.data);
 
-    const grouped = new Map();
+        const grouped = new Map();
 
-    threadList.forEach((thread) => {
-      const date = new Date(thread.createdDate);
-      const yearMonth = `${date.getFullYear()}년 ${String(
-        date.getMonth() + 1
-      ).padStart(2, "0")}월`; // 월을 2자리 숫자로 표시
+        response.data.forEach((thread) => {
+          const date = new Date(thread.threadCreatedAt);
+          const yearMonth = `${date.getFullYear()}년 ${String(
+            date.getMonth() + 1
+          ).padStart(2, "0")}월`; // 월을 2자리 숫자로 표시
 
-      if (!grouped.has(yearMonth)) {
-        grouped.set(yearMonth, []);
+          if (!grouped.has(yearMonth)) {
+            grouped.set(yearMonth, []);
+          }
+
+          grouped.get(yearMonth).push(thread);
+        });
+
+        setGroupedData(grouped);
+      } catch (error) {
+        console.log("데이터를 가져오는데 실패함");
       }
-
-      grouped.get(yearMonth).push(thread);
-    });
-
-    setGroupedData(grouped);
+    }
+    fetchmyData();
   }, []);
 
   return (
@@ -169,10 +66,10 @@ export default function ThreadsPage() {
           >
             &lt; 롤링페이퍼
           </div>
-          <div className={title.main_title}>cwnsgh's thread</div>
+          <div className={title.main_title}>{user.nickname}'s thread</div>
           <div
             className={title.right_title}
-            onClick={() => navigate("../bookshelf")}
+            onClick={() => navigate(`../${user.bookShelfId}`)}
           >
             {" "}
             책장 &gt;
@@ -191,7 +88,7 @@ export default function ThreadsPage() {
               {/* 년-월 표시 */}
               <div className={styles.년도별스레드}>
                 {groupedData.get(yearMonth).map((thread) => (
-                  <Thread thread={thread} user="cwnsgh" />
+                  <Thread thread={thread} user={user} />
                 ))}
               </div>
             </div>

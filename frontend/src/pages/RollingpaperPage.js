@@ -2,12 +2,17 @@ import Container from "../components/frame/Container";
 import s from "classnames";
 import styles from "./style/RollingpaperPage.module.css";
 import title from "../components/atom/atomstyle/Title.module.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useState, useRef, useEffect, useCallback } from "react";
 import SockJS from "sockjs-client";
+import { getMybrary } from "../api/mybrary/Mybrary";
 import { Client } from "@stomp/stompjs";
+
 export default function RollingpaperPage() {
   const navigate = useNavigate();
+  const Params = useParams();
+  const nowuser = Params.userid;
+  const [user, setUser] = useState({});
   const canvasRef = useRef(null);
   const isPainting = useRef(false);
   const startPoint = useRef({ x: 0, y: 0 });
@@ -15,6 +20,17 @@ export default function RollingpaperPage() {
   const [imageData, setImageData] = useState(null);
   const [lineColor, setLineColor] = useState("black");
 
+  useEffect(() => {
+    async function fetchmyData() {
+      try {
+        const response = await getMybrary(nowuser);
+        setUser(response.data);
+      } catch (error) {
+        console.log("데이터를 가져오는데 실패함");
+      }
+    }
+    fetchmyData();
+  }, []);
   const drawLine = (originalX, originalY, newX, newY, color) => {
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
@@ -227,11 +243,11 @@ export default function RollingpaperPage() {
         <div className={title.title}>
           <div
             className={title.left_title}
-            onClick={() => navigate("../bookshelf")}
+            onClick={() => navigate(`../${user.bookShelfId}`)}
           >
             &lt; 책장
           </div>
-          <div className={title.main_title}>cwnsgh's rollingpaper</div>
+          <div className={title.main_title}>{user.nickname}'s rollingpaper</div>
           <div
             className={title.right_title}
             onClick={() => navigate("../threads")}

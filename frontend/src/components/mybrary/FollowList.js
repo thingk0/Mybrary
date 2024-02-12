@@ -91,7 +91,10 @@ export default function FollowList({
               <div className={styles.userimg}>
                 <img
                   className={styles.img}
-                  src={follow.profileImageUrl || Iconuser2}
+                  src={
+                    `https://jingu.s3.ap-northeast-2.amazonaws.com/${follow.profileImageUrl}` ||
+                    Iconuser2
+                  }
                   alt="이미지없음"
                 />
               </div>

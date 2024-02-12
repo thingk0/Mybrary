@@ -29,7 +29,7 @@ export default function BookshelfPage() {
     }
 
     fetchbookshelfData();
-  }, [bookShelfId]); // bookshelfId를 의존성 배열에 추가
+  }, []); // bookshelfId를 의존성 배열에 추가
 
   return (
     <>

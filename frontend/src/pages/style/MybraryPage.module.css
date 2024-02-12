@@ -448,6 +448,7 @@
 }
 .프로필이미지곰 {
   width: 100%;
+  border-radius: 100px;
 }
 .한줄소개 {
   padding-top: 10px;

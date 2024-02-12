@@ -7,8 +7,13 @@
 }
 
 .userimage {
-  width: 23px;
-  height: 23px;
+  width: 20px;
+  height: 20px;
+}
+.userimage2 {
+  width: 40px;
+  height: 40px;
+  border-radius: 100px;
 }
 .fontsize1 {
   margin-top: 5px;
@@ -19,6 +24,7 @@
   /* transition: all 0.2s; */
   border-radius: 10px;
   width: 30%;
+  height: 360px;
   background-color: #fdf8f6;
   margin: 20px 0px;
   box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.25);
@@ -80,7 +86,9 @@
   padding-bottom: 18px;
 }
 .스레드이미지 {
-  width: 85%;
-  height: 93%;
+  min-width: 85%;
+  max-width: 85%;
+  min-height: 93%;
+  max-height: 93%;
   padding-bottom: 20px;
 }

@@ -58,6 +58,7 @@ export default function MybraryPage() {
   const [tbColor, setTbColor] = useState(table1);
   const [bsColor, setBsColor] = useState(shelf1);
   const [frameimgurl, setFrameimgurl] = useState("");
+  const [userimg, setUserimg] = useState("");
 
   // 상테 체크
   const [isLoading, setIsLoading] = useState(true); // 로딩 상태
@@ -224,6 +225,9 @@ export default function MybraryPage() {
           setFrameimgurl(
             `https://jingu.s3.ap-northeast-2.amazonaws.com/${response.data.frameImageUrl}`
           );
+          setUserimg(
+            `https://jingu.s3.ap-northeast-2.amazonaws.com/${response.data.profileImageUrl}`
+          );
           setIsLoading(false);
         } else {
           const response = await getMybrary(nowuser);
@@ -236,6 +240,9 @@ export default function MybraryPage() {
           setBsColor(bookshelfImgs[response.data.bookshelfColor - 1]);
           setFrameimgurl(
             `https://jingu.s3.ap-northeast-2.amazonaws.com/${response.data.frameImageUrl}`
+          );
+          setUserimg(
+            `https://jingu.s3.ap-northeast-2.amazonaws.com/${response.data.profileImageUrl}`
           );
           setIsLoading(false);
         }
@@ -488,7 +495,7 @@ export default function MybraryPage() {
                 <div className={styles.프로필박스2}>
                   <img
                     className={styles.프로필이미지곰}
-                    src={userInfo.url || gomimg}
+                    src={userimg || gomimg}
                     alt="대체 이미지"
                   />
                 </div>

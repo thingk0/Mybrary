@@ -69,11 +69,15 @@ export default function Thread({ thread, user }) {
       ></div>
       <div className={styles.좋댓스}>
         <div className={styles.작성자}>
-          <img className={styles.userimage} src={human} alt="" />
-          <span className={styles.작성자폰트}>{user} </span>
+          <img
+            className={styles.userimage2}
+            src={`https://jingu.s3.ap-northeast-2.amazonaws.com/${user.profileImageUrl}`}
+            alt=""
+          />
+          <span className={styles.작성자폰트}>{user.nickname} </span>
         </div>
         <div className={styles.나머지좋댓스}>
-          <Infobox icon={heart} count={thread.likeCount} />
+          <Infobox icon={heart} count={thread.likesCount} />
           <Infobox icon={msg} count={thread.commentCount} />
           <Infobox icon={clip} count={thread.scrapCount} />
         </div>
@@ -82,7 +86,7 @@ export default function Thread({ thread, user }) {
         <img
           className={styles.스레드이미지}
           //   src={thread.imageUrl}
-          src={bearImage}
+          src={`https://jingu.s3.ap-northeast-2.amazonaws.com/${thread.imageUrl}`}
           alt={`스레드 ${thread.threadId}`}
         />
       </div>
