@@ -21,6 +21,15 @@ public class EmailVerificationFilter extends OncePerRequestFilter {
     final String SIGNUP_URL = "/api/v1/member";
     final String POST_METHOD = "POST";
 
+    /**
+     * 회원가입 요청에 대한 이메일 인증 쿠키 존재 여부를 검사하는 필터. 이메일 인증 쿠키가 없으면, 이메일 인증 실패 응답을 반환한다.
+     *
+     * @param request     HttpServletRequest 객체, 요청 정보를 담고 있음.
+     * @param response    HttpServletResponse 객체, 응답을 구성하여 반환함.
+     * @param filterChain FilterChain, 다음 필터로 요청을 전달하는 역할을 함.
+     * @throws ServletException 요청 처리 중 발생할 수 있는 예외.
+     * @throws IOException      입출력 처리 중 발생할 수 있는 예외.
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
         throws ServletException, IOException {
@@ -31,8 +40,15 @@ public class EmailVerificationFilter extends OncePerRequestFilter {
         }
 
         Cookie[] cookies = request.getCookies();
-        if (cookies == null || !isConfirmedEmailCookiePresent(cookies)) {
-            log.warn("[이메일 인증 필터] 이메일 인증 << 쿠키 미발견 >>. 인증 실패 응답 전송: {}", request.getRequestURI());
+        boolean emailCookiePresent = isConfirmedEmailCookiePresent(cookies);
+
+        // 로깅: 이메일 인증 쿠키 존재 여부
+        log.info("action=Email-Verification-Attempt, method={}, uri={}, email-Cookie-Present={}",
+                 request.getMethod(), request.getRequestURI(), emailCookiePresent);
+
+        if (!emailCookiePresent) {
+            // 이메일 인증 실패
+            log.warn("[Email Verification Filter] Missing email verification cookie. Sending failure response: {}", request.getRequestURI());
             filterResponse.sendEmailAuthFailureResponse(response);
             return;
         }
@@ -40,6 +56,12 @@ public class EmailVerificationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
+    /**
+     * "confirmedEmail" 쿠키의 존재 여부를 확인한다.
+     *
+     * @param cookies HttpServletRequest에서 가져온 Cookie 배열
+     * @return 이메일 인증 쿠키 존재 여부 (boolean)
+     */
     private boolean isConfirmedEmailCookiePresent(Cookie[] cookies) {
         for (Cookie cookie : cookies) {
             if ("confirmedEmail".equals(cookie.getName())) {
