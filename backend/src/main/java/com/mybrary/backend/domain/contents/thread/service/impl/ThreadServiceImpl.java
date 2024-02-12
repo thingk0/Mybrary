@@ -238,9 +238,12 @@ public class ThreadServiceImpl implements ThreadService {
                         /* 좋아요 여부 판단, 태그목록 포함 처리, 이미지 url들 포함 처리*/
                         List<Long> imageUrls = imageRepository.findPaperImage(paperDto.getId()).orElseThrow(ImageNotFoundException::new);
                         System.out.println("4");
-                        paperDto.setImageId1(imageUrls.get(0));
-                        paperDto.setImageUrl1(imageRepository.findById(imageUrls.get(0)).orElse(null).getUrl());
-                        if (imageUrls.size() == 2) {
+                        if(imageUrls.size() == 1){
+                              paperDto.setImageId1(imageUrls.get(0));
+                              paperDto.setImageUrl1(imageRepository.findById(imageUrls.get(0)).orElse(null).getUrl());
+                        } else if (imageUrls.size() == 2) {
+                              paperDto.setImageId1(imageUrls.get(0));
+                              paperDto.setImageUrl1(imageRepository.findById(imageUrls.get(0)).orElse(null).getUrl());
                               paperDto.setImageId2(imageUrls.get(1));
                               paperDto.setImageUrl2(imageRepository.findById(imageUrls.get(1)).orElse(null).getUrl());
                         }
@@ -249,12 +252,16 @@ public class ThreadServiceImpl implements ThreadService {
                         paperDto.setScrapCount(scrapRepository.getScrapCount(paperDto.getId()).orElse(0));
                         paperDto.setLiked(likeService.checkIsLiked(paperDto.getId(), myId));
                         paperDto.setTagList(tagRepository.getTagList(paperDto.getId()).orElse(new ArrayList<>()));
+
                         List<MentionListDto> mentionList = new ArrayList<>();
-                        StringTokenizer st = new StringTokenizer(paperDto.getMentionListString());
-                        while(st.hasMoreTokens()){
-                              Long id = Long.parseLong(st.nextToken());
-                              String nickname = memberRepository.findById(id).orElseThrow().getNickname();
-                              mentionList.add(new MentionListDto(id, nickname));
+                        String mentionListStr = paperDto.getMentionListString();
+                        if(mentionListStr != null && !mentionListStr.isEmpty() && mentionListStr.length() > 0){
+                              StringTokenizer st = new StringTokenizer(mentionListStr);
+                              while(st.hasMoreTokens()){
+                                    Long id = Long.parseLong(st.nextToken());
+                                    String nickname = memberRepository.findById(id).orElseThrow().getNickname();
+                                    mentionList.add(new MentionListDto(id, nickname));
+                              }
                         }
                         paperDto.setMentionList(mentionList);
                         System.out.println("5");

@@ -76,7 +76,7 @@ public class ThreadController {
         @PageableDefault(page = 0, size = 10) Pageable page) {
         Member me = memberService.findMember(authentication.getName());
         Long myId = me.getId();
-        return response.success(ResponseCode.MY_THREAD_LIST_FETCHED,
+        return response.success(ResponseCode.OTHER_MEMBER_THREAD_LIST_FETCHED,
             threadService.getOtherAllThread(authentication.getName(), memberId, page));
     }
     @Operation(summary = "쓰레드 수정", description = "쓰레드 수정")
