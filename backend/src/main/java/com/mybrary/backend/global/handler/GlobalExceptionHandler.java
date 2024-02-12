@@ -1,5 +1,6 @@
 package com.mybrary.backend.global.handler;
 
+import com.mybrary.backend.global.exception.RollingPaperNotFoundException;
 import com.mybrary.backend.global.exception.book.BookAccessDeniedException;
 import com.mybrary.backend.global.exception.bookshelf.BookshelfNotFoundException;
 import com.mybrary.backend.global.exception.category.CategoryAccessDeniedException;
@@ -289,5 +290,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return response.error(e.getErrorCode());
     }
 
+    @ExceptionHandler(RollingPaperNotFoundException.class)
+    protected ResponseEntity<?> handle(RollingPaperNotFoundException e) {
+        log.error("RollingPaperNotFoundException = {}", e.getErrorCode().getMessage());
+        return response.error(e.getErrorCode());
+    }
 
 }

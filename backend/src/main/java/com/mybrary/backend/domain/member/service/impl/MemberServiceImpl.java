@@ -122,16 +122,17 @@ public class MemberServiceImpl implements MemberService {
 
         /* 기본 책 1개 생성 */
         Book book = Book.builder()
-            .member(member)
-            .coverTitle("Mybrary 사용 법")
-            .coverLayout(1)
-            .coverColor(1)
-            .build();
+                        .member(member)
+                        .coverTitle("Mybrary 사용 법")
+                        .coverLayout(1)
+                        .coverColor(1)
+                        .build();
         bookRepository.save(book);
 
         /* 롤링페이퍼 생성 */
         RollingPaper rollingPaper = RollingPaper.builder()
                                                 .mybrary(mybrary)
+                                                .rollingPaperString("")
                                                 .build();
         rollingPaperRepository.save(rollingPaper);
 
@@ -181,14 +182,14 @@ public class MemberServiceImpl implements MemberService {
 
         List<MyFollowerDto> myFollower = memberRepository.getAllMyFollower(myId).orElseThrow(FollowerNotFoundException::new);
 
-        for(int i = 0;i<myFollower.size();i++){
+        for (int i = 0; i < myFollower.size(); i++) {
             MyFollowerDto follower = myFollower.get(i);
 
-            if(memberRepository.isFollowed(myId, follower.getMemberId()).orElse(null)!=null){
+            if (memberRepository.isFollowed(myId, follower.getMemberId()).orElse(null) != null) {
                 myFollower.get(i).setFollowStatus(3);
-            } else if(memberRepository.isRequested(myId, follower.getMemberId()).orElse(null)!=null){
+            } else if (memberRepository.isRequested(myId, follower.getMemberId()).orElse(null) != null) {
                 myFollower.get(i).setFollowStatus(2);
-            } else{
+            } else {
                 myFollower.get(i).setFollowStatus(1);
             }
         }
@@ -201,14 +202,14 @@ public class MemberServiceImpl implements MemberService {
 
         List<FollowingDto> myFollowing = memberRepository.getAllFollowing(memberId).orElseThrow(FollowingNotFoundException::new);
 
-        for(int i = 0;i<myFollowing.size();i++){
+        for (int i = 0; i < myFollowing.size(); i++) {
             FollowingDto following = myFollowing.get(i);
 
-            if(memberRepository.isFollowed(myId, following.getMemberId()).orElse(null)!=null){
+            if (memberRepository.isFollowed(myId, following.getMemberId()).orElse(null) != null) {
                 myFollowing.get(i).setFollowStatus(3);
-            } else if(memberRepository.isRequested(myId, following.getMemberId()).orElse(null)!=null){
+            } else if (memberRepository.isRequested(myId, following.getMemberId()).orElse(null) != null) {
                 myFollowing.get(i).setFollowStatus(2);
-            } else{
+            } else {
                 myFollowing.get(i).setFollowStatus(1);
             }
         }
@@ -222,14 +223,14 @@ public class MemberServiceImpl implements MemberService {
 
         List<FollowerDto> myFollower = memberRepository.getAllFollower(memberId).orElseThrow(FollowerNotFoundException::new);
 
-        for(int i = 0;i<myFollower.size();i++){
+        for (int i = 0; i < myFollower.size(); i++) {
             FollowerDto follower = myFollower.get(i);
 
-            if(memberRepository.isFollowed(myId, follower.getMemberId()).orElse(null)!=null){
+            if (memberRepository.isFollowed(myId, follower.getMemberId()).orElse(null) != null) {
                 myFollower.get(i).setFollowStatus(3);
-            } else if(memberRepository.isRequested(myId, follower.getMemberId()).orElse(null)!=null){
+            } else if (memberRepository.isRequested(myId, follower.getMemberId()).orElse(null) != null) {
                 myFollower.get(i).setFollowStatus(2);
-            } else{
+            } else {
                 myFollower.get(i).setFollowStatus(1);
             }
         }

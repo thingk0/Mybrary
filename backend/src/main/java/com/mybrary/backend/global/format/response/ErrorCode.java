@@ -101,7 +101,9 @@ public enum ErrorCode {
     // 채팅 예외 처리
     CHAT_ROOM_NOT_FOUND(HttpStatus.NOT_FOUND, "채팅방을 찾을 수 없습니다."),
     CHAT_JOIN_MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "상대방을 찾을 수 없습니다."),
-    INVALID_CHATROOM_ACCESS(HttpStatus.UNAUTHORIZED, "해당 사용자는 지정된 채팅방의 참여자가 아닙니다.");
+    INVALID_CHATROOM_ACCESS(HttpStatus.UNAUTHORIZED, "해당 사용자는 지정된 채팅방의 참여자가 아닙니다."),
+
+    ROLLING_PAPER_NOT_FOUND (HttpStatus.NOT_FOUND, "롤링페이퍼를 찾을 수 없습니다.");
 
     private final HttpStatus status;
     private final String message;

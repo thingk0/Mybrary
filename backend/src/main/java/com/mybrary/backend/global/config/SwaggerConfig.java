@@ -129,4 +129,12 @@ public class SwaggerConfig {
                              .build();
     }
 
+    @Bean
+    public GroupedOpenApi rollingPaperGroup() {
+        return GroupedOpenApi.builder()
+                             .group("m. 롤링페이퍼")
+                             .pathsToMatch("/api/v1/rollingpaper/**")
+                             .build();
+    }
+
 }

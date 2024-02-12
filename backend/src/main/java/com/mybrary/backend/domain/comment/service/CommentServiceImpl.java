@@ -137,7 +137,7 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     @Override
     public Long deleteComment(Long commentId) {
-        paperRepository.deleteById(commentId);
+        commentRepository.deleteById(commentId);
         return commentId;
     }
 

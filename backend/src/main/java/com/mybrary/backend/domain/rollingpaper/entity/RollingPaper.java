@@ -17,6 +17,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -41,5 +42,9 @@ public class RollingPaper extends BaseEntity {
     @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE})
     @JoinColumn(name = "image_id")
     private Image rollingPaperImage;
+
+    @Setter
+    @JoinColumn(name = "rolling_paper_string")
+    private String rollingPaperString;
 
 }
