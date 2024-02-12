@@ -54,7 +54,17 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom {
         );
     }
 
-        @Override
+    /* 댓글의 대댓글 개수 반환하기*/
+    @Override
+    public Integer getChildCommentCount(Long commentId) {
+        Integer count = query.select(comment.count().intValue())
+            .from(comment)
+            .where(comment.parentComment.id.eq(commentId))
+            .fetchOne();
+        return Optional.ofNullable(count).orElse(0);
+    }
+
+    @Override
         public Optional<List<CommentGetDto>> getChildCommentGetDtoList (Long commentId){
             return Optional.ofNullable(query.select(
                                                 Projections.fields(CommentGetDto.class,

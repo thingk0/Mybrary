@@ -154,6 +154,7 @@ public class CommentServiceImpl implements CommentService {
             for (CommentGetDto commentGetDto : commentGetDtoList) {
                 boolean isOwnerTrue = commentGetDto.getOwnerId().equals(myId);
                 commentGetDto.updateIsOwner(isOwnerTrue);
+                commentGetDto.updateChildCommentCount(commentRepository.getChildCommentCount(commentGetDto.getCommentId()));
             }
         }
         CommentGetAllDto commentGetAllDto = CommentGetAllDto.builder()

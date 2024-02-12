@@ -31,6 +31,7 @@ public class CommentGetDto {
     private boolean isOwner;
     private String content;
     private int colorCode;
+    private int childCommentCount;  //대댓글 개수
     private LocalDateTime createdAt;
 
     public CommentGetDto(Long commentId, Long ownerId, String ownerNickname,
@@ -45,5 +46,8 @@ public class CommentGetDto {
 
     public void updateIsOwner(boolean bool){
         this.isOwner = bool;
+    }
+    public void updateChildCommentCount(int count){
+        this.childCommentCount = count;
     }
 }

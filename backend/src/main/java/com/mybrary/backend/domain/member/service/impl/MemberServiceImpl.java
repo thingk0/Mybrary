@@ -48,7 +48,6 @@ import com.mybrary.backend.global.jwt.repository.RefreshTokenRepository;
 import com.mybrary.backend.global.jwt.service.TokenService;
 import com.mybrary.backend.global.util.CookieUtil;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

@@ -33,6 +33,7 @@ public class PaperServiceImpl implements PaperService {
     private final LikeRepository likeRepository;
     private final MemberRepository memberRepository;
 
+    @Transactional
     @Override
     public Long scrapPaper(PaperScrapDto paperScrapDto) {
         /* 스크랩한 페이퍼는 scrap entity만 생성 */
@@ -48,6 +49,10 @@ public class PaperServiceImpl implements PaperService {
             scrapList.add(scrap);
         }
         scrapRepository.saveAll(scrapList);
+
+
+
+
         return paperScrapDto.getBookId();
     }
 

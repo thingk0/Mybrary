@@ -254,14 +254,13 @@ public class ThreadServiceImpl implements ThreadService {
                         paperDto.setTagList(tagRepository.getTagList(paperDto.getId()).orElse(new ArrayList<>()));
 
                         List<MentionListDto> mentionList = new ArrayList<>();
-                        String mentionListStr = paperDto.getMentionListString();
-                        if(mentionListStr != null && !mentionListStr.isEmpty() && mentionListStr.length() > 0){
-                              StringTokenizer st = new StringTokenizer(mentionListStr);
-                              while(st.hasMoreTokens()){
-                                    Long id = Long.parseLong(st.nextToken());
-                                    String nickname = memberRepository.findById(id).orElseThrow().getNickname();
-                                    mentionList.add(new MentionListDto(id, nickname));
-                              }
+                        StringTokenizer st = new StringTokenizer(paperDto.getMentionListString());
+                        while(st.hasMoreTokens()) {
+                              Long id = Long.parseLong(st.nextToken());
+                              String nickname = memberRepository.findById(id)
+                                                                .orElseThrow()
+                                                                .getNickname();
+                              mentionList.add(new MentionListDto(id, nickname));
                         }
                         paperDto.setMentionList(mentionList);
                         System.out.println("5");

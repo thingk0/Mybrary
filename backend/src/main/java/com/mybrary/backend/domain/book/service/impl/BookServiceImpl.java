@@ -10,7 +10,6 @@ import com.mybrary.backend.domain.book.dto.responseDto.MyBookGetDto;
 import com.mybrary.backend.domain.book.entity.Book;
 import com.mybrary.backend.domain.book.repository.BookRepository;
 import com.mybrary.backend.domain.book.service.BookService;
-import com.mybrary.backend.domain.bookshelf.entity.Bookshelf;
 import com.mybrary.backend.domain.category.dto.responseDto.MyCategoryGetDto;
 import com.mybrary.backend.domain.category.entity.Category;
 import com.mybrary.backend.domain.category.repository.CategoryRepository;
@@ -29,12 +28,11 @@ import com.mybrary.backend.domain.image.repository.ImageRepository;
 import com.mybrary.backend.domain.member.dto.responseDto.MemberInfoDto;
 import com.mybrary.backend.domain.member.entity.Member;
 import com.mybrary.backend.domain.member.repository.MemberRepository;
-import com.mybrary.backend.domain.member.service.MemberService;
+import com.mybrary.backend.domain.notification.dto.NotificationPostDto;
+import com.mybrary.backend.domain.notification.service.NotificationService;
 import com.mybrary.backend.domain.pickbook.entity.PickBook;
 import com.mybrary.backend.domain.pickbook.repository.PickBookRepository;
 import com.mybrary.backend.global.exception.book.BookAccessDeniedException;
-import com.mybrary.backend.global.exception.image.ImageNotFoundException;
-import com.mybrary.backend.global.exception.pickbook.PickBookNotFoundException;
 import com.mybrary.backend.global.exception.book.BookAlreadySubscribeException;
 import com.mybrary.backend.global.exception.book.BookCreateException;
 import com.mybrary.backend.global.exception.book.BookDeleteException;
@@ -43,18 +41,22 @@ import com.mybrary.backend.global.exception.book.BookSubscribeException;
 import com.mybrary.backend.global.exception.book.BookUpdateException;
 import com.mybrary.backend.global.exception.category.CategoryNotFoundException;
 import com.mybrary.backend.global.exception.category.CategoryOwnerNotFoundException;
+import com.mybrary.backend.global.exception.image.ImageNotFoundException;
 import com.mybrary.backend.global.exception.member.MemberNotFoundException;
 import com.mybrary.backend.global.exception.paper.PaperDeleteException;
 import com.mybrary.backend.global.exception.paper.PaperListNotFoundException;
+import com.mybrary.backend.global.exception.pickbook.PickBookNotFoundException;
 import com.mybrary.backend.global.exception.tag.TagNotFoundException;
 import com.mybrary.backend.global.exception.thread.ThreadIdNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.validation.SchemaFactoryConfigurationError;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Log4j2
 @RequiredArgsConstructor
 @Service
 public class BookServiceImpl implements BookService {
@@ -70,6 +72,7 @@ public class BookServiceImpl implements BookService {
     private final ScrapRepository scrapRepository;
     private final FollowRepository followRepository;
     private final MemberRepository memberRepository;
+    private final NotificationService notificationService;
 
 
     @Override
@@ -256,6 +259,21 @@ public class BookServiceImpl implements BookService {
             .category(category)
             .build();
         PickBook savedSubscribe = pickBookRepository.save(subscribe);
+
+
+        /* 웹소켓 알림 관련 */
+
+        // 책 작성자에게 책 구독 알림 보내기
+        Long bookWriterId = book.getMember().getId();   //원본 책 작성자
+
+        // 나를 sender, 책 작성자를 receiver 로 하는 type9 알림 보내기
+        NotificationPostDto notification = NotificationPostDto.builder()
+                                                              .senderId(member.getId())
+                                                              .receiverId(bookWriterId)
+                                                              .notifyType(9)
+                                                              .bookId(book.getId())
+                                                              .build();
+        notificationService.saveNotification(notification);
 
         return savedSubscribe.getId();
     }
