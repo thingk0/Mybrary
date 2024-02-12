@@ -290,15 +290,15 @@
 .chatContainer {
   display: flex;
   flex-direction: column;
-  max-height: 500px;
+  max-height: 680px;
   overflow-y: auto;
 }
 
 .message {
   margin: 15px 25px;
   padding: 10px;
-  border-radius: 10px;
   max-width: 60%;
+  border-radius: 10px;
   font-size: 16px;
 }
 

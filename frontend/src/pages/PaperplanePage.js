@@ -1,4 +1,5 @@
 import Container from "../components/frame/Container";
+import SharedPaper from "../components/paperplane/SharedPaper";
 import styles from "./style/PaperplanePage.module.css";
 import 예시이미지2 from "../assets/예시이미지2.png";
 import 이미지예시 from "../assets/이미지예시.png";
@@ -113,6 +114,9 @@ export default function PaperplanePage() {
                         >
                           안녕
                         </div>
+
+                        <SharedPaper />
+                        <SharedPaper />
                       </div>
                     </div>
                     {/* 메시지 입력창 */}
