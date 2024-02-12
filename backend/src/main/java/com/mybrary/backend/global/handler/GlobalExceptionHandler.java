@@ -5,6 +5,7 @@ import com.mybrary.backend.global.exception.bookshelf.BookshelfNotFoundException
 import com.mybrary.backend.global.exception.category.CategoryAccessDeniedException;
 import com.mybrary.backend.global.exception.chat.ChatJoinMemberNotFoundException;
 import com.mybrary.backend.global.exception.chat.ChatRoomNotFoundException;
+import com.mybrary.backend.global.exception.chat.InvalidChatRoomAccessException;
 import com.mybrary.backend.global.exception.member.FollowNotFoundException;
 import com.mybrary.backend.global.exception.member.FollowerNotFoundException;
 import com.mybrary.backend.global.exception.member.FollowingNotFoundException;
@@ -56,6 +57,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<?> handle(Exception e) {
         log.error("Exception = {}", e.getMessage());
+        e.printStackTrace();
         return response.error(ErrorCode.GLOBAL_UNEXPECTED_ERROR);
     }
 
@@ -202,11 +204,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         log.error("BookAlreadySubscribeException = {}", e.getErrorCode().getMessage());
         return response.error(e.getErrorCode());
     }
+
     @ExceptionHandler(PaperDeleteException.class)
     protected ResponseEntity<?> handle(PaperDeleteException e) {
         log.error("PaperDeleteException = {}", e.getErrorCode().getMessage());
         return response.error(e.getErrorCode());
     }
+
     @ExceptionHandler(ScrapNotFoundException.class)
     protected ResponseEntity<?> handle(ScrapNotFoundException e) {
         log.error("ScrapNotFoundException = {}", e.getErrorCode().getMessage());
@@ -279,10 +283,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return response.error(e.getErrorCode());
     }
 
-
-
-
-
+    @ExceptionHandler(InvalidChatRoomAccessException.class)
+    protected ResponseEntity<?> handle(InvalidChatRoomAccessException e) {
+        log.error("InvalidChatRoomAccessException = {}", e.getErrorCode().getMessage());
+        return response.error(e.getErrorCode());
+    }
 
 
 }
