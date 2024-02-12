@@ -26,7 +26,7 @@ axios.interceptors.request.use(
     // 토큰이 만료되었는지 확인
     if (isTokenExpired(accessToken)) {
       // 재요청 보내
-      console.log(accessToken);
+      //console.log(accessToken);
       accessToken = await renewToken(accessToken);
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("tokenTimestamp", Date.now());

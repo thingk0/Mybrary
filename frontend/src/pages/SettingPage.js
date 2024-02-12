@@ -384,7 +384,9 @@ export default function SettingPage() {
                     placeholder={"한줄소개를 적어주세요"}
                     value={intro}
                     className={styles.input2}
-                    onChange={(e) => setIntro(e.target.value)}
+                    onChange={(e) => {
+                      if (e.target.value.length <= 30) setIntro(e.target.value);
+                    }}
                   />
                 </div>
                 <button
