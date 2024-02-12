@@ -14,10 +14,12 @@ import ContentItem from "./ContentItem";
 import { useState } from "react";
 import s from "classnames";
 import FeedModal from "./FeedModal";
+import { like } from "../../api/paper/Paper";
 
 export default function FeedContent({
   thread,
   setComment,
+  updateLikesCount,
   setCommentId,
   setZIndex,
   setScrapModal,
@@ -32,6 +34,30 @@ export default function FeedContent({
   };
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return (
+      date.getFullYear().toString().substring(2) +
+      "년 " +
+      ("0" + (date.getMonth() + 1)).slice(-2) +
+      "월 " +
+      ("0" + date.getDate()).slice(-2) +
+      "일 " +
+      ("0" + date.getHours()).slice(-2) +
+      ":" +
+      ("0" + date.getMinutes()).slice(-2)
+    );
+  };
+  const likepaper = async (id) => {
+    try {
+      const response = await like(id);
+      console.log(response);
+      // 상태 업데이트 로직 추가
+      // updateLikesCount(id, response.data.newLikesCount);
+    } catch (error) {
+      console.error("좋아요 실패", error);
+    }
+  };
 
   return (
     <div className={styles.content}>
@@ -39,10 +65,16 @@ export default function FeedContent({
         <div className={s(styles.aa, styles[`a${x}`])} key={index}>
           <div className={styles.user_info}>
             <div className={styles.user_profile}>
-              <img src={user_img} alt="" className={styles.user_img} />
+              <img
+                src={`https://jingu.s3.ap-northeast-2.amazonaws.com/${thread.profileUrl}`}
+                alt=""
+                className={styles.user_img}
+              />
               <div className={styles.user_nickdate}>
-                <div className={styles.user_nickname}>{thread.memberName}</div>
-                <div className={styles.user_date}>{thread.threadCreatedAt}</div>
+                <div className={styles.user_nickname}>{thread.nickname}</div>
+                <div className={styles.user_date}>
+                  {formatDate(thread.threadCreatedAt)}
+                </div>
               </div>
             </div>
             <div className={styles.user_follow}>
@@ -51,7 +83,11 @@ export default function FeedContent({
           </div>
           <div className={styles.icon_container}>
             <div className={styles.icon_left}>
-              <img src={icon_nolike} alt="" />
+              <img
+                onClick={() => likepaper(paper.id)}
+                src={icon_nolike}
+                alt=""
+              />
               <div>{paper.likesCount}</div>
               <img
                 src={icon_comment}
@@ -59,32 +95,28 @@ export default function FeedContent({
                 onClick={() => openComment(paper.id)}
               />
               <div>{paper.commentCount}</div>
-              <div>
-                <img
-                  src={icon_scrap}
-                  alt=""
-                  onClick={() => setScrapModal(true)}
-                />
-              </div>
+              <img
+                src={icon_scrap}
+                alt=""
+                onClick={() => setScrapModal(true)}
+              />
               <div>{paper.scrapCount}</div>
-              <div>
-                <img
-                  src={icon_book}
-                  alt=""
-                  onClick={() => {
-                    setIsModalOpen(true);
-                  }}
-                />
-                <FeedModal
-                  setIsModalOpen={setIsModalOpen}
-                  isModalOpen={isModalOpen}
-                  width="300px"
-                  height="300px"
-                  left="0"
-                  top="0"
-                  header="이 페이퍼를 포함한 책"
-                />
-              </div>
+              <img
+                src={icon_book}
+                alt=""
+                onClick={() => {
+                  setIsModalOpen(true);
+                }}
+              />
+              <FeedModal
+                setIsModalOpen={setIsModalOpen}
+                isModalOpen={isModalOpen}
+                width="300px"
+                height="300px"
+                left="0"
+                top="0"
+                header="이 페이퍼를 포함한 책"
+              />
             </div>
 
             <img src={icon_share} alt="" className={styles.icon_right} />

@@ -119,6 +119,20 @@ export default function FeedPage() {
       }))
     );
   };
+  const updateLikesCount = (paperId, newLikesCount) => {
+    setList((currentList) =>
+      currentList.map((thread) => ({
+        ...thread,
+        paperList: thread.paperList.map((paper) => {
+          if (paper.id === paperId) {
+            // 해당 페이퍼의 likesCount를 업데이트
+            return { ...paper, likesCount: newLikesCount };
+          }
+          return paper;
+        }),
+      }))
+    );
+  };
 
   return (
     <>
@@ -148,6 +162,7 @@ export default function FeedPage() {
               <FeedContent
                 index={index}
                 thread={thread}
+                updateLikesCount={updateLikesCount}
                 setCommentId={setCommentId}
                 setComment={setComment}
                 setZIndex={setZIndex}

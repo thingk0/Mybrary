@@ -70,6 +70,7 @@
   width: 2.5vi;
   height: 2.5vi;
   cursor: pointer;
+  border-radius: 100px;
 }
 .user_nickname {
   font-size: 1vi;

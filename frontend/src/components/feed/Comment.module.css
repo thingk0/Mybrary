@@ -71,7 +71,7 @@
   /* background-color: #f8c3d2; */
   padding: 0.7vi;
   box-shadow: 0 0 15px -5px var(--main2);
-  margin: 0.4vi;
+  margin: 0.2vi;
   position: relative;
 }
 .comment_nickname {
@@ -170,7 +170,7 @@
   border: 2.4px solid rgb(99, 59, 38);
 }
 .color_1 {
-  background-color: #f9caca;
+  background-color: #ffd6d6;
   transition: 0.3s;
 }
 .color_2 {
@@ -178,11 +178,11 @@
   transition: 0.3s;
 }
 .color_3 {
-  background-color: #c5f4ff;
+  background-color: #c5e3ff;
   transition: 0.3s;
 }
 .color_4 {
-  background-color: #d6c2ff;
+  background-color: #cfb8ea;
   transition: 0.3s;
 }
 

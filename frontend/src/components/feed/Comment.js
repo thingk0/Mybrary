@@ -127,6 +127,7 @@ export default function Comment({
           parentCommentId: null,
           colorCode: 0,
         });
+        setSelectedCommentId(null);
         // 댓글 생성 후 필요한 로직 추가 (예: 댓글 목록 새로고침)
       } catch (error) {
         console.error("댓글 생성 실패:", error);
@@ -149,6 +150,7 @@ export default function Comment({
             ],
           };
         });
+        setSelectedCommentId(null);
         if (formData.parentCommentId) {
           setCommentList((currentList) =>
             currentList.map((comment) =>
