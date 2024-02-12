@@ -22,6 +22,7 @@ public class MemberGetDto {
     private String name;
     private String nickname;
     private String intro;
+    private Long profileImageId;
     private String profileImageUrl;
     private boolean isProfilePublic;
     private boolean isNotifyEnabled;

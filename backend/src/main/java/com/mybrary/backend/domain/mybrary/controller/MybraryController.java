@@ -35,7 +35,7 @@ public class MybraryController {
     @GetMapping
     public ResponseEntity<?> getMybrary(@Parameter(hidden = true) Authentication authentication) {
 
-        MemberGetDto member = new MemberGetDto(1L, "hyeseon@ssafy.com", "박혜선", "hyeseon","안녕하세요", "profileUrl", true, true);
+//        MemberGetDto member = new MemberGetDto(1L, "hyeseon@ssafy.com", "박혜선", "hyeseon","안녕하세요", "profileUrl", true, true);
 //        MybraryGetDto mybrary = new MybraryGetDto(1L, "액자url", 4, 2, 1, 3, member, 20, 5, 10, 20, 1L, 1L);
 
         MybraryGetDto mybrary = mybraryService.getMybrary(authentication.getName());
@@ -47,7 +47,7 @@ public class MybraryController {
     public ResponseEntity<?> getOtherMybrary(@Parameter(hidden = true) Authentication authentication,
         @PathVariable(name = "id") Long memberId) {
 
-        MemberGetDto member = new MemberGetDto(1L, "hyeseon@ssafy.com", "박혜선", "hyeseon","안녕하세요", "profileUrl", true, true);
+//        MemberGetDto member = new MemberGetDto(1L, "hyeseon@ssafy.com", "박혜선", "hyeseon","안녕하세요", "profileUrl", true, true);
 //        MybraryOtherGetDto mybrary = new MybraryOtherGetDto(1L, "액자url", 4, 2, 1, 3, member, 20, 5, 10, 20, true, 1L, 1L);
 
         MybraryOtherGetDto mybrary = mybraryService.getOtherMybrary(authentication.getName(), memberId);

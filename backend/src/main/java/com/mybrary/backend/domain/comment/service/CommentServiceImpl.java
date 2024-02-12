@@ -29,7 +29,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Transactional
     @Override
-    public Long createComment(Long myId, CommentPostDto commentPostDto) {
+    public CommentGetDto createComment(Long myId, CommentPostDto commentPostDto) {
 
         Paper paper = paperRepository.findById(commentPostDto.getPaperId())
                                      .orElseThrow(NullPointerException::new);
@@ -50,6 +50,15 @@ public class CommentServiceImpl implements CommentService {
                                      .build();
             Comment savedComment = commentRepository.save(comment);
 
+            CommentGetDto sendComment = CommentGetDto.builder()
+                .commentId(savedComment.getId())
+                .ownerId(member.getId())
+                .ownerNickname(member.getNickname())
+                .content(savedComment.getContent())
+                .colorCode(savedComment.getColorCode())
+                .createdAt(savedComment.getCreatedAt())
+                .build();
+
             // 게시글 작성자 Id
             Long paperWriterId = paper.getMember().getId();
 
@@ -65,6 +74,8 @@ public class CommentServiceImpl implements CommentService {
                                                                   .build();
             notificationService.saveNotification(notification);
 
+            return sendComment;
+
         }else{
             /* 대댓글인경우 */
             Comment parentComment = commentRepository.findById(parentCommentId)
@@ -78,6 +89,15 @@ public class CommentServiceImpl implements CommentService {
                                      .colorCode(commentPostDto.getColorCode())
                                      .build();
             Comment savedComment = commentRepository.save(comment);
+
+            CommentGetDto sendComment = CommentGetDto.builder()
+                                                     .commentId(savedComment.getId())
+                                                     .ownerId(member.getId())
+                                                     .ownerNickname(member.getNickname())
+                                                     .content(savedComment.getContent())
+                                                     .colorCode(savedComment.getColorCode())
+                                                     .createdAt(savedComment.getCreatedAt())
+                                                     .build();
 
             // 게시글 작성자 Id
             Long paperWirterId = paper.getMember().getId();
@@ -108,9 +128,10 @@ public class CommentServiceImpl implements CommentService {
                                                                    .build();
             notificationService.saveNotification(notification2);
 
+            return sendComment;
         }
 
-        return comment.getId();
+
     }
 
     @Transactional
