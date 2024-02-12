@@ -7,6 +7,7 @@ import com.mybrary.backend.domain.chat.dto.responseDto.ChatRoomGetDto;
 import com.mybrary.backend.domain.chat.dto.responseDto.ChatRoomResponseDto;
 import com.mybrary.backend.domain.chat.dto.responseDto.TChatMessageGetDto;
 import java.util.List;
+import java.util.Map;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -22,9 +23,9 @@ public interface ChatService {
 
     void deleteChatRoom(String email, Long chatRoomId);
 
-    List<TChatMessageGetDto> getAllChatByChatRoomId(String email, Long chatRoomId, Pageable page);
+    Map<String, Object> getAllChatByChatRoomId(String email, Long chatRoomId, Pageable page);
 
-    List<TChatMessageGetDto> getAllChatByMemberId(String email, Long memberId, Pageable page);
+    Map<String, Object> getAllChatByMemberId(String email, Long memberId, Pageable page);
 
     Long createChat(String email, ChatMessagePostDto message);
 

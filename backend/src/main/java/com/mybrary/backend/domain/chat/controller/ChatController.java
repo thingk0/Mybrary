@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
@@ -62,7 +63,6 @@ public class ChatController {
     public ResponseEntity<?> getAllChatByChatRoomId(@Parameter(hidden = true) Authentication authentication,
                                                     @PathVariable(name = "id") Long chatRoomId,
                                                     @PageableDefault(page = 0, size = 20) Pageable page) {
-
         return response.success(ResponseCode.CHAT_MESSAGES_FETCHED,
                                 chatService.loadMessagesByChatRoomId(authentication.getName(), chatRoomId, page));
     }
@@ -72,38 +72,11 @@ public class ChatController {
     public ResponseEntity<?> getAllChatByMemberId(
         @Parameter(hidden = true) Authentication authentication, @RequestParam Long memberId,
         @PageableDefault(page = 0, size = 20, sort = "createdAt", direction = Direction.DESC) Pageable page) {
-//        MemberInfoDto sender1 = new MemberInfoDto(1L, "wnsgh", "안녕하세요 최준호입니다", "123123");
-//        MemberInfoDto sender2 = new MemberInfoDto(2L, "audtjd", "안녕하세요 고명성입니다", "123123");
-//
-//        ChatMessageGetDto message1 = new ChatMessageGetDto(1L, sender1, "명성아 넌 천재야", null, false,
-//                                                           null);
-//        ChatMessageGetDto message2 = new ChatMessageGetDto(2L, sender1, "인프라 대장 고명성", null, false,
-//                                                           null);
-//        ChatMessageGetDto message3 = new ChatMessageGetDto(3L, sender2, "나 인프라 끝냈어", null, true,
-//                                                           null);
-//        ChatMessageGetDto message4 = new ChatMessageGetDto(4L, sender2, "아직 인프라중", null, true,
-//                                                           null);
-//        ChatMessageGetDto message5 = new ChatMessageGetDto(5L, sender2, "젠킨스 해야해..", null, true,
-//                                                           null);
-//
-//        List<ChatMessageGetDto> list = new ArrayList<>();
-//        list.add(message1);
-//        list.add(message2);
-//        list.add(message3);
-//        list.add(message4);
-//        list.add(message5);
-//
-//        List<ChatMessageGetDto> emptyList = new ArrayList<>();
-//        Member me = memberService.findMember(authentication.getName());
-//        Long myId = me.getId();
 
-        List<TChatMessageGetDto> result = chatService.getAllChatByMemberId(authentication.getName(), memberId, page);
+        Map<String, Object> result = chatService.getAllChatByMemberId(authentication.getName(), memberId, page);
+        result.put("page", page);
 
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("chatMessageList", result);
-        map.put("page", page);
-
-        return response.success(ResponseCode.CHATROOM_ENTERED, map);
+        return response.success(ResponseCode.CHATROOM_ENTERED, result);
     }
 
     @Operation(summary = "채팅 메세지 보내기", description = "채팅 메세지 보내기")

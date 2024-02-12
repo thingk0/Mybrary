@@ -31,6 +31,7 @@ import com.mybrary.backend.global.exception.member.MemberNotFoundException;
 import com.mybrary.backend.global.jwt.provider.TokenProvider;
 import com.mybrary.backend.global.jwt.service.TokenService;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -161,7 +162,7 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
-    public List<TChatMessageGetDto> getAllChatByChatRoomId(String email,
+    public Map<String, Object> getAllChatByChatRoomId(String email,
                                                            Long chatRoomId, Pageable page) {
         Member me = memberService.findMember(email);
         Long myId = me.getId();
@@ -193,12 +194,15 @@ public class ChatServiceImpl implements ChatService {
                                                        thread, chatMessage.isRead(), chatMessage.getCreatedAt()));
         }
 
-        return chatMessageList;
+        Map<String, Object> map = new HashMap<>();
+        map.put("chatRoomId", chatRoomId);
+        map.put("chatMessageList", chatMessageList);
+        return map;
 
     }
 
     @Override
-    public List<TChatMessageGetDto> getAllChatByMemberId(String email,
+    public Map<String, Object> getAllChatByMemberId(String email,
                                                          Long memberId, Pageable page) {
 
         Member me = memberService.findMember(email);
