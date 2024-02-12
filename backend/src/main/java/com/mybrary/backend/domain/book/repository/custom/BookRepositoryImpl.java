@@ -3,8 +3,10 @@ package com.mybrary.backend.domain.book.repository.custom;
 import static com.mybrary.backend.domain.book.entity.QBook.book;
 import static com.mybrary.backend.domain.bookmarker.entity.QBookMarker.bookMarker;
 import static com.mybrary.backend.domain.category.entity.QCategory.category;
+import static com.mybrary.backend.domain.contents.like.entity.QLike.like;
 import static com.mybrary.backend.domain.contents.paper.entity.QPaper.paper;
 import static com.mybrary.backend.domain.contents.scrap.entity.QScrap.scrap;
+import static com.mybrary.backend.domain.follow.entity.QFollow.follow;
 import static com.mybrary.backend.domain.image.entity.QImage.image;
 import static com.mybrary.backend.domain.member.entity.QMember.member;
 import static com.mybrary.backend.domain.pickbook.entity.QPickBook.pickBook;
@@ -16,10 +18,14 @@ import com.mybrary.backend.domain.book.dto.responseDto.MyBookGetDto;
 import com.mybrary.backend.domain.image.entity.QImage;
 import com.mybrary.backend.domain.member.dto.responseDto.MemberInfoDto;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberPath;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 
 @RequiredArgsConstructor
 public class BookRepositoryImpl implements BookRepositoryCustom {
@@ -94,11 +100,47 @@ public class BookRepositoryImpl implements BookRepositoryCustom {
     @Override
     public Optional<List<BookForMainThreadDto>> getBookForMainThread(Long writerId, Long paperId) {
         return Optional.ofNullable(query.select(Projections.constructor(BookForMainThreadDto.class, book.id, book.coverTitle))
-                                       .from(book)
-                                       .leftJoin(scrap).on(scrap.book.id.eq(book.id))
-                                       .leftJoin(paper).on(scrap.paper.id.eq(paper.id))
-                                       .where(paper.member.id.eq(writerId).and(paper.id.eq(paperId)).and(book.member.id.eq(writerId)))
-                                       .fetch());
+                                        .from(book)
+                                        .leftJoin(scrap).on(scrap.book.id.eq(book.id))
+                                        .leftJoin(paper).on(scrap.paper.id.eq(paper.id))
+                                        .where(paper.member.id.eq(writerId).and(paper.id.eq(paperId))
+                                                              .and(book.member.id.eq(writerId)))
+                                        .fetch());
+    }
+
+    @Override
+    public Optional<List<BookGetDto>> searchBookByKeyword(Long myId, String keyword, Pageable page) {
+
+        QImage profileImage = new QImage("profileImage");
+        QImage bookCoverImage = new QImage("bookCoverImage");
+
+        return Optional.ofNullable(query.select(Projections.constructor(BookGetDto.class, book.id,
+                                                                        Projections.constructor(MemberInfoDto.class, member.id,
+                                                                                                member.nickname, member.intro,
+                                                                                                profileImage.id,
+                                                                                                profileImage.url),
+                                                                        book.coverTitle, bookCoverImage.id, bookCoverImage.url,
+                                                                        book.coverLayout, book.coverColor))
+                                                           .from(book)
+                                                           .leftJoin(member).on(book.member.id.eq(member.id))
+                                                           .leftJoin(profileImage)
+                                                           .on((member.profileImage.id.eq(profileImage.id)))
+                                                           .leftJoin(bookCoverImage).on(book.coverImage.id.eq(bookCoverImage.id))
+                                                           .where(book.coverTitle.like('%' + keyword + '%')
+                                                                                 .and(member.isProfilePublic.eq(true)
+                                                                                                            .or(member.isProfilePublic.eq(
+                                                                                                                false).and(
+                                                                                                                member.id.in(
+                                                                                                                    query.select(
+                                                                                                                             follow.following.id)
+                                                                                                                         .from(
+                                                                                                                             follow)
+                                                                                                                         .where(
+                                                                                                                             follow.follower.id.eq(
+                                                                                                                                 myId)))))))
+                                                           .offset(page.getOffset())
+                                                           .limit(page.getPageSize())
+                                                           .fetch());
     }
 
 //    @Override

@@ -4,9 +4,12 @@ import com.mybrary.backend.domain.book.dto.responseDto.BookGetDto;
 import com.mybrary.backend.domain.contents.thread.dto.responseDto.ThreadSearchGetDto;
 import com.mybrary.backend.domain.member.dto.responseDto.MemberGetDto;
 import com.mybrary.backend.domain.member.dto.responseDto.MemberInfoDto;
+import com.mybrary.backend.domain.search.service.SearchService;
+import com.mybrary.backend.domain.search.service.impl.SearchServiceImpl;
 import com.mybrary.backend.global.format.code.ApiResponse;
 import com.mybrary.backend.global.format.response.ResponseCode;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,6 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class SearchController {
 
     private final ApiResponse response;
+    private final SearchService searchService;
 
     @Operation(summary = "인기검색어 조회", description = "인기검색어 조회")
     @GetMapping("/popular")
@@ -69,7 +74,7 @@ public class SearchController {
 
     @Operation(summary = "책 검색", description = "책 제목 기반 검색")
     @GetMapping("/book")
-    public ResponseEntity<?> searchByBook(@RequestParam(name = "keyword") String keyword,
+    public ResponseEntity<?> searchByBook(@Parameter(hidden = true) Authentication authentication, @RequestParam(name = "keyword") String keyword,
                                           @PageableDefault(page = 0, size = 10) Pageable page) {
 
 //        MemberInfoDto writer1 = new MemberInfoDto(1L, "wnsgh", "안녕하세요 최준호입니다", "123123");
@@ -89,9 +94,11 @@ public class SearchController {
 //        list.add(book3);
 //        list.add(book4);
 
+        List<BookGetDto> result = searchService.searchBook(authentication.getName(), keyword, page);
         HashMap<String, Object> map = new HashMap<>();
-//        map.put("bookList", list);
+        map.put("bookList", result);
         map.put("page", page);
+
 
         return response.success(ResponseCode.BOOKS_SEARCHED, map);
     }
