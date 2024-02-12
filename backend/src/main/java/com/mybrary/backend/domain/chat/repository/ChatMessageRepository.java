@@ -9,8 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long>,
-    ChatMessageRepositoryCustom {
+public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long>, ChatMessageRepositoryCustom {
 
     /* 채팅 메세지 리스트 조회 (채팅방id로) */
     @Query("select cm from ChatMessage cm where cm.chatRoom.id = :chatRoomId")
