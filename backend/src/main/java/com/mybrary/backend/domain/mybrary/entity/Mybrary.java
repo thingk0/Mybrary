@@ -1,8 +1,11 @@
 package com.mybrary.backend.domain.mybrary.entity;
 
 import com.mybrary.backend.domain.base.BaseEntity;
+import com.mybrary.backend.domain.bookshelf.entity.Bookshelf;
+import com.mybrary.backend.domain.contents.thread.entity.Thread;
 import com.mybrary.backend.domain.image.entity.Image;
 import com.mybrary.backend.domain.member.entity.Member;
+import com.mybrary.backend.domain.rollingpaper.entity.RollingPaper;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -51,4 +54,13 @@ public class Mybrary extends BaseEntity {
     @Setter
     @Column(name = "easel_color")
     private int easelColor;
+
+    @OneToOne(mappedBy = "mybrary", cascade = {CascadeType.REMOVE})
+    private Bookshelf bookshelf;
+
+    @OneToOne(mappedBy = "mybrary", cascade = {CascadeType.REMOVE})
+    private RollingPaper rollingPaper;
+
+    @OneToOne(mappedBy = "mybrary", cascade = {CascadeType.REMOVE})
+    private Thread thread;
 }

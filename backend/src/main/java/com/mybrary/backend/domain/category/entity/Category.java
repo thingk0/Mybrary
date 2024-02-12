@@ -2,6 +2,8 @@ package com.mybrary.backend.domain.category.entity;
 
 import com.mybrary.backend.domain.base.BaseEntity;
 import com.mybrary.backend.domain.bookshelf.entity.Bookshelf;
+import com.mybrary.backend.domain.pickbook.entity.PickBook;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -10,6 +12,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -44,4 +49,9 @@ public class Category extends BaseEntity {
     @Setter
     @Column(name = "category_seq")
     private int categorySeq;
+
+    /* category - pickbook 양방향 관계 설정 */
+    @Builder.Default
+    @OneToMany(mappedBy = "category", cascade = {CascadeType.REMOVE})
+    private List<PickBook> pickBookList = new ArrayList<>();
 }
