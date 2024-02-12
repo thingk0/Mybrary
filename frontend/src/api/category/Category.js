@@ -3,7 +3,6 @@ const BASE_URL = "https://i10b207.p.ssafy.io/api/v1/category";
 
 /* 카테고리 조회 */
 // const BASE_URL = "/api/v1/category";
-
 export async function getCategoryList(id) {
   const params = {
     bookshelfId: id,

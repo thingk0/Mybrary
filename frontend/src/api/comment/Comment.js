@@ -1,10 +1,10 @@
 import axios from "axios";
 const BASE_URL = "https://i10b207.p.ssafy.io/api/v1/";
-
+//https://i10b207.p.ssafy.io/api/v1/comment
 /* 페이퍼 댓글 조회 */
-export async function getBookList(paperid) {
+export async function getCommentList(id) {
   const params = {
-    paperId: paperid,
+    id: id,
   };
 
   try {

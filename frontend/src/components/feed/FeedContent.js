@@ -23,9 +23,10 @@ export default function FeedContent({
   setZIndex,
 }) {
   const [x, setX] = useState(1);
-  const openComment = (index) => {
+  const openComment = (id) => {
+    setCommentId(id);
+    console.log(id);
     setComment(true);
-    setCommentId(index);
     setTimeout(() => {
       setZIndex(3);
     }, 800);
@@ -56,7 +57,7 @@ export default function FeedContent({
               <img
                 src={icon_comment}
                 alt=""
-                onClick={() => openComment(index)}
+                onClick={() => openComment(paper.id)}
               />
               <div>{paper.commentCount}</div>
               <div>

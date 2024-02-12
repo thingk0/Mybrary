@@ -1,83 +1,35 @@
 import { useEffect, useState } from "react";
 import styles from "./Comment.module.css";
 import user_img from "../../assets/이미지예시.png";
+import { getCommentList, createCommnet } from "../../api/comment/Comment";
 
 export default function Comment({ commentId }) {
   const [commentList, setCommentList] = useState([]);
   const [addcomment, setAddcomment] = useState("");
 
+  console.log(commentId);
+  const [formData, setFormData] = useState({
+    paperId: 0,
+    parentCommentId: 0,
+    content: "string",
+    colorCode: 0,
+  });
+
   useEffect(() => {
-    //   // 댓글ID(commentId)
-    //   // 작성자ID(ownerId)
-    //   // 작성자닉네임(ownerNickname)
-    //   // 작성자여부(isOwner)
-    //   // 댓글내용(comment)
-    //   // 컬러코드(colorCode)
-    //   // 시간(time)
-    //   // 대댓글리스트(recommentList)
-    //   //  대댓글ID(recommentId)
-    //   //  대댓글작성자ID(recommentOwnerId)
-    //   //  대댓글작성자닉네임(recommentOwnerNickname)
-    //   //  대댓글내용(recomment)
-    //   //  대댓글시간(recommentTime)
-    setCommentList([
-      {
-        commentId: 1,
-        ownerId: 1,
-        ownerNickname: "manmangi_98",
-        comment:
-          "메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱",
-        colorCode: 1,
-        time: "33:33:22",
-        recommentList: [],
-      },
-      {
-        commentId: 2,
-        ownerId: 2,
-        ownerNickname: "cwnsgh98",
-        comment: "fdgdfgdfg",
-        colorCode: 2,
-        time: "33:33:22",
-        recommentList: [],
-      },
-      {
-        commentId: 3,
-        ownerId: 3,
-        ownerNickname: "thingko",
-        isOwner: false,
-        comment: "24234534656",
-        colorCode: 3,
-        time: "33:33:22",
-        recommentList: [
-          {
-            recommentId: 1,
-            recommentOwnerId: 2,
-            recommentOwnerNickname: "cwnsgh98",
-            recomment: "3895fddg",
-            recommentTime: "44:44:22",
-          },
-        ],
-      },
-      {
-        commentId: 3,
-        ownerId: 3,
-        ownerNickname: "thingko",
-        isOwner: false,
-        comment: "24234534656",
-        colorCode: 3,
-        time: "33:33:22",
-        recommentList: [
-          {
-            recommentId: 1,
-            recommentOwnerId: 2,
-            recommentOwnerNickname: "cwnsgh98",
-            recomment: "3895fddg",
-            recommentTime: "44:44:22",
-          },
-        ],
-      },
-    ]);
-  }, [setCommentList]);
+    async function fetchCommentData() {
+      try {
+        const response = await getCommentList(commentId);
+        console.log(commentId);
+        console.log(response.data);
+        if (commentId != 0) {
+          setCommentList(response.data.commentGetDtoList);
+        }
+      } catch (error) {
+        console.error("데이터를 가져오는 데 실패했습니다:", error);
+      }
+    }
+    fetchCommentData();
+  }, [commentId]);
   return (
     <>
       <div className={styles.comment_container}>
@@ -88,14 +40,14 @@ export default function Comment({ commentId }) {
                 <div className={styles.comment_nickname}>
                   {comment.ownerNickname}
                 </div>
-                <div className={styles.comment_text}>{comment.comment}</div>
+                <div className={styles.comment_text}>{comment.content}</div>
                 <div className={styles.comment_info}>
                   <div className={styles.comment_left}>
                     <div>{comment.time}</div> | <div>수정</div> |{" "}
                     <div>삭제</div>
                   </div>
                   <div className={styles.comment_right}>
-                    <div>{comment.recommentList.length}</div> |{" "}
+                    {/* <div>{comment.recommentList.length}</div> |{" "} */}
                     <div>답글달기</div>
                   </div>
                 </div>
