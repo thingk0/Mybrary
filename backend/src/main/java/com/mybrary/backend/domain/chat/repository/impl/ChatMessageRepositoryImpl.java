@@ -26,7 +26,7 @@ public class ChatMessageRepositoryImpl implements ChatMessageRepositoryCustom {
 
     @Override
     public Page<ChatMessageResponseDto> getAllMessagesFromChatRoom(Long chatRoomId, Pageable pageable) {
-        List<ChatMessageResponseDto> content =1
+        List<ChatMessageResponseDto> content =
             query.select(Projections.constructor(ChatMessageResponseDto.class,
                                                  chatRoom.id,
                                                  chatMessage.id,
