@@ -28,13 +28,13 @@ export async function renewToken(accessToken) {
   }
 }
 
-export function isTokenExpired() {
-  const tokenTimestamp = localStorage.getItem("tokenTimestamp");
-  if (!tokenTimestamp) return true;
+// export function isTokenExpired() {
+//   const tokenTimestamp = localStorage.getItem("tokenTimestamp");
+//   if (!tokenTimestamp) return true;
 
-  const now = Date.now();
-  const timeElapsed = (now - tokenTimestamp) / 1000; // 분 단위로 변환
+//   const now = Date.now();
+//   const timeElapsed = (now - tokenTimestamp) / 1000; // 분 단위로 변환
 
-  // 14분이 지났으면 갱신 필요
-  return timeElapsed > 840;
-}
+//   // 14분이 지났으면 갱신 필요
+//   return timeElapsed > 840;
+// }

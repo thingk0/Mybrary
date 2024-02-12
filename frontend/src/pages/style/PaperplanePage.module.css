@@ -28,15 +28,6 @@
   height: 78%;
   font-size: 16px;
 }
-.search {
-  background-color: #eee3dd;
-  height: 8%;
-  width: 90%;
-  display: flex;
-  align-items: center;
-  border-radius: 6px;
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.25);
-}
 .users {
   height: 86%;
   background-color: #fff9f6;
@@ -150,6 +141,7 @@
   backdrop-filter: blur(12.5px);
   margin-right: 20px;
   color: var(--Main3, #bfa6a2);
+  font-size: 15px;
 }
 .textmain {
   width: 100%;
@@ -187,16 +179,28 @@
 .비행기 {
   margin-right: 20px;
 }
+.search {
+  background-color: #eee3dd;
+  height: 5%;
+  width: 90%;
+  display: flex;
+  align-items: center;
+  border-radius: 6px;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.25);
+}
 .searchContainer {
   display: flex;
   align-items: center;
 }
 
 .searchInput {
+  width: 75%;
   padding: 8px;
-  border: 1px solid #ccc;
+  border: none;
   border-radius: 4px;
   margin-right: 8px;
+  background-color: #eee3dd; /* 배경색 변경 */
+  outline: none; /* 포커스 시 나타나는 아웃라인 제거 */
 }
 
 .searchButton {
@@ -206,6 +210,7 @@
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  font-size: 16px;
 }
 /* 내가 보낸 메시지 */
 .내가보낸메시지 {
@@ -280,4 +285,32 @@
   justify-content: space-evenly;
   align-items: center;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+}
+
+.chatContainer {
+  display: flex;
+  flex-direction: column;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.message {
+  margin: 15px 25px;
+  padding: 10px;
+  border-radius: 10px;
+  max-width: 60%;
+  font-size: 16px;
+}
+
+.sender {
+  align-self: flex-end;
+  background-color: #eee3dd;
+  display: flex;
+}
+
+.receiver {
+  align-self: flex-start;
+  display: flex;
+  background-color: var(--Main2, #57423f);
+  color: var(--Main4, #fff9f6);
 }

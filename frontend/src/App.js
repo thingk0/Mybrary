@@ -1,4 +1,4 @@
-import { useNavigate, Navigate, Outlet, useLocation } from "react-router-dom";
+import { useNavigate, Outlet, useLocation } from "react-router-dom";
 import Nav from "./components/atom/Nav";
 import "./App.css";
 import axios from "axios";
@@ -7,7 +7,7 @@ import useStompStore from "./store/useStompStore";
 import useUserStore from "./store/useUserStore";
 import useNotificationStore from "./store/useNotificationStore";
 import { Toaster } from "react-hot-toast";
-import { isTokenExpired, renewToken } from "./api/common/Token";
+import { renewToken } from "./api/common/Token";
 import toast from "react-hot-toast";
 
 axios.defaults.withCredentials = true;
@@ -15,6 +15,7 @@ axios.defaults.withCredentials = true;
 axios.interceptors.request.use(
   async (config) => {
     let accessToken = localStorage.getItem("accessToken");
+    let tokenTimestamp = localStorage.getItem("tokenTimestamp");
 
     // accessToken이 없는 경우, 인증 헤더를 추가하지 않고 요청을 계속 진행
     // ex) 로그인 전 요청. 회원가입의 경우 jwt인증을 하지 않으므로 정상 요청
@@ -23,14 +24,17 @@ axios.interceptors.request.use(
       return config;
     }
 
-    // 토큰이 만료되었는지 확인
-    if (isTokenExpired(accessToken)) {
-      // 재요청 보내
-      console.log(accessToken);
+    const timeElapsed = (Date.now() - tokenTimestamp) / 1000;
+    console.log(timeElapsed);
+
+    if (timeElapsed > 900) {
+      localStorage.clear();
+      window.location.href = "/join";
+      return;
+    } else if (timeElapsed > 300) {
       accessToken = await renewToken(accessToken);
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("tokenTimestamp", Date.now());
-      console.log("갱신: " + accessToken);
     }
 
     config.headers["Authorization"] = `Bearer ${accessToken}`;
@@ -56,7 +60,8 @@ export default function App() {
         toast.error("로그인 토큰이 만료되었습니다.", {
           position: "top-center",
         });
-        navigate("/join");
+        localStorage.clear();
+        window.location.href = "/join";
       }
     }
 

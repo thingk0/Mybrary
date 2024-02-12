@@ -37,6 +37,7 @@ export default function Nav() {
         localStorage.setItem("accessToken", res.data.token);
         localStorage.setItem("tokenTimestamp", Date.now());
         setModalIsOpen(false);
+        setPassword("");
         navigate("/account");
       } else {
         throw new Error();
