@@ -105,6 +105,20 @@ export default function FeedPage() {
       }))
     );
   };
+  const decreaseCommentCount = (paperId) => {
+    setList((currentList) =>
+      currentList.map((thread) => ({
+        ...thread,
+        paperList: thread.paperList.map((paper) => {
+          if (paper.id === paperId) {
+            // 해당 페이퍼의 commentCount를 1 증가
+            return { ...paper, commentCount: paper.commentCount - 1 };
+          }
+          return paper;
+        }),
+      }))
+    );
+  };
 
   return (
     <>
@@ -153,6 +167,7 @@ export default function FeedPage() {
           <Comment
             commentId={commentId}
             updateCommentCount={incrementCommentCount}
+            updateCommentCount2={decreaseCommentCount}
           />
         </div>
       </div>

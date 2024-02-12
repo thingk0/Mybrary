@@ -1,12 +1,22 @@
 import { useEffect, useState } from "react";
 import styles from "./Comment.module.css";
 import s from "classnames";
-import { getCommentList, createComment } from "../../api/comment/Comment";
+import {
+  getCommentList,
+  createComment,
+  getCommentbabyList,
+  deleteComment,
+} from "../../api/comment/Comment";
 import useUserStore from "../../store/useUserStore";
 
 //commentId라고 들어오지만 이거 페이퍼아이디임
-export default function Comment({ commentId, updateCommentCount }) {
+export default function Comment({
+  commentId,
+  updateCommentCount,
+  updateCommentCount2,
+}) {
   const [commentList, setCommentList] = useState([]);
+  const [childComments, setChildComments] = useState({}); // 대댓글 목록 상태
   const user = useUserStore((state) => state.user);
   console.log(commentId);
 
@@ -16,6 +26,21 @@ export default function Comment({ commentId, updateCommentCount }) {
     content: "",
     colorCode: 0,
   });
+  const [selectedCommentId, setSelectedCommentId] = useState(null);
+
+  const selectCommentForReply = (commentId, colorCode) => {
+    setSelectedCommentId(commentId);
+    updateParentCommentId(commentId, colorCode);
+  };
+
+  const cancelReply = () => {
+    setSelectedCommentId(null);
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      parentCommentId: null,
+      content: "",
+    }));
+  };
 
   useEffect(() => {
     setFormData({
@@ -47,10 +72,39 @@ export default function Comment({ commentId, updateCommentCount }) {
     }));
   };
 
-  const check = () => {
-    console.log(formData);
+  const check = async (parentId) => {
+    // 이미 대댓글 목록이 로딩된 경우, 해당 대댓글 목록을 숨김 처리 (토글 기능)
+    if (childComments[parentId]) {
+      setChildComments((prev) => {
+        const newState = { ...prev };
+        delete newState[parentId]; // 해당 댓글 ID의 대댓글 목록을 삭제하여 숨김 처리
+        return newState;
+      });
+    } else {
+      // 대댓글 목록이 없는 경우, API 호출을 통해 대댓글 목록을 가져옴
+      try {
+        const response = await getCommentbabyList(parentId);
+        console.log(response);
+        setChildComments((prev) => ({
+          ...prev,
+          [parentId]: response.data.commentGetDtoList,
+        }));
+      } catch (error) {
+        console.error("대댓글 불러오기 실패", error);
+      }
+    }
   };
-
+  const deletecomment = async (commentIdToDelete) => {
+    try {
+      await deleteComment(commentIdToDelete); // 댓글 ID를 사용하여 댓글 삭제
+      console.log("댓글 삭제 성공");
+      const response = await getCommentList(commentId); // 페이퍼 ID를 사용하여 댓글 목록 재조회
+      setCommentList(response.data.commentGetDtoList); // 새로운 댓글 목록으로 상태 업데이트
+      updateCommentCount2(commentId, response.data.commentGetDtoList.length); // 새로운 댓글 수로 업데이트
+    } catch (error) {
+      console.error("댓글 삭제 실패:", error);
+    }
+  };
   const create = async () => {
     console.log("되긴함 ?");
     if (formData.parentCommentId == null) {
@@ -59,9 +113,9 @@ export default function Comment({ commentId, updateCommentCount }) {
         const response = await createComment(formData); // 올바른 API 함수 이름으로 교체해주세요.
         console.log("댓글 생성 성공:", response);
         const response2 = await getCommentList(commentId);
-        console.log(commentId);
-        console.log(response2.data);
         updateCommentCount(commentId);
+        // console.log(commentId);
+        // console.log(response2.data);
         if (commentId != 0) {
           setCommentList(response2.data.commentGetDtoList);
         }
@@ -82,13 +136,36 @@ export default function Comment({ commentId, updateCommentCount }) {
         console.log("대댓글", formData);
         const response = await createComment(formData);
         console.log("대댓글 생성 성공", response);
-        const response2 = await getCommentList(commentId);
-        console.log(commentId);
-        console.log(response2.data);
-        updateCommentCount(commentId);
-        if (commentId != 0) {
-          setCommentList(response2.data.commentGetDtoList);
+
+        // 대댓글 목록 상태 업데이트
+        setChildComments((prev) => {
+          // 기존에 로딩된 대댓글 목록이 있는 경우, 새 대댓글을 추가
+          const existingChildComments = prev[formData.parentCommentId] || [];
+          return {
+            ...prev,
+            [formData.parentCommentId]: [
+              ...existingChildComments,
+              response.data,
+            ],
+          };
+        });
+        if (formData.parentCommentId) {
+          setCommentList((currentList) =>
+            currentList.map((comment) =>
+              comment.commentId === formData.parentCommentId
+                ? {
+                    ...comment,
+                    childCommentCount: comment.childCommentCount + 1,
+                  }
+                : comment
+            )
+          );
         }
+
+        // 댓글 수 업데이트 로직 (이 부분은 상황에 따라 다를 수 있음)
+        updateCommentCount(commentId);
+
+        // 폼 초기화
         setFormData({
           ...formData,
           content: "",
@@ -123,36 +200,97 @@ export default function Comment({ commentId, updateCommentCount }) {
         {commentList.length !== 0 ? (
           <>
             {commentList.map((comment) => (
-              <div
-                className={s(
-                  styles.comment_item,
-                  styles[`color_${comment.colorCode}`] // 수정된 부분
-                )}
-              >
-                <div className={styles.comment_nickname}>
-                  {comment.ownerNickname}
-                </div>
-                <div className={styles.comment_text}>{comment.content}</div>
-                <div className={styles.comment_info}>
-                  <div className={styles.comment_left}>
-                    <div>{comment.time}</div> | <div>수정</div> |{" "}
-                    <div>삭제</div>
+              <>
+                <div
+                  className={s(
+                    styles.comment_item,
+                    styles[`color_${comment.colorCode}`], // 수정된 부분
+                    {
+                      [styles.selected]:
+                        comment.commentId === selectedCommentId,
+                    }
+                  )}
+                >
+                  <div className={styles.comment_nickname}>
+                    {comment.ownerNickname}
                   </div>
-                  <div className={styles.comment_right}>
-                    {/* <div>{comment.recommentList.length}</div> |{" "} */}
-                    <div
-                      onClick={() =>
-                        updateParentCommentId(
-                          comment.commentId,
-                          comment.colorCode
-                        )
-                      }
-                    >
-                      답글달기
+                  <div className={styles.comment_text}>{comment.content}</div>
+                  <div className={styles.comment_info}>
+                    <div className={styles.comment_left}>
+                      {user.memberId === comment.ownerId && (
+                        <>
+                          <div
+                            onClick={() => deletecomment(comment.commentId)}
+                            className={styles.삭제글자}
+                          >
+                            삭제
+                          </div>
+                        </>
+                      )}
+                    </div>
+                    <div className={styles.comment_right}>
+                      <div
+                        className={styles.대댓글수}
+                        onClick={() => check(comment.commentId)}
+                      >
+                        {comment.childCommentCount}
+                      </div>
+                      <span className={styles.중간막대기}> | </span>
+                      <div
+                        className={styles.답글달기글자}
+                        onClick={() => {
+                          updateParentCommentId(
+                            comment.commentId,
+                            comment.colorCode
+                          );
+                          selectCommentForReply(
+                            comment.commentId,
+                            comment.colorCode
+                          );
+                        }}
+                      >
+                        답글달기
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+                {childComments[comment.commentId] && (
+                  <div className={styles.대댓글박스}>
+                    {childComments[comment.commentId].map((childComment) => (
+                      <div
+                        className={s(
+                          styles.comment_item2,
+                          styles[`color_${childComment.colorCode}`] // 수정된 부분
+                        )}
+                        key={childComment.commentId}
+                      >
+                        <div className={styles.comment_nickname}>
+                          {childComment.ownerNickname}
+                        </div>
+                        <div className={styles.comment_text}>
+                          {childComment.content}
+                        </div>
+                        <div className={styles.comment_info}>
+                          <div className={styles.comment_left}>
+                            {user.memberId === childComment.ownerId && (
+                              <>
+                                <div
+                                  onClick={() =>
+                                    deletecomment(childComment.commentId)
+                                  }
+                                  className={styles.삭제글자}
+                                >
+                                  삭제
+                                </div>
+                              </>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </>
             ))}
           </>
         ) : (
@@ -161,7 +299,12 @@ export default function Comment({ commentId, updateCommentCount }) {
           </div>
         )}
       </div>
-      <div className={styles.comment_create}>
+      <div
+        className={s(
+          styles.comment_create,
+          styles[`color_${formData.colorCode}`]
+        )}
+      >
         <div className={styles.comment_create_header}>
           <div className={styles.comment_create_left}>
             <img
@@ -172,22 +315,38 @@ export default function Comment({ commentId, updateCommentCount }) {
             <div className={styles.user_nickname}>{user.nickname}</div>
           </div>
           <div className={styles.comment_colors}>
-            <div
-              className={styles.color_1}
-              onClick={() => updateColorCode(1)}
-            ></div>
-            <div
-              className={styles.color_2}
-              onClick={() => updateColorCode(2)}
-            ></div>
-            <div
-              className={styles.color_3}
-              onClick={() => updateColorCode(3)}
-            ></div>
-            <div
-              className={styles.color_4}
-              onClick={() => updateColorCode(4)}
-            ></div>
+            {formData.parentCommentId == null && (
+              <>
+                <div
+                  className={styles.color_0}
+                  onClick={() => updateColorCode(0)}
+                ></div>
+                <div
+                  className={styles.color_1}
+                  onClick={() => updateColorCode(1)}
+                ></div>
+                <div
+                  className={styles.color_2}
+                  onClick={() => updateColorCode(2)}
+                ></div>
+                <div
+                  className={styles.color_3}
+                  onClick={() => updateColorCode(3)}
+                ></div>
+                <div
+                  className={styles.color_4}
+                  onClick={() => updateColorCode(4)}
+                ></div>
+              </>
+            )}
+            {selectedCommentId && (
+              <button
+                className={styles.cancelReplyButton}
+                onClick={cancelReply}
+              >
+                답글 달기 취소
+              </button>
+            )}
           </div>
         </div>
         <div className={styles.comment_input}>
@@ -198,7 +357,9 @@ export default function Comment({ commentId, updateCommentCount }) {
             value={formData.content}
             onChange={(e) => updateContent(e.target.value)}
           />
-          <button onClick={() => create()}>확인</button>
+          <button className={styles.버튼} onClick={() => create()}>
+            입력
+          </button>
         </div>
       </div>
     </>
