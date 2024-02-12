@@ -8,167 +8,20 @@ import useStompStore from "../store/useStompStore";
 import useUserStore from "../store/useUserStore";
 import { getChatList } from "../api/chat/Chat.js";
 import gomimg from "../assets/곰탱이.png";
+import ChatProfile from "../components/paperplane/ChatProfile.js";
+import Iconuser2 from "../assets/icon/Iconuser2.png";
 
 export default function PaperplanePage() {
-  const [chatRoomList, setChatRoomList] = useState({});
-  // 현재 내가 보고 있는 채팅방의 아이디
-  const [chatRoomId, setChatRoomId] = useState();
-
-  // const chatRoomId = "room123"; // 채팅방 ID
-
   /* 웹소켓: 채팅용 주소를 구독 */
   const stompClient = useStompStore((state) => state.stompClient);
   const user = useUserStore((state) => state.user);
-  // const [chatlist, setChatlist] = useState({});
+  const [chatRoomList, setChatRoomList] = useState([]); // 채팅방 리스트
+  const [chatMessageList, setChatMessageList] = useState([]); // 접속중인 채팅방 채팅 내역
+  const [chatRoomId, setChatRoomId] = useState(null); // 현재 내가 보고 있는 채팅방의 아이디
 
   useEffect(() => {
-    async function fetchChatData() {
-      try {
-        const response = await getChatList();
-        console.log(response.data);
-        setChatRoomList(response.data);
-      } catch (error) {
-        console.error("데이터를 가져오는 데 실패했습니다:", error);
-      }
-    }
-
-    fetchChatData();
+    // 채팅방 리스트들을 조회, 새로운 구독
   }, []);
-
-  useEffect(() => {
-    console.log(stompClient);
-    console.log("hi");
-    if (stompClient) {
-      stompClient.subscribe(`/sub/chat/${user.email}`, (message) => {
-        console.log("구독됐나요?");
-        const receivedData = JSON.parse(message.body);
-        console.log(receivedData.sender);
-      });
-    }
-  }, [stompClient]);
-
-  // const chatRoomList = [
-  //   {
-  //     chatRoomId: "room1",
-  //     member: {
-  //       memberId: "member1",
-  //       name: "John Doe",
-  //       nickname: "Johnny",
-  //       memberImageUrl: "https://example.com/path/to/image1.jpg",
-  //     },
-  //     recentMessage: "안녕하세요, 어제 보내신 메시지 잘 받았습니다.",
-  //     messagesCount: 2,
-  //   },
-  //   {
-  //     chatRoomId: "room2",
-  //     member: {
-  //       memberId: "member2",
-  //       name: "Jane Smith",
-  //       nickname: "Janey",
-  //       memberImageUrl: "https://example.com/path/to/image2.jpg",
-  //     },
-  //     recentMessage: "프로젝트 관련 회의 언제 하면 좋을까요?",
-  //     messagesCount: 5,
-  //   },
-  //   {
-  //     chatRoomId: "room3",
-  //     member: {
-  //       memberId: "member3",
-  //       name: "Alice Johnson",
-  //       nickname: "Alice",
-  //       memberImageUrl: "https://example.com/path/to/image3.jpg",
-  //     },
-  //     recentMessage: "내일 저녁에 시간 어때요?",
-  //     messagesCount: 1,
-  //   },
-  //   // ... 더 많은 채팅방 데이터를 추가할 수 있습니다
-  // ];
-
-  const charMessageList = [
-    {
-      messageId: "msg1",
-      sender: {
-        senderId: "내 아이디",
-        senderNickname: "내 닉네임",
-        senderImageUrl: "내 프로필 이미지 URL",
-      },
-      message: "안녕하세요!", // 메시지 내용
-      thread: null, // 스레드 정보가 없는 경우
-      isRead: true,
-      time: "2024-01-23 10:00:00",
-    },
-    {
-      messageId: "msg2",
-      sender: {
-        senderId: "상대방 아이디",
-        senderNickname: "상대방 닉네임",
-        senderImageUrl: "상대방 프로필 이미지 URL",
-      },
-      message: "안녕하세요! 반갑습니다.", // 메시지 내용
-      thread: null, // 스레드 정보가 없는 경우
-      isRead: false,
-      time: "2024-01-23 10:05:00",
-    },
-    {
-      messageId: "msg2",
-      sender: {
-        senderId: "상대방 아이디",
-        senderNickname: "상대방 닉네임",
-        senderImageUrl: "상대방 프로필 이미지 URL",
-      },
-      message:
-        "안녕하2ssssssssssssssss\nsssssssssssssssssssssssssssssssssssssssss ssssssssssssssssssssssssss\nssss", // 메시지 내용
-      thread: null, // 스레드 정보가 없는 경우
-      isRead: false,
-      time: "2024-01-23 10:05:00",
-    },
-    {
-      messageId: "msg3",
-      sender: {
-        senderId: "내 아이디",
-        senderNickname: "내 닉네임",
-        senderImageUrl: "내 프로필 이미지 URL",
-      },
-      message: null, // 메시지 내용이 없는 경우
-      thread: {
-        threadId: "thread1",
-        paperId: "paper123",
-        imageUrl: "페이퍼 대표 이미지 썸네일 URL",
-        memberId: "작성자 아이디",
-        nickname: "cwnsgh",
-        memberImageUrl: "작성자 프로필 이미지 URL",
-      }, // 스레드 정보
-      isRead: true,
-      time: "2024-01-23 10:10:00",
-    },
-    // 다른 메시지들...
-  ];
-
-  const sendMsg = async (e) => {
-    e.preventDefault();
-    if (e.key === "Enter") {
-      console.log(e.target.value);
-
-      // 여기에 알람 전송 요청 코드 작성
-      try {
-        const msg = {
-          sender: user.email,
-          receiver: user.email,
-        };
-
-        const data = await fetch("/api/v1/chat/test", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(msg),
-        });
-      } catch (error) {
-        console.log(error);
-        throw error;
-      }
-    }
-  };
 
   return (
     <>
@@ -179,7 +32,7 @@ export default function PaperplanePage() {
               <div className={styles.pipi}>Paper Plane</div>
               <div className={styles.search}>
                 <>
-                  <form action="/search" method="get">
+                  <form action="/search" method="get" style={{ width: "100%" }}>
                     <label htmlFor="search"></label>
                     <div className={styles.searchContainer}>
                       <button type="submit" className={styles.searchButton}>
@@ -196,33 +49,13 @@ export default function PaperplanePage() {
                   </form>
                 </>
               </div>
-              <input onKeyDown={sendMsg}></input>
-              <div className={styles.users}>
-                {chatRoomList.length > 0 ? (
-                  chatRoomList.map((list) => (
-                    <div
-                      className={styles.user}
-                      key={list.chatRoomId} // Make sure each child in a list has a unique "key" prop.
-                      onClick={() => setChatRoomId(list.chatRoomId)} // Set chatRoomId to the id of the clicked chat room
-                    >
-                      <div className={styles.유저이미지}>
-                        {/* 여기에 실제 이미지 URL을 사용하거나, 상대방 프로필 이미지를 배경으로 설정 */}
-                        <img
-                          className={styles.곰탱이}
-                          src={list.joinMember.url || gomimg}
-                          alt="프로필 이미지"
-                        />
-                      </div>
-                      <div className={styles.유저정보}>
-                        <div>{list.joinMember.nickname}</div>
-                        <div>{list.recentMessage}</div>
-                      </div>
-                      <div>{list.newMessageCount}</div>
-                      <div className={styles.유저점점점}>. . .</div>
-                    </div>
-                  ))
+              <div className={styles.users} style={{ marginTop: "15px" }}>
+                {true ? (
+                  <>
+                    <ChatProfile isSelected={true}></ChatProfile>
+                    <ChatProfile isSelected={false}></ChatProfile>
+                  </>
                 ) : (
-                  // 리스트가 비어 있는 경우 표시할 메시지나 요소
                   <div className={styles.emptyList}>
                     검색해서, 새로운채팅을 시작해보세요 !
                   </div>
@@ -240,13 +73,21 @@ export default function PaperplanePage() {
             </div>
             <div className={styles.chat}>
               {/* 채팅 헤더 및 마이브러리 가기 버튼 */}
-              {chatRoomId != null ? (
+              {true ? (
                 <div>
                   <div className={styles.header}>
                     {/* 상대방 프로필 이미지와 닉네임 */}
                     <div className={styles.이미지닉네임}>
-                      <div>프로필이미지</div>
-                      <div>닉네임</div>
+                      <img
+                        src={Iconuser2} // 선택된 이미지 또는 기본 이미지
+                        alt="프로필"
+                        style={{
+                          width: "23%",
+                          objectFit: "cover",
+                          borderRadius: "50%",
+                        }}
+                      />
+                      <div>manmangi_98</div>
                     </div>
                     <button className={styles.마이브러리가기}>
                       마이브러리 가기
@@ -255,49 +96,59 @@ export default function PaperplanePage() {
                   {/* 채팅 메시지 내용 */}
                   <div className={styles.middle}>
                     <div className={styles.textmain}>
-                      {charMessageList.map((message) => (
+                      <div className={styles.chatContainer}>
                         <div
-                          key={message.messageId}
-                          className={
-                            message.sender.senderId === "내 아이디" // 발신자 ID 비교로 내 메시지와 상대방 메시지 구별
-                              ? styles.내가보낸메시지
-                              : styles.상대가보낸메시지
-                          }
+                          className={`${styles.message} ${
+                            true ? styles.sender : styles.receiver
+                          }`}
                         >
-                          {/* 메시지 내용 혹은 스레드 내용 렌더링 */}
-                          {message.message ? (
-                            <div className={styles.메세지}>
-                              <div className={styles.메세지최대길이}>
-                                {message.message}
-                              </div>
-                            </div>
-                          ) : (
-                            <div className={styles.쓰레드}>
-                              {/* 스레드 내용 렌더링 */}
-                              <div className={styles.쓰레드헤더}>
-                                <img
-                                  className={styles.유저이미지2}
-                                  src={이미지예시}
-                                  alt=""
-                                />
-                                <div>
-                                  {message.thread.nickname} 님이 작성한 페이퍼
-                                </div>
-                              </div>
-                              <img
-                                className={styles.예시이미지2}
-                                src={예시이미지2}
-                                alt=""
-                              />
-                            </div>
-                          )}
+                          ㅋㅋㅋㅋㅋㅋ 개웃겨 이거 봄? ㅋㅋㅋㅋㅋㅋ 개웃겨 이거
+                          봄? ㅋㅋㅋㅋㅋㅋ 개웃겨 이거 봄? ㅋㅋㅋㅋㅋㅋ 개웃겨
+                          이거 봄?
                         </div>
-                      ))}
+                        <div
+                          className={`${styles.message} ${
+                            false ? styles.sender : styles.receiver
+                          }`}
+                        >
+                          안녕
+                        </div>
+                      </div>
                     </div>
                     {/* 메시지 입력창 */}
                     <div className={styles.sendbox}>
-                      <span className={styles.예제}>메세지를 보내세요</span>
-                      <button className={styles.비행기}>비행기</button>
+                      <textarea
+                        placeholder="메시지를 보내세요"
+                        rows="1" // 초기에 표시할 줄의 수
+                        style={{
+                          flexGrow: 1,
+                          marginLeft: "10px",
+                          marginRight: "10px",
+                          padding: "10px",
+                          borderRadius: "20px",
+                          border: "none",
+                          outline: "none",
+                          backgroundColor: "#eee3dd", // 배경색을 디자인에 맞게 조정
+                          color: "#57423f", // 글자 색상 조정
+                          fontSize: "16px", // 글자 크기 조정
+                          resize: "none", // 사용자가 크기 조절하지 못하도록 설정
+                          overflow: "auto", // 내용이 넘칠 때 스크롤바 자동 생성
+                        }}
+                        onKeyDown={(e) => {
+                          //엔터 누르면 전송, 쉬프트 + 엔터는 줄바꿈
+                        }}
+                      />
+
+                      <img
+                        className={styles.종이비행기이미지}
+                        src={종이비행기}
+                        style={{
+                          width: "60px",
+                          objectFit: "contain",
+                          marginRight: "15px",
+                        }}
+                        alt="전송버튼"
+                      ></img>
                     </div>
                   </div>
                 </div>

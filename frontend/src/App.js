@@ -1,10 +1,4 @@
-import {
-  useNavigate,
-  Navigate,
-  Outlet,
-  useLocation,
-  useInRouterContext,
-} from "react-router-dom";
+import { useNavigate, Outlet, useLocation } from "react-router-dom";
 import Nav from "./components/atom/Nav";
 import "./App.css";
 import axios from "axios";
@@ -66,7 +60,8 @@ export default function App() {
         toast.error("로그인 토큰이 만료되었습니다.", {
           position: "top-center",
         });
-        navigate("/join");
+        localStorage.clear();
+        window.location.href = "/join";
       }
     }
 
