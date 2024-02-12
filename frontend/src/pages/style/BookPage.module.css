@@ -163,9 +163,6 @@
   left: 12.5%;
   width: 75%;
   height: 55%;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
 }
 .layText2 {
   top: 70%;
@@ -179,9 +176,6 @@
   left: 12.5%;
   width: 75%;
   height: 55%;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
 }
 .layText3 {
   top: 10%;
@@ -195,9 +189,6 @@
   left: 10%;
   width: 50%;
   height: 80%;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
 }
 .layText4 {
   top: 10%;
@@ -211,9 +202,6 @@
   left: 40%;
   width: 50%;
   height: 80%;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
 }
 .layText5 {
   top: 70%;
@@ -227,9 +215,6 @@
   left: 10%;
   width: 60%;
   height: 55%;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
 }
 .layText6 {
   top: 10%;
@@ -243,14 +228,8 @@
   left: 30%;
   width: 60%;
   height: 55%;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
 }
 .img {
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
   border-radius: 5px;
 }
 .color1 {
@@ -389,8 +368,33 @@
 
 .texts {
   color: var(--main5);
+  text-shadow: 0 0 2px var(--main4);
 }
 
 .option {
   margin: 10px 0;
+}
+.delete {
+  color: var(--gomin5);
+}
+
+.deleteTitle {
+  font-size: 20px;
+  text-align: center;
+  margin: 30px 0;
+}
+
+.can {
+  padding: 10px 40px;
+  background-color: var(--main3);
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.del {
+  padding: 10px 40px;
+  background-color: #f08d8d;
+  color: #b25757;
+  border-radius: 5px;
+  cursor: pointer;
 }
