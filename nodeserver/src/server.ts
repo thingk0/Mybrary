@@ -85,6 +85,7 @@ app.post(
 
           // 파일 압축
           const buffer = await sharp(file.buffer)
+            .rotate()
             .resize(800)
             .toFormat("jpeg")
             .jpeg({ quality: 80 })
