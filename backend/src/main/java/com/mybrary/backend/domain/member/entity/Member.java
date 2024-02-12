@@ -1,6 +1,7 @@
 package com.mybrary.backend.domain.member.entity;
 
 import com.mybrary.backend.domain.base.BaseEntity;
+import com.mybrary.backend.domain.book.entity.Book;
 import com.mybrary.backend.domain.chat.entity.ChatJoin;
 import com.mybrary.backend.domain.chat.entity.ChatMessage;
 import com.mybrary.backend.domain.comment.entity.Comment;
@@ -144,6 +145,9 @@ public class Member extends BaseEntity {
 
     @OneToOne(mappedBy = "member", cascade = {CascadeType.REMOVE})
     private Mybrary mybrary;
+
+    @OneToMany(mappedBy = "member", cascade = {CascadeType.REMOVE})
+    private List<Book> bookList = new ArrayList<>();
 
 }
 

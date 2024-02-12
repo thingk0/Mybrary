@@ -2,6 +2,7 @@ package com.mybrary.backend.domain.book.repository.custom;
 
 import static com.mybrary.backend.domain.book.entity.QBook.book;
 import static com.mybrary.backend.domain.bookmarker.entity.QBookMarker.bookMarker;
+import static com.mybrary.backend.domain.bookshelf.entity.QBookshelf.bookshelf;
 import static com.mybrary.backend.domain.category.entity.QCategory.category;
 import static com.mybrary.backend.domain.contents.like.entity.QLike.like;
 import static com.mybrary.backend.domain.contents.paper.entity.QPaper.paper;
@@ -9,6 +10,7 @@ import static com.mybrary.backend.domain.contents.scrap.entity.QScrap.scrap;
 import static com.mybrary.backend.domain.follow.entity.QFollow.follow;
 import static com.mybrary.backend.domain.image.entity.QImage.image;
 import static com.mybrary.backend.domain.member.entity.QMember.member;
+import static com.mybrary.backend.domain.mybrary.entity.QMybrary.mybrary;
 import static com.mybrary.backend.domain.pickbook.entity.QPickBook.pickBook;
 
 import com.mybrary.backend.domain.book.dto.responseDto.BookForMainThreadDto;
@@ -17,6 +19,7 @@ import com.mybrary.backend.domain.book.dto.responseDto.BookListGetFromPaperDto;
 import com.mybrary.backend.domain.book.dto.responseDto.MyBookGetDto;
 import com.mybrary.backend.domain.image.entity.QImage;
 import com.mybrary.backend.domain.member.dto.responseDto.MemberInfoDto;
+import com.mybrary.backend.domain.member.entity.Member;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberPath;
@@ -121,26 +124,46 @@ public class BookRepositoryImpl implements BookRepositoryCustom {
                                                                                                 profileImage.url),
                                                                         book.coverTitle, bookCoverImage.id, bookCoverImage.url,
                                                                         book.coverLayout, book.coverColor))
-                                                           .from(book)
-                                                           .leftJoin(member).on(book.member.id.eq(member.id))
-                                                           .leftJoin(profileImage)
-                                                           .on((member.profileImage.id.eq(profileImage.id)))
-                                                           .leftJoin(bookCoverImage).on(book.coverImage.id.eq(bookCoverImage.id))
-                                                           .where(book.coverTitle.like('%' + keyword + '%')
-                                                                                 .and(member.isProfilePublic.eq(true)
-                                                                                                            .or(member.isProfilePublic.eq(
-                                                                                                                false).and(
-                                                                                                                member.id.in(
-                                                                                                                    query.select(
-                                                                                                                             follow.following.id)
-                                                                                                                         .from(
-                                                                                                                             follow)
-                                                                                                                         .where(
-                                                                                                                             follow.follower.id.eq(
-                                                                                                                                 myId)))))))
-                                                           .offset(page.getOffset())
-                                                           .limit(page.getPageSize())
-                                                           .fetch());
+                                        .from(book)
+                                        .leftJoin(member).on(book.member.id.eq(member.id))
+                                        .leftJoin(profileImage)
+                                        .on((member.profileImage.id.eq(profileImage.id)))
+                                        .leftJoin(bookCoverImage).on(book.coverImage.id.eq(bookCoverImage.id))
+                                        .where(book.coverTitle.like('%' + keyword + '%')
+                                                              .and(member.isProfilePublic.eq(true)
+                                                                                         .or(member.isProfilePublic.eq(
+                                                                                             false).and(
+                                                                                             member.id.in(
+                                                                                                 query.select(
+                                                                                                          follow.following.id)
+                                                                                                      .from(
+                                                                                                          follow)
+                                                                                                      .where(
+                                                                                                          follow.follower.id.eq(
+                                                                                                              myId)))))))
+                                        .offset(page.getOffset())
+                                        .limit(page.getPageSize())
+                                        .fetch());
+    }
+
+    @Override
+    public Optional<Member> findMember(Long bookId) {
+        return Optional.ofNullable(query.select(member)
+                                        .from(book)
+                                        .leftJoin(member).on(book.member.id.eq(member.id)).fetchJoin()
+                                        .where(book.id.eq(bookId))
+                                        .fetchOne());
+    }
+
+    @Override
+    public Optional<Member> findMemberByCategoryId(Long categoryId) {
+        return Optional.ofNullable(query.select(member)
+                                       .from(category)
+                                       .leftJoin(bookshelf).on(category.bookshelf.id.eq(bookshelf.id)).fetchJoin()
+                                       .leftJoin(mybrary).on(bookshelf.mybrary.id.eq(mybrary.id)).fetchJoin()
+                                       .leftJoin(member).on(mybrary.member.id.eq(member.id)).fetchJoin()
+                                       .where(category.id.eq(categoryId))
+                                       .fetchOne());
     }
 
 //    @Override

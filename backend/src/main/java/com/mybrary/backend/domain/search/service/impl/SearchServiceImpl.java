@@ -3,12 +3,14 @@ package com.mybrary.backend.domain.search.service.impl;
 import com.mybrary.backend.domain.book.dto.responseDto.BookGetDto;
 import com.mybrary.backend.domain.book.repository.BookRepository;
 import com.mybrary.backend.domain.contents.thread.dto.responseDto.ThreadSearchGetDto;
+import com.mybrary.backend.domain.member.dto.responseDto.MemberGetDto;
 import com.mybrary.backend.domain.member.entity.Member;
 import com.mybrary.backend.domain.member.repository.MemberRepository;
 import com.mybrary.backend.domain.member.service.MemberService;
 import com.mybrary.backend.domain.search.service.SearchService;
 import com.mybrary.backend.global.exception.book.BookNotFoundException;
 import com.mybrary.backend.global.exception.member.MemberNotFoundException;
+import jakarta.mail.search.SearchException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -54,5 +56,45 @@ public class SearchServiceImpl implements SearchService {
             BookNotFoundException::new);
 
         return bookList;
+    }
+
+    @Override
+    public List<MemberGetDto> searchAccount(String email, String keyword, Pageable page) {
+
+        Member me = memberRepository.searchByEmail(email).orElseThrow(MemberNotFoundException::new);
+
+        if (isKorean(keyword)) {
+            System.out.println("한글입니다.");
+            List<MemberGetDto> accountList = memberRepository.searchAcoountByKo(me.getId(), keyword, page).orElseThrow(MemberNotFoundException::new);
+
+
+        } else if (isEnglish(keyword)) {
+            System.out.println("영어입니다.");
+            List<MemberGetDto> accountList = memberRepository.searchAcoountByEn(me.getId(), keyword, page).orElseThrow(MemberNotFoundException::new);
+
+
+        } else {
+            System.out.println("한글도 영어도 아닙니다.");
+        }
+
+
+        return null;
+    }
+
+    // 문자열이 한글인지 확인하는 메서드
+    public static boolean isKorean(String str) {
+        for (char ch : str.toCharArray()) {
+            if (Character.UnicodeBlock.of(ch) == Character.UnicodeBlock.HANGUL_SYLLABLES
+                || Character.UnicodeBlock.of(ch) == Character.UnicodeBlock.HANGUL_JAMO
+                || Character.UnicodeBlock.of(ch) == Character.UnicodeBlock.HANGUL_COMPATIBILITY_JAMO) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // 문자열이 영어인지 확인하는 메서드
+    public static boolean isEnglish(String str) {
+        return str.matches("[a-zA-Z]+");
     }
 }

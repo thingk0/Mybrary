@@ -127,7 +127,7 @@ public class BookServiceImpl implements BookService {
 
         /* 책 접근 권한 판단 */
         Long myId = memberRepository.searchByEmail(email).orElseThrow(MemberNotFoundException::new).getId();
-        Member bookWriter = bookRepository.findById(bookId).orElseThrow(BookNotFoundException::new).getMember();
+        Member bookWriter = bookRepository.findMember(bookId).orElseThrow(MemberNotFoundException::new);
         if(!bookWriter.isProfilePublic()){
             Follow follow = followRepository.findFollow(myId, bookWriter.getId()).orElseThrow(BookAccessDeniedException::new);
         }
@@ -276,7 +276,7 @@ public class BookServiceImpl implements BookService {
 
         /* 책 접근 권한 판단 */
         Long myId = memberRepository.searchByEmail(email).orElseThrow(MemberNotFoundException::new).getId();
-        Member owner = memberRepository.findByCategoryId(categoryId).orElseThrow(BookNotFoundException::new);
+        Member owner = bookRepository.findMemberByCategoryId(categoryId).orElseThrow(MemberNotFoundException::new);
         if(!owner.isProfilePublic()){
             Follow follow = followRepository.findFollow(myId, owner.getId()).orElseThrow(BookAccessDeniedException::new);
         }

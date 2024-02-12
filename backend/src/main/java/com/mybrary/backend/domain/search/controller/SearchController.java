@@ -105,7 +105,7 @@ public class SearchController {
 
     @Operation(summary = "계정 검색", description = "계정 닉네임 or 이름 기반 검색")
     @GetMapping("/account")
-    public ResponseEntity<?> searchByAccount(@RequestParam(name = "keyword") String keyword,
+    public ResponseEntity<?> searchByAccount(@Parameter(hidden = true) Authentication authentication, @RequestParam(name = "keyword") String keyword,
                                              @PageableDefault(page = 0, size = 10) Pageable page) {
 
         MemberGetDto memberdetail1 = new MemberGetDto(1L, "wndgh@ssafy.com", "최준호", "wnsgh", "안녕하세요 최준호입니다", "123123", true,
@@ -123,6 +123,7 @@ public class SearchController {
         list.add(memberdetail3);
         list.add(memberdetail4);
 
+        List<MemberGetDto> accountList = searchService.searchAccount(authentication.getName(), keyword, page);
         HashMap<String, Object> map = new HashMap<>();
         map.put("accountList", list);
         map.put("page", page);

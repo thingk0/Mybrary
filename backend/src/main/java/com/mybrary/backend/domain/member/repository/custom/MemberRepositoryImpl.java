@@ -11,6 +11,7 @@ import static com.mybrary.backend.domain.notification.entity.QNotification.notif
 import com.mybrary.backend.domain.follow.entity.Follow;
 import com.mybrary.backend.domain.member.dto.responseDto.FollowerDto;
 import com.mybrary.backend.domain.member.dto.responseDto.FollowingDto;
+import com.mybrary.backend.domain.member.dto.responseDto.MemberGetDto;
 import com.mybrary.backend.domain.member.dto.responseDto.MemberInfoDto;
 import com.mybrary.backend.domain.member.dto.responseDto.MyFollowerDto;
 import com.mybrary.backend.domain.member.dto.responseDto.MyFollowingDto;
@@ -21,6 +22,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 
 @RequiredArgsConstructor
 public class MemberRepositoryImpl implements MemberRepositoryCustom {
@@ -114,9 +116,20 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
         return Optional.ofNullable(query.select(member)
                                        .from(category)
                                        .leftJoin(bookshelf).on(category.bookshelf.id.eq(bookshelf.id))
-                                       .leftJoin(mybrary).on(bookshelf.mybrary.id.eq(member.id))
+                                       .leftJoin(mybrary).on(bookshelf.mybrary.id.eq(mybrary.id))
                                        .leftJoin(member).on(mybrary.member.id.eq(member.id))
+                                       .where(category.id.eq(categoryId))
                                        .fetchOne());
+    }
+
+    @Override
+    public Optional<List<MemberGetDto>> searchAcoountByKo(Long myId, String keyword, Pageable page) {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<List<MemberGetDto>> searchAcoountByEn(Long myId, String keyword, Pageable page) {
+        return Optional.empty();
     }
 
 
