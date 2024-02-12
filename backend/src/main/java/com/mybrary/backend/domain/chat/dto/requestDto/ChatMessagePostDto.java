@@ -10,12 +10,10 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class ChatMessagePostDto {
 
     /**
-     *  채팅 보낼 때 요청
-     *  message
+     * 채팅 보낼 때 요청 message
      */
 
     private Long chatRoomId;
