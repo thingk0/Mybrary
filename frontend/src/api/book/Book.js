@@ -53,7 +53,7 @@ export async function getBook(id) {
 /* 책 삭제 */
 export async function deleteBook(id) {
   try {
-    const response = await axios.get(BASE_URL + `book/${id}`);
+    const response = await axios.delete(BASE_URL + `book/${id}`);
     return response.data;
   } catch (error) {
     throw error;
