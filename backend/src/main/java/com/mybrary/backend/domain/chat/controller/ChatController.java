@@ -41,12 +41,11 @@ public class ChatController {
 
     @Operation(summary = "채팅방 리스트 조회", description = "자신의 채팅방 리스트 조회")
     @GetMapping
-    public ResponseEntity<?> getAllChatRoom(
-        @Parameter(hidden = true) Authentication authentication, @PageableDefault(page = 0, size = 20) Pageable page) {
+    public ResponseEntity<?> getAllChatRoom(@Parameter(hidden = true) Authentication authentication,
+                                            @PageableDefault(page = 0, size = 20) Pageable page) {
 
-        List<ChatRoomGetDto> result = chatService.getAllChatRoom(authentication.getName(), page);
-
-        return response.success(ResponseCode.CHATROOM_LIST_FETCHED, result);
+        return response.success(ResponseCode.CHATROOM_LIST_FETCHED,
+                                chatService.loadParticipatingChatRooms(authentication.getName(), page));
     }
 
     @Operation(summary = "채팅방 나가기", description = "채팅방 나가기 (채팅참여 삭제처리)")
@@ -60,40 +59,12 @@ public class ChatController {
 
     @Operation(summary = "채팅방의 메세지 리스트 조회", description = "채팅방의 메세지 리스트 조회")
     @GetMapping("/{id}/message")
-    public ResponseEntity<?> getAllChatByChatRoomId(
-        @Parameter(hidden = true) Authentication authentication,
-        @PathVariable(name = "id") Long chatRoomId,
-        @PageableDefault(page = 0, size = 20, sort = "createdAt", direction = Direction.DESC) Pageable page) {
+    public ResponseEntity<?> getAllChatByChatRoomId(@Parameter(hidden = true) Authentication authentication,
+                                                    @PathVariable(name = "id") Long chatRoomId,
+                                                    @PageableDefault(page = 0, size = 20) Pageable page) {
 
-//        MemberInfoDto sender1 = new MemberInfoDto(1L, "wnsgh", "안녕하세요 최준호입니다", "123123");
-//        MemberInfoDto sender2 = new MemberInfoDto(2L, "audtjd", "안녕하세요 고명성입니다", "123123");
-//
-//        ChatMessageGetDto message1 = new ChatMessageGetDto(1L, sender1, "명성아 넌 천재야", null, false,
-//                                                           null);
-//        ChatMessageGetDto message2 = new ChatMessageGetDto(2L, sender1, "인프라 대장 고명성", null, false,
-//                                                           null);
-//        ChatMessageGetDto message3 = new ChatMessageGetDto(3L, sender2, "나 인프라 끝냈어", null, true,
-//                                                           null);
-//        ChatMessageGetDto message4 = new ChatMessageGetDto(4L, sender2, "아직 인프라중", null, true,
-//                                                           null);
-//        ChatMessageGetDto message5 = new ChatMessageGetDto(5L, sender2, "젠킨스 해야해..", null, true,
-//                                                           null);
-//
-//        List<ChatMessageGetDto> list = new ArrayList<>();
-//        list.add(message1);
-//        list.add(message2);
-//        list.add(message3);
-//        list.add(message4);
-//        list.add(message5);
-
-        List<TChatMessageGetDto> result = chatService.getAllChatByChatRoomId(authentication.getName(),
-                                                                             chatRoomId, page);
-
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("chatMessageList", result);
-        map.put("page", page);
-
-        return response.success(ResponseCode.CHAT_MESSAGES_FETCHED, map);
+        return response.success(ResponseCode.CHAT_MESSAGES_FETCHED,
+                                chatService.loadMessagesByChatRoomId(authentication.getName(), chatRoomId, page));
     }
 
     @Operation(summary = "회원정보에서 채팅 시작", description = "한번도 안했으면 리스트가 비어있고, 아니면 리스트가 있음")

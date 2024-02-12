@@ -1,6 +1,7 @@
 package com.mybrary.backend.domain.chat.entity;
 
 import com.mybrary.backend.domain.base.BaseEntity;
+import com.mybrary.backend.domain.chat.dto.requestDto.MessageRequestDto;
 import com.mybrary.backend.domain.member.entity.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -54,5 +55,14 @@ public class ChatMessage extends BaseEntity {
     @Setter
     @Column(name = "is_read")
     private boolean isRead;
+
+    public static ChatMessage of(MessageRequestDto requestDto, ChatRoom chatRoom, Member sender) {
+        return ChatMessage.builder()
+                          .chatRoom(chatRoom)
+                          .sender(sender)
+                          .message(requestDto.getMessage())
+                          .threadId(requestDto.getThreadId())
+                          .build();
+    }
 
 }

@@ -1,6 +1,7 @@
 package com.mybrary.backend.domain.book.entity;
 
 import com.mybrary.backend.domain.base.BaseEntity;
+import com.mybrary.backend.domain.contents.scrap.entity.Scrap;
 import com.mybrary.backend.domain.image.entity.Image;
 import com.mybrary.backend.domain.member.entity.Member;
 import com.mybrary.backend.domain.pickbook.entity.PickBook;
@@ -69,6 +70,11 @@ public class Book extends BaseEntity {
     @Builder.Default
     @OneToMany(mappedBy = "book", cascade = {CascadeType.REMOVE})
     private List<PickBook> pickBookList = new ArrayList<>();
+
+    /* book - scrap 양방향 관계 설정 */
+    @Builder.Default
+    @OneToMany(mappedBy = "book", cascade = {CascadeType.REMOVE})
+    private List<Scrap> scrapList = new ArrayList<>();
 
 }
 

@@ -58,4 +58,11 @@ public class TokenService {
         return null;
     }
 
+    public String extractAccessToken(String authorization) {
+        if (authorization != null && authorization.startsWith("Bearer ")) {
+            return authorization.substring(7);
+        }
+        return null;
+    }
+
 }

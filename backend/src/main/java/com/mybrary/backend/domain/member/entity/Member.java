@@ -3,10 +3,13 @@ package com.mybrary.backend.domain.member.entity;
 import com.mybrary.backend.domain.base.BaseEntity;
 import com.mybrary.backend.domain.chat.entity.ChatJoin;
 import com.mybrary.backend.domain.chat.entity.ChatMessage;
+import com.mybrary.backend.domain.comment.entity.Comment;
 import com.mybrary.backend.domain.contents.like.entity.Like;
+import com.mybrary.backend.domain.contents.paper.entity.Paper;
 import com.mybrary.backend.domain.follow.entity.Follow;
 import com.mybrary.backend.domain.image.entity.Image;
 import com.mybrary.backend.domain.member.dto.requestDto.SignupRequestDto;
+import com.mybrary.backend.domain.mybrary.entity.Mybrary;
 import com.mybrary.backend.domain.notification.entity.Notification;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -132,6 +135,15 @@ public class Member extends BaseEntity {
 
     @OneToMany(mappedBy = "member", cascade = {CascadeType.REMOVE})
     private List<Like> likeList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = {CascadeType.REMOVE})
+    private List<Comment> commentList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = {CascadeType.REMOVE})
+    private List<Paper> paperList = new ArrayList<>();
+
+    @OneToOne(mappedBy = "member", cascade = {CascadeType.REMOVE})
+    private Mybrary mybrary;
 
 }
 
