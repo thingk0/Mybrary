@@ -1,22 +1,25 @@
-.demoPage {
-  height: 92%;
-  text-align: center;
-  padding: 20px;
-  background-color: white;
-  border: 1px solid black;
-}
-
 .page {
-  height: 92%;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
 }
 
-/* BookDetailPage.module.css 내에 추가될 스타일 */
 .bookContainer {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 20px;
+  overflow: hidden;
+  padding: 50px;
+  padding-bottom: calc(100vh - 850px);
+}
+
+.demoPage {
+  height: 100%;
+  text-align: center;
+  /* padding: 20px; */
+  background-color: white;
+  /* border: 1px solid black; */
+  box-shadow: inset 0 0 15px var(--main2);
 }

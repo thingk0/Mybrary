@@ -62,7 +62,7 @@ export default function FollowerList({
   }, []);
   const handleFollow = async (memberId) => {
     try {
-      const response2 = await follow(memberId);
+      await follow(memberId);
       if (me == nowuser) {
         const response = await getMyFollowerList();
         console.log(response.data);

@@ -22,15 +22,15 @@ const initialPaper = () => ({
   editorState2: EditorState.createEmpty(),
   content1: null,
   content2: null,
-  imageId1: null,
-  imageId2: null,
+  image1: null,
+  image2: null,
   tagList: [],
   mentionList: [],
 });
 export default function ThreadCreatePage() {
   const [papers, setPapers] = useState([initialPaper()]);
   const [paperPublic, setPaperPublic] = useState(true);
-  const [scarpEnable, setScarpEnable] = useState(true);
+  const [scrapEnable, setScrapEnable] = useState(true);
   const [currentPage, setCurrentPage] = useState(0);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [modalIsOpen2, setModalIsOpen2] = useState(false);
@@ -45,21 +45,21 @@ export default function ThreadCreatePage() {
 
   const [booklist, setBookList] = useState([]);
   const [book, setBook] = useState({}); // 책선택
-  const [bookId, setBookId] = useState(-1); // 책 ID 상태 추가
+  const [bookId, setBookId] = useState(null); // 책 ID 상태 추가
   const saveContent = async () => {
     let a = 0;
     const formData = new FormData();
     for (let paper of papers) {
       if (Math.floor(paper.layoutType / 1000) === 1) {
-        formData.append("images", paper.imageId1);
+        formData.append("images", paper.image1);
       } else if (Math.floor(paper.layoutType / 1000) === 2) {
-        formData.append("images", paper.imageId1);
-        formData.append("images", paper.imageId2);
+        formData.append("images", paper.image1);
+        formData.append("images", paper.image2);
       }
     }
     const coverImageId = await uplodaImage(formData);
 
-    const paperList = papers.map((paper) => {
+    const postPaperDto = papers.map((paper) => {
       return {
         layoutType: paper.layoutType,
         content1: draftToHtml(
@@ -80,12 +80,14 @@ export default function ThreadCreatePage() {
 
     const Thread = {
       bookId,
-      paperList,
+      postPaperDto,
       paperPublic,
-      scarpEnable,
+      scrapEnable,
     };
 
     console.log(Thread);
+    const threadId = await createThread(Thread);
+    console.log(threadId);
   };
   const noneImg = () => {
     toast.error("이미지를 전부 채워주세요", {
@@ -164,10 +166,6 @@ export default function ThreadCreatePage() {
             <Tag
               papers={papers}
               setPapers={setPapers}
-              paperPublic={paperPublic}
-              setPaperPublic={setPaperPublic}
-              scarpEnable={scarpEnable}
-              setScarpEnable={setScarpEnable}
               currentPage={currentPage}
             >
               <button
@@ -204,7 +202,7 @@ export default function ThreadCreatePage() {
               className={!paperPublic ? styles.select : styles.button}
               onClick={() => {
                 setPaperPublic(false);
-                setScarpEnable(false);
+                setScrapEnable(false);
               }}
             >
               나만보기
@@ -218,16 +216,16 @@ export default function ThreadCreatePage() {
           <div className={styles.settingButtons}>
             {paperPublic && (
               <div
-                className={scarpEnable ? styles.select : styles.button}
-                onClick={() => setScarpEnable(true)}
+                className={scrapEnable ? styles.select : styles.button}
+                onClick={() => setScrapEnable(true)}
               >
                 스크랩 허용
               </div>
             )}
 
             <div
-              className={!scarpEnable ? styles.select : styles.button}
-              onClick={() => setScarpEnable(false)}
+              className={!scrapEnable ? styles.select : styles.button}
+              onClick={() => setScrapEnable(false)}
             >
               스크랩 비허용
             </div>
@@ -269,7 +267,7 @@ export default function ThreadCreatePage() {
         height="800px"
         background="var(--main4)"
       >
-        <BookCreate />
+        <BookCreate setBookList={setBookList} booklist={booklist} />
       </BigModal>
     </>
   );

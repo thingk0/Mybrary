@@ -38,6 +38,7 @@ import FollowList from "../components/mybrary/FollowList";
 import FollowerList from "../components/mybrary/FollowerList";
 import FileInput from "../components/common/FileInput";
 import { uplodaImage } from "../api/image/Image";
+import { deleteFollow, follow, followCancel } from "../api/member/Follow";
 
 export default function MybraryPage() {
   // 유저 관련
@@ -65,7 +66,7 @@ export default function MybraryPage() {
 
   // 마이브러리의 유저 정보
   const [userInfo, setUserInfo] = useState({});
-  const [followed, setFollowed] = useState("나예요");
+  const [followStatus, setFollowStatus] = useState("나예요");
 
   // 호버했을때 나오는 글씨
   const [show, setShow] = useState({
@@ -227,6 +228,7 @@ export default function MybraryPage() {
         } else {
           const response = await getMybrary(nowuser);
           console.log(response.data);
+          setFollowStatus(response.data.followStatus);
           setUserInfo(response.data);
           setBgColor(response.data.backgroundColor);
           setEsColor(easelImgs[response.data.easelColor - 1]);
@@ -235,7 +237,6 @@ export default function MybraryPage() {
           setFrameimgurl(
             `https://jingu.s3.ap-northeast-2.amazonaws.com/${response.data.frameImageUrl}`
           );
-          setFollowed(response.data.followed);
           setIsLoading(false);
         }
       } catch (error) {
@@ -299,11 +300,32 @@ export default function MybraryPage() {
   }
 
   // 팔로우하는 함수
-  const handleFollow = (id) => {};
+  const handleFollow = async () => {
+    await follow(nowuser);
+    if (userInfo.profilePublic) {
+      setFollowStatus(3);
+      setUserInfo((prev) => ({
+        ...prev,
+        followerCount: userInfo.followerCount + 1,
+      }));
+    } else {
+      setFollowStatus(2);
+    }
+  };
   // 팔로우 요청 취소하는 함수
-  const handleCancelFollow = (id) => {};
+  const handleCancelFollow = async () => {
+    await followCancel(nowuser);
+    setFollowStatus(1);
+  };
   // 팔로우 취소하는 함수
-  const handleUnFollow = (id) => {};
+  const handleUnFollow = async () => {
+    await deleteFollow(nowuser);
+    setFollowStatus(1);
+    setUserInfo((prev) => ({
+      ...prev,
+      followerCount: userInfo.followerCount - 1,
+    }));
+  };
 
   return (
     <>
@@ -319,9 +341,9 @@ export default function MybraryPage() {
               onMouseLeave={() => handleShow("bookshelf", false)}
             />
             <>
-              {show.bookshelf && (
+              {show.bookshelf && !edit && (
                 <span className={styles.책장가자}>
-                  {user.nickname}님의 책장
+                  {userInfo.nickname}님의 책장
                 </span>
               )}
             </>
@@ -333,9 +355,9 @@ export default function MybraryPage() {
               onMouseEnter={() => handleShow("table", true)}
               onMouseLeave={() => handleShow("table", false)}
             />
-            {show.table && (
+            {show.table && !edit && (
               <span className={styles.테이블가자}>
-                {user.nickname}님의 쓰레드
+                {userInfo.nickname}님의 쓰레드
               </span>
             )}
             <img
@@ -346,9 +368,9 @@ export default function MybraryPage() {
               onMouseEnter={() => handleShow("easel", true)}
               onMouseLeave={() => handleShow("easel", false)}
             />
-            {show.easel && (
+            {show.easel && !edit && (
               <span className={styles.이젤가자}>
-                {user.nickname}님의 롤링페이퍼
+                {userInfo.nickname}님의 롤링페이퍼
               </span>
             )}
             <div className={s(styles.frame, !edit && styles.img)}>
@@ -361,8 +383,10 @@ export default function MybraryPage() {
                 onMouseLeave={() => handleShow("frame", false)}
               />
             </div>
-            {show.frame && (
-              <span className={styles.액자가자}>{user.nickname}님의 액자</span>
+            {show.frame && !edit && (
+              <span className={styles.액자가자}>
+                {userInfo.nickname}님의 액자
+              </span>
             )}
 
             <img
@@ -373,7 +397,7 @@ export default function MybraryPage() {
               onMouseEnter={() => handleShow("door", true)}
               onMouseLeave={() => handleShow("door", false)}
             />
-            {show.door && (
+            {show.door && !edit && (
               <span className={styles.문가자}>피드페이지로 가기</span>
             )}
             <img
@@ -384,7 +408,7 @@ export default function MybraryPage() {
               onMouseEnter={() => handleShow("postbox", true)}
               onMouseLeave={() => handleShow("postbox", false)}
             />
-            {show.postbox && (
+            {show.postbox && !edit && (
               <span className={styles.알림가자}>메시지가기!</span>
             )}
           </>
@@ -508,16 +532,16 @@ export default function MybraryPage() {
                 <div
                   className={styles.editButton}
                   onClick={() =>
-                    followed === 1
+                    followStatus === 1
                       ? handleFollow()
-                      : followed === 2
+                      : followStatus === 2
                       ? handleCancelFollow()
                       : handleUnFollow()
                   }
                 >
-                  {followed === 1
+                  {followStatus === 1
                     ? "팔로우"
-                    : followed === 2
+                    : followStatus === 2
                     ? "팔로우요청취소"
                     : "팔로잉"}
                 </div>

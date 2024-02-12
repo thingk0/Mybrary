@@ -11,8 +11,8 @@ export default function Edit({
   setPapers,
   setPostPossible,
 }) {
-  const inputRef = useRef(null);
-  const persent = ["", "9:16", "3:4", "1:1", "4:3", "16:9"];
+  // const inputRef = useRef(null);
+  // const persent = ["", "9:16", "3:4", "1:1", "4:3", "16:9"];
   const [toolbarZIndex, setToolbarZIndex] = useState(1);
   const [toolbarZIndex2, setToolbarZIndex2] = useState(1);
   const handleFocus1 = () => {
@@ -27,9 +27,11 @@ export default function Edit({
   };
 
   const handleChange = (name, value) => {
-    const updatedPapers = [...papers];
-    updatedPapers[currentPage][name] = value;
-    setPapers(updatedPapers);
+    setPapers((prevPapers) => {
+      const updatedPapers = [...prevPapers];
+      updatedPapers[currentPage][name] = value;
+      return updatedPapers;
+    });
   };
 
   const onEditorStateChange = (editorState) => {
@@ -45,13 +47,13 @@ export default function Edit({
 
   useEffect(() => {
     if (Math.floor(papers[currentPage].layoutType / 1000) === 1) {
-      papers[currentPage].imageId1 === null
+      papers[currentPage].image1 === null
         ? setPostPossible(false)
         : setPostPossible(true);
     } else {
-      papers[currentPage].imageId1 === null
+      papers[currentPage].image1 === null
         ? setPostPossible(false)
-        : papers[currentPage].imageId2 === null
+        : papers[currentPage].image2 === null
         ? setPostPossible(false)
         : setPostPossible(true);
     }
@@ -133,14 +135,14 @@ export default function Edit({
       <FileInput
         className={item[`img2_${papers[currentPage].layoutType}`]}
         name="image2"
-        value={papers[currentPage].imageId2}
+        value={papers[currentPage].image2}
         onChange={handleChange}
       />
 
       <FileInput
         className={item[`img1_${papers[currentPage].layoutType}`]}
         name="image1"
-        value={papers[currentPage].imageId1}
+        value={papers[currentPage].image1}
         onChange={handleChange}
       />
     </div>
