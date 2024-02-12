@@ -11,6 +11,7 @@ import com.mybrary.backend.domain.search.service.SearchService;
 import com.mybrary.backend.global.exception.book.BookNotFoundException;
 import com.mybrary.backend.global.exception.member.MemberNotFoundException;
 import jakarta.mail.search.SearchException;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -62,23 +63,20 @@ public class SearchServiceImpl implements SearchService {
     public List<MemberGetDto> searchAccount(String email, String keyword, Pageable page) {
 
         Member me = memberRepository.searchByEmail(email).orElseThrow(MemberNotFoundException::new);
+        List<MemberGetDto> accountList = new ArrayList<>();
 
         if (isKorean(keyword)) {
             System.out.println("한글입니다.");
-            List<MemberGetDto> accountList = memberRepository.searchAcoountByKo(me.getId(), keyword, page).orElseThrow(MemberNotFoundException::new);
-
-
+            keyword = extractCompletedKorean(keyword);
+            accountList = memberRepository.searchAcoountByKo(me.getId(), keyword, page).orElseThrow(MemberNotFoundException::new);
         } else if (isEnglish(keyword)) {
             System.out.println("영어입니다.");
-            List<MemberGetDto> accountList = memberRepository.searchAcoountByEn(me.getId(), keyword, page).orElseThrow(MemberNotFoundException::new);
-
-
+            accountList = memberRepository.searchAcoountByEn(me.getId(), keyword, page).orElseThrow(MemberNotFoundException::new);
         } else {
             System.out.println("한글도 영어도 아닙니다.");
         }
 
-
-        return null;
+        return accountList;
     }
 
     // 문자열이 한글인지 확인하는 메서드
@@ -96,5 +94,17 @@ public class SearchServiceImpl implements SearchService {
     // 문자열이 영어인지 확인하는 메서드
     public static boolean isEnglish(String str) {
         return str.matches("[a-zA-Z]+");
+    }
+
+    // 완성되지 않은 한글을 뺀 문자열 추출
+    public static String extractCompletedKorean(String text) {
+        StringBuilder completedKoreanBuilder = new StringBuilder();
+        for (char c : text.toCharArray()) {
+            // 완성된 한글 유니코드 범위: 0xAC00 ~ 0xD7A3
+            if (c >= 0xAC00 && c <= 0xD7A3) {
+                completedKoreanBuilder.append(c);
+            }
+        }
+        return completedKoreanBuilder.toString();
     }
 }

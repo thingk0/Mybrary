@@ -47,17 +47,19 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
 
     @Override
     public Optional<MemberInfoDto> getMemberInfo(Long myId) {
-        return Optional.ofNullable(query.select(Projections.constructor(MemberInfoDto.class, member.id, member.nickname, member.intro, image.id, image.url))
-            .from(member)
-            .leftJoin(image).on(member.profileImage.id.eq(image.id))
-            .where(member.id.eq(myId))
-            .fetchOne());
+        return Optional.ofNullable(query.select(
+                                            Projections.constructor(MemberInfoDto.class, member.id, member.nickname, member.intro, image.id, image.url))
+                                        .from(member)
+                                        .leftJoin(image).on(member.profileImage.id.eq(image.id))
+                                        .where(member.id.eq(myId))
+                                        .fetchOne());
 
     }
 
     @Override
     public Optional<List<MyFollowingDto>> getAllMyFollowing(Long myId) {
-        return Optional.ofNullable(query.select(Projections.constructor(MyFollowingDto.class, member.id, member.name, member.nickname, image.id, image.url))
+        return Optional.ofNullable(query.select(
+                                            Projections.constructor(MyFollowingDto.class, member.id, member.name, member.nickname, image.id, image.url))
                                         .from(follow)
                                         .leftJoin(member).on(follow.following.id.eq(member.id))
                                         .leftJoin(image).on(member.profileImage.id.eq(image.id))
@@ -67,17 +69,19 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
 
     @Override
     public Optional<List<MyFollowerDto>> getAllMyFollower(Long myId) {
-        return Optional.ofNullable(query.select(Projections.constructor(MyFollowerDto.class, member.id, member.name, member.nickname, image.id, image.url))
-                                       .from(follow)
-                                       .leftJoin(member).on(follow.follower.id.eq(member.id))
-                                       .leftJoin(image).on(member.profileImage.id.eq(image.id))
-                                       .where(follow.following.id.eq(myId))
-                                       .fetch());
+        return Optional.ofNullable(query.select(
+                                            Projections.constructor(MyFollowerDto.class, member.id, member.name, member.nickname, image.id, image.url))
+                                        .from(follow)
+                                        .leftJoin(member).on(follow.follower.id.eq(member.id))
+                                        .leftJoin(image).on(member.profileImage.id.eq(image.id))
+                                        .where(follow.following.id.eq(myId))
+                                        .fetch());
     }
 
     @Override
     public Optional<List<FollowingDto>> getAllFollowing(Long memberId) {
-        return Optional.ofNullable(query.select(Projections.constructor(FollowingDto.class, member.id, member.name, member.nickname, image.id, image.url))
+        return Optional.ofNullable(query.select(
+                                            Projections.constructor(FollowingDto.class, member.id, member.name, member.nickname, image.id, image.url))
                                         .from(follow)
                                         .leftJoin(member).on(follow.following.id.eq(member.id))
                                         .leftJoin(image).on(member.profileImage.id.eq(image.id))
@@ -87,58 +91,84 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
 
     @Override
     public Optional<List<FollowerDto>> getAllFollower(Long memberId) {
-        return Optional.ofNullable(query.select(Projections.constructor(FollowerDto.class, member.id, member.name, member.nickname, image.id, image.url))
-                                        .from(follow)
-                                        .leftJoin(member).on(follow.follower.id.eq(member.id))
-                                        .leftJoin(image).on(member.profileImage.id.eq(image.id))
-                                        .where(follow.following.id.eq(memberId))
-                                        .fetch());
+        return Optional.ofNullable(
+            query.select(Projections.constructor(FollowerDto.class, member.id, member.name, member.nickname, image.id, image.url))
+                 .from(follow)
+                 .leftJoin(member).on(follow.follower.id.eq(member.id))
+                 .leftJoin(image).on(member.profileImage.id.eq(image.id))
+                 .where(follow.following.id.eq(memberId))
+                 .fetch());
     }
 
     @Override
     public Optional<Follow> isFollowed(Long myId, Long memberId) {
         return Optional.ofNullable(query.select(follow)
-                                       .from(follow)
-                                       .where(follow.following.id.eq(memberId).and(follow.follower.id.eq(myId)))
-                                       .fetchOne());
+                                        .from(follow)
+                                        .where(follow.following.id.eq(memberId).and(follow.follower.id.eq(myId)))
+                                        .fetchOne());
     }
 
     @Override
     public Optional<Notification> isRequested(Long myId, Long memberId) {
         return Optional.ofNullable(query.select(notification)
-                                       .from(notification)
-                                       .where(notification.sender.id.eq(myId).and(notification.receiver.id.eq(memberId).and(notification.notifyType.eq(1))))
-                                       .fetchOne());
+                                        .from(notification)
+                                        .where(notification.sender.id.eq(myId).and(
+                                            notification.receiver.id.eq(memberId).and(notification.notifyType.eq(1))))
+                                        .fetchOne());
     }
 
     @Override
     public Optional<Member> findByCategoryId(Long categoryId) {
         return Optional.ofNullable(query.select(member)
-                                       .from(category)
-                                       .leftJoin(bookshelf).on(category.bookshelf.id.eq(bookshelf.id))
-                                       .leftJoin(mybrary).on(bookshelf.mybrary.id.eq(mybrary.id))
-                                       .leftJoin(member).on(mybrary.member.id.eq(member.id))
-                                       .where(category.id.eq(categoryId))
-                                       .fetchOne());
+                                        .from(category)
+                                        .leftJoin(bookshelf).on(category.bookshelf.id.eq(bookshelf.id))
+                                        .leftJoin(mybrary).on(bookshelf.mybrary.id.eq(mybrary.id))
+                                        .leftJoin(member).on(mybrary.member.id.eq(member.id))
+                                        .where(category.id.eq(categoryId))
+                                        .fetchOne());
     }
 
     @Override
     public Optional<List<MemberGetDto>> searchAcoountByKo(Long myId, String keyword, Pageable page) {
-        return Optional.ofNullable(query.select(Projections.constructor(MemberGetDto.class, member.id, member.email, member.name, member.nickname, member.intro, image.id, image.url, member.isProfilePublic, member.isNotifyEnabled))
-                                       .from(member)
-                                       .leftJoin(image).on(member.profileImage.id.eq(image.id))
-                                       .where(member.name.like('%' + keyword + '%').and(member.isProfilePublic.eq(true).or(member.isProfilePublic.eq(false).and(member.id.in(query.select(follow.following.id).from(follow).where(follow.follower.id.eq(myId)))))))
-                                       .offset(page.getOffset())
-                                       .limit(page.getPageSize())
-                                       .fetch());
+        return Optional.ofNullable(query.select(
+                                            Projections.constructor(MemberGetDto.class, member.id, member.email, member.name, member.nickname, member.intro,
+                                                                    image.id, image.url, member.isProfilePublic, member.isNotifyEnabled))
+                                        .from(member)
+                                        .leftJoin(image).on(member.profileImage.id.eq(image.id))
+                                        .where(member.name.like('%' + keyword + '%').and(member.isProfilePublic.eq(true)
+                                                                                                               .or(member.isProfilePublic.eq(
+                                                                                                                   false).and(
+                                                                                                                   member.id.in(
+                                                                                                                       query.select(
+                                                                                                                                follow.following.id)
+                                                                                                                            .from(
+                                                                                                                                follow)
+                                                                                                                            .where(
+                                                                                                                                follow.follower.id.eq(
+                                                                                                                                    myId)))))))
+                                        .offset(page.getOffset())
+                                        .limit(page.getPageSize())
+                                        .fetch());
     }
 
     @Override
     public Optional<List<MemberGetDto>> searchAcoountByEn(Long myId, String keyword, Pageable page) {
-        return Optional.ofNullable(query.select(Projections.constructor(MemberGetDto.class, member.id, member.email, member.name, member.nickname, member.intro, image.id, image.url, member.isProfilePublic, member.isNotifyEnabled))
+        return Optional.ofNullable(query.select(
+                                            Projections.constructor(MemberGetDto.class, member.id, member.email, member.name, member.nickname, member.intro,
+                                                                    image.id, image.url, member.isProfilePublic, member.isNotifyEnabled))
                                         .from(member)
                                         .leftJoin(image).on(member.profileImage.id.eq(image.id))
-                                        .where(member.nickname.like('%' + keyword + '%').and(member.isProfilePublic.eq(true).or(member.isProfilePublic.eq(false).and(member.id.in(query.select(follow.following.id).from(follow).where(follow.follower.id.eq(myId)))))))
+                                        .where(member.nickname.like('%' + keyword + '%').and(member.isProfilePublic.eq(true)
+                                                                                                                   .or(member.isProfilePublic.eq(
+                                                                                                                       false).and(
+                                                                                                                       member.id.in(
+                                                                                                                           query.select(
+                                                                                                                                    follow.following.id)
+                                                                                                                                .from(
+                                                                                                                                    follow)
+                                                                                                                                .where(
+                                                                                                                                    follow.follower.id.eq(
+                                                                                                                                        myId)))))))
                                         .offset(page.getOffset())
                                         .limit(page.getPageSize())
                                         .fetch());

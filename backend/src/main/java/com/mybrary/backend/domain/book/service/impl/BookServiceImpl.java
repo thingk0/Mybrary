@@ -145,7 +145,10 @@ public class BookServiceImpl implements BookService {
             Long image1Id = paperRepository.getImageUrl(paperList.get(i).getPaperId(), 1).orElse(null);
             Long image2Id = paperRepository.getImageUrl(paperList.get(i).getPaperId(), 2).orElse(null);
             Image image1 = imageRepository.findById(image1Id).orElseThrow(ImageNotFoundException::new);
-            Image image2 = imageRepository.findById(image2Id).orElseThrow(ImageNotFoundException::new);
+            Image image2  = null;
+            if(image2Id!=null){
+                image2 = imageRepository.findById(image2Id).orElseThrow(ImageNotFoundException::new);
+            }
             List<String> tagList = tagRepository.getTagList(paperList.get(i).getPaperId()).orElseThrow(TagNotFoundException::new);
             int likeCount = likeRepository.getLikeCount(paperList.get(i).getPaperId()).orElse(0);
             int commentCount = commentRepository.getCommentCount(paperList.get(i).getPaperId()).orElse(0);
@@ -159,7 +162,9 @@ public class BookServiceImpl implements BookService {
             paperList.get(i).setImage1Id(image1Id);
             paperList.get(i).setImage2Id(image2Id);
             paperList.get(i).setImage1Url(image1.getUrl());
-            paperList.get(i).setImage2Url(image2.getUrl());
+            if(image2!=null){
+                paperList.get(i).setImage2Url(image2.getUrl());
+            }
             paperList.get(i).setTagList(tagList);
             paperList.get(i).setLikeCount(likeCount);
             paperList.get(i).setCommentCount(commentCount);
