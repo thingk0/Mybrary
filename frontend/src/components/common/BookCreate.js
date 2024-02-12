@@ -35,9 +35,13 @@ export default function BookCreate({ setBookList, booklist }) {
   };
 
   const loadCategory = async () => {
-    const list = await getCategoryList(user.memberId);
-    setCategorys(list.data);
-    console.log(user.memberId);
+    // const list = await getCategoryList(user.memberId);
+    const categoryList = booklist.map((category) => {
+      return { categoryId: category.categoryId, name: category.categoryName };
+    });
+    setCategorys(categoryList);
+    // console.log(user.memberId);
+    console.log(categoryList);
   };
 
   useEffect(() => {
