@@ -1,5 +1,5 @@
 .category {
-  width: 116px;
+  width: 110px;
   height: 44px;
   background-color: var(--blur2);
   box-shadow: 0 0 10px 0 var(--blur2);
@@ -8,8 +8,21 @@
   gap: 5px;
   justify-content: center;
   align-items: center;
+  position: relative;
+  padding-top: 8px;
 }
-
+.인풋창 {
+  border-radius: 5px;
+  padding: 4px;
+  border: 0px;
+  background-color: #faf7f6;
+}
+.완료버튼 {
+  background-color: rgb(255, 244, 236);
+  padding: 4px;
+  border-radius: 5px;
+  border: 0px solid black;
+}
 .categoryList {
   padding: 12px;
   flex-wrap: wrap;
@@ -17,4 +30,20 @@
   font-size: 16px;
   gap: 13px;
   overflow-y: auto;
+}
+.수정버튼 {
+  cursor: pointer;
+  position: absolute;
+  top: -3px;
+  left: 2px;
+  font-size: 11px;
+  color: rgb(42, 104, 218);
+}
+.삭제버튼 {
+  cursor: pointer;
+  position: absolute;
+  top: -5px;
+  right: 2px;
+  font-size: 11px;
+  color: red;
 }

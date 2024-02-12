@@ -16,7 +16,7 @@ export async function getCommentList(id) {
 }
 
 /* 댓글 생성 */
-export async function createCommnet(object) {
+export async function createComment(object) {
   try {
     const response = await axios.post(BASE_URL + "comment", object);
     return response.data;
@@ -26,7 +26,7 @@ export async function createCommnet(object) {
 }
 
 /* 댓글 삭제 */
-export async function deleteCommnet(commentid) {
+export async function deleteComment(commentid) {
   try {
     const response = await axios.delete(BASE_URL + `comment/${commentid}`);
     return response.data;

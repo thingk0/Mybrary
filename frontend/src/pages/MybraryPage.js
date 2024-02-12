@@ -157,7 +157,7 @@ export default function MybraryPage() {
       // 요청 객체 생성
       const updateData = {
         mybraryId: userInfo.mybraryId,
-        frameImageId: 31, //나중에 바꿔야함..userInfo.frameImageId로
+        frameImageId: userInfo.frameImageId,
         backgroundColor: value.backgroundColor,
         deskColor: value.deskColor,
         bookshelfColor: value.bookshelfColor,
@@ -213,7 +213,7 @@ export default function MybraryPage() {
       setShowListType(null);
       try {
         const memberId = user.memberId;
-        if (memberId == nowuser) {
+        if (memberId === +nowuser) {
           const response = await getMyMybrary();
           setCheckme(true);
           console.log(response.data);
@@ -231,6 +231,7 @@ export default function MybraryPage() {
           setIsLoading(false);
         } else {
           const response = await getMybrary(nowuser);
+          setCheckme(false);
           console.log(response.data);
           setFollowStatus(response.data.followStatus);
           setUserInfo(response.data);

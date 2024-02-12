@@ -39,28 +39,35 @@ export default function CategoryEditModal({
   return (
     <Modal
       title={content}
-      width="270px"
+      width="290px"
       open={open}
       setOpen={setOpen}
       top={"30px"}
       right={"0px"}
       header={content}
     >
-      <div className={styles.flex}>
-        <div>삭제</div>
+      <div className={styles.main}>
+        <CategoryList
+          bookShelfId={bookShelfId}
+          categoryList={categoryList}
+          setCategoryList={setCategoryList}
+        />
+        <div className={styles.푸터입니다}>
+          <input
+            type="text"
+            placeholder="새로운 카테고리 추가"
+            value={newCategoryName}
+            onChange={(e) => setNewCategoryName(e.target.value)}
+            className={styles.인풋창입니다}
+          />
+          <button
+            className={styles.추가버튼입니다}
+            onClick={() => handleAddCategory()}
+          >
+            추가
+          </button>
+        </div>
       </div>
-      <CategoryList
-        bookShelfId={bookShelfId}
-        categoryList={categoryList}
-        setCategoryList={setCategoryList}
-      />
-      <input
-        type="text"
-        placeholder="새로운 카테고리 추가"
-        value={newCategoryName}
-        onChange={(e) => setNewCategoryName(e.target.value)}
-      />
-      <button onClick={() => handleAddCategory()}>추가</button>
     </Modal>
   );
 }

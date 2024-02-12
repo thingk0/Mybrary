@@ -89,9 +89,11 @@ export default function CategoryList({
                   value={updatedCategoryName}
                   style={{ width: "40px" }}
                   onChange={(e) => setUpdatedCategoryName(e.target.value)}
+                  className={styles.인풋창}
                 />
                 <button
                   onClick={() => handleUpdateCategory(category.categoryId)}
+                  className={styles.완료버튼}
                 >
                   완료
                 </button>
@@ -100,11 +102,12 @@ export default function CategoryList({
               <>
                 <div className={styles.categoryItem}>{category.name}</div>
                 <div onClick={() => handleEditCategory(category.categoryId)}>
-                  수정
+                  <span className={styles.수정버튼}>수정</span>
                 </div>
                 {category.bookCount === 0 && (
                   <div
                     onClick={() => handleDeleteCategory(category.categoryId)}
+                    className={styles.삭제버튼}
                   >
                     X
                   </div>

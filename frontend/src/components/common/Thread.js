@@ -62,6 +62,7 @@ export default function Thread({ thread, user }) {
       onMouseMove={(e) => handleMouseMove(e, thread.threadId)}
       onMouseOut={() => handleMouseOut(thread.threadId)}
       style={hoverStyle[thread.threadId]?.thread}
+      onClick={() => console.log(thread.threadId)}
     >
       <div
         className={styles.overlay}
