@@ -16,7 +16,6 @@ import s from "classnames";
 import FeedModal from "./FeedModal";
 
 export default function FeedContent({
-  index,
   thread,
   setComment,
   setCommentId,

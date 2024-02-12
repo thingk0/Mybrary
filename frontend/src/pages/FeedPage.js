@@ -8,7 +8,6 @@ import { getThreadList } from "../api/thread/Thread";
 
 export default function FeedPage() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [threadList, setThreadList] = useState([]);
   const [list, setList] = useState([]);
   const [page, setPage] = useState(0);
 

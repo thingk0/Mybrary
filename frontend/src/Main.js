@@ -38,10 +38,10 @@ function Main() {
               {/*이거 나중에 동적처리 */}
               <Route path=":categoryid">
                 <Route index element={<BookPage />} />
-                <Route path=":bookId" element={<BookDetailPage />} />
               </Route>
             </Route>
           </Route>
+          <Route path="book/:bookId" element={<BookDetailPage />} />
           {/* 아래는 사람마다 보여지는 페이지가 같기 때문에 동적처리를 할 필요가 없다. */}
           <Route path="paperplane" element={<PaperplanePage />} />
           <Route path="feed" element={<FeedPage />} />

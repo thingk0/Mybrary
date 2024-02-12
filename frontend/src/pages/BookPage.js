@@ -5,6 +5,7 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { getBookList, getCategoryList } from "../api/category/Category";
+import useBookStore from "../store/useBookStore";
 
 export default function BookPage() {
   const { categoryid } = useParams();
@@ -14,17 +15,21 @@ export default function BookPage() {
   const [selectedBookIndex, setSelectedBookIndex] = useState(0);
   const selectedBook = bookList[selectedBookIndex];
 
+  const setBook = useBookStore((state) => state.setBook);
+
   const handleSelectBook = (index) => {
     setSelectedBookIndex(index);
   };
 
   const [animate, setAnimate] = useState(false);
   const handleBookClick = () => {
+    setBook(bookList[selectedBook]);
+
     setAnimate(true);
 
     // 애니메이션 시간 후에 페이지 이동
     setTimeout(() => {
-      navigate(`${selectedBook.bookId}`);
+      navigate(`/book/${selectedBook.bookId}`);
     }, 600); // 300ms는 애니메이션 시간과 일치해야 합니다.
   };
 
