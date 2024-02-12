@@ -1,4 +1,4 @@
-import { useNavigate, Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import Nav from "./components/atom/Nav";
 import "./App.css";
 import axios from "axios";
