@@ -212,7 +212,7 @@ export default function MybraryPage() {
       setShowListType(null);
       try {
         const memberId = user.memberId;
-        if (memberId == nowuser) {
+        if (memberId === +nowuser) {
           const response = await getMyMybrary();
           setCheckme(true);
           console.log(response.data);

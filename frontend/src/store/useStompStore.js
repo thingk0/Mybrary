@@ -7,17 +7,17 @@ const useStompStore = create((set) => ({
   stompClient: null,
   setStompClient: (client) => set({ stompClient: client }),
   connect: (email, setNewNotification) => {
-    //let socket = null;
-    // try {
-    //socket = new SockJS("https://i10b207.p.ssafy.io/ws");
-    // } catch (e) {
-    //   console.log("여기옴?");
-    // }
+    let socket = null;
+    try {
+      socket = new SockJS("https://i10b207.p.ssafy.io/ws");
+    } catch (e) {
+      console.log("여기옴?");
+    }
 
     const token = localStorage.getItem("accessToken");
     const client = new Client({
       brokerURL: "wss://i10b207.p.ssafy.io/ws", // brokerURL이 http 일경우 ws를 https일 경우 wss를 붙여서 사용
-      //webSocketFactory: () => socket, // 웹소켓 인스턴스를 반환하는 팩토리 함수, sockJS를 사용할 경우 팩토리 함수를 지정해야 함.
+      webSocketFactory: () => socket, // 웹소켓 인스턴스를 반환하는 팩토리 함수, sockJS를 사용할 경우 팩토리 함수를 지정해야 함.
 
       connectHeaders: {
         Authorization: `Bearer ${token}`,
