@@ -6,7 +6,7 @@ import com.mybrary.backend.domain.contents.paper.dto.responseDto.ToggleLikeResul
 
 public interface PaperService {
 
-    Long scrapPaper(PaperScrapDto paperScrapDto);
+    Long scrapPaper(Long myId, PaperScrapDto paperScrapDto);
 
     Long sharePaper(PaperShareDto share);
 

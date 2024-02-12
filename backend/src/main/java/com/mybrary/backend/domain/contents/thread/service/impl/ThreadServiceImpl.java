@@ -37,6 +37,7 @@ import com.mybrary.backend.domain.member.dto.responseDto.MemberInfoDto;
 import com.mybrary.backend.domain.member.entity.Member;
 import com.mybrary.backend.domain.member.repository.MemberRepository;
 import com.mybrary.backend.domain.mybrary.repository.MybraryRepository;
+import com.mybrary.backend.domain.notification.dto.NotificationPostDto;
 import com.mybrary.backend.domain.notification.service.NotificationService;
 import com.mybrary.backend.global.exception.book.BookNotFoundException;
 import com.mybrary.backend.global.exception.image.ImageNotFoundException;
@@ -102,6 +103,7 @@ public class ThreadServiceImpl implements ThreadService {
                   for (Long id : dto.getMentionList()) {
                         mentionList += (id) + " ";
                   }
+
                   /* paper 객체 생성 */
                   Paper paper = Paper.builder()
                                      .member(member)
@@ -114,6 +116,7 @@ public class ThreadServiceImpl implements ThreadService {
                                      .isScrapEnabled(threadPostDto.isScrapEnable())
                                      .build();
                   paperRepository.save(paper);
+
                   /* paperImage 객체 생성 */
                   Long imageId1 = dto.getImageId1();
                   Long imageId2 = dto.getImageId2();
@@ -162,19 +165,25 @@ public class ThreadServiceImpl implements ThreadService {
                         tagRepository.saveAll(tagEntityList);
                         log.info("tag목록 생성 이후 ");
                   }
+
                   /* 여기서 페이퍼에 대한 멘션 알림 보내는 로직 */
-                  /* 쓰레드를 생성한 멤버가 sender, 멘션된 회원이 receiver, 알람타입은  */
-//                  List<Long> mentionedIdList = dto.getMentionList();
-//                  for (Long mentiondedId : mentionedIdList) {
-//                        NotificationPostDto mentionNotificationPostDto =
-//                            NotificationPostDto.builder()
-//                                               .notifyType(2)
-//                                               .senderId(member.getId())
-//                                               .receiverId(mentiondedId)
-//                                               .build();
-//                        notificationService.saveNotification(mentionNotificationPostDto);
-//                  }
+                  /* 쓰레드를 생성한 멤버가 sender, 멘션된 회원이 receiver, 알람타입은 11 */
+
+                  List<Long> mentionIdList = dto.getMentionList();
+                  for (Long mentionedId : mentionIdList ) {
+                        NotificationPostDto mentionNotificationPostDto =
+                            NotificationPostDto.builder()
+                                               .notifyType(11)
+                                               .senderId(myId)
+                                               .receiverId(mentionedId)
+                                               .threadId(thread.getId())
+                                               .paperId(paper.getId())
+                                               .build();
+                        notificationService.saveNotification(mentionNotificationPostDto);
+                  }
+
             } /* paper생성 for문 끝 */
+
             return thread.getId();
       }
       /* 메인 피드 thread 조회하기 */
@@ -273,6 +282,8 @@ public class ThreadServiceImpl implements ThreadService {
             }
             return threadDtoList;
       }
+
+
       /* 나의 모든 thread들만 조회하기 */
       @Transactional
       @Override
@@ -321,6 +332,8 @@ public class ThreadServiceImpl implements ThreadService {
             }
             return threadInfoGetDtoList;
       }
+
+
       /* 쓰레드 아이디로 쓰레드 단건조회 */
       @Transactional
       @Override

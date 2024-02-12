@@ -1,5 +1,6 @@
 package com.mybrary.backend.domain.contents.paper.service.impl;
 
+import com.mybrary.backend.domain.book.entity.Book;
 import com.mybrary.backend.domain.book.repository.BookRepository;
 import com.mybrary.backend.domain.contents.like.entity.Like;
 import com.mybrary.backend.domain.contents.like.repository.LikeRepository;
@@ -11,8 +12,12 @@ import com.mybrary.backend.domain.contents.paper.repository.PaperRepository;
 import com.mybrary.backend.domain.contents.paper.service.PaperService;
 import com.mybrary.backend.domain.contents.scrap.entity.Scrap;
 import com.mybrary.backend.domain.contents.scrap.repository.ScrapRepository;
+import com.mybrary.backend.domain.contents.thread.entity.Thread;
 import com.mybrary.backend.domain.member.entity.Member;
 import com.mybrary.backend.domain.member.repository.MemberRepository;
+import com.mybrary.backend.domain.notification.dto.NotificationPostDto;
+import com.mybrary.backend.domain.notification.service.NotificationService;
+import com.mybrary.backend.global.exception.book.BookNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,35 +37,57 @@ public class PaperServiceImpl implements PaperService {
     private final BookRepository bookRepository;
     private final LikeRepository likeRepository;
     private final MemberRepository memberRepository;
+    private final NotificationService notificationService;
 
     @Transactional
     @Override
-    public Long scrapPaper(PaperScrapDto paperScrapDto) {
+    public Long scrapPaper(Long myId, PaperScrapDto paperScrapDto) {
         /* 스크랩한 페이퍼는 scrap entity만 생성 */
         List<Long> paperIdList = paperScrapDto.getPaperIdList();
+
+        Long bookId = paperScrapDto.getBookId();
+        int scrapSeq = scrapRepository.findLastPaperSeq(bookId).orElseThrow(BookNotFoundException::new);
+        Book book = bookRepository.findById(bookId).orElseThrow(BookNotFoundException::new);
+        List<Paper> paperList = paperRepository.findAllById(paperIdList);
+
         List<Scrap> scrapList = new ArrayList<>();
-        int scrapSeq = 1;
-        for (Long paperId : paperIdList) {
+        for (Paper paper : paperList) {
             Scrap scrap = Scrap.builder()
-                               .paper(paperRepository.getById(paperId))
-                               .book(bookRepository.getById(paperScrapDto.getBookId()))
-                               .paperSeq(scrapSeq++)
+                               .paper(paper)
+                               .book(book)
+                               .paperSeq(++scrapSeq)
                                .build();
             scrapList.add(scrap);
         }
         scrapRepository.saveAll(scrapList);
 
+        /* 알림 처리 로직 */
 
+        Thread thread = scrapList.get(0).getPaper().getThread();
+        // 쓰레드(페이퍼) 작성자 id
+        Long writerId = scrapList.get(0).getPaper().getMember().getId();
 
+        // 스크랩한 나를 sender, 쓰레드(페이퍼) 작성자를 receiver 로 하는 type10 알림 보내기
+        NotificationPostDto notification = NotificationPostDto.builder()
+                                                               .senderId(myId)
+                                                               .receiverId(writerId)
+                                                               .notifyType(10)
+                                                               .threadId(thread.getId())
+                                                               .build();
+        notificationService.saveNotification(notification);
 
         return paperScrapDto.getBookId();
     }
+
+
 
     /* 이건 채팅쪽이라 일단 냅두겠습니다.. */
     @Override
     public Long sharePaper(PaperShareDto share) {
         return null;
     }
+
+
 
     @Transactional
     @Override
@@ -86,6 +113,19 @@ public class PaperServiceImpl implements PaperService {
                                .member(member)
                                .build();
             likeRepository.save(newLike);
+
+            /* 좋아요 알람 보내는 로직 */
+
+            NotificationPostDto likeNotificationPostDto =
+                NotificationPostDto.builder()
+                                   .notifyType(12)
+                                   .senderId(memberId)
+                                   .receiverId(paper.getMember().getId())
+                                   .threadId(paper.getThread().getId())
+                                   .paperId(paper.getId())
+                                   .build();
+            notificationService.saveNotification(likeNotificationPostDto);
+
             return new ToggleLikeResult("true", paperId); // 좋아요 결과 반환
         }
     }
