@@ -1,7 +1,14 @@
 package com.mybrary.backend.domain.search.service.impl;
 
+import com.mybrary.backend.domain.book.dto.responseDto.BookGetDto;
+import com.mybrary.backend.domain.book.repository.BookRepository;
 import com.mybrary.backend.domain.contents.thread.dto.responseDto.ThreadSearchGetDto;
+import com.mybrary.backend.domain.member.entity.Member;
+import com.mybrary.backend.domain.member.repository.MemberRepository;
+import com.mybrary.backend.domain.member.service.MemberService;
 import com.mybrary.backend.domain.search.service.SearchService;
+import com.mybrary.backend.global.exception.book.BookNotFoundException;
+import com.mybrary.backend.global.exception.member.MemberNotFoundException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +24,8 @@ public class SearchServiceImpl implements SearchService {
 
     private final ElasticsearchTemplate elasticsearchTemplate;
     private final ElasticsearchOperations elasticsearchOperations;
+    private final MemberRepository memberRepository;
+    private final BookRepository bookRepository;
 
     @Override
     public List<String> listSuggestedTerms(String keyword) {
@@ -34,5 +43,16 @@ public class SearchServiceImpl implements SearchService {
         // 3. (좋아요수+스크랩수*5) 순으로 정렬해서 페이징
 
         return null;
+    }
+
+    @Override
+    public List<BookGetDto> searchBook(String email, String keyword, Pageable page) {
+
+        Member me = memberRepository.searchByEmail(email).orElseThrow(MemberNotFoundException::new);
+
+        List<BookGetDto> bookList = bookRepository.searchBookByKeyword(me.getId(), keyword, page).orElseThrow(
+            BookNotFoundException::new);
+
+        return bookList;
     }
 }

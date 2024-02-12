@@ -6,6 +6,7 @@ import com.mybrary.backend.domain.book.dto.responseDto.BookListGetFromPaperDto;
 import com.mybrary.backend.domain.book.dto.responseDto.MyBookGetDto;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.domain.Pageable;
 
 public interface BookRepositoryCustom {
 
@@ -19,4 +20,6 @@ public interface BookRepositoryCustom {
     Optional<List<BookListGetFromPaperDto>> getBookListFromPaper(Long paperId);
 
     Optional<List<BookForMainThreadDto>> getBookForMainThread(Long writerId, Long paperId);
+
+    Optional<List<BookGetDto>> searchBookByKeyword(Long myId, String keyword, Pageable page);
 }
