@@ -5,11 +5,13 @@ import { useNavigate } from "react-router-dom";
 import Comment from "../components/feed/Comment";
 import FeedContent from "../components/feed/FeedContent";
 import { getThreadList } from "../api/thread/Thread";
+import BigModal from "../components/common/BigModal";
 
 export default function FeedPage() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [list, setList] = useState([]);
   const [page, setPage] = useState(0);
+  const [scrapModal, setScrapModal] = useState(false);
 
   // console.log(threadList);
   const [comment, setComment] = useState(false);
@@ -136,6 +138,7 @@ export default function FeedPage() {
                 setCommentId={setCommentId}
                 setComment={setComment}
                 setZIndex={setZIndex}
+                setScrapModal={setScrapModal}
               />
             </div>
           ))}
@@ -157,6 +160,18 @@ export default function FeedPage() {
       <div className={styles.create} onClick={() => navigate("/threadCreate")}>
         +
       </div>
+      <BigModal
+        modalIsOpen={scrapModal}
+        setModalIsOpen={setScrapModal}
+        width="800px"
+        height="600px"
+      >
+        {/* <div>
+          {list.map((thread) => {
+            <div>kjdf</div>;
+          })}
+        </div> */}
+      </BigModal>
     </>
   );
 }

@@ -6,6 +6,7 @@ import FeedModal from "../components/feed/FeedModal";
 import ContentItem from "../components/feed/ContentItem";
 import useUserStore from "../store/useUserStore";
 import useBookStore from "../store/useBookStore";
+import { getBook } from "../api/book/Book";
 
 export default function BookDetailPage() {
   const user = useUserStore((state) => state.user);
@@ -41,30 +42,16 @@ export default function BookDetailPage() {
     console.log("flip", e);
   };
 
-  const pages = [
-    <div className={styles.demoPage}>
-      <button>sfdda</button>
-    </div>,
-    <div className={styles.demoPage}>페이지 2</div>,
-    <div className={styles.demoPage}>페이지 3</div>,
-    <div className={styles.demoPage}>페이지 4</div>,
-    <div className={styles.demoPage}>페이지 3</div>,
-    <div className={styles.demoPage}>페이지 4</div>,
-    <div className={styles.demoPage}>페이지 3</div>,
-    <div className={styles.demoPage}>페이지 4</div>,
-    <div className={styles.demoPage}>페이지 3</div>,
-    <div className={styles.demoPage}>페이지 4</div>,
-    <div className={styles.demoPage}>페이지 3</div>,
-    <div className={styles.demoPage}>페이지 4</div>,
-    <div className={styles.demoPage}>페이지 3</div>,
-    <div className={styles.demoPage}>페이지 4</div>,
-    <div className={styles.demoPage}>페이지 3</div>,
-    <div className={styles.demoPage}>페이지 4</div>,
-    // 추가 페이지를 여기에 삽입
-  ];
+  const [pages, setPages] = useState([]);
   useEffect(() => {
+    async function getbook() {
+      const pagelist = await getBook(book.bookId);
+      setPages(pagelist.data.paperList);
+      console.log(pagelist.data.paperList);
+    }
     console.log(book);
-  });
+    getbook();
+  }, []);
 
   return (
     <>

@@ -5,13 +5,13 @@ import { getMybrary } from "../../api/mybrary/Mybrary";
 //책장 페이지 헤더
 export default function BookshelfHeader() {
   const navigate = useNavigate();
-  const { bookShelfId } = useParams();
+  const { userid } = useParams();
   const [user, setUser] = useState({});
   useEffect(() => {
     async function fetchMyData() {
-      console.log(bookShelfId);
+      console.log(userid);
       try {
-        const response = await getMybrary(bookShelfId);
+        const response = await getMybrary(userid);
         setUser(response.data);
       } catch (error) {
         console.error("데이터를 가져오는 데 실패했습니다:", error);

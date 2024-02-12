@@ -20,6 +20,7 @@ export default function FeedContent({
   setComment,
   setCommentId,
   setZIndex,
+  setScrapModal,
 }) {
   const [x, setX] = useState(1);
   const openComment = (id) => {
@@ -60,7 +61,11 @@ export default function FeedContent({
               />
               <div>{paper.commentCount}</div>
               <div>
-                <img src={icon_scrap} alt="" />
+                <img
+                  src={icon_scrap}
+                  alt=""
+                  onClick={() => setScrapModal(true)}
+                />
               </div>
               <div>{paper.scrapCount}</div>
               <div>
