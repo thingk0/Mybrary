@@ -3,6 +3,7 @@ package com.mybrary.backend.domain.comment.entity;
 import com.mybrary.backend.domain.base.BaseEntity;
 import com.mybrary.backend.domain.contents.paper.entity.Paper;
 import com.mybrary.backend.domain.member.entity.Member;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -55,7 +56,7 @@ public class Comment extends BaseEntity {
     private int colorCode;
 
     @Builder.Default
-    @OneToMany(mappedBy = "parentComment")
+    @OneToMany(mappedBy = "parentComment", cascade = {CascadeType.REMOVE})
     private List<Comment> childComments = new ArrayList<>();
 
 }
