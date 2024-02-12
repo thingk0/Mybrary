@@ -70,11 +70,15 @@ export default function Thread({ thread, user }) {
       ></div>
       <div className={styles.좋댓스}>
         <div className={styles.작성자}>
-          <img
+          <div
             className={styles.userimage2}
-            src={`https://jingu.s3.ap-northeast-2.amazonaws.com/${user.profileImageUrl}`}
-            alt=""
-          />
+            style={{
+              background: `url("https://jingu.s3.ap-northeast-2.amazonaws.com/${user.profileImageUrl}")`,
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "center",
+              backgroundSize: "cover",
+            }}
+          ></div>
           <span className={styles.작성자폰트}>{user.nickname} </span>
         </div>
         <div className={styles.나머지좋댓스}>
@@ -84,12 +88,15 @@ export default function Thread({ thread, user }) {
         </div>
       </div>
       <div className={styles.main이미지}>
-        <img
+        <div
           className={styles.스레드이미지}
-          //   src={thread.imageUrl}
-          src={`https://jingu.s3.ap-northeast-2.amazonaws.com/${thread.imageUrl}`}
-          alt={`스레드 ${thread.threadId}`}
-        />
+          style={{
+            background: `url("https://jingu.s3.ap-northeast-2.amazonaws.com/${thread.imageUrl}")`,
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "center",
+            backgroundSize: "cover",
+          }}
+        ></div>
       </div>
     </div>
   );

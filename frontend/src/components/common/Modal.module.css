@@ -33,3 +33,7 @@
 .modalClose {
   color: var(--gomin5);
 }
+
+.modal > div {
+  font-size: 16px;
+}

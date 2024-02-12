@@ -23,6 +23,7 @@ export default function Modal({
   return (
     <div className={styles.modalContainer}>
       <div
+        className={styles.title}
         onClick={() => {
           setIsModalOpen(true);
           setOpen(true);

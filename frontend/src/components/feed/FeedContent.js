@@ -25,7 +25,6 @@ export default function FeedContent({
   const [x, setX] = useState(1);
   const openComment = (id) => {
     setCommentId(id);
-    console.log(id);
     setComment(true);
     setTimeout(() => {
       setZIndex(3);

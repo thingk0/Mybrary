@@ -51,7 +51,7 @@ export default function FeedPage() {
           handleNextClick();
         }
         setIsThrottled(true);
-        setTimeout(() => setIsThrottled(false), 1000); // 0.5초 동안 다음 이벤트 차단
+        setTimeout(() => setIsThrottled(false), 500); // 0.5초 동안 다음 이벤트 차단
       }
     },
     [isThrottled, handlePrevClick, handleNextClick]
@@ -80,7 +80,7 @@ export default function FeedPage() {
     async function fetchMainFeedData() {
       try {
         const response = await getThreadList(page);
-        console.log(response);
+        // console.log(page);
         // setThreadList(response.data);
 
         setList([...list, ...response.data]);
@@ -109,7 +109,6 @@ export default function FeedPage() {
   return (
     <>
       <div className={styles.feedContainer}>
-        <div className={styles.noneFeed}>더이상 게시물이 없어요!</div>
         <div
           className={s(
             styles.StackCarousel_contents,
@@ -158,7 +157,11 @@ export default function FeedPage() {
         </div>
       </div>
       <div className={styles.create} onClick={() => navigate("/threadCreate")}>
-        +
+        + 스레드 작성하러가기
+      </div>
+      <div className={styles.noneFeed}>
+        <div className={styles.noneText}>더이상 스레드가 없어요!</div>
+        <div className={styles.createButton}>새로운 스레드를 작성해 보세요</div>
       </div>
       <BigModal
         modalIsOpen={scrapModal}
