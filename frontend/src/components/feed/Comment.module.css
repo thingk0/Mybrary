@@ -50,20 +50,67 @@
 }
 /* 댓글목록공간 */
 .comment_item {
-  width: 89%;
+  width: 88%;
   border-radius: 5px;
   /* background-color: #f8c3d2; */
   padding: 0.7vi;
   box-shadow: 0 0 15px -5px var(--main2);
   margin: 1vi;
+  position: relative;
+}
+.대댓글박스 {
+  width: 97.3%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.comment_item2 {
+  width: 76%;
+  border-radius: 5px;
+  /* background-color: #f8c3d2; */
+  padding: 0.7vi;
+  box-shadow: 0 0 15px -5px var(--main2);
+  margin: 0.4vi;
+  position: relative;
 }
 .comment_nickname {
-  font-size: 1.2vi;
+  font-size: 0.84vi;
   margin-bottom: 0.3vi;
+  color: #342321;
 }
 .comment_text {
   font-size: 1vi;
   margin-bottom: 0.3vi;
+  color: #2a2525;
+  padding-top: 5px;
+  padding-bottom: 2px;
+}
+.수정글자 {
+  font-size: 0.8vi;
+  color: #3bb8d4;
+}
+.삭제글자 {
+  cursor: pointer;
+  font-size: 0.8vi;
+  color: #e2567e;
+}
+.답글달기글자 {
+  cursor: pointer;
+  font-size: 0.8vi;
+}
+.대댓글수 {
+  font-size: 0.8vi;
+  cursor: pointer;
+}
+.중간막대기 {
+  font-size: 0.8vi;
+  color: #bfa6a2;
+}
+.삭제글자 {
+  position: absolute;
+  top: 10px;
+  right: 10px;
 }
 
 .comment_left,
@@ -71,6 +118,7 @@
 .comment_info {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   gap: 0.3vi;
   font-size: 1vi;
 }
@@ -110,34 +158,70 @@
 .comment_colors > div {
   width: 2vi;
   height: 2vi;
-  border-radius: 1vi;
+  border-radius: 2vi;
+  border: solid 1.5px rgb(65, 65, 65);
+  cursor: pointer;
 }
-.color_ {
-  background-color: #f8c3d2;
+.color_0 {
+  background-color: #e5cabc;
+  transition: 0.3s;
+}
+.selected {
+  border: 2.4px solid rgb(99, 59, 38);
 }
 .color_1 {
   background-color: #f9caca;
+  transition: 0.3s;
 }
 .color_2 {
   background-color: #fce0c6;
+  transition: 0.3s;
 }
 .color_3 {
   background-color: #c5f4ff;
+  transition: 0.3s;
 }
 .color_4 {
   background-color: #d6c2ff;
+  transition: 0.3s;
 }
 
 .comment_input {
+  margin-top: 1vi;
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.버튼 {
+  cursor: pointer;
+  border: 0px;
+  width: 8%;
+  height: 2vi;
+  border-radius: 0.5vi;
+  background-color: #fffffe;
+  transition: 0.3s;
+}
+.버튼:hover {
+  background-color: #606060;
+  color: #ffffff;
+}
+.cancelReplyButton {
+  cursor: pointer;
+  border: 0px;
+  background-color: #b7aaaa;
+  padding: 0.4vi;
+  border-radius: 0.5vi;
+  transition: 0.3s;
+}
+.cancelReplyButton:hover {
+  background-color: #a4978d;
 }
 
 .comment_input > input {
-  margin-top: 1vi;
-  width: 100%;
+  width: 87%;
   height: 2vi;
   padding: 0 0.5vi;
-  border-radius: 0.2vi;
+  border-radius: 0.5vi;
   font-size: 1vi;
   outline: none;
   border: none;
