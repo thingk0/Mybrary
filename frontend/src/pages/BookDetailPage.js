@@ -1,19 +1,19 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import HTMLFlipBook from "react-pageflip";
 import styles from "./style/BookDetailPage.module.css";
-import Modal from "../components/common/Modal";
 import s from "classnames";
 import FeedModal from "../components/feed/FeedModal";
+import ContentItem from "../components/feed/ContentItem";
+import useUserStore from "../store/useUserStore";
+import useBookStore from "../store/useBookStore";
 
 export default function BookDetailPage() {
-  // 페이지를 구성하는 컨텐츠를 생성합니다. 여기서는 예시로 간단한 텍스트를 사용합니다.
+  const user = useUserStore((state) => state.user);
+  const book = useBookStore((state) => state.book);
+
   const bookRef = useRef();
   const [curPage, setCurPage] = useState();
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const handleClick = (e) => {
-    e.preventDefault(); // 이벤트의 기본 동작을 막음
-  };
 
   const onPrev = (hasFlip = "N") => {
     const pageIndex = bookRef.current.pageFlip().getCurrentPageIndex();
@@ -24,7 +24,6 @@ export default function BookDetailPage() {
       bookRef.current.pageFlip().turnToPrevPage();
     }
   };
-
   const onNext = (hasFlip = "N") => {
     const pageIndex = bookRef.current.pageFlip().getCurrentPageIndex();
     console.log("pageIndex", pageIndex);
@@ -36,8 +35,6 @@ export default function BookDetailPage() {
       bookRef.current.pageFlip().turnToNextPage();
     }
   };
-
-  // 플립이 끝난 후
   const onFlip = (e) => {
     const curPage = e.data;
     setCurPage(curPage);
@@ -65,37 +62,42 @@ export default function BookDetailPage() {
     <div className={styles.demoPage}>페이지 4</div>,
     // 추가 페이지를 여기에 삽입
   ];
+  useEffect(() => {
+    console.log(book);
+  });
 
   return (
     <>
       <div className={s(styles.bookContainer)}>
         <div className={styles.header}>
-          <div className={styles.headerLeft}>내 책장에 담기</div>
-          <div>책 이름</div>
+          <div className={styles.headerLeft}>뒤로가기</div>
+          <div className={styles.headerMain}>책 이름</div>
           <div
             onClick={() => {
               setIsModalOpen(true);
             }}
-            className={styles.headerLeft}
+            className={styles.headerRight}
           >
             옵션
             <FeedModal
-              width="200px"
+              width="150px"
               setIsModalOpen={setIsModalOpen}
               isModalOpen={isModalOpen}
               right="-5px"
               top="10px"
-              header={"옵션"}
             >
-              <div>책 카테고리 수정</div>
-              <div>책 표지 수정</div>
-              <div>책 삭제</div>
-              <div>책 구독취소</div>
+              <div className={styles.option}>
+                {}
+                <div>내 책장에 담기</div>
+                <div>책 카테고리 수정</div>
+                <div>책 표지 수정</div>
+                <div>책 삭제</div>
+                <div>책 구독취소</div>
+              </div>
             </FeedModal>
           </div>
         </div>
         <HTMLFlipBook
-          onClick={() => handleClick()}
           ref={bookRef}
           width={600}
           height={800}
@@ -105,16 +107,18 @@ export default function BookDetailPage() {
           useMouseEvents={false}
         >
           {pages.map((page, index) => (
-            <div className={styles.page} key={index} onClick={handleClick}>
-              {page}
+            <div className={styles.page} key={index}>
+              <ContentItem paper={page} />
             </div>
           ))}
         </HTMLFlipBook>
-        <button onClick={() => onPrev("Y")}>이전 페이지</button>
-        <button onClick={() => onNext("Y")}>다음 페이지</button>
         <div>
-          {curPage === 7 && "마지막 페이지입니다."}
-          {curPage === 0 && "첫 페이지입니다."}
+          <button onClick={() => onPrev("Y")}>이전 페이지</button>
+          <div>
+            <div>{curPage}</div>
+            <div>/전체페이지</div>
+          </div>
+          <button onClick={() => onNext("Y")}>다음 페이지</button>
         </div>
       </div>
     </>
