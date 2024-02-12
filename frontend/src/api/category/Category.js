@@ -40,7 +40,7 @@ export async function createCategory(newCategory) {
 /* 카테고리 기반 책 조회 */
 export async function getBookList(categoryid) {
   try {
-    const response = await axios.get(BASE_URL, `${categoryid}`);
+    const response = await axios.get(BASE_URL + `/${categoryid}`);
     return response.data;
   } catch (error) {
     throw error;
