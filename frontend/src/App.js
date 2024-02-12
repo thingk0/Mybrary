@@ -15,7 +15,6 @@ axios.defaults.withCredentials = true;
 axios.interceptors.request.use(
   async (config) => {
     let accessToken = localStorage.getItem("accessToken");
-    let tokenTimestamp = localStorage.getItem("tokenTimestamp");
 
     // accessToken이 없는 경우, 인증 헤더를 추가하지 않고 요청을 계속 진행
     // ex) 로그인 전 요청. 회원가입의 경우 jwt인증을 하지 않으므로 정상 요청
@@ -23,19 +22,19 @@ axios.interceptors.request.use(
     if (!accessToken) {
       return config;
     }
-
-    const timeElapsed = (Date.now() - tokenTimestamp) / 1000;
-    console.log(timeElapsed);
-
-    if (timeElapsed > 900) {
+    try {
+      accessToken = await renewToken(accessToken);
+    } catch {
       localStorage.clear();
       window.location.href = "/join";
-      return;
-    } else if (timeElapsed > 300) {
-      accessToken = await renewToken(accessToken);
-      localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("tokenTimestamp", Date.now());
+      toast.error("로그인 토큰이 만료되었습니다.", {
+        position: "top-center",
+      });
     }
+
+    // 매 요청마다 토큰 갱신
+    localStorage.setItem("accessToken", accessToken);
+    localStorage.setItem("tokenTimestamp", Date.now());
 
     config.headers["Authorization"] = `Bearer ${accessToken}`;
     return config;
@@ -49,22 +48,37 @@ export default function App() {
   const { connect } = useStompStore();
   const { setNewNotification } = useNotificationStore();
   const email = useUserStore((state) => state.user?.email);
-  const navigate = useNavigate();
 
+  /* 사용자가 사이트를 이용 하고 있으면, 토큰 시간 갱신 (토큰 갱신 X) */
   useEffect(() => {
-    const tokenTimestamp = localStorage.getItem("tokenTimestamp");
-    if (tokenTimestamp) {
-      const now = Date.now();
-      const timeElapsed = (now - tokenTimestamp) / 1000; // 분 단위로 변환
-      if (timeElapsed > 900) {
-        toast.error("로그인 토큰이 만료되었습니다.", {
-          position: "top-center",
-        });
-        localStorage.clear();
-        window.location.href = "/join";
-      }
-    }
+    const updateUserActivity = () => {
+      localStorage.setItem("tokenTimestamp", Date.now());
+    };
 
+    window.addEventListener("mousemove", updateUserActivity);
+    window.addEventListener("keydown", updateUserActivity);
+
+    // 토큰 만료 체크 로직
+    const checkTokenExpiration = () => {
+      const tokenTimestamp = localStorage.getItem("tokenTimestamp");
+      if (tokenTimestamp) {
+        const now = Date.now();
+        const timeElapsed = (now - parseInt(tokenTimestamp)) / 1000; // 초 단위로 변환
+        // 사용자가 900초(15분) 동안 아무런 활동을 하지 않았다면 로그인 페이지로 리다이렉트
+        if (timeElapsed > 900) {
+          localStorage.clear();
+          window.location.href = "/join";
+          toast.error("로그인 토큰이 만료되었습니다.", {
+            position: "top-center",
+          });
+        }
+      }
+    };
+
+    // 주기적으로 토큰 만료를 체크
+    const intervalId = setInterval(checkTokenExpiration, 10000); // 10초마다 실행
+
+    /* 새로고침 시마다 소켓 재연결 */
     async function socketConnect() {
       try {
         if (email) {
@@ -76,6 +90,12 @@ export default function App() {
       }
     }
     socketConnect();
+
+    return () => {
+      window.removeEventListener("mousemove", updateUserActivity);
+      window.removeEventListener("keydown", updateUserActivity);
+      clearInterval(intervalId);
+    };
   }, []);
   const location = useLocation(); // 현재 위치 정보를 가져옵니다.
 
