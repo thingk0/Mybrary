@@ -79,7 +79,7 @@ export default function FeedPage() {
     async function fetchMainFeedData() {
       try {
         const response = await getThreadList(page);
-        console.log(response.data);
+        console.log(response);
         // setThreadList(response.data);
 
         setList([...list, ...response.data]);
@@ -93,6 +93,7 @@ export default function FeedPage() {
   return (
     <>
       <div className={styles.feedContainer}>
+        <div className={styles.noneFeed}>더이상 게시물이 없어요!</div>
         <div
           className={s(
             styles.StackCarousel_contents,
