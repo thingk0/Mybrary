@@ -174,10 +174,14 @@ export default function FeedPage() {
       <div className={styles.create} onClick={() => navigate("/threadCreate")}>
         + 스레드 작성하러가기
       </div>
-      <div className={styles.noneFeed}>
-        <div className={styles.noneText}>더이상 스레드가 없어요!</div>
-        <div className={styles.createButton}>새로운 스레드를 작성해 보세요</div>
-      </div>
+      {activeIndex >= list.length && (
+        <div className={styles.noneFeed}>
+          <div className={styles.noneText}>더이상 스레드가 없어요!</div>
+          <div className={styles.createButton}>
+            새로운 스레드를 작성해 보세요
+          </div>
+        </div>
+      )}
       <BigModal
         modalIsOpen={scrapModal}
         setModalIsOpen={setScrapModal}
