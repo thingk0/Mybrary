@@ -89,6 +89,21 @@ export default function FeedPage() {
     fetchMainFeedData();
   }, [page]);
 
+  const incrementCommentCount = (paperId) => {
+    setList((currentList) =>
+      currentList.map((thread) => ({
+        ...thread,
+        paperList: thread.paperList.map((paper) => {
+          if (paper.id === paperId) {
+            // 해당 페이퍼의 commentCount를 1 증가
+            return { ...paper, commentCount: paper.commentCount + 1 };
+          }
+          return paper;
+        }),
+      }))
+    );
+  };
+
   return (
     <>
       <div className={styles.feedContainer}>
@@ -133,7 +148,10 @@ export default function FeedPage() {
           )}
           style={{ zIndex: zIndex }}
         >
-          <Comment commentId={commentId} />
+          <Comment
+            commentId={commentId}
+            updateCommentCount={incrementCommentCount}
+          />
         </div>
       </div>
       <div className={styles.create} onClick={() => navigate("/threadCreate")}>

@@ -52,7 +52,7 @@
 .comment_item {
   width: 89%;
   border-radius: 5px;
-  background-color: #f8c3d2;
+  /* background-color: #f8c3d2; */
   padding: 0.7vi;
   box-shadow: 0 0 15px -5px var(--main2);
   margin: 1vi;
@@ -111,6 +111,9 @@
   width: 2vi;
   height: 2vi;
   border-radius: 1vi;
+}
+.color_ {
+  background-color: #f8c3d2;
 }
 .color_1 {
   background-color: #f9caca;

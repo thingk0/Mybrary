@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import styles from "./Comment.module.css";
-import user_img from "../../assets/이미지예시.png";
+import s from "classnames";
 import { getCommentList, createComment } from "../../api/comment/Comment";
 import useUserStore from "../../store/useUserStore";
 
 //commentId라고 들어오지만 이거 페이퍼아이디임
-export default function Comment({ commentId }) {
+export default function Comment({ commentId, updateCommentCount }) {
   const [commentList, setCommentList] = useState([]);
-  const [addcomment, setAddcomment] = useState("");
   const user = useUserStore((state) => state.user);
   console.log(commentId);
 
@@ -54,12 +53,51 @@ export default function Comment({ commentId }) {
 
   const create = async () => {
     console.log("되긴함 ?");
-    try {
-      const response = await createComment(formData); // 올바른 API 함수 이름으로 교체해주세요.
-      console.log("댓글 생성 성공:", response);
-      // 댓글 생성 후 필요한 로직 추가 (예: 댓글 목록 새로고침)
-    } catch (error) {
-      console.error("댓글 생성 실패:", error);
+    if (formData.parentCommentId == null) {
+      try {
+        console.log("댓글", formData);
+        const response = await createComment(formData); // 올바른 API 함수 이름으로 교체해주세요.
+        console.log("댓글 생성 성공:", response);
+        const response2 = await getCommentList(commentId);
+        console.log(commentId);
+        console.log(response2.data);
+        updateCommentCount(commentId);
+        if (commentId != 0) {
+          setCommentList(response2.data.commentGetDtoList);
+        }
+        //const newComment = response.data; // response.data가 새로 생성된 댓글 데이터를 포함하고 있다고 가정
+        // setCommentList((prevCommentList) => [...prevCommentList, newComment]);
+        setFormData({
+          ...formData,
+          content: "",
+          parentCommentId: null,
+          colorCode: 0,
+        });
+        // 댓글 생성 후 필요한 로직 추가 (예: 댓글 목록 새로고침)
+      } catch (error) {
+        console.error("댓글 생성 실패:", error);
+      }
+    } else if (formData.parentCommentId != null) {
+      try {
+        console.log("대댓글", formData);
+        const response = await createComment(formData);
+        console.log("대댓글 생성 성공", response);
+        const response2 = await getCommentList(commentId);
+        console.log(commentId);
+        console.log(response2.data);
+        updateCommentCount(commentId);
+        if (commentId != 0) {
+          setCommentList(response2.data.commentGetDtoList);
+        }
+        setFormData({
+          ...formData,
+          content: "",
+          parentCommentId: null,
+          colorCode: 0,
+        });
+      } catch (error) {
+        console.log("대댓글 생성 실패", error);
+      }
     }
   };
 
@@ -85,7 +123,12 @@ export default function Comment({ commentId }) {
         {commentList.length !== 0 ? (
           <>
             {commentList.map((comment) => (
-              <div className={styles.comment_item}>
+              <div
+                className={s(
+                  styles.comment_item,
+                  styles[`color_${comment.colorCode}`] // 수정된 부분
+                )}
+              >
                 <div className={styles.comment_nickname}>
                   {comment.ownerNickname}
                 </div>
