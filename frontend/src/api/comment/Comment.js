@@ -14,6 +14,15 @@ export async function getCommentList(id) {
     throw error;
   }
 }
+//대댓글조회
+export async function getCommentbabyList(id) {
+  try {
+    const response = await axios.get(BASE_URL + `comment/${id}/child`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}
 
 /* 댓글 생성 */
 export async function createComment(object) {
