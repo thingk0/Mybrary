@@ -527,7 +527,7 @@ export default function MybraryPage() {
                   />
                 </div>
                 <div className={styles.프로필박스}>
-                  <div>{userInfo.nickname}</div>
+                  <div className={styles.닉네임폰트}>{userInfo.nickname}</div>
                   <div>{userInfo.name}</div>
                 </div>
                 <div className={styles.프로필박스}>
@@ -539,14 +539,14 @@ export default function MybraryPage() {
                   <div>게시글</div>
                 </div>
                 <div
-                  className={styles.프로필박스}
+                  className={styles.프로필박스3}
                   onClick={() => handleShowList("follower")}
                 >
                   <div>{userInfo.followerCount}</div>
                   <div>팔로워</div>
                 </div>
                 <div
-                  className={styles.프로필박스}
+                  className={styles.프로필박스3}
                   onClick={() => handleShowList("following")}
                 >
                   <div>{userInfo.followingCount}</div>

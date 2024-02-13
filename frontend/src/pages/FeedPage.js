@@ -84,6 +84,7 @@ export default function FeedPage() {
         // setThreadList(response.data);
 
         setList([...list, ...response.data]);
+        console.log(response);
       } catch (error) {
         console.error("데이터불러오기실패");
       }

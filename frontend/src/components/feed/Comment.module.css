@@ -75,9 +75,9 @@
   position: relative;
 }
 .comment_nickname {
-  font-size: 0.84vi;
+  font-size: 0.8vi;
   margin-bottom: 0.3vi;
-  color: #342321;
+  color: #3e2825;
 }
 .comment_text {
   font-size: 1vi;

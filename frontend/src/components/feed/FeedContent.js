@@ -16,7 +16,8 @@ import s from "classnames";
 import FeedModal from "./FeedModal";
 import { like } from "../../api/paper/Paper";
 import toast from "react-hot-toast";
-
+import useUserStore from "../../store/useUserStore";
+import { useNavigate } from "react-router-dom";
 export default function FeedContent({
   thread,
   setComment,
@@ -25,6 +26,8 @@ export default function FeedContent({
   setZIndex,
   setScrapModal,
 }) {
+  const navigate = useNavigate();
+  const user = useUserStore((state) => state.user);
   const [x, setX] = useState(1);
   const openComment = (id) => {
     setCommentId(id);
@@ -100,7 +103,10 @@ export default function FeedContent({
       {thread.paperList.map((paper, index) => (
         <div className={s(styles.aa, styles[`a${x}`])} key={index}>
           <div className={styles.user_info}>
-            <div className={styles.user_profile}>
+            <div
+              className={styles.user_profile}
+              onClick={() => navigate(`/mybrary/${thread.memberId}`)}
+            >
               <img
                 src={`https://jingu.s3.ap-northeast-2.amazonaws.com/${thread.profileUrl}`}
                 alt=""
@@ -113,9 +119,15 @@ export default function FeedContent({
                 </div>
               </div>
             </div>
-            <div className={styles.user_follow}>
-              {thread.followed ? "팔로잉" : "팔로우"}
-            </div>
+            {user.memberId != thread.memberId && (
+              <div
+                onClick={() => navigate(`/mybrary/${thread.memberId}`)}
+                className={styles.user_follow}
+              >
+                {thread.followed && "팔로잉중"}
+                {!thread.followed && "팔로우"}
+              </div>
+            )}
           </div>
           <div className={styles.icon_container}>
             <div className={styles.icon_left}>
