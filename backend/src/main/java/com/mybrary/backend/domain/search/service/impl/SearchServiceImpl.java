@@ -3,6 +3,7 @@ package com.mybrary.backend.domain.search.service.impl;
 import com.mybrary.backend.domain.book.dto.responseDto.BookGetDto;
 import com.mybrary.backend.domain.book.repository.BookRepository;
 import com.mybrary.backend.domain.contents.thread.dto.responseDto.ThreadSearchGetDto;
+import com.mybrary.backend.domain.member.dto.responseDto.FollowingDto;
 import com.mybrary.backend.domain.member.dto.responseDto.MemberGetDto;
 import com.mybrary.backend.domain.member.entity.Member;
 import com.mybrary.backend.domain.member.repository.MemberRepository;
@@ -69,9 +70,31 @@ public class SearchServiceImpl implements SearchService {
             System.out.println("한글입니다.");
             keyword = extractCompletedKorean(keyword);
             accountList = memberRepository.searchAcoountByKo(me.getId(), keyword, page).orElseThrow(MemberNotFoundException::new);
+            for (int i = 0; i < accountList.size(); i++) {
+                MemberGetDto member = accountList.get(i);
+
+                if (memberRepository.isFollowed(me.getId(), member.getMemberId()).orElse(null) != null) {
+                    accountList.get(i).setFollowStatus(3);
+                } else if (memberRepository.isRequested(me.getId(), member.getMemberId()).orElse(null) != null) {
+                    accountList.get(i).setFollowStatus(2);
+                } else {
+                    accountList.get(i).setFollowStatus(1);
+                }
+            }
         } else if (isEnglish(keyword)) {
             System.out.println("영어입니다.");
             accountList = memberRepository.searchAcoountByEn(me.getId(), keyword, page).orElseThrow(MemberNotFoundException::new);
+            for (int i = 0; i < accountList.size(); i++) {
+                MemberGetDto member = accountList.get(i);
+
+                if (memberRepository.isFollowed(me.getId(), member.getMemberId()).orElse(null) != null) {
+                    accountList.get(i).setFollowStatus(3);
+                } else if (memberRepository.isRequested(me.getId(), member.getMemberId()).orElse(null) != null) {
+                    accountList.get(i).setFollowStatus(2);
+                } else {
+                    accountList.get(i).setFollowStatus(1);
+                }
+            }
         } else {
             System.out.println("한글도 영어도 아닙니다.");
         }

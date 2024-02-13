@@ -26,5 +26,18 @@ public class MemberGetDto {
     private String profileImageUrl;
     private boolean isProfilePublic;
     private boolean isNotifyEnabled;
+    private int followStatus;
 
+    public MemberGetDto(Long memberId, String email, String name, String nickname, String intro, Long profileImageId,
+                        String profileImageUrl, boolean isProfilePublic, boolean isNotifyEnabled) {
+        this.memberId = memberId;
+        this.email = email;
+        this.name = name;
+        this.nickname = nickname;
+        this.intro = intro;
+        this.profileImageId = profileImageId;
+        this.profileImageUrl = profileImageUrl;
+        this.isProfilePublic = isProfilePublic;
+        this.isNotifyEnabled = isNotifyEnabled;
+    }
 }
