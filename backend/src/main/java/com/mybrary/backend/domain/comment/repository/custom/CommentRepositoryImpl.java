@@ -26,7 +26,7 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom {
                     member.nickname.as("ownerNickname"),
                     comment.content.as("content"),
                     comment.colorCode.as("colorCode"),
-                    comment.createdAt.as("time")
+                    comment.createdAt.as("createdAt")
                 ))
             .from(comment)
             .leftJoin(member).on(comment.member.id.eq(member.id))
