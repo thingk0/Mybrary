@@ -12,10 +12,14 @@ import lombok.NoArgsConstructor;
 public class BookListGetFromPaperDto {
 
     private Long bookId;
-    private String bookTitle;
     private Long memberId;
     private String nickname;
     private Long profileImageId;
     private String profileImageUrl;
+    private String bookTitle;
+    private Long imageId;
+    private String imageUrl;
+    private int coverLayout;
+    private int coverColorCode;
 
 }

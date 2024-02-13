@@ -90,14 +90,19 @@ public class BookRepositoryImpl implements BookRepositoryCustom {
 
     @Override
     public Optional<List<BookListGetFromPaperDto>> getBookListFromPaper(Long paperId) {
+
+        QImage profileImage = new QImage("profileImage");
+        QImage coverImage = new QImage("coverImage");
+
         return Optional.ofNullable(query.select(Projections.constructor(BookListGetFromPaperDto.class,
-                                                                        book.id, book.coverTitle, member.id, member.nickname,
-                                                                        image.id, image.url))
+                                                                        book.id, member.id, member.nickname,
+                                                                        profileImage.id, profileImage.url, book.coverTitle, coverImage.id, coverImage.url, book.coverLayout, book.coverColor))
                                         .from(paper)
                                         .leftJoin(scrap).on(scrap.paper.id.eq(paper.id))
                                         .leftJoin(book).on(scrap.book.id.eq(book.id))
                                         .leftJoin(member).on(paper.member.id.eq(member.id))
-                                        .leftJoin(image).on(member.profileImage.id.eq(image.id))
+                                        .leftJoin(profileImage).on(member.profileImage.id.eq(profileImage.id))
+                                       .leftJoin(coverImage).on(book.coverImage.id.eq(coverImage.id))
                                         .where(paper.id.eq(paperId).and(paper.member.id.eq(book.member.id)))
                                         .fetch()
         );
