@@ -25,8 +25,12 @@ export default function PaperplanePage() {
   //채팅페이지에 들어오면 구독 실행
   useEffect(() => {
     (async function asyncGetChatList() {
-      const res = await getChatList();
-      setChatRoomList(res.data.content);
+      try {
+        const res = await getChatList();
+        setChatRoomList(res.data.content);
+      } catch (e) {
+        navigate("/error");
+      }
     })();
 
     if (!stompClient) {
@@ -40,8 +44,9 @@ export default function PaperplanePage() {
 
       client.onConnect = function () {
         console.log("채팅구독");
-        client.subscribe(`sub/chatMemberId/${user.memberId}`, (message) => {
+        client.subscribe(`/sub/chatMemberId/${user.memberId}`, (message) => {
           const res = JSON.body(message.body);
+          console.log(res);
           setChatMessageList((prev) => [res, ...prev]);
         });
       };
@@ -54,8 +59,12 @@ export default function PaperplanePage() {
   useEffect(() => {
     if (nowChatRoom) {
       (async function asyncGetMessageList() {
-        const res = await getMessageList(nowChatRoom.chatRoomId);
-        setChatMessageList(res.data.content);
+        try {
+          const res = await getMessageList(nowChatRoom.chatRoomId);
+          setChatMessageList(res.data.content);
+        } catch (e) {
+          navigate("/error");
+        }
       })();
     }
 
@@ -100,7 +109,7 @@ export default function PaperplanePage() {
           nickname: user.nickname,
           content: nowMessage,
           profileImageUrl: user.profileImageUrl,
-          timestamp: nowChatRoom,
+          timestamp: Date.now(),
         };
         setChatMessageList((prev) => [message, ...prev]);
 
