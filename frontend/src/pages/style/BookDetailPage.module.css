@@ -23,6 +23,7 @@
   width: 150px;
   text-align: end;
   cursor: pointer;
+  position: relative;
 }
 .headerMain {
   font-size: 25px;

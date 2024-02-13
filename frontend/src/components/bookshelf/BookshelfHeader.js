@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react";
 import title from "../atom/atomstyle/Title.module.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { getMybrary } from "../../api/mybrary/Mybrary";
+import useMybraryStore from "../../store/useMybraryStore";
 //책장 페이지 헤더
 export default function BookshelfHeader() {
   const navigate = useNavigate();
   const { userid } = useParams();
   const [user, setUser] = useState({});
+  const mybrary = useMybraryStore((state) => state.mybrary);
   useEffect(() => {
     async function fetchMyData() {
       console.log(userid);
@@ -38,7 +40,7 @@ export default function BookshelfHeader() {
         <div className={title.main_title}>{user.nickname}'s bookshelf</div>
         <div
           className={title.right_title}
-          onClick={() => navigate("../rollingpaper")}
+          onClick={() => navigate(`../rollingpaper/${mybrary.rollingPaperId}`)}
         >
           {" "}
           롤링페이퍼 &gt;

@@ -10,7 +10,8 @@ import ContentItem2 from "../components/book/ContentItem2";
 
 export default function BookDetailPage() {
   const userId = useUserStore((state) => state.user.memberId);
-  const writerId = useBookStore((state) => state.book.writer.memberId);
+  const writerId2 = useBookStore((state) => state.book?.memberId);
+  const writerId = useBookStore((state) => state.book?.writer?.memberId);
   const book = useBookStore((state) => state.book);
 
   const bookRef = useRef();
@@ -61,7 +62,9 @@ export default function BookDetailPage() {
       <div className={s(styles.bookContainer)}>
         <div className={styles.header}>
           <div className={styles.headerLeft}>뒤로가기</div>
-          <div className={styles.headerMain}>{book.coverTitle}</div>
+          <div className={styles.headerMain}>
+            {book.coverTitle || book.bookTitle}
+          </div>
           <div
             onClick={() => {
               setIsModalOpen(true);
@@ -69,21 +72,21 @@ export default function BookDetailPage() {
             className={styles.headerRight}
           >
             옵션
-            <FeedModal
-              width="150px"
-              setIsModalOpen={setIsModalOpen}
-              isModalOpen={isModalOpen}
-              right="-5px"
-              top="10px"
-            >
-              <div className={styles.option}>
-                {writerId !== userId && <div>내 책장에 담기</div>}
-                {writerId === userId && <div>책 삭제</div>}
-                {writerId !== userId && <div>책 구독취소</div>}
-              </div>
-            </FeedModal>
           </div>
         </div>
+        <FeedModal
+          width="150px"
+          setIsModalOpen={setIsModalOpen}
+          isModalOpen={isModalOpen}
+          right="25px"
+          top="-20px"
+        >
+          <div className={styles.option}>
+            {(writerId || writerId2) !== userId && <div>내 책장에 담기</div>}
+            {(writerId || writerId2) === userId && <div>책 삭제</div>}
+            {(writerId || writerId2) !== userId && <div>책 구독취소</div>}
+          </div>
+        </FeedModal>
         {pages.length ? (
           <>
             <div
@@ -99,8 +102,8 @@ export default function BookDetailPage() {
                   height={750}
                   onFlip={onFlip}
                   maxShadowOpacity={0.2}
-                  clickEventForward={true}
                   useMouseEvents={false}
+                  showCover={false}
                 >
                   {pages.map((page, index) => (
                     <div
@@ -118,13 +121,15 @@ export default function BookDetailPage() {
                           <div>{page.writer.nickname}님의 페이퍼</div>
                         </div>
                         {index % 2 !== 0 ? (
-                          <div
-                            onClick={() => {
-                              setListModal1(true);
-                            }}
-                            className={styles.headerRight}
-                          >
-                            {".  .  ."}
+                          <div>
+                            <div
+                              onClick={() => {
+                                setListModal1(true);
+                              }}
+                              className={styles.headerRight}
+                            >
+                              {".  .  ."}
+                            </div>
                             <FeedModal
                               width="150px"
                               setIsModalOpen={setListModal1}
@@ -134,7 +139,7 @@ export default function BookDetailPage() {
                             >
                               <div className={styles.option}>
                                 <div>해당 스레드 보러가기</div>
-                                {writerId === userId && (
+                                {(writerId || writerId2) === userId && (
                                   <div>책에서 페이퍼 제거</div>
                                 )}
                                 {page.writer.memberId === userId && (
@@ -147,13 +152,15 @@ export default function BookDetailPage() {
                             </FeedModal>
                           </div>
                         ) : (
-                          <div
-                            onClick={() => {
-                              setListModal2(true);
-                            }}
-                            className={styles.headerRight}
-                          >
-                            {".  .  ."}
+                          <div>
+                            <div
+                              onClick={() => {
+                                setListModal2(true);
+                              }}
+                              className={styles.headerRight}
+                            >
+                              {".  .  ."}
+                            </div>
                             <FeedModal
                               width="150px"
                               setIsModalOpen={setListModal2}
@@ -163,7 +170,7 @@ export default function BookDetailPage() {
                             >
                               <div className={styles.option}>
                                 <div>해당 스레드 보러가기</div>
-                                {writerId === userId && (
+                                {(writerId || writerId2) === userId && (
                                   <div>책에서 페이퍼 제거</div>
                                 )}
                                 {page.writer.memberId === userId && (

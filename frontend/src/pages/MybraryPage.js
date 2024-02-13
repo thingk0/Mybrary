@@ -25,6 +25,7 @@ import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
 import useUserStore from "../store/useUserStore";
+import useMybraryStore from "../store/useMybraryStore";
 import useStompStore from "../store/useStompStore";
 import {
   getMyMybrary,
@@ -46,6 +47,7 @@ export default function MybraryPage() {
   const Params = useParams();
   const nowuser = Params.userid;
   const user = useUserStore((state) => state.user);
+  const setMybrary = useMybraryStore((state) => state.setMybrary);
   const client = useStompStore((state) => state.stompClient);
 
   // 각각의 색상옵션들
@@ -217,6 +219,7 @@ export default function MybraryPage() {
           const response = await getMyMybrary();
           setCheckme(true);
           console.log(response.data);
+          setMybrary(response.data);
           setUserInfo(response.data);
           setBgColor(response.data.backgroundColor);
           setEsColor(easelImgs[response.data.easelColor - 1]);
@@ -231,6 +234,7 @@ export default function MybraryPage() {
           setIsLoading(false);
         } else {
           const response = await getMybrary(nowuser);
+          setMybrary(response.data);
           setCheckme(false);
           console.log(response.data);
           setFollowStatus(response.data.followStatus);

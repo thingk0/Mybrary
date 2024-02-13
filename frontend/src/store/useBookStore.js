@@ -8,6 +8,9 @@ const useBookStore = create(
       setBook: (Book) => {
         set({ book: Book });
       },
+      setBook2: (Book) => {
+        set({ book: Book });
+      },
     }),
     {
       name: "book-storage", // 로컬 스토리지에 저장될 때 사용될 키 이름
