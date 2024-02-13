@@ -58,7 +58,7 @@ export default function BookDetailPage() {
       <div className={s(styles.bookContainer)}>
         <div className={styles.header}>
           <div className={styles.headerLeft}>뒤로가기</div>
-          <div className={styles.headerMain}>책 이름</div>
+          <div className={styles.headerMain}>{book.coverTitle}</div>
           <div
             onClick={() => {
               setIsModalOpen(true);
@@ -84,29 +84,35 @@ export default function BookDetailPage() {
             </FeedModal>
           </div>
         </div>
-        <HTMLFlipBook
-          ref={bookRef}
-          width={600}
-          height={800}
-          onFlip={onFlip}
-          maxShadowOpacity={0.2}
-          clickEventForward={true}
-          useMouseEvents={false}
-        >
-          {pages.map((page, index) => (
-            <div className={styles.page} key={index}>
-              <ContentItem paper={page} />
-            </div>
-          ))}
-        </HTMLFlipBook>
-        <div>
-          <button onClick={() => onPrev("Y")}>이전 페이지</button>
+        {pages.length ? (
           <div>
-            <div>{curPage}</div>
-            <div>/전체페이지</div>
+            <HTMLFlipBook
+              ref={bookRef}
+              width={600}
+              height={800}
+              onFlip={onFlip}
+              maxShadowOpacity={0.2}
+              clickEventForward={true}
+              useMouseEvents={false}
+            >
+              {pages.map((page, index) => (
+                <div className={styles.page} key={index}>
+                  <ContentItem paper={page} />
+                </div>
+              ))}
+            </HTMLFlipBook>
+            <div>
+              <button onClick={() => onPrev("Y")}>이전 페이지</button>
+              <div>
+                <div>{curPage}</div>
+                <div>/전체페이지</div>
+              </div>
+              <button onClick={() => onNext("Y")}>다음 페이지</button>
+            </div>
           </div>
-          <button onClick={() => onNext("Y")}>다음 페이지</button>
-        </div>
+        ) : (
+          <div> 책에 페이지가 하나도 없습니다</div>
+        )}
       </div>
     </>
   );
