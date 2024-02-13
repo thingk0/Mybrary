@@ -143,6 +143,7 @@
   margin-right: 20px;
   color: var(--Main3, #bfa6a2);
   font-size: 15px;
+  cursor: pointer;
 }
 .textmain {
   width: 100%;

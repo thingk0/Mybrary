@@ -11,17 +11,19 @@ import Iconuser2 from "../assets/icon/Iconuser2.png";
 import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
 import useNotificationStore from "../store/useNotificationStore.js";
+import { useNavigate } from "react-router-dom";
 
 export default function PaperplanePage() {
   /* 웹소켓: 채팅용 주소를 구독 */
   const user = useUserStore((state) => state.user);
   const [chatRoomList, setChatRoomList] = useState([]); // 채팅방 리스트
   const [chatMessageList, setChatMessageList] = useState([]); // 접속중인 채팅방 채팅 내역
-  const [nowChatRoom, setNowChatRoom] = useState({}); // 현재 내가 보고있는 채팅방 정보
+  const [nowChatRoom, setNowChatRoom] = useState(null); // 현재 내가 보고있는 채팅방 정보
   const [stompClient, setStompClient] = useState(null);
   const { connect } = useStompStore();
   const { setNewNotification } = useNotificationStore();
   const chatContainerRef = useRef(null); // 채팅 컨테이너에 대한 ref 스크롤 아래로 관리하기 윟마
+  const navigate = useNavigate();
 
   useEffect(() => {
     // 채팅방 리스트들을 조회, 나에게 오는 메시지들을 받아볼 수 있도록 구독
@@ -31,15 +33,8 @@ export default function PaperplanePage() {
       setChatRoomList(res.data.content);
     })();
 
-    async function socketConnect() {
-      await connect(user.email, setNewNotification);
-    }
-
     // 해당 페이지가 unmount 될 때, 즉 해당 페이지를 떠날 때
     // 오직 알림만을 위한 소켓 연결을 시도
-    return () => {
-      socketConnect();
-    };
   }, []);
 
   //채팅 방이 바뀔 때마다 해당 채팅 방으로 새로운 구독을 발행
@@ -53,7 +48,8 @@ export default function PaperplanePage() {
     });
 
     client.onConnect = function () {
-      client.subscribe(`/sub/chatroom/1`, (message) => {
+      console.log("채팅구독");
+      client.subscribe(`/sub/chatMemberId/${user.memberId}`, (message) => {
         console.log("receive check!! ");
         console.log(message);
       });
@@ -61,7 +57,9 @@ export default function PaperplanePage() {
 
     client.activate();
     setStompClient(client);
+  }, []);
 
+  useEffect(() => {
     const scrollToBottom = () => {
       if (chatContainerRef.current) {
         chatContainerRef.current.scrollTop =
@@ -70,11 +68,7 @@ export default function PaperplanePage() {
     };
 
     scrollToBottom(); // 컴포넌트 마운트 시 실행
-  }, []);
-
-  useEffect(() => {
-    // 이제 채팅방 메시지 조회 함수 여기서 불러와야 함
-    console.log(nowChatRoom);
+    //console.log(nowChatRoom);
   }, [nowChatRoom]);
 
   useEffect(() => {
@@ -87,14 +81,15 @@ export default function PaperplanePage() {
 
   const sendMessage = () => {
     const messageObject = {
-      chatRoomId: 1,
+      chatRoomId: 9,
       senderId: user.memberId,
+      receiverId: 2,
       message: "안녕하세요",
       threadId: 1,
     };
 
     console.log(stompClient);
-    const destination = `/pub/chat/1/send`;
+    const destination = `/pub/chat/${nowChatRoom.chatRoomId}/send`;
     const bodyData = JSON.stringify(messageObject);
     stompClient.publish({ destination, body: bodyData });
   };
@@ -166,7 +161,7 @@ export default function PaperplanePage() {
             </div>
             <div className={styles.chat}>
               {/* 채팅 헤더 및 마이브러리 가기 버튼 */}
-              {true ? (
+              {nowChatRoom ? (
                 <div>
                   <div className={styles.header}>
                     {/* 상대방 프로필 이미지와 닉네임 */}
@@ -186,7 +181,12 @@ export default function PaperplanePage() {
                       />
                       <div>{nowChatRoom.otherMemberNickname}</div>
                     </div>
-                    <button className={styles.마이브러리가기}>
+                    <button
+                      className={styles.마이브러리가기}
+                      onClick={() => {
+                        navigate(`/mybrary/${nowChatRoom.otherMemberId}`);
+                      }}
+                    >
                       마이브러리 가기
                     </button>
                   </div>
