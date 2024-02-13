@@ -37,3 +37,9 @@
 .modal > div {
   font-size: 16px;
 }
+.flex > div {
+  cursor: pointer;
+}
+.title {
+  cursor: pointer;
+}
