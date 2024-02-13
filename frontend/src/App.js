@@ -1,4 +1,4 @@
-import { useNavigate, Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import Nav from "./components/atom/Nav";
 import "./App.css";
 import axios from "axios";
@@ -22,8 +22,11 @@ axios.interceptors.request.use(
     if (!accessToken) {
       return config;
     }
+
     try {
-      accessToken = await renewToken(accessToken);
+      if ((Date.now - localStorage.getItem("tokenTimestamp")) / 1000 > 800) {
+        accessToken = await renewToken(accessToken);
+      }
     } catch {
       localStorage.clear();
       window.location.href = "/join";
@@ -45,40 +48,11 @@ axios.interceptors.request.use(
 );
 
 export default function App() {
-  const { connect } = useStompStore();
+  const { stompClient, connect } = useStompStore();
   const { setNewNotification } = useNotificationStore();
   const email = useUserStore((state) => state.user?.email);
 
-  /* 사용자가 사이트를 이용 하고 있으면, 토큰 시간 갱신 (토큰 갱신 X) */
   useEffect(() => {
-    const updateUserActivity = () => {
-      localStorage.setItem("tokenTimestamp", Date.now());
-    };
-
-    window.addEventListener("mousemove", updateUserActivity);
-    window.addEventListener("keydown", updateUserActivity);
-
-    // 토큰 만료 체크 로직
-    const checkTokenExpiration = () => {
-      const tokenTimestamp = localStorage.getItem("tokenTimestamp");
-      if (tokenTimestamp) {
-        const now = Date.now();
-        const timeElapsed = (now - parseInt(tokenTimestamp)) / 1000; // 초 단위로 변환
-        // 사용자가 900초(15분) 동안 아무런 활동을 하지 않았다면 로그인 페이지로 리다이렉트
-        if (timeElapsed > 900) {
-          localStorage.clear();
-          window.location.href = "/join";
-          toast.error("로그인 토큰이 만료되었습니다.", {
-            position: "top-center",
-          });
-        }
-      }
-    };
-
-    // 주기적으로 토큰 만료를 체크
-    const intervalId = setInterval(checkTokenExpiration, 10000); // 10초마다 실행
-
-    /* 새로고침 시마다 소켓 재연결 */
     async function socketConnect() {
       try {
         if (email) {
@@ -89,14 +63,10 @@ export default function App() {
         console.log(e);
       }
     }
-    socketConnect();
-
-    return () => {
-      window.removeEventListener("mousemove", updateUserActivity);
-      window.removeEventListener("keydown", updateUserActivity);
-      clearInterval(intervalId);
-    };
+    // 있으면 재연결 하지마
+    if (!stompClient) socketConnect();
   }, []);
+
   const location = useLocation(); // 현재 위치 정보를 가져옵니다.
 
   // 현재 경로가 홈('/')이면 Nav를 숨깁니다.

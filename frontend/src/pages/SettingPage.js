@@ -39,7 +39,7 @@ export default function SettingPage() {
   /* 유효성검사 정규표현식 */
   const regex = {
     password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*\d).{8,20}$/,
-    nickname: /^[a-zA-Z0-9_]{3,15}$/,
+    nickname: /^[a-zA-Z0-9_]{3,10}$/,
   };
 
   const navigate = useNavigate();
@@ -77,7 +77,7 @@ export default function SettingPage() {
       });
     } else if (!regex.nickname.test(nname)) {
       toast.error(
-        "닉네임은 영어, 숫자, 언더바만 사용하여 3~15자 입력해야 합니다",
+        "닉네임은 영어, 숫자, 언더바만 사용하여 3~10자 입력해야 합니다",
         {
           position: "top-center",
         }

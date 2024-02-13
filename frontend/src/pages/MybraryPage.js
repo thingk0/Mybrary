@@ -398,7 +398,9 @@ export default function MybraryPage() {
               src={esColor}
               alt=""
               className={s(styles.easel, !edit && styles.img)}
-              onClick={() => !edit && navigate("rollingpaper")}
+              onClick={() =>
+                !edit && navigate(`rollingpaper/${userInfo.rollingPaperId}`)
+              }
               onMouseEnter={() => handleShow("easel", true)}
               onMouseLeave={() => handleShow("easel", false)}
             />

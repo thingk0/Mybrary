@@ -1,6 +1,13 @@
 import Iconuser2 from "../../assets/icon/Iconuser2.png";
 
-function ChatProfile({ isSelected }) {
+function ChatProfile({
+  isSelected,
+  otherMemberNickname,
+  otherMemberProfileImageUrl,
+  lastMessage,
+  unreadMessageCount,
+  onClick,
+}) {
   return (
     <>
       <div
@@ -14,10 +21,12 @@ function ChatProfile({ isSelected }) {
           borderRadius: "5px",
           marginBottom: "12px",
           padding: "0 10px",
+          cursor: "pointer",
         }}
+        onClick={onClick}
       >
         <img
-          src={Iconuser2} // 선택된 이미지 또는 기본 이미지
+          src={`https://jingu.s3.ap-northeast-2.amazonaws.com/${otherMemberProfileImageUrl}`} // 선택된 이미지 또는 기본 이미지
           alt="프로필"
           style={{
             width: "14%",
@@ -36,7 +45,7 @@ function ChatProfile({ isSelected }) {
               marginBottom: "8px",
             }}
           >
-            <span>manmangi_98</span>
+            <span>{otherMemberNickname}</span>
           </div>
           <div
             style={{
@@ -47,9 +56,11 @@ function ChatProfile({ isSelected }) {
               color: "var(--main5)",
             }}
           >
-            <span>
-              공유좀 그만해 준호야!! 알림에 너밖에 어디까지 늘어나나요
-            </span>
+            {lastMessage ? (
+              <span>{lastMessage}</span>
+            ) : (
+              <span>종이 비행기를 보내 채팅을 시작하세요</span>
+            )}
           </div>
         </div>
         <div
@@ -70,8 +81,11 @@ function ChatProfile({ isSelected }) {
           >
             ...
           </div>
-          <div style={{ marginBottom: "27px" }}>new</div>
-          {/* <div style={{ marginBottom: "27px" }}>&nbsp;</div> */}
+          {unreadMessageCount > 0 ? (
+            <div style={{ marginBottom: "27px" }}>new</div>
+          ) : (
+            <div style={{ marginBottom: "27px" }}>&nbsp;</div>
+          )}
         </div>
       </div>
     </>
