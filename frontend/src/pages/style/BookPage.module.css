@@ -20,6 +20,9 @@
 .middle {
   margin: 0 auto;
 }
+.책추가 {
+  cursor: pointer;
+}
 
 .캐러셀 {
   height: 600px;
@@ -373,6 +376,7 @@
 
 .option {
   margin: 10px 0;
+  cursor: pointer;
 }
 .delete {
   color: var(--gomin5);
