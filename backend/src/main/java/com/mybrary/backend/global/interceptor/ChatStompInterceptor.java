@@ -27,6 +27,8 @@ public class ChatStompInterceptor implements ChannelInterceptor {
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
 
+        log.info("event=SEND-MESSAGE, message={}", message);
+
         // WebSocket 연결 시도 시 인증 토큰 검증
         if (StompCommand.CONNECT.equals(accessor.getCommand())) {
             List<String> authorization = accessor.getNativeHeader("Authorization");
@@ -42,6 +44,7 @@ public class ChatStompInterceptor implements ChannelInterceptor {
                     // 인증 정보를 Spring SecurityContext 에 설정
                     UsernamePasswordAuthenticationToken authentication = getSimpleAuthenticationToken(email);
                     SecurityContextHolder.getContext().setAuthentication(authentication);
+                    accessor.setUser(authentication);
 
                     // 로깅: 인증 성공
                     log.info("event=Authentication-Success, email={}", email);
