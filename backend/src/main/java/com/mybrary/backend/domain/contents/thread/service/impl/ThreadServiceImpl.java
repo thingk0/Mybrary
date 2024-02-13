@@ -202,6 +202,10 @@ public class ThreadServiceImpl implements ThreadService {
                 MainThreadListNotFoundException::new);
             System.out.println("1");
             System.out.println("크기" + threadDtoList.size());
+            for (GetThreadDto aaa : threadDtoList) {
+                  System.out.print(aaa.getThreadId() + " ");
+            }
+            System.out.println();
 
             /* following중이지 않은 멤버의 쓰레드 최대 10개 조회와 관련 정보 dto 생성*/
             int getRandomCount = 10 - threadDtoList.size();
@@ -211,6 +215,10 @@ public class ThreadServiceImpl implements ThreadService {
                                 .orElseThrow(MainThreadListNotFoundException::new));
             System.out.println("2");
             System.out.println("크기" + threadDtoList.size());
+            for (int i = 5;i<10;i++) {
+                  System.out.print(threadDtoList.get(i).getThreadId() + " ");
+            }
+            System.out.println();
             /* list 내에서 무작위로 순서 배정 */
             Collections.shuffle(threadDtoList);
             /* followingThreadDtos의 각 threadId에 해당하는 paper관련 정보 조회 */
