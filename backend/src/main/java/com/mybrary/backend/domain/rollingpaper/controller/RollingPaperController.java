@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,7 +53,7 @@ public class RollingPaperController {
 
     @MessageMapping("/rollingpaper/{rollingpaperId}")
     @SendTo("/sub/rollingpaper/{rollingpaperId}")
-    public String handleMessage(@DestinationVariable String rollingPaperId, @RequestBody String encodingString) {
+    public String handleMessage(@DestinationVariable String rollingPaperId, @Payload String encodingString) {
         return encodingString;
     }
     
