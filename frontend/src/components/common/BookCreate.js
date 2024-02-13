@@ -9,7 +9,7 @@ import useUserStore from "../../store/useUserStore";
 import { uplodaImage } from "../../api/image/Image";
 import { createBook } from "../../api/book/Book";
 
-export default function BookCreate({ setBookList, booklist }) {
+export default function BookCreate({ setBookList, booklist, setModalIsOpen }) {
   const layouts = [1, 2, 3, 4, 5, 6];
   const colors = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
   const [categorys, setCategorys] = useState([]);
@@ -85,6 +85,7 @@ export default function BookCreate({ setBookList, booklist }) {
       paperCount: 0,
     };
     addNewBookToCategory(value.categoryId, newBook);
+    setModalIsOpen(false);
   };
 
   return (
