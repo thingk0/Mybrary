@@ -3,19 +3,21 @@ import HTMLFlipBook from "react-pageflip";
 import styles from "./style/BookDetailPage.module.css";
 import s from "classnames";
 import FeedModal from "../components/feed/FeedModal";
-import ContentItem from "../components/feed/ContentItem";
 import useUserStore from "../store/useUserStore";
 import useBookStore from "../store/useBookStore";
 import { getBook } from "../api/book/Book";
 import ContentItem2 from "../components/book/ContentItem2";
 
 export default function BookDetailPage() {
-  const user = useUserStore((state) => state.user);
+  const userId = useUserStore((state) => state.user.memberId);
+  const writerId = useBookStore((state) => state.book.writer.memberId);
   const book = useBookStore((state) => state.book);
 
   const bookRef = useRef();
   const [curPage, setCurPage] = useState();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [listModal1, setListModal1] = useState(false);
+  const [listModal2, setListModal2] = useState(false);
 
   const onPrev = (hasFlip = "N") => {
     const pageIndex = bookRef.current.pageFlip().getCurrentPageIndex();
@@ -47,10 +49,10 @@ export default function BookDetailPage() {
   useEffect(() => {
     async function getbook() {
       const pagelist = await getBook(book.bookId);
-      setPages(pagelist.data.paperList);
-      console.log(pagelist.data.paperList);
+      setPages(pagelist.data.paperList ? pagelist.data.paperList : []);
+      console.log(pagelist);
     }
-    console.log(book);
+    console.log(writerId, userId);
     getbook();
   }, []);
 
@@ -75,58 +77,129 @@ export default function BookDetailPage() {
               top="10px"
             >
               <div className={styles.option}>
-                {}
-                <div>내 책장에 담기</div>
-                <div>책 카테고리 수정</div>
-                <div>책 표지 수정</div>
-                <div>책 삭제</div>
-                <div>책 구독취소</div>
+                {writerId !== userId && <div>내 책장에 담기</div>}
+                {writerId === userId && <div>책 삭제</div>}
+                {writerId !== userId && <div>책 구독취소</div>}
               </div>
             </FeedModal>
           </div>
         </div>
         {pages.length ? (
-          <div className={styles.margin}>
-            <HTMLFlipBook
-              ref={bookRef}
-              width={570}
-              height={750}
-              onFlip={onFlip}
-              maxShadowOpacity={0.2}
-              clickEventForward={true}
-              useMouseEvents={false}
+          <>
+            <div
+              className={s(
+                styles.margin,
+                styles[`color${book.coverColorCode}`]
+              )}
             >
-              {pages.map((page, index) => (
-                <div className={styles.page} key={index}>
-                  <div className={styles.flex}>
-                    <div className={styles.writer}>
-                      <div
-                        className={styles.writerImage}
-                        style={{
-                          background: `url("https://jingu.s3.ap-northeast-2.amazonaws.com/${page.writer.imageUrl}")no-repeat center/cover`,
-                        }}
-                      ></div>
-                      <div>{page.writer.nickname}</div>
+              <div className={styles.cover}>
+                <HTMLFlipBook
+                  ref={bookRef}
+                  width={566}
+                  height={750}
+                  onFlip={onFlip}
+                  maxShadowOpacity={0.2}
+                  clickEventForward={true}
+                  useMouseEvents={false}
+                >
+                  {pages.map((page, index) => (
+                    <div
+                      className={index % 2 !== 0 ? styles.page1 : styles.page2}
+                      key={index}
+                    >
+                      <div className={styles.flex}>
+                        <div className={styles.writer}>
+                          <div
+                            className={styles.writerImage}
+                            style={{
+                              background: `url("https://jingu.s3.ap-northeast-2.amazonaws.com/${page.writer.imageUrl}")no-repeat center/cover`,
+                            }}
+                          ></div>
+                          <div>{page.writer.nickname}님의 페이퍼</div>
+                        </div>
+                        {index % 2 !== 0 ? (
+                          <div
+                            onClick={() => {
+                              setListModal1(true);
+                            }}
+                            className={styles.headerRight}
+                          >
+                            {".  .  ."}
+                            <FeedModal
+                              width="150px"
+                              setIsModalOpen={setListModal1}
+                              isModalOpen={listModal1}
+                              right="-5px"
+                              top="10px"
+                            >
+                              <div className={styles.option}>
+                                <div>해당 스레드 보러가기</div>
+                                {writerId === userId && (
+                                  <div>책에서 페이퍼 제거</div>
+                                )}
+                                {page.writer.memberId === userId && (
+                                  <>
+                                    <div>페이퍼 수정</div>
+                                    <div>페이퍼 삭제</div>
+                                  </>
+                                )}
+                              </div>
+                            </FeedModal>
+                          </div>
+                        ) : (
+                          <div
+                            onClick={() => {
+                              setListModal2(true);
+                            }}
+                            className={styles.headerRight}
+                          >
+                            {".  .  ."}
+                            <FeedModal
+                              width="150px"
+                              setIsModalOpen={setListModal2}
+                              isModalOpen={listModal2}
+                              right="-5px"
+                              top="10px"
+                            >
+                              <div className={styles.option}>
+                                <div>해당 스레드 보러가기</div>
+                                {writerId === userId && (
+                                  <div>책에서 페이퍼 제거</div>
+                                )}
+                                {page.writer.memberId === userId && (
+                                  <>
+                                    <div>페이퍼 수정</div>
+                                    <div>페이퍼 삭제</div>
+                                  </>
+                                )}
+                              </div>
+                            </FeedModal>
+                          </div>
+                        )}
+                      </div>
+                      <div className={styles.main_content}>
+                        <ContentItem2 paper={page} />
+                      </div>
                     </div>
-                    <div>{".  .  ."}</div>
-                  </div>
-                  <div className={styles.main_content}>
-                    <ContentItem2 paper={page} />
-                  </div>
-                </div>
-              ))}
-            </HTMLFlipBook>
-            <div>
-              <button onClick={() => onPrev("Y")}>이전 페이지</button>
-              <div>
-                <div>{curPage}</div>
-                <div>/전체페이지</div>
+                  ))}
+                </HTMLFlipBook>
               </div>
-              <button onClick={() => onNext("Y")}>다음 페이지</button>
             </div>
-          </div>
+            <div className={styles.flex2}>
+              <div onClick={() => onPrev("Y")} className={styles.button}>
+                이전 페이지
+              </div>
+              <div className={styles.flex}>
+                <div>{curPage ? curPage + 1 : 1}</div>
+                <div>/{pages.length}</div>
+              </div>
+              <div onClick={() => onNext("Y")} className={styles.button}>
+                다음 페이지
+              </div>
+            </div>
+          </>
         ) : (
-          <div> 책에 페이지가 하나도 없습니다</div>
+          <div className={styles.none}> 책에 페이지가 하나도 없습니다</div>
         )}
       </div>
     </>
