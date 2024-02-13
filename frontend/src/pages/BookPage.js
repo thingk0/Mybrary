@@ -6,25 +6,31 @@ import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { getBookList, getCategoryList } from "../api/category/Category";
 import useBookStore from "../store/useBookStore";
+import useUserStore from "../store/useUserStore";
 import s from "classnames";
 import three from "../assets/three.png";
 import Modal from "../components/common/Modal";
+import BigModal from "../components/common/BigModal";
+import { deleteBook } from "../api/book/Book";
 
 export default function BookPage() {
   const { bookShelfId, categoryid } = useParams();
+  const memberId = useUserStore((state) => state.user.memberId);
   const carouselRef = useRef(null);
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [editModal, setEditModal] = useState(false);
   const [bookList, setBookList] = useState([]);
   const [categoryList, setCategoryList] = useState([]);
   const [selectCategory, setSelectCategory] = useState("");
   const [selectedBookIndex, setSelectedBookIndex] = useState(0);
-  const selectedBook = bookList[selectedBookIndex];
   const setBook = useBookStore((state) => state.setBook);
 
   const handleSelectBook = (index) => {
     setSelectedBookIndex(index);
+    setSelectedBook(bookList[index]); // 첫 번째 책 선택
   };
 
   const handleBookClick = () => {
@@ -35,6 +41,13 @@ export default function BookPage() {
     setOpen(false);
     navigate(`../${id}`);
   };
+  const [selectedBook, setSelectedBook] = useState(null);
+
+  useEffect(() => {
+    if (bookList.length > 0) {
+      setSelectedBook(bookList[0]); // 첫 번째 책 선택
+    }
+  }, [bookList]);
 
   useEffect(() => {
     async function fetchbookshelfData() {
@@ -56,6 +69,23 @@ export default function BookPage() {
     }
     fetchbookshelfData();
   }, [categoryid]);
+
+  const handleDelete = async () => {
+    try {
+      const a = await deleteBook(selectedBook.bookId);
+      console.log(a);
+      const updatedBookList = bookList.filter(
+        (book) => book.bookId !== selectedBook.bookId
+      );
+      setBookList(updatedBookList);
+      setSelectedBookIndex(0); // 첫 번째 책 선택
+      setBook(updatedBookList[0]); // 선택된 책 업데이트
+      console.log("책 삭제 성공");
+      setDeleteModal(false);
+    } catch (error) {
+      console.error("책 삭제 중 오류 발생:", error);
+    }
+  };
   return (
     <>
       <Container>
@@ -119,7 +149,7 @@ export default function BookPage() {
           <div className={styles.flex}>
             <div className={styles.middle}>
               <div className={styles.캐러셀}>
-                {bookList.map((book, index) => {
+                {bookList?.map((book, index) => {
                   // 선택된 아이템
                   if (index === selectedBookIndex) {
                     return (
@@ -142,10 +172,7 @@ export default function BookPage() {
                               <div
                                 className={styles.writerImage}
                                 style={{
-                                  background: `url("https://jingu.s3.ap-northeast-2.amazonaws.com/${book.writer.imageUrl}")`,
-                                  backgroundRepeat: "no-repeat",
-                                  backgroundPosition: "center",
-                                  backgroundSize: "cover",
+                                  background: `url("https://jingu.s3.ap-northeast-2.amazonaws.com/${book.writer.imageUrl}")no-repeat center/cover`,
                                 }}
                               ></div>
                               <div className={styles.writer}>
@@ -156,10 +183,7 @@ export default function BookPage() {
                           <div
                             className={styles.bookCoverImage}
                             style={{
-                              background: `url("https://jingu.s3.ap-northeast-2.amazonaws.com/${book.imageUrl}")`,
-                              backgroundRepeat: "no-repeat",
-                              backgroundPosition: "center",
-                              backgroundSize: "cover",
+                              background: `url("https://jingu.s3.ap-northeast-2.amazonaws.com/${book.imageUrl}")no-repeat center/cover`,
                             }}
                           ></div>
                         </div>
@@ -183,10 +207,7 @@ export default function BookPage() {
                             <div
                               className={styles.writerImage2}
                               style={{
-                                background: `url("https://jingu.s3.ap-northeast-2.amazonaws.com/${book.writer.imageUrl}")`,
-                                backgroundRepeat: "no-repeat",
-                                backgroundPosition: "center",
-                                backgroundSize: "cover",
+                                background: `url("https://jingu.s3.ap-northeast-2.amazonaws.com/${book.writer.imageUrl}")no-repeat center/cover`,
                               }}
                             ></div>
                             <div>{book.writer.nickname}</div>
@@ -200,70 +221,79 @@ export default function BookPage() {
             </div>
 
             <div className={styles.selectedBook}>
-              <div className={styles.options}>
-                <Modal
-                  width="140px"
-                  top="0px"
-                  right="0px"
-                  title={"옵션"}
-                  open={open2}
-                  setOpen={setOpen2}
-                >
-                  <div>
-                    <div className={styles.option}>
-                      <span className={styles.texts}>
-                        {selectedBook.coverTitle}
-                      </span>{" "}
-                      책 수정
+              {selectedBook?.writer.memberId === memberId && (
+                <div className={styles.options}>
+                  <Modal
+                    width="200px"
+                    top="0px"
+                    right="0px"
+                    title={"수정 및 삭제"}
+                    open={open2}
+                    setOpen={setOpen2}
+                  >
+                    <div>
+                      <div
+                        className={styles.option}
+                        onClick={() => setEditModal(true)}
+                      >
+                        <span className={styles.texts}>
+                          {selectedBook?.coverTitle}
+                        </span>
+                        책 수정
+                      </div>
+                      {/* <div className={styles.option}>
+                        <span className={styles.texts}>
+                          {selectedBook?.coverTitle}
+                        </span>
+                        책 카테고리 변경
+                      </div> */}
+                      <div
+                        className={styles.option}
+                        onClick={() => setDeleteModal(true)}
+                      >
+                        <span className={styles.texts}>
+                          {selectedBook?.coverTitle}
+                        </span>
+                        <span className={styles.delete}>책 삭제</span>
+                      </div>
                     </div>
-                    <div className={styles.option}>
-                      <span className={styles.texts}>
-                        {selectedBook.coverTitle}
-                      </span>{" "}
-                      책 삭제
-                    </div>
-                  </div>
-                </Modal>
-              </div>
+                  </Modal>
+                </div>
+              )}
               <div
                 className={styles.main_left}
                 onClick={() => handleBookClick()}
               >
-                <>
+                <div
+                  className={s(
+                    styles.cover,
+                    styles[`color${selectedBook?.coverColorCode}`]
+                  )}
+                >
                   <div
                     className={s(
-                      styles.cover,
-                      styles[`color${selectedBook.coverColorCode}`]
+                      styles.img,
+                      styles[`layImg${selectedBook?.coverLayout}`]
+                    )}
+                    style={{
+                      background: `url("https://jingu.s3.ap-northeast-2.amazonaws.com/${selectedBook?.imageUrl}")no-repeat center/cover`,
+                    }}
+                  ></div>
+                  <div
+                    className={s(
+                      styles.text,
+                      styles[`layText${selectedBook?.coverLayout}`]
                     )}
                   >
-                    <div
-                      className={s(
-                        styles.img,
-                        styles[`layImg${selectedBook.coverLayout}`]
-                      )}
-                      style={{
-                        background: `url("https://jingu.s3.ap-northeast-2.amazonaws.com/${selectedBook.imageUrl}")`,
-                        backgroundSize: "cover",
-                        backgroundRepeat: "no-repeat",
-                        backgroundPosition: "center",
-                      }}
-                    ></div>
-                    <div
-                      className={s(
-                        styles.text,
-                        styles[`layText${selectedBook.coverLayout}`]
-                      )}
-                    >
-                      {selectedBook.coverTitle}
-                    </div>
+                    {selectedBook?.coverTitle}
                   </div>
-                  <div
-                    className={s(
-                      styles.cover2,
-                      styles[`backcolor${selectedBook.coverColorCode}`]
-                    )}
-                  ></div>
-                </>
+                </div>
+                <div
+                  className={s(
+                    styles.cover2,
+                    styles[`backcolor${selectedBook?.coverColorCode}`]
+                  )}
+                ></div>
               </div>
             </div>
           </div>
@@ -276,6 +306,30 @@ export default function BookPage() {
           </div>
         )}
       </Container>
+      <BigModal
+        modalIsOpen={deleteModal}
+        setModalIsOpen={setDeleteModal}
+        width="400px"
+        height="160px"
+      >
+        <div className={styles.deleteTitle}>
+          {selectedBook?.coverTitle} 책 을 삭제 하시겠습니까?
+        </div>
+        <div className={styles.fff}>
+          <div className={styles.can} onClick={() => setDeleteModal(false)}>
+            취소
+          </div>
+          <div className={styles.del} onClick={() => handleDelete()}>
+            삭제
+          </div>
+        </div>
+      </BigModal>
+      <BigModal
+        modalIsOpen={editModal}
+        setModalIsOpen={setEditModal}
+        width="400px"
+        height="160px"
+      ></BigModal>
     </>
   );
 }
