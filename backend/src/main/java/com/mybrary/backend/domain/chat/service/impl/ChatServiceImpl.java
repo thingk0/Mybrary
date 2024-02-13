@@ -108,7 +108,12 @@ public class ChatServiceImpl implements ChatService {
             throw new InvalidChatRoomAccessException();
         }
 
-        return chatMessageRepository.getAllMessagesFromChatRoom(chatRoomId, pageable);
+        Page<ChatMessageResponseDto> res = chatMessageRepository.getAllMessagesFromChatRoom(chatRoomId, pageable);
+        for (ChatMessageResponseDto re : res) {
+            System.out.println(re.getContent() + "     -> " + re.getTimestamp());
+        }
+
+        return res;
     }
 
     @Transactional(readOnly = true)
