@@ -23,7 +23,7 @@ public class MessageController {
     public ChatMessageResponseDto sendMessage(@DestinationVariable Long chatRoomId,
                                               Principal principal,
                                               MessageRequestDto message) {
-        log.info("method=sendMessage chatRoomId={}, userName={}, message={}",
+        log.info("method=sendMessage chatRoomId={}, email={}, message={}",
                  chatRoomId, principal.getName(), message.getMessage());
         return chatService.save(principal.getName(), chatRoomId, message);
     }
