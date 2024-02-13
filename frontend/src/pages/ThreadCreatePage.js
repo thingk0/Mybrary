@@ -15,6 +15,8 @@ import BookSelect from "../components/threadcreate/BookSelect";
 import { uplodaImage } from "../api/image/Image";
 import toast from "react-hot-toast";
 import { createThread } from "../api/thread/Thread";
+import { useNavigate } from "react-router-dom";
+import useUserStore from "../store/useUserStore";
 
 const initialPaper = () => ({
   layoutType: 1101,
@@ -28,6 +30,8 @@ const initialPaper = () => ({
   mentionList: [],
 });
 export default function ThreadCreatePage() {
+  const navigate = useNavigate();
+  const user = useUserStore((state) => state.user);
   const [papers, setPapers] = useState([initialPaper()]);
   const [paperPublic, setPaperPublic] = useState(true);
   const [scrapEnable, setScrapEnable] = useState(true);
@@ -88,6 +92,7 @@ export default function ThreadCreatePage() {
     console.log(Thread);
     const threadId = await createThread(Thread);
     console.log(threadId);
+    navigate(`../mybrary/${user.memberId}/threads`);
   };
   const noneImg = () => {
     toast.error("이미지를 전부 채워주세요", {
@@ -182,7 +187,7 @@ export default function ThreadCreatePage() {
           <div className={styles.subtitle}>스레드를 담을 책을 선택하세요.</div>
           <div className={styles.settingButtons}>
             <button onClick={() => handleOpenBookList()}>
-              {bookId !== -1 ? book.title : "선택되지않음"}
+              {bookId !== null ? book.title : "선택되지않음"}
             </button>
           </div>
 
@@ -267,7 +272,11 @@ export default function ThreadCreatePage() {
         height="800px"
         background="var(--main4)"
       >
-        <BookCreate setBookList={setBookList} booklist={booklist} />
+        <BookCreate
+          setBookList={setBookList}
+          booklist={booklist}
+          setModalIsOpen={setModalIsOpen}
+        />
       </BigModal>
     </>
   );

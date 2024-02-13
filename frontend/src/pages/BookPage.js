@@ -12,6 +12,8 @@ import three from "../assets/three.png";
 import Modal from "../components/common/Modal";
 import BigModal from "../components/common/BigModal";
 import { deleteBook } from "../api/book/Book";
+import BookCreate from "../components/common/BookCreate";
+import BookCreateOfCategory from "../components/common/BookCreateOfCategory";
 
 export default function BookPage() {
   const { bookShelfId, categoryid } = useParams();
@@ -22,6 +24,7 @@ export default function BookPage() {
   const [open2, setOpen2] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
+  const [createModal, setCreateModal] = useState(false);
   const [bookList, setBookList] = useState([]);
   const [categoryList, setCategoryList] = useState([]);
   const [selectCategory, setSelectCategory] = useState("");
@@ -143,7 +146,9 @@ export default function BookPage() {
         </div>
 
         <div className={styles.header}>
-          <div className={styles.책추가}>책추가</div>
+          <div className={styles.책추가} onClick={() => setCreateModal(true)}>
+            책추가
+          </div>
         </div>
         {bookList.length ? (
           <div className={styles.flex}>
@@ -330,6 +335,19 @@ export default function BookPage() {
         width="400px"
         height="160px"
       ></BigModal>
+      <BigModal
+        modalIsOpen={createModal}
+        setModalIsOpen={setCreateModal}
+        width="1200px"
+        height="800px"
+        background="var(--main4)"
+      >
+        <BookCreateOfCategory
+          booklist={categoryList}
+          setModalIsOpen={setCreateModal}
+          setList={setBookList}
+        />
+      </BigModal>
     </>
   );
 }

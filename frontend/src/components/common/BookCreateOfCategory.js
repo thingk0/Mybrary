@@ -4,16 +4,18 @@ import s from "classnames";
 import FileInput from "../common/FileInput";
 import { useEffect, useState } from "react";
 import Modal from "./Modal";
-import { getCategoryList } from "../../api/category/Category";
-import useUserStore from "../../store/useUserStore";
+import { getBookList } from "../../api/category/Category";
 import { uplodaImage } from "../../api/image/Image";
 import { createBook } from "../../api/book/Book";
 
-export default function BookCreate({ setBookList, booklist, setModalIsOpen }) {
+export default function BookCreateOfCategory({
+  booklist,
+  setModalIsOpen,
+  setList,
+}) {
   const layouts = [1, 2, 3, 4, 5, 6];
   const colors = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
   const [categorys, setCategorys] = useState([]);
-  const user = useUserStore((state) => state.user);
   const [open, setOpen] = useState(false);
 
   const [value, setValue] = useState({
@@ -37,11 +39,12 @@ export default function BookCreate({ setBookList, booklist, setModalIsOpen }) {
   const loadCategory = async () => {
     // const list = await getCategoryList(user.memberId);
     const categoryList = booklist.map((category) => {
-      return { categoryId: category.categoryId, name: category.categoryName };
+      return { categoryId: category.categoryId, name: category.name };
     });
     setCategorys(categoryList);
     // console.log(user.memberId);
     console.log(categoryList);
+    console.log(booklist);
   };
 
   useEffect(() => {
@@ -54,17 +57,9 @@ export default function BookCreate({ setBookList, booklist, setModalIsOpen }) {
     setTitle(category.name);
     setOpen(false);
   };
-  const addNewBookToCategory = (categoryId, newBook) => {
-    const updatedBookList = booklist.map((category) => {
-      if (category.categoryId === categoryId) {
-        return {
-          ...category,
-          bookList: [...category.bookList, newBook],
-        };
-      }
-      return category;
-    });
-    setBookList(updatedBookList);
+  const addNewBookToCategory = async (categoryId) => {
+    const updatedBookList = await getBookList(categoryId);
+    setList(updatedBookList.data);
   };
 
   const handleSubmit = async () => {
@@ -79,12 +74,7 @@ export default function BookCreate({ setBookList, booklist, setModalIsOpen }) {
       coverColorCode: value.coverColorCode,
       categoryId: value.categoryId,
     });
-    const newBook = {
-      bookId: bookId,
-      title: value.title,
-      paperCount: 0,
-    };
-    addNewBookToCategory(value.categoryId, newBook);
+    addNewBookToCategory(value.categoryId);
     setModalIsOpen(false);
   };
 
