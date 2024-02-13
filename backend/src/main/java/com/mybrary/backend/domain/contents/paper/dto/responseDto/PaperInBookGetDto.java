@@ -27,10 +27,10 @@ public class PaperInBookGetDto {
     private int layoutType;
     private String content1;
     private String content2;
-    private Long image1Id;
-    private String image1Url;
-    private Long image2Id;
-    private String image2Url;
+    private Long imageId1;
+    private String imageUrl1;
+    private Long imageId2;
+    private String imageUrl2;
     private List<String> tagList;
     private int likeCount;
     private int commentCount;
