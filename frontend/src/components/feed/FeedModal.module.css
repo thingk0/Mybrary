@@ -3,10 +3,13 @@
 }
 
 .modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   position: absolute;
   padding: 15px;
   z-index: 10000;
-  box-shadow: 0 0 25px 0 rgba(0, 0, 0, 0.25);
+  /* box-shadow: 0 0 25px 0 rgba(0, 0, 0, 0.25); */
   backdrop-filter: blur(12.5px);
   background-color: var(--blur1);
   border-radius: 10px;
@@ -14,9 +17,40 @@
 }
 
 .flex {
+  width: 95%;
   display: flex;
   justify-content: space-between;
 }
+.헤더 {
+  font-size: 1.3vi;
+}
 .modalClose {
   color: var(--gomin5);
+  font-size: 1.3vi;
 }
+.책모음 {
+  width: 95%;
+  height: 95%;
+  /* background-color: rgb(238, 221, 255); */
+  display: flex;
+  flex-direction: column;
+  gap: 0.5vi;
+}
+.책한권 {
+  padding-top: 1vi;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.푸터 {
+  display: flex;
+  align-items: center;
+  gap: 0.4vi;
+  font-size: 1vi;
+}
+.유저이미지 {
+  height: 3vi;
+  border-radius: 100px;
+}
+/*  */

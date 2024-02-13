@@ -6,7 +6,7 @@ import clip from "../../assets/icon/icon_scrap.png";
 import human from "../../assets/이미지예시.png";
 import bearImage from "../../assets/예시이미지2.png";
 
-export default function Thread({ thread, user }) {
+export default function Thread({ thread, user, trueme }) {
   function Infobox({ icon, count }) {
     return (
       <div className={styles.infobox}>
@@ -64,6 +64,7 @@ export default function Thread({ thread, user }) {
       style={hoverStyle[thread.threadId]?.thread}
       onClick={() => console.log(thread.threadId)}
     >
+      {/* {trueme && <div className={styles.삭제버튼}> 트루입니당</div>} */}
       <div
         className={styles.overlay}
         style={hoverStyle[thread.threadId]?.overlay}

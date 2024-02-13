@@ -3,6 +3,7 @@ import styles from "./FeedModal.module.css";
 import { useEffect, useRef, useState } from "react";
 import useOnClickOutside from "../common/useOnClickOutside";
 import { getPaperinBook } from "../../api/book/Book";
+import s from "classnames";
 
 export default function FeedModal({
   isModalOpen,
@@ -52,7 +53,7 @@ export default function FeedModal({
           }}
         >
           <div className={styles.flex}>
-            <div>{header}</div>
+            <div className={styles.헤더}>{header}</div>
             <div
               className={styles.modalClose}
               onClick={() => setIsModalOpen(false)}
@@ -60,19 +61,23 @@ export default function FeedModal({
               닫기
             </div>
           </div>
-          {children}
-          {booklist.map((book) => (
-            <>
-              <div>
-                {book.bookId}
-                {book.bookTitle}
-              </div>
-              {book.memberId}
-              {book.nickname}
-              {book.profileImageId}
-              {book.profileImageUrl}
-            </>
-          ))}
+          <div className={styles.책모음}>
+            {booklist.map((book, index) => (
+              <>
+                <div className={styles.책한권}>
+                  <div>
+                    <span className={styles.푸터}>
+                      <img
+                        className={styles.유저이미지}
+                        src={`https://jingu.s3.ap-northeast-2.amazonaws.com/${book.profileImageUrl}`}
+                      />{" "}
+                      {book.bookTitle}
+                    </span>
+                  </div>
+                </div>
+              </>
+            ))}
+          </div>
         </div>
       )}
     </div>

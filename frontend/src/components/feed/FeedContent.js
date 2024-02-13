@@ -17,6 +17,8 @@ import { like } from "../../api/paper/Paper";
 import toast from "react-hot-toast";
 import useUserStore from "../../store/useUserStore";
 import { useNavigate } from "react-router-dom";
+import { deleteThread } from "../../api/thread/Thread";
+
 export default function FeedContent({
   thread,
   setComment,
@@ -118,12 +120,18 @@ export default function FeedContent({
                 </div>
               </div>
             </div>
-            {user.memberId != thread.memberId && (
+            {user.memberId != thread.memberId ? (
               <div
                 onClick={() => navigate(`/mybrary/${thread.memberId}`)}
                 className={styles.user_follow}
               >
                 {thread.followed ? "마이브러리방문" : "팔로우하러가기"}
+              </div>
+            ) : (
+              <div>
+                <span className={styles.수정글자}>수정</span>{" "}
+                <span className={styles.중간바}> | </span>{" "}
+                <span className={styles.삭제글자}>삭제</span>
               </div>
             )}
           </div>
@@ -157,11 +165,11 @@ export default function FeedContent({
               <FeedModal
                 setIsModalOpen={setIsModalOpen}
                 isModalOpen={isModalOpen}
-                width="300px"
-                height="300px"
-                left="0"
-                top="0"
-                header="이 페이퍼를 포함한 책"
+                width="30vi"
+                height="37vi"
+                left="-7.4vi"
+                top="1.2vi"
+                header="이 페이퍼를 포함한 작성자의 책"
                 paperId={paper.id}
               />
             </div>

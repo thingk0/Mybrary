@@ -120,6 +120,23 @@
   cursor: pointer;
 }
 
+.수정글자 {
+  cursor: pointer;
+  color: #234795;
+  transition: 0.3s;
+}
+.수정글자:hover {
+  color: #8198ca;
+}
+.삭제글자 {
+  cursor: pointer;
+  color: #a1455f;
+  transition: 0.3s;
+}
+.삭제글자:hover {
+  color: #fc8aaa;
+}
+
 /* ----- */
 
 .main_content {
