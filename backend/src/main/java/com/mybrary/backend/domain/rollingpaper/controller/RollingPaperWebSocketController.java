@@ -11,9 +11,9 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class RollingPaperWebSocketController {
 
-    @MessageMapping("/rollingpaper/{rollingpaperId}")
-    @SendTo("/sub/rollingpaper/{rollingpaperId}")
-    public String handleMessage(@DestinationVariable String rollingPaperId,
+    @MessageMapping("/rollingpaper/{rollingpaperId}/write")
+    @SendTo("/rollingpaper/{rollingpaperId}")
+    public String handleMessage(@DestinationVariable Long rollingPaperId,
                                 @Payload String encodingString) {
         log.info("paperId = {}", rollingPaperId);
         log.info("encodingString = {}", encodingString);
