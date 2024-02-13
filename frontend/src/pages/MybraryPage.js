@@ -316,6 +316,19 @@ export default function MybraryPage() {
         ...prev,
         followerCount: userInfo.followerCount + 1,
       }));
+      toast.success("팔로우 완료 !", {
+        style: {
+          border: "1px solid #713200",
+          padding: "16px",
+          color: "#713200",
+          zIndex: "100",
+        },
+        iconTheme: {
+          primary: "#713200",
+          secondary: "#FFFAEE",
+        },
+        position: "top-center",
+      });
     } else {
       setFollowStatus(2);
     }
@@ -333,6 +346,19 @@ export default function MybraryPage() {
       ...prev,
       followerCount: userInfo.followerCount - 1,
     }));
+    toast.success("팔로우 취소되었습니다.", {
+      style: {
+        border: "1px solid #713200",
+        padding: "16px",
+        color: "#713200",
+        zIndex: "100",
+      },
+      iconTheme: {
+        primary: "#713200",
+        secondary: "#FFFAEE",
+      },
+      position: "top-center",
+    });
   };
 
   return (
@@ -551,7 +577,7 @@ export default function MybraryPage() {
                     ? "팔로우"
                     : followStatus === 2
                     ? "팔로우요청취소"
-                    : "팔로잉"}
+                    : "팔로잉중입니다"}
                 </div>
               )}
             </div>

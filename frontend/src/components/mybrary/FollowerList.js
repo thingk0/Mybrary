@@ -137,11 +137,7 @@ export default function FollowerList({
         </div>
         <div className={styles.followbox}>
           {followerList.map((follow) => (
-            <div
-              onClick={() => navigate(`/mybrary/${follow.memberId}`)}
-              key={follow.memberId}
-              className={styles.팔로우리스트}
-            >
+            <div key={follow.memberId} className={styles.팔로우리스트}>
               <div className={styles.userimg}>
                 <img
                   className={styles.img}
@@ -153,7 +149,10 @@ export default function FollowerList({
                 />
               </div>
               <div className={styles.이름정보들}>
-                <div className={styles.이름들}>
+                <div
+                  className={styles.이름들}
+                  onClick={() => navigate(`/mybrary/${follow.memberId}`)}
+                >
                   <span>{follow.nickname}</span>
                   <span className={styles.사용자이름}>{follow.name}</span>
                 </div>

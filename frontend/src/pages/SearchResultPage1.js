@@ -3,13 +3,29 @@ import styles from "./style/SearchResultPage1.module.css";
 import { useNavigate, useParams } from "react-router-dom";
 import searchicon from "../assets/searchicon.png";
 import React, { useState, useEffect } from "react";
-
+import { searchBook } from "../api/search/Search";
+import s from "classnames";
 export default function SearchResultPage1() {
   const navigate = useNavigate();
   const Params = useParams();
   const [searchtext, setSearchtext] = useState(Params.word);
   const [animateOut, setAnimateOut] = useState(false);
   const [recentSearches, setRecentSearches] = useState([]);
+  const [bookList, setBookList] = useState([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await searchBook(searchtext);
+        console.log(response.data.bookList);
+        setBookList(response.data.bookList);
+      } catch (error) {
+        console.error("불러오지못함", error);
+      }
+    }
+    fetchData();
+  }, []);
+
   console.log(animateOut);
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -165,7 +181,42 @@ export default function SearchResultPage1() {
                 <button onClick={handle2}>계정</button>
               </div>
               <div className={styles.오버플로우확인}>
-                <div className={styles.게시글들어갈공간}></div>
+                <div className={styles.게시글들어갈공간}>
+                  {bookList.map((book, index) => (
+                    <div key={index} className={styles.main_left}>
+                      <div
+                        className={s(
+                          styles.cover,
+                          styles[`color${book.coverColorCode}`]
+                        )}
+                      >
+                        <div
+                          className={s(
+                            styles.img,
+                            styles[`layImg${book.coverLayout}`]
+                          )}
+                          style={{
+                            backgroundImage: `url("https://jingu.s3.ap-northeast-2.amazonaws.com/${book.imageUrl}")`,
+                          }}
+                        ></div>
+                        <div
+                          className={s(
+                            styles.text,
+                            styles[`layText${book.coverLayout}`]
+                          )}
+                        >
+                          {book.coverTitle}
+                        </div>
+                      </div>
+                      <div
+                        className={s(
+                          styles.cover2,
+                          styles[`backcolor${book.coverColorCode}`]
+                        )}
+                      ></div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>

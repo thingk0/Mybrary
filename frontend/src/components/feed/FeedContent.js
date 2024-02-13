@@ -15,11 +15,12 @@ import { useState } from "react";
 import s from "classnames";
 import FeedModal from "./FeedModal";
 import { like } from "../../api/paper/Paper";
+import toast from "react-hot-toast";
 
 export default function FeedContent({
   thread,
   setComment,
-  updateLikesCount,
+  setList,
   setCommentId,
   setZIndex,
   setScrapModal,
@@ -32,7 +33,21 @@ export default function FeedContent({
       setZIndex(3);
     }, 800);
   };
-
+  const showToast = (string) => {
+    toast.success(`${string}`, {
+      style: {
+        border: "1px solid #713200",
+        padding: "16px",
+        color: "#713200",
+        zIndex: "100",
+      },
+      iconTheme: {
+        primary: "#713200",
+        secondary: "#FFFAEE",
+      },
+      position: "top-center",
+    });
+  };
   const [isModalOpen, setIsModalOpen] = useState(false);
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -48,17 +63,38 @@ export default function FeedContent({
       ("0" + date.getMinutes()).slice(-2)
     );
   };
-  const likepaper = async (id) => {
+  const toggleLike = async (paperId, liked) => {
     try {
-      const response = await like(id);
+      const response = await like(paperId);
       console.log(response);
-      // 상태 업데이트 로직 추가
-      // updateLikesCount(id, response.data.newLikesCount);
+      if (!liked) {
+        showToast("좋아요 !");
+      } else {
+        showToast("좋아요취소");
+      }
+      setList((currentList) =>
+        currentList.map((thread) => ({
+          ...thread,
+          paperList: thread.paperList.map((paper) => {
+            if (paper.id === paperId) {
+              // liked 상태에 따라 likeCount 조정 및 liked 상태 토글
+              const updatedLikeCount = paper.liked
+                ? paper.likesCount - 1
+                : paper.likesCount + 1;
+              return {
+                ...paper,
+                likesCount: updatedLikeCount,
+                liked: !paper.liked,
+              };
+            }
+            return paper;
+          }),
+        }))
+      );
     } catch (error) {
-      console.error("좋아요 실패", error);
+      console.error("좋아요갱신실패", error);
     }
   };
-
   return (
     <div className={styles.content}>
       {thread.paperList.map((paper, index) => (
@@ -84,9 +120,9 @@ export default function FeedContent({
           <div className={styles.icon_container}>
             <div className={styles.icon_left}>
               <img
-                onClick={() => likepaper(paper.id)}
-                src={icon_nolike}
+                src={paper.liked ? icon_like : icon_nolike}
                 alt=""
+                onClick={() => toggleLike(paper.id, paper.liked)}
               />
               <div>{paper.likesCount}</div>
               <img

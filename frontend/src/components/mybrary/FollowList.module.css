@@ -36,6 +36,7 @@
   border-radius: 100px;
 }
 .이름정보들 {
+  cursor: pointer;
   padding-top: 5px;
   width: 63%;
   display: flex;
@@ -67,4 +68,9 @@
 }
 .팔로잉글자 {
   color: rgb(48, 154, 200);
+  cursor: pointer;
+  transition: 0.3s;
+}
+.팔로잉글자:hover {
+  color: rgb(215, 83, 74);
 }

@@ -158,7 +158,7 @@
 .comment_colors > div {
   width: 2vi;
   height: 2vi;
-  border-radius: 2vi;
+  border-radius: 1.5vi;
   border: solid 1.5px rgb(65, 65, 65);
   cursor: pointer;
 }

@@ -42,6 +42,7 @@
   align-items: center;
 }
 .이름들 {
+  cursor: pointer;
   padding-top: 5px;
   width: 63%;
   display: flex;
@@ -72,8 +73,18 @@
   height: 100%;
 }
 .팔로우글자 {
+  cursor: pointer;
   color: rgb(48, 154, 200);
+  transition: 0.3s;
+}
+.팔로우글자:hover {
+  color: rgb(91, 26, 119);
 }
 .삭제글자 {
+  transition: 0.3s;
+  cursor: pointer;
   color: rgb(251, 93, 93);
+}
+.삭제글자:hover {
+  color: rgb(91, 26, 119);
 }

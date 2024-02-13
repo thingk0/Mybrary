@@ -8,6 +8,7 @@ import {
   deleteComment,
 } from "../../api/comment/Comment";
 import useUserStore from "../../store/useUserStore";
+import toast from "react-hot-toast";
 
 //commentId라고 들어오지만 이거 페이퍼아이디임
 export default function Comment({
@@ -19,6 +20,22 @@ export default function Comment({
   const [childComments, setChildComments] = useState({}); // 대댓글 목록 상태
   const user = useUserStore((state) => state.user);
   console.log(commentId);
+
+  const showToast = (string) => {
+    toast.success(`${string}`, {
+      style: {
+        border: "1px solid #713200",
+        padding: "16px",
+        color: "#713200",
+        zIndex: "100",
+      },
+      iconTheme: {
+        primary: "#713200",
+        secondary: "#FFFAEE",
+      },
+      position: "top-center",
+    });
+  };
 
   const [formData, setFormData] = useState({
     paperId: commentId,
@@ -94,24 +111,54 @@ export default function Comment({
       }
     }
   };
-  const deletecomment = async (commentIdToDelete) => {
+  const deletecomment = async (
+    commentIdToDelete,
+    isChildComment = false,
+    parentId = null
+  ) => {
     try {
       await deleteComment(commentIdToDelete); // 댓글 ID를 사용하여 댓글 삭제
-      console.log("댓글 삭제 성공");
-      const response = await getCommentList(commentId); // 페이퍼 ID를 사용하여 댓글 목록 재조회
-      setCommentList(response.data.commentGetDtoList); // 새로운 댓글 목록으로 상태 업데이트
-      updateCommentCount2(commentId, response.data.commentGetDtoList.length); // 새로운 댓글 수로 업데이트
+
+      // 답글이 아닌 경우, 전체 댓글 목록을 다시 가져옴
+      if (!isChildComment) {
+        console.log("댓글 삭제 성공");
+        const response = await getCommentList(commentId);
+        setCommentList(response.data.commentGetDtoList); // 새로운 댓글 목록으로 상태 업데이트
+        updateCommentCount2(commentId, response.data.commentGetDtoList.length); // 새로운 댓글 수로 업데이트
+      } else {
+        // 답글인 경우, 해당 댓글의 답글 목록을 다시 가져옴
+        const response = await getCommentbabyList(parentId);
+        const response2 = await getCommentList(commentId);
+        setCommentList(response2.data.commentGetDtoList); // 새로운 댓글 목록으로 상태 업데이트
+        updateCommentCount2(commentId, response2.data.commentGetDtoList.length);
+        console.log(parentId);
+        console.log("답글삭제에에에에에");
+        setChildComments((prev) => ({
+          ...prev,
+          [parentId]: response.data.commentGetDtoList,
+        }));
+
+        // 대댓글 수 감소 로직 추가
+        // setCommentList((currentList) =>
+        //   currentList.map((comment) =>
+        //     comment.commentId === parentId
+        //       ? { ...comment, childCommentCount: comment.childCommentCount - 1 }
+        //       : comment
+        //   )
+        // );
+      }
     } catch (error) {
       console.error("댓글 삭제 실패:", error);
     }
   };
+
   const create = async () => {
     console.log("되긴함 ?");
     if (formData.parentCommentId == null) {
       try {
         console.log("댓글", formData);
         const response = await createComment(formData); // 올바른 API 함수 이름으로 교체해주세요.
-        console.log("댓글 생성 성공:", response);
+        showToast("댓글을 남겼습니다 !");
         const response2 = await getCommentList(commentId);
         updateCommentCount(commentId);
         // console.log(commentId);
@@ -136,7 +183,7 @@ export default function Comment({
       try {
         console.log("대댓글", formData);
         const response = await createComment(formData);
-        console.log("대댓글 생성 성공", response);
+        showToast("답글을 달았습니다 !");
 
         // 대댓글 목록 상태 업데이트
         setChildComments((prev) => {
@@ -219,16 +266,19 @@ export default function Comment({
                   <div className={styles.comment_text}>{comment.content}</div>
                   <div className={styles.comment_info}>
                     <div className={styles.comment_left}>
-                      {user.memberId === comment.ownerId && (
-                        <>
-                          <div
-                            onClick={() => deletecomment(comment.commentId)}
-                            className={styles.삭제글자}
-                          >
-                            삭제
-                          </div>
-                        </>
-                      )}
+                      {user.memberId === comment.ownerId &&
+                        comment.childCommentCount == 0 && (
+                          <>
+                            <div
+                              onClick={() =>
+                                deletecomment(comment.commentId, false, null)
+                              }
+                              className={styles.삭제글자}
+                            >
+                              삭제
+                            </div>
+                          </>
+                        )}
                     </div>
                     <div className={styles.comment_right}>
                       <div
@@ -278,7 +328,11 @@ export default function Comment({
                               <>
                                 <div
                                   onClick={() =>
-                                    deletecomment(childComment.commentId)
+                                    deletecomment(
+                                      childComment.commentId,
+                                      true,
+                                      comment.commentId
+                                    )
                                   }
                                   className={styles.삭제글자}
                                 >
