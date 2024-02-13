@@ -38,19 +38,15 @@ public class RollingPaperController {
 
         String rollingPaperString = rollingPaperService.getRollingPaper(authentication.getName(), rollingPaperId);
         return response.success(ResponseCode.ROLLING_PAPER_FETCHED, rollingPaperString);
-
     }
 
     @Operation(summary = "롤링페이퍼 저장", description = "롤링페이퍼 저장")
     @PostMapping
-    public ResponseEntity<?> saveRollingPaper(@Parameter(hidden = true) Authentication authentication, @RequestBody
-    RollingPaperPostDto rollingPaper) {
+    public ResponseEntity<?> saveRollingPaper(@Parameter(hidden = true) Authentication authentication,
+                                              @RequestBody RollingPaperPostDto rollingPaper) {
 
         Long rollingPaperId = rollingPaperService.saveRollingPaper(authentication.getName(), rollingPaper);
         return response.success(ResponseCode.ROLLING_PAPER_SAVED, rollingPaperId);
-
     }
 
-
-    
 }
