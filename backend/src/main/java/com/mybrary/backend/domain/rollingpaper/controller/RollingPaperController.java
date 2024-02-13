@@ -51,10 +51,6 @@ public class RollingPaperController {
 
     }
 
-    @MessageMapping("/rollingpaper/{rollingpaperId}")
-    @SendTo("/sub/rollingpaper/{rollingpaperId}")
-    public String handleMessage(@DestinationVariable String rollingPaperId, @Payload String encodingString) {
-        return encodingString;
-    }
+
     
 }
