@@ -45,7 +45,7 @@ export default function PaperplanePage() {
       client.onConnect = function () {
         console.log("채팅구독");
         client.subscribe(`/sub/chatMemberId/${user.memberId}`, (message) => {
-          const res = JSON.body(message.body);
+          const res = JSON.parse(message.body);
           console.log(res);
           setChatMessageList((prev) => [res, ...prev]);
         });
@@ -88,42 +88,46 @@ export default function PaperplanePage() {
   }, [chatMessageList]); // chatMessageList가 변경될 때마다 실행
 
   const sendMessage = (e) => {
+    // 메시지 전송 로직
+
+    if (nowMessage.trim() !== "") {
+      const messageObject = {
+        chatRoomId: nowChatRoom.chatRoomId,
+        senderId: user.memberId,
+        message: nowMessage,
+        threadId: 1,
+      };
+      const destination = `/pub/chat/${nowChatRoom.chatRoomId}/send`;
+      const bodyData = JSON.stringify(messageObject);
+      stompClient.publish({ destination, body: bodyData });
+
+      const message = {
+        chatRoomId: nowChatRoom.chatRoomId,
+        senderId: user.memberId,
+        nickname: user.nickname,
+        content: nowMessage,
+        profileImageUrl: user.profileImageUrl,
+        timestamp: Date.now(),
+      };
+      setChatMessageList((prev) => [message, ...prev]);
+
+      const scrollToBottom = () => {
+        if (chatContainerRef.current) {
+          chatContainerRef.current.scrollTop =
+            chatContainerRef.current.scrollHeight;
+        }
+      };
+
+      setTimeout(() => scrollToBottom(), 10);
+    }
+
+    setNowMessage(""); // 메시지 전송 후 입력 필드 초기화
+  };
+
+  const handleKeyDown = (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault(); // 기본 이벤트(여기서는 줄바꿈)를 방지
-      // 메시지 전송 로직
-
-      if (nowMessage.trim() !== "") {
-        const messageObject = {
-          chatRoomId: nowChatRoom.chatRoomId,
-          senderId: user.memberId,
-          message: nowMessage,
-          threadId: 1,
-        };
-        const destination = `/pub/chat/${nowChatRoom.chatRoomId}/send`;
-        const bodyData = JSON.stringify(messageObject);
-        stompClient.publish({ destination, body: bodyData });
-
-        const message = {
-          chatRoomId: nowChatRoom.chatRoomId,
-          senderId: user.memberId,
-          nickname: user.nickname,
-          content: nowMessage,
-          profileImageUrl: user.profileImageUrl,
-          timestamp: Date.now(),
-        };
-        setChatMessageList((prev) => [message, ...prev]);
-
-        const scrollToBottom = () => {
-          if (chatContainerRef.current) {
-            chatContainerRef.current.scrollTop =
-              chatContainerRef.current.scrollHeight;
-          }
-        };
-
-        setTimeout(() => scrollToBottom(), 10);
-      }
-
-      setNowMessage(""); // 메시지 전송 후 입력 필드 초기화
+      e.preventDefault();
+      sendMessage(); // 직접 호출
     }
   };
 
@@ -270,7 +274,7 @@ export default function PaperplanePage() {
                         }}
                         value={nowMessage}
                         onChange={(e) => setNowMessage(e.target.value)}
-                        onKeyDown={sendMessage}
+                        onKeyDown={handleKeyDown}
                       />
 
                       <img
