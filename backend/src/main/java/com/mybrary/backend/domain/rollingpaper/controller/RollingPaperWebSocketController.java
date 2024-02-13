@@ -11,11 +11,11 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class RollingPaperWebSocketController {
 
-    @MessageMapping("/rollingpaper/{rollingpaperId}/write")
-    @SendTo("/rollingpaper/{rollingpaperId}")
-    public String handleMessage(@DestinationVariable Long rollingPaperId,
+    @MessageMapping("/rp/{id}/draw")
+    @SendTo("/rp/{id}")
+    public String handleMessage(@DestinationVariable Long id,
                                 @Payload String encodingString) {
-        log.info("paperId = {}", rollingPaperId);
+        log.info("rolling-paper-id = {}", id);
         log.info("encodingString = {}", encodingString);
         return encodingString;
     }
