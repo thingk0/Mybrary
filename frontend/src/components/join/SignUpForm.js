@@ -22,7 +22,7 @@ function SignUpForm({ setPageremote }) {
     email: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
     password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*\d).{8,20}$/,
     name: /^[가-힣]{2,5}$/,
-    nickname: /^[a-zA-Z0-9_]{3,15}$/,
+    nickname: /^[a-zA-Z0-9_]{3,10}$/,
   };
 
   /* 알림 함수 */
@@ -193,7 +193,7 @@ function SignUpForm({ setPageremote }) {
           setFormErrors((prevFormErrors) => ({
             ...prevFormErrors,
             nickname:
-              "닉네임은 영어, 숫자, 언더바만 사용하여 3~15자 입력해야 합니다",
+              "닉네임은 영어, 숫자, 언더바만 사용하여 3~10자 입력해야 합니다",
           })),
         5
       );
@@ -288,7 +288,7 @@ function SignUpForm({ setPageremote }) {
       errors.nickname = "닉네임을 입력해주세요";
     } else if (!regex.nickname.test(formData.nickname)) {
       errors.nickname =
-        "닉네임은 영어, 숫자, 언더바만 사용하여 3~15자 입력해야 합니다";
+        "닉네임은 영어, 숫자, 언더바만 사용하여 3~10자 입력해야 합니다";
     } else if (!isNickNameChecked) {
       errors.nickname = "닉네임 중복 검사를 완료해주세요";
     }

@@ -4,7 +4,7 @@ const BASE_URL = "https://i10b207.p.ssafy.io/api/v1/";
 /* 채팅방 내 메시지 리스트 조회 */
 export async function getMessageList(roomid) {
   try {
-    const response = await axios.get(BASE_URL + `chat/${roomid}`);
+    const response = await axios.get(BASE_URL + `chat/${roomid}/message`);
     return response.data;
   } catch (error) {
     throw error;

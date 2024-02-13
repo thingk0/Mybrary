@@ -12,11 +12,11 @@ export default function RollingpaperPage() {
   const navigate = useNavigate();
   const Params = useParams();
   const nowuser = Params.userid;
+  const rollingpaperId = Params.rollingpaperId;
   const [user, setUser] = useState({});
   const canvasRef = useRef(null);
   const isPainting = useRef(false);
   const startPoint = useRef({ x: 0, y: 0 });
-  const client = useRef({});
   const [imageData, setImageData] = useState(null);
   const [lineColor, setLineColor] = useState("black");
 
@@ -123,9 +123,11 @@ export default function RollingpaperPage() {
     console.log(lineColor);
   };
 
+  let client = null;
+
   const sendImageData = () => {
     console.log(client);
-    if (client.current && canvasRef.current) {
+    if (client && canvasRef.current) {
       // Canvas에서 이미지 데이터를 Base64 문자열로 추출
       const imageData = canvasRef.current.toDataURL("image/png");
       const message = {
@@ -133,13 +135,11 @@ export default function RollingpaperPage() {
       };
 
       // STOMP를 통해 서버로 전송
-      const destination = "/pub/imageData";
+      const destination = `/pub/rp/${rollingpaperId}/draw`;
       const bodyData = JSON.stringify(message);
-      console.log("bodyData체크");
-      console.log(bodyData);
 
       try {
-        client.current.publish({ destination, body: bodyData });
+        client.publish({ destination, body: "hi" });
       } catch (err) {
         console.log("전송에러");
         console.log(err);
@@ -148,18 +148,18 @@ export default function RollingpaperPage() {
   };
 
   const connect = () => {
-    const socket = new SockJS("http://localhost:8080/ws");
-    client.current = new Client({
-      brokerURL: "ws://localhost:8080/ws", // WebSocket URL
-      webSocketFactory: () => socket, // 웹소켓 인스턴스를 반환하는 팩토리 함수
-      reconnectDelay: 5000,
-      heartbeatIncoming: 4000,
-      heartbeatOutgoing: 4000,
+    const token = localStorage.getItem("accessToken");
+    client = new Client({
+      webSocketFactory: () => new SockJS("https://i10b207.p.ssafy.io/ws"),
+      connectHeaders: {
+        Authorization: `Bearer ${token}`,
+      },
     });
-    client.current.onConnect = () => {
+    client.onConnect = () => {
       console.log("Connected!");
+      console.log(rollingpaperId);
 
-      client.current.subscribe("/sub/imageData", (message) => {
+      client.subscribe(`/rp/${rollingpaperId}`, (message) => {
         console.log("receive check!! ");
         console.log(message);
         const receivedImageData = JSON.parse(message.body);
@@ -168,7 +168,7 @@ export default function RollingpaperPage() {
       });
     };
 
-    client.current.activate();
+    client.activate();
   };
 
   useEffect(() => {
@@ -196,7 +196,7 @@ export default function RollingpaperPage() {
       canvas.removeEventListener("mouseup", exitPaint);
       canvas.removeEventListener("mouseleave", exitPaint);
     };
-  }, [startPaint, exitPaint]);
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;

@@ -32,7 +32,10 @@ function Main() {
           <Route path="mybrary/:userid">
             <Route index element={<MybraryPage />} />
             <Route path="threads" element={<ThreadsPage />} />
-            <Route path="rollingpaper" element={<RollingpaperPage />} />
+            <Route
+              path="rollingpaper/:rollingpaperId"
+              element={<RollingpaperPage />}
+            />
             <Route path=":bookShelfId">
               <Route index element={<BookshelfPage />} />
               {/*이거 나중에 동적처리 */}

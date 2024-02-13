@@ -45,7 +45,7 @@ axios.interceptors.request.use(
 );
 
 export default function App() {
-  const { connect } = useStompStore();
+  const { stompClient, connect } = useStompStore();
   const { setNewNotification } = useNotificationStore();
   const email = useUserStore((state) => state.user?.email);
 
@@ -78,7 +78,6 @@ export default function App() {
     // 주기적으로 토큰 만료를 체크
     const intervalId = setInterval(checkTokenExpiration, 10000); // 10초마다 실행
 
-    /* 새로고침 시마다 소켓 재연결 */
     async function socketConnect() {
       try {
         if (email) {
@@ -89,7 +88,8 @@ export default function App() {
         console.log(e);
       }
     }
-    socketConnect();
+    // 있으면 재연결 하지마
+    if (!stompClient) socketConnect();
 
     return () => {
       window.removeEventListener("mousemove", updateUserActivity);

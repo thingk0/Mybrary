@@ -128,8 +128,9 @@
 .이미지닉네임 {
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
   width: 30%;
+  margin-left: 20px;
+  gap: 25px;
 }
 .마이브러리가기 {
   width: 148px;

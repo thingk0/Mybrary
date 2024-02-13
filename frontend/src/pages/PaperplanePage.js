@@ -1,28 +1,89 @@
 import Container from "../components/frame/Container";
 import SharedPaper from "../components/paperplane/SharedPaper";
 import styles from "./style/PaperplanePage.module.css";
-import 예시이미지2 from "../assets/예시이미지2.png";
-import 이미지예시 from "../assets/이미지예시.png";
 import 종이비행기 from "../assets/종이비행기.png";
 import { useEffect, useState } from "react";
 import useStompStore from "../store/useStompStore";
 import useUserStore from "../store/useUserStore";
 import { getChatList } from "../api/chat/Chat.js";
-import gomimg from "../assets/곰탱이.png";
 import ChatProfile from "../components/paperplane/ChatProfile.js";
 import Iconuser2 from "../assets/icon/Iconuser2.png";
+import SockJS from "sockjs-client";
+import { Client } from "@stomp/stompjs";
+import useNotificationStore from "../store/useNotificationStore.js";
 
 export default function PaperplanePage() {
   /* 웹소켓: 채팅용 주소를 구독 */
-  const stompClient = useStompStore((state) => state.stompClient);
   const user = useUserStore((state) => state.user);
   const [chatRoomList, setChatRoomList] = useState([]); // 채팅방 리스트
   const [chatMessageList, setChatMessageList] = useState([]); // 접속중인 채팅방 채팅 내역
-  const [chatRoomId, setChatRoomId] = useState(null); // 현재 내가 보고 있는 채팅방의 아이디
+  const [nowChatRoom, setNowChatRoom] = useState({}); // 현재 내가 보고있는 채팅방 정보
+  const [stompClient, setStompClient] = useState(null);
+  const { connect } = useStompStore();
+  const { setNewNotification } = useNotificationStore();
 
   useEffect(() => {
-    // 채팅방 리스트들을 조회, 새로운 구독
+    // 채팅방 리스트들을 조회, 나에게 오는 메시지들을 받아볼 수 있도록 구독
+
+    (async function asyncGetChatList() {
+      const res = await getChatList();
+      setChatRoomList(res.data.content);
+    })();
+
+    async function socketConnect() {
+      await connect(user.email, setNewNotification);
+    }
+
+    // 해당 페이지가 unmount 될 때, 즉 해당 페이지를 떠날 때
+    // 오직 알림만을 위한 소켓 연결을 시도
+    return () => {
+      socketConnect();
+    };
   }, []);
+
+  //채팅 방이 바뀔 때마다 해당 채팅 방으로 새로운 구독을 발행
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    const client = new Client({
+      webSocketFactory: () => new SockJS("https://i10b207.p.ssafy.io/ws"),
+      connectHeaders: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    client.onConnect = function () {
+      // client.subscribe(`/sub/chatroom/${chatRoomId}`, (message) => {
+      //   console.log("receive check!! ");
+      //   console.log(message);
+      // });
+    };
+
+    client.activate();
+    setStompClient(client);
+  }, []);
+
+  useEffect(() => {
+    // 이제 채팅방 메시지 조회 함수 여기서 불러와야 함
+    console.log(nowChatRoom);
+  }, [nowChatRoom]);
+
+  const sendMessage = () => {
+    const messageObject = {
+      chatRoomId: 1,
+      senderId: user.memberId,
+      message: "안녕하세요",
+      threadId: 1,
+    };
+
+    console.log(stompClient);
+    const destination = `/pub/chat/1/send`;
+    const bodyData = JSON.stringify(messageObject);
+    stompClient.publish({ destination, body: bodyData });
+  };
+
+  const handleSelectChatRoom = (chatRoom) => {
+    setNowChatRoom(chatRoom);
+  };
 
   return (
     <>
@@ -51,10 +112,23 @@ export default function PaperplanePage() {
                 </>
               </div>
               <div className={styles.users} style={{ marginTop: "15px" }}>
-                {true ? (
+                {chatRoomList.length > 0 ? (
                   <>
-                    <ChatProfile isSelected={true}></ChatProfile>
-                    <ChatProfile isSelected={false}></ChatProfile>
+                    {chatRoomList.map((chatRoom) => (
+                      <ChatProfile
+                        key={chatRoom.chatRoomId}
+                        isSelected={
+                          chatRoom.chatRoomId === nowChatRoom?.chatRoomId
+                        }
+                        onClick={() => handleSelectChatRoom(chatRoom)}
+                        otherMemberNickname={chatRoom.otherMemberNickname}
+                        otherMemberProfileImageUrl={
+                          chatRoom.otherMemberProfileImageUrl
+                        }
+                        lastMessage={chatRoom.lastMessage}
+                        unreadMessageCount={chatRoom.unreadMessageCount}
+                      />
+                    ))}
                   </>
                 ) : (
                   <div className={styles.emptyList}>
@@ -80,7 +154,11 @@ export default function PaperplanePage() {
                     {/* 상대방 프로필 이미지와 닉네임 */}
                     <div className={styles.이미지닉네임}>
                       <img
-                        src={Iconuser2} // 선택된 이미지 또는 기본 이미지
+                        src={
+                          nowChatRoom.otherMemberProfileImageUrl
+                            ? `https://jingu.s3.ap-northeast-2.amazonaws.com/${nowChatRoom.otherMemberProfileImageUrl}`
+                            : Iconuser2
+                        } // 선택된 이미지 또는 기본 이미지
                         alt="프로필"
                         style={{
                           width: "23%",
@@ -88,7 +166,7 @@ export default function PaperplanePage() {
                           borderRadius: "50%",
                         }}
                       />
-                      <div>manmangi_98</div>
+                      <div>{nowChatRoom.otherMemberNickname}</div>
                     </div>
                     <button className={styles.마이브러리가기}>
                       마이브러리 가기
@@ -138,7 +216,7 @@ export default function PaperplanePage() {
                           resize: "none", // 사용자가 크기 조절하지 못하도록 설정
                           overflow: "auto", // 내용이 넘칠 때 스크롤바 자동 생성
                         }}
-                        onKeyDown={(e) => {
+                        onKeyDown={() => {
                           //엔터 누르면 전송, 쉬프트 + 엔터는 줄바꿈
                         }}
                       />
@@ -150,8 +228,10 @@ export default function PaperplanePage() {
                           width: "60px",
                           objectFit: "contain",
                           marginRight: "15px",
+                          cursor: "pointer",
                         }}
                         alt="전송버튼"
+                        onClick={sendMessage}
                       ></img>
                     </div>
                   </div>
