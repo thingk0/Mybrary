@@ -1,6 +1,8 @@
 package com.mybrary.backend.global.config;
 
+import com.mybrary.backend.global.handler.ChatErrorHandler;
 import com.mybrary.backend.global.interceptor.ChatStompInterceptor;
+import com.mybrary.backend.global.jwt.provider.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
@@ -20,13 +22,16 @@ import org.springframework.web.socket.server.standard.ServletServerContainerFact
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
-    private final ChatStompInterceptor chatStompInterceptor;
+    private final TokenProvider tokenProvider;
+    private final ChatErrorHandler chatErrorHandler;
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/ws")
                 .setAllowedOriginPatterns("*")
                 .withSockJS();
+
+        registry.setErrorHandler(chatErrorHandler);
     }
 
     @Override
@@ -37,7 +42,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureClientInboundChannel(ChannelRegistration registration) {
-        registration.interceptors(chatStompInterceptor);
+        registration.interceptors(new ChatStompInterceptor(tokenProvider));
     }
 
     @Override
