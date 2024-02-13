@@ -159,11 +159,11 @@ public class BookServiceImpl implements BookService {
 
             paperList.get(i).setThreadId(threadId);
             paperList.get(i).setWriter(writer);
-            paperList.get(i).setImage1Id(image1Id);
-            paperList.get(i).setImage2Id(image2Id);
-            paperList.get(i).setImage1Url(image1.getUrl());
+            paperList.get(i).setImageId1(image1Id);
+            paperList.get(i).setImageId2(image2Id);
+            paperList.get(i).setImageUrl1(image1.getUrl());
             if(image2!=null){
-                paperList.get(i).setImage2Url(image2.getUrl());
+                paperList.get(i).setImageUrl2(image2.getUrl());
             }
             paperList.get(i).setTagList(tagList);
             paperList.get(i).setLikeCount(likeCount);
