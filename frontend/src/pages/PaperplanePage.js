@@ -2,7 +2,7 @@ import Container from "../components/frame/Container";
 import SharedPaper from "../components/paperplane/SharedPaper";
 import styles from "./style/PaperplanePage.module.css";
 import 종이비행기 from "../assets/종이비행기.png";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import useStompStore from "../store/useStompStore";
 import useUserStore from "../store/useUserStore";
 import { getChatList } from "../api/chat/Chat.js";
@@ -21,6 +21,7 @@ export default function PaperplanePage() {
   const [stompClient, setStompClient] = useState(null);
   const { connect } = useStompStore();
   const { setNewNotification } = useNotificationStore();
+  const chatContainerRef = useRef(null); // 채팅 컨테이너에 대한 ref 스크롤 아래로 관리하기 윟마
 
   useEffect(() => {
     // 채팅방 리스트들을 조회, 나에게 오는 메시지들을 받아볼 수 있도록 구독
@@ -52,20 +53,37 @@ export default function PaperplanePage() {
     });
 
     client.onConnect = function () {
-      // client.subscribe(`/sub/chatroom/${chatRoomId}`, (message) => {
-      //   console.log("receive check!! ");
-      //   console.log(message);
-      // });
+      client.subscribe(`/sub/chatroom/1`, (message) => {
+        console.log("receive check!! ");
+        console.log(message);
+      });
     };
 
     client.activate();
     setStompClient(client);
+
+    const scrollToBottom = () => {
+      if (chatContainerRef.current) {
+        chatContainerRef.current.scrollTop =
+          chatContainerRef.current.scrollHeight;
+      }
+    };
+
+    scrollToBottom(); // 컴포넌트 마운트 시 실행
   }, []);
 
   useEffect(() => {
     // 이제 채팅방 메시지 조회 함수 여기서 불러와야 함
     console.log(nowChatRoom);
   }, [nowChatRoom]);
+
+  useEffect(() => {
+    // 채팅 메시지 컨테이너의 스크롤을 맨 아래로 이동
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
+    }
+  }, [chatMessageList]); // chatMessageList가 변경될 때마다 실행
 
   const sendMessage = () => {
     const messageObject = {
@@ -175,7 +193,10 @@ export default function PaperplanePage() {
                   {/* 채팅 메시지 내용 */}
                   <div className={styles.middle}>
                     <div className={styles.textmain}>
-                      <div className={styles.chatContainer}>
+                      <div
+                        className={styles.chatContainer}
+                        ref={chatContainerRef}
+                      >
                         <div
                           className={`${styles.message} ${
                             true ? styles.sender : styles.receiver
