@@ -50,6 +50,16 @@ export async function getBook(id) {
   }
 }
 
+/* 페이퍼가 포함된 책 정보 조회 */
+export async function getPaperinBook(id) {
+  try {
+    const response = await axios.get(BASE_URL + `book/list/${id}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
 /* 책 삭제 */
 export async function deleteBook(id) {
   try {

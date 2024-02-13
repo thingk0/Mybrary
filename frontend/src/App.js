@@ -36,8 +36,8 @@ axios.interceptors.request.use(
     }
 
     // 매 요청마다 토큰 갱신
-    localStorage.setItem("accessToken", accessToken);
-    localStorage.setItem("tokenTimestamp", Date.now());
+    // localStorage.setItem("accessToken", accessToken);
+    // localStorage.setItem("tokenTimestamp", Date.now());
 
     config.headers["Authorization"] = `Bearer ${accessToken}`;
     return config;
