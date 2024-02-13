@@ -75,6 +75,7 @@ public class BookServiceImpl implements BookService {
     private final NotificationService notificationService;
 
 
+    /* 스크랩할때 이용, 카테고리와 간단한 책정보 조회 */
     @Override
     public List<MyCategoryGetDto> getMyBookList(Long memberId) {
         /* 카테고리 관련 먼저 받아오기 */
@@ -86,8 +87,10 @@ public class BookServiceImpl implements BookService {
                 List<MyBookGetDto> myBookGetDtoList = bookRepository.getAllMyBookList(memberId, myCategoryGetDto.getCategoryId())
                                                                     .orElse(new ArrayList<>());
                 myCategoryGetDto.setBookList(myBookGetDtoList);
+
             }
         }
+
 
         return myCategoryGetDtoList;
     }
@@ -197,6 +200,7 @@ public class BookServiceImpl implements BookService {
             System.out.println("다를때");
             PickBook pickBook = pickBookRepository.getPickBook(bookUpdateDto.getBookId(), bookUpdateDto.getBeforeCategoryId()).orElseThrow(PickBookNotFoundException::new);
             pickBookRepository.delete(pickBook);
+            log.info("픽북 삭제됨");
 
             Category afterCategory = categoryRepository.findById(bookUpdateDto.getAfterCategoryId()).orElseThrow(CategoryNotFoundException::new);
             PickBook newPickBook = PickBook.builder()

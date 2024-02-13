@@ -4,7 +4,6 @@ import static com.mybrary.backend.domain.book.entity.QBook.book;
 import static com.mybrary.backend.domain.bookmarker.entity.QBookMarker.bookMarker;
 import static com.mybrary.backend.domain.bookshelf.entity.QBookshelf.bookshelf;
 import static com.mybrary.backend.domain.category.entity.QCategory.category;
-import static com.mybrary.backend.domain.contents.like.entity.QLike.like;
 import static com.mybrary.backend.domain.contents.paper.entity.QPaper.paper;
 import static com.mybrary.backend.domain.contents.scrap.entity.QScrap.scrap;
 import static com.mybrary.backend.domain.follow.entity.QFollow.follow;
@@ -21,9 +20,6 @@ import com.mybrary.backend.domain.image.entity.QImage;
 import com.mybrary.backend.domain.member.dto.responseDto.MemberInfoDto;
 import com.mybrary.backend.domain.member.entity.Member;
 import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.types.dsl.NumberPath;
-import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import java.util.Optional;
@@ -76,11 +72,18 @@ public class BookRepositoryImpl implements BookRepositoryCustom {
     @Override
     public Optional<List<MyBookGetDto>> getAllMyBookList(Long memberId, Long categoryId) {
         return Optional.ofNullable(
-            query.select(Projections.constructor(MyBookGetDto.class, book.id, book.coverTitle, scrap.count()))
+//            query.select(Projections.constructor(MyBookGetDto.class, book.id, book.coverTitle, scrap.count()))
+//                 .from(book)
+//                 .leftJoin(scrap).on(scrap.book.id.eq(book.id))
+//                 .leftJoin(pickBook).on(pickBook.book.id.eq(book.id))
+//                 .where(book.member.id.eq(memberId).and(pickBook.category.id.eq(categoryId)))
+//                 .groupBy(book.id)
+//                 .fetch());
+                query.select(Projections.constructor(MyBookGetDto.class, pickBook.book.id, pickBook.book.coverTitle, scrap.count()))
                  .from(book)
-                 .leftJoin(scrap).on(scrap.book.id.eq(book.id))
-                 .leftJoin(pickBook).on(pickBook.book.id.eq(book.id))
-                 .where(book.member.id.eq(memberId).and(pickBook.category.id.eq(categoryId)))
+                 .leftJoin(pickBook).on(pickBook.book.id.eq(book.id).and(pickBook.book.member.id.eq(memberId)))
+                 .leftJoin(scrap).on(book.id.eq(scrap.book.id))
+                 .where(pickBook.category.id.eq(categoryId).and(pickBook.isDeleted.eq(false)))
                  .groupBy(book.id)
                  .fetch());
     }
