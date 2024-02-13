@@ -43,7 +43,7 @@ public class SearchController {
 
     @Operation(summary = "스레드 검색", description = "스레드 태그 기반 검색")
     @GetMapping("/thread")
-    public ResponseEntity<?> searchByThread(@RequestParam(name = "keyword") String keyword,
+    public ResponseEntity<?> searchByThread(@Parameter(hidden = true) Authentication authentication, @RequestParam(name = "keyword") String keyword,
                                             @PageableDefault(page = 0, size = 10) Pageable page) {
 
 
@@ -64,7 +64,7 @@ public class SearchController {
 //        list.add(thread5);
 //        list.add(thread6);
 //        list.add(thread7);
-
+        List<ThreadSearchGetDto> result = searchService.searchThread(authentication.getName(), keyword, page);
         HashMap<String, Object> map = new HashMap<>();
         map.put("threadList", list);
         map.put("page", page);

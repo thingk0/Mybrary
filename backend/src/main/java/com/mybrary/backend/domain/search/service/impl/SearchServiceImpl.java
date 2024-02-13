@@ -3,6 +3,7 @@ package com.mybrary.backend.domain.search.service.impl;
 import com.mybrary.backend.domain.book.dto.responseDto.BookGetDto;
 import com.mybrary.backend.domain.book.repository.BookRepository;
 import com.mybrary.backend.domain.contents.thread.dto.responseDto.ThreadSearchGetDto;
+import com.mybrary.backend.domain.contents.thread.repository.ThreadRepository;
 import com.mybrary.backend.domain.member.dto.responseDto.FollowingDto;
 import com.mybrary.backend.domain.member.dto.responseDto.MemberGetDto;
 import com.mybrary.backend.domain.member.entity.Member;
@@ -30,6 +31,7 @@ public class SearchServiceImpl implements SearchService {
     private final ElasticsearchOperations elasticsearchOperations;
     private final MemberRepository memberRepository;
     private final BookRepository bookRepository;
+    private final ThreadRepository threadRepository;
 
     @Override
     public List<String> listSuggestedTerms(String keyword) {
@@ -37,10 +39,10 @@ public class SearchServiceImpl implements SearchService {
     }
 
     @Override
-    public List<ThreadSearchGetDto> searchThread(String keyword, Pageable page) {
-
+    public List<ThreadSearchGetDto> searchThread(String email, String keyword, Pageable page) {
+        Member me = memberRepository.searchByEmail(email).orElseThrow(MemberNotFoundException::new);
         // 1. keyword가 포함되어있는 태그 리스트 조회 (페이퍼Id가 중복되면 하나만 가져오기)
-//        List<>
+        List<ThreadSearchGetDto> threadList = threadRepository.searchThreadByKeyword(me.getId(), keyword, page);
         // 2. 태그가 포함된 페이퍼가 포함되어있는 스레드 리스트 조회 (스레드Id가 중복되면 하나만 가져오기)
         //    근데 이때 (좋아요수+스크랩수*5)가 제일 큰 페이퍼Id를 갖고 있어야함
 

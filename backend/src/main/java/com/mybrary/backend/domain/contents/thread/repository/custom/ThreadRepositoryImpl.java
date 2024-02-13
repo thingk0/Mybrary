@@ -10,6 +10,7 @@ import static com.mybrary.backend.domain.mybrary.entity.QMybrary.mybrary;
 
 import com.mybrary.backend.domain.contents.thread.dto.responseDto.GetThreadDto;
 import com.mybrary.backend.domain.contents.thread.dto.responseDto.ThreadInfoGetDto;
+import com.mybrary.backend.domain.contents.thread.dto.responseDto.ThreadSearchGetDto;
 import com.mybrary.backend.domain.contents.thread.dto.responseDto.ThreadShareGetDto;
 import com.mybrary.backend.domain.contents.thread.entity.Thread;
 import com.mybrary.backend.domain.follow.entity.QFollow;
@@ -243,6 +244,11 @@ public class ThreadRepositoryImpl implements ThreadRepositoryCustom {
                         .limit(1)
                         .fetchOne();
 
+      }
+
+      @Override
+      public Optional<List<ThreadSearchGetDto>> searchThreadByKeyword(Long myId, String keyword, Pageable page) {
+            return Optional.empty();
       }
 
 }
