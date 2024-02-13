@@ -1,8 +1,7 @@
 package com.mybrary.backend.global.interceptor;
 
 import com.mybrary.backend.global.jwt.provider.TokenProvider;
-import java.util.Collections;
-import java.util.List;
+import java.security.Principal;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.messaging.Message;
@@ -10,8 +9,8 @@ import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptor;
+import org.springframework.messaging.support.MessageHeaderAccessor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
@@ -25,49 +24,31 @@ public class ChatStompInterceptor implements ChannelInterceptor {
 
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
-        StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
 
-        log.info("event=SEND-MESSAGE, message={}", message);
+        log.info("message = {}", message);
+        StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
+        if (StompCommand.CONNECT == accessor.getCommand()) {
+            String jwtToken = accessor.getFirstNativeHeader("Authorization");
+            log.info("CONNECT authorizationHeader={}", jwtToken);
 
-        // WebSocket 연결 시도 시 인증 토큰 검증
-        if (StompCommand.CONNECT.equals(accessor.getCommand())) {
-            List<String> authorization = accessor.getNativeHeader("Authorization");
+            if (jwtToken != null && jwtToken.startsWith(BEARER_PREFIX)) {
+                String token = jwtToken.substring(BEARER_PREFIX.length());
+                if (tokenProvider.validateToken(token)) {
+                    String email = tokenProvider.extractEmail(token); // 예시 메소드, 실제 구현 필요
 
-            // Authorization 헤더가 존재하며 Bearer 토큰이 포함된 경우
-            if (authorization != null && !authorization.isEmpty() && authorization.get(0).startsWith(BEARER_PREFIX)) {
-                String accessToken = getAccessToken(authorization);
-
-                // 토큰 유효성 검증
-                if (tokenProvider.validateToken(accessToken)) {
-                    String email = tokenProvider.extractEmail(accessToken);
-
-                    // 인증 정보를 Spring SecurityContext 에 설정
-                    UsernamePasswordAuthenticationToken authentication = getSimpleAuthenticationToken(email);
+                    UsernamePasswordAuthenticationToken authentication =
+                        new UsernamePasswordAuthenticationToken(email, null, null);
                     SecurityContextHolder.getContext().setAuthentication(authentication);
-                    accessor.setUser(authentication);
 
-                    // 로깅: 인증 성공
-                    log.info("event=Authentication-Success, email={}", email);
-                } else {
-                    // 로깅: 인증 실패
-                    log.info("event=Authentication-Failure, token={}", accessToken);
+                    accessor.setUser(authentication);
+                    log.info("User authenticated email={}", email);
                 }
-            } else {
-                // 로깅: 인증 헤더 누락
-                log.info("event=Authentication-Header-Missing, message=Authorization header is missing or does not contain Bearer token");
             }
         }
+
         return message;
     }
 
-    // Authorization 헤더에서 액세스 토큰 추출
-    private String getAccessToken(List<String> authorization) {
-        return authorization.get(0).substring(BEARER_PREFIX.length());
-    }
 
-    // 간단한 사용자 인증 정보 생성
-    private UsernamePasswordAuthenticationToken getSimpleAuthenticationToken(String email) {
-        return new UsernamePasswordAuthenticationToken(email, null, Collections.singleton(new SimpleGrantedAuthority("USER")));
-    }
 }
 

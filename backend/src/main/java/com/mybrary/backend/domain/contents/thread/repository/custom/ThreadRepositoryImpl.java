@@ -10,6 +10,7 @@ import static com.mybrary.backend.domain.mybrary.entity.QMybrary.mybrary;
 
 import com.mybrary.backend.domain.contents.thread.dto.responseDto.GetThreadDto;
 import com.mybrary.backend.domain.contents.thread.dto.responseDto.ThreadInfoGetDto;
+import com.mybrary.backend.domain.contents.thread.dto.responseDto.ThreadSearchGetDto;
 import com.mybrary.backend.domain.contents.thread.dto.responseDto.ThreadShareGetDto;
 import com.mybrary.backend.domain.contents.thread.entity.Thread;
 import com.mybrary.backend.domain.follow.entity.QFollow;
@@ -56,7 +57,7 @@ public class ThreadRepositoryImpl implements ThreadRepositoryCustom {
                                             .leftJoin(mybrary).on(thread.mybrary.id.eq(mybrary.id))
                                             .leftJoin(member).on(mybrary.member.id.eq(member.id))
                                             .leftJoin(image).on(member.profileImage.id.eq(image.id))
-                                            .leftJoin(follow).on(follow.following.id.eq(member.id))
+                                            .leftJoin(follow).on(follow.following.id.eq(member.id).and(follow.isDeleted.eq(false)))
                                             .where((follow.follower.id.eq(memberId).or(member.id.eq(memberId)).and(thread.isPaperPublic.eq(true))))
                                             .groupBy(thread.id)
                                             .orderBy(thread.createdAt.desc())
@@ -76,7 +77,7 @@ public class ThreadRepositoryImpl implements ThreadRepositoryCustom {
                                             .leftJoin(mybrary).on(thread.mybrary.id.eq(mybrary.id))
                                             .leftJoin(member).on(mybrary.member.id.eq(member.id))
                                             .leftJoin(image).on(member.profileImage.id.eq(image.id))
-                                            .leftJoin(follow).on(follow.following.id.eq(member.id))
+                                            .leftJoin(follow).on(follow.following.id.eq(member.id).and(follow.isDeleted.eq(false)))
                                             .where(member.id.notIn(query.select(followSub.id).from(followSub).where(followSub.follower.id.eq(memberId))).and(member.id.ne(memberId)).and(member.isProfilePublic.eq(true).and(thread.isPaperPublic.eq(true))))
                                             .groupBy(thread.id)
                                             .orderBy(thread.createdAt.desc())
@@ -243,6 +244,11 @@ public class ThreadRepositoryImpl implements ThreadRepositoryCustom {
                         .limit(1)
                         .fetchOne();
 
+      }
+
+      @Override
+      public Optional<List<ThreadSearchGetDto>> searchThreadByKeyword(Long myId, String keyword, Pageable page) {
+            return Optional.empty();
       }
 
 }

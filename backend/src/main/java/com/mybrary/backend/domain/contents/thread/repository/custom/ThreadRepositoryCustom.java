@@ -2,6 +2,7 @@ package com.mybrary.backend.domain.contents.thread.repository.custom;
 
 import com.mybrary.backend.domain.contents.thread.dto.responseDto.GetThreadDto;
 import com.mybrary.backend.domain.contents.thread.dto.responseDto.ThreadInfoGetDto;
+import com.mybrary.backend.domain.contents.thread.dto.responseDto.ThreadSearchGetDto;
 import com.mybrary.backend.domain.contents.thread.dto.responseDto.ThreadShareGetDto;
 import com.mybrary.backend.domain.contents.thread.entity.Thread;
 import java.util.List;
@@ -27,4 +28,6 @@ public interface ThreadRepositoryCustom {
 //    List<ThreadInfoGetDto> getSimpleThreadDtoResults(Long memberId, Pageable pageable);
 
     ThreadShareGetDto getThreadShare(Long threadId);
+
+    Optional<List<ThreadSearchGetDto>> searchThreadByKeyword(Long myId, String keyword, Pageable page);
 }

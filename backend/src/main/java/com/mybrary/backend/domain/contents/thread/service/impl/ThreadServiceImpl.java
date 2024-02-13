@@ -202,6 +202,7 @@ public class ThreadServiceImpl implements ThreadService {
                 MainThreadListNotFoundException::new);
             System.out.println("1");
             System.out.println("크기" + threadDtoList.size());
+
             /* following중이지 않은 멤버의 쓰레드 최대 10개 조회와 관련 정보 dto 생성*/
             int getRandomCount = 10 - threadDtoList.size();
             pageable = PageRequest.of(page, getRandomCount);

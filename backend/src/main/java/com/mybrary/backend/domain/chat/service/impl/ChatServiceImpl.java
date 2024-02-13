@@ -56,13 +56,11 @@ public class ChatServiceImpl implements ChatService {
     private final ThreadRepository threadRepository;
     private final TokenService tokenService;
     private final SimpMessagingTemplate messagingTemplate;
-    private final ObjectMapper objectMapper;
 
     @Transactional
     @Override
-    public ChatMessageResponseDto save(String authorization, Long chatRoomId, MessageRequestDto requestDto) {
+    public ChatMessageResponseDto save(String email, Long chatRoomId, MessageRequestDto requestDto) {
 
-        String email = tokenService.extractAccessToken(authorization);
         Member sender = memberRepository.searchByEmail(email).orElseThrow(EmailNotFoundException::new);
         ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId).orElseThrow(ChatRoomNotFoundException::new);
         ChatMessage chatMessage = ChatMessage.builder()
@@ -71,18 +69,10 @@ public class ChatServiceImpl implements ChatService {
                                              .message(requestDto.getMessage())
                                              .threadId(requestDto.getThreadId())
                                              .build();
-        try {
-            // 로깅 예시
-            log.info(objectMapper.writeValueAsString(Map.of(
-                "action", "saveChatMessage",
-                "email", email,
-                "chatRoomId", chatRoomId,
-                "messageId", chatMessage.getId()
-            )));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
+        chatMessageRepository.save(chatMessage);
 
+        log.info("action = {}, email = {}, chatRoomId = {}, messageId = {}", "saveChatMessage",
+                 email, chatRoomId, chatMessage.getId());
         return ChatMessageResponseDto.of(chatMessage, sender);
     }
 
@@ -119,7 +109,8 @@ public class ChatServiceImpl implements ChatService {
 //        List<Long> chatRoomIdList2 = chatRoomRepository.chatRoomIdList(myId, page);
 
         // 페이지네이션 한 코드
-        List<Long> chatRoomIdList = chatRoomRepository.chatRoomIdList2(myId, pageable).orElseThrow(ChatRoomNotFoundException::new);
+        List<Long> chatRoomIdList = chatRoomRepository.chatRoomIdList2(myId, pageable)
+                                                      .orElseThrow(ChatRoomNotFoundException::new);
 
         // 채팅방 리스트만큼 반복
         for (int i = 0; i < chatRoomIdList.size(); i++) {
@@ -163,7 +154,7 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public Map<String, Object> getAllChatByChatRoomId(String email,
-                                                           Long chatRoomId, Pageable page) {
+                                                      Long chatRoomId, Pageable page) {
         Member me = memberService.findMember(email);
         Long myId = me.getId();
 
@@ -176,7 +167,8 @@ public class ChatServiceImpl implements ChatService {
         for (ChatMessage chatMessage : chatMessages) {
 
             // 2. 상대방 정보
-            Member you = chatJoinRepository.getJoinMemberByMemberId(chatRoomId, myId).orElseThrow(ChatJoinMemberNotFoundException::new);
+            Member you = chatJoinRepository.getJoinMemberByMemberId(chatRoomId, myId)
+                                           .orElseThrow(ChatJoinMemberNotFoundException::new);
 
             // 3. 스레드Id가 null이 아닐 때 스레드 조회
             ThreadShareGetDto thread = null;
@@ -203,7 +195,7 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public Map<String, Object> getAllChatByMemberId(String email,
-                                                         Long memberId, Pageable page) {
+                                                    Long memberId, Pageable page) {
 
         Member me = memberService.findMember(email);
         Long myId = me.getId();
