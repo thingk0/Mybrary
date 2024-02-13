@@ -9,15 +9,18 @@ import Thread from "../components/common/Thread";
 import { getMyThreadList, getDeskThread } from "../api/thread/Thread";
 import { getMybrary } from "../api/mybrary/Mybrary";
 import { useNavigate, useParams } from "react-router-dom";
+import useUserStore from "../store/useUserStore";
 
 export default function ThreadsPage() {
   const Params = useParams();
   const nowuser = Params.userid;
+  const me = useUserStore((state) => state.user);
   const [user, setUser] = useState({});
   console.log(nowuser);
   const navigate = useNavigate();
   const [groupedData, setGroupedData] = useState(new Map());
   const [threadList, setThreadList] = useState([]);
+  const [trueme, setTrueme] = useState(false);
 
   useEffect(() => {
     async function fetchmyData() {
@@ -44,6 +47,9 @@ export default function ThreadsPage() {
         });
 
         setGroupedData(grouped);
+        if (me.memberId == nowuser) {
+          setTrueme(true);
+        }
       } catch (error) {
         console.log("데이터를 가져오는데 실패함");
       }
@@ -88,7 +94,7 @@ export default function ThreadsPage() {
               {/* 년-월 표시 */}
               <div className={styles.년도별스레드}>
                 {groupedData.get(yearMonth).map((thread) => (
-                  <Thread thread={thread} user={user} />
+                  <Thread thread={thread} user={user} trueme={trueme} />
                 ))}
               </div>
             </div>

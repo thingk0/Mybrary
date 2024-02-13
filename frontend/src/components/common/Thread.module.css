@@ -5,7 +5,11 @@
   justify-content: center;
   align-items: center;
 }
-
+.삭제버튼 {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+}
 .userimage {
   width: 20px;
   height: 20px;
@@ -70,7 +74,7 @@
   display: flex;
   align-items: center;
   text-align: center;
-  font-size: 16px;
+  font-size: 11px;
 }
 .나머지좋댓스 {
   flex: 2.5;
