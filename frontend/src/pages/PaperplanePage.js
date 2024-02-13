@@ -81,7 +81,7 @@ export default function PaperplanePage() {
 
   const sendMessage = () => {
     const messageObject = {
-      chatRoomId: 9,
+      chatRoomId: 15,
       senderId: user.memberId,
       receiverId: 2,
       message: "안녕하세요",

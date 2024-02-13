@@ -16,7 +16,7 @@ import BookCreate from "../components/common/BookCreate";
 import BookCreateOfCategory from "../components/common/BookCreateOfCategory";
 
 export default function BookPage() {
-  const { bookShelfId, categoryid } = useParams();
+  const { userid, bookShelfId, categoryid } = useParams();
   const memberId = useUserStore((state) => state.user.memberId);
   const carouselRef = useRef(null);
   const navigate = useNavigate();
@@ -146,9 +146,11 @@ export default function BookPage() {
         </div>
 
         <div className={styles.header}>
-          <div className={styles.책추가} onClick={() => setCreateModal(true)}>
-            책추가
-          </div>
+          {+userid === memberId && (
+            <div className={styles.책추가} onClick={() => setCreateModal(true)}>
+              책추가
+            </div>
+          )}
         </div>
         {bookList.length ? (
           <div className={styles.flex}>
