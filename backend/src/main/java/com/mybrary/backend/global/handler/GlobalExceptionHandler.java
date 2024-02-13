@@ -2,39 +2,40 @@ package com.mybrary.backend.global.handler;
 
 import com.mybrary.backend.global.exception.RollingPaperNotFoundException;
 import com.mybrary.backend.global.exception.book.BookAccessDeniedException;
-import com.mybrary.backend.global.exception.bookshelf.BookshelfNotFoundException;
-import com.mybrary.backend.global.exception.category.CategoryAccessDeniedException;
-import com.mybrary.backend.global.exception.chat.ChatJoinMemberNotFoundException;
-import com.mybrary.backend.global.exception.chat.ChatRoomNotFoundException;
-import com.mybrary.backend.global.exception.chat.InvalidChatRoomAccessException;
-import com.mybrary.backend.global.exception.member.FollowNotFoundException;
-import com.mybrary.backend.global.exception.member.FollowerNotFoundException;
-import com.mybrary.backend.global.exception.member.FollowingNotFoundException;
-import com.mybrary.backend.global.exception.mybrary.MybraryAccessDeniedException;
-import com.mybrary.backend.global.exception.paper.PaperAccessDeniedException;
-import com.mybrary.backend.global.exception.pickbook.PickBookNotFoundException;
 import com.mybrary.backend.global.exception.book.BookAlreadySubscribeException;
 import com.mybrary.backend.global.exception.book.BookCreateException;
-import com.mybrary.backend.global.exception.image.ImageNotFoundException;
-import com.mybrary.backend.global.exception.mybrary.MybraryNotFoundException;
-import com.mybrary.backend.global.exception.mybrary.NotMybraryException;
 import com.mybrary.backend.global.exception.book.BookDeleteException;
 import com.mybrary.backend.global.exception.book.BookNotFoundException;
 import com.mybrary.backend.global.exception.book.BookSubscribeException;
 import com.mybrary.backend.global.exception.book.BookUpdateException;
-import com.mybrary.backend.global.exception.paper.PaperDeleteException;
-import com.mybrary.backend.global.exception.paper.PaperListNotFoundException;
+import com.mybrary.backend.global.exception.bookshelf.BookshelfNotFoundException;
+import com.mybrary.backend.global.exception.category.CategoryAccessDeniedException;
+import com.mybrary.backend.global.exception.category.CategoryOwnerNotFoundException;
+import com.mybrary.backend.global.exception.chat.ChatJoinMemberNotFoundException;
+import com.mybrary.backend.global.exception.chat.ChatRoomNotFoundException;
+import com.mybrary.backend.global.exception.chat.InvalidChatRoomAccessException;
 import com.mybrary.backend.global.exception.email.FailedMessageTransmissionException;
 import com.mybrary.backend.global.exception.email.InvalidAuthCodeException;
+import com.mybrary.backend.global.exception.image.ImageNotFoundException;
+import com.mybrary.backend.global.exception.jwt.AccessTokenNotFoundException;
 import com.mybrary.backend.global.exception.jwt.RefreshTokenNotFoundException;
-import com.mybrary.backend.global.exception.category.CategoryOwnerNotFoundException;
 import com.mybrary.backend.global.exception.member.DuplicateEmailException;
 import com.mybrary.backend.global.exception.member.EmailNotFoundException;
+import com.mybrary.backend.global.exception.member.FollowNotFoundException;
+import com.mybrary.backend.global.exception.member.FollowerNotFoundException;
+import com.mybrary.backend.global.exception.member.FollowingNotFoundException;
 import com.mybrary.backend.global.exception.member.InvalidLoginAttemptException;
 import com.mybrary.backend.global.exception.member.InvalidNicknameException;
 import com.mybrary.backend.global.exception.member.MissingPathVariableException;
 import com.mybrary.backend.global.exception.member.PasswordMismatchException;
 import com.mybrary.backend.global.exception.member.ProfileUpdateException;
+import com.mybrary.backend.global.exception.mybrary.MybraryAccessDeniedException;
+import com.mybrary.backend.global.exception.mybrary.MybraryNotFoundException;
+import com.mybrary.backend.global.exception.mybrary.NotMybraryException;
+import com.mybrary.backend.global.exception.paper.PaperAccessDeniedException;
+import com.mybrary.backend.global.exception.paper.PaperDeleteException;
+import com.mybrary.backend.global.exception.paper.PaperListNotFoundException;
+import com.mybrary.backend.global.exception.pickbook.PickBookNotFoundException;
 import com.mybrary.backend.global.exception.scrap.ScrapNotFoundException;
 import com.mybrary.backend.global.exception.tag.TagNotFoundException;
 import com.mybrary.backend.global.exception.thread.ThreadAccessDeniedException;
@@ -293,6 +294,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(RollingPaperNotFoundException.class)
     protected ResponseEntity<?> handle(RollingPaperNotFoundException e) {
         log.error("RollingPaperNotFoundException = {}", e.getErrorCode().getMessage());
+        return response.error(e.getErrorCode());
+    }
+
+    @ExceptionHandler(AccessTokenNotFoundException.class)
+    protected ResponseEntity<?> handle(AccessTokenNotFoundException e) {
+        log.error("AccessTokenNotFoundException = {}", e.getErrorCode().getMessage());
         return response.error(e.getErrorCode());
     }
 
