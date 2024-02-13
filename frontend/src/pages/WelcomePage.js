@@ -24,20 +24,20 @@ export default function WelcomePage() {
       <div className={styles.container}>
         <div className={styles.문구}>
           <div>
-            <img src={line1} alt="" width="3px" className={styles.line1} />
+            <img src={line1} alt="" width="2px" className={styles.line1} />
           </div>
           <div className={styles.title}>MYBRARY</div>
           <div className={styles.text}>
             당신의 추억이 한 페이지가 될 수 있도록
           </div>
           <div>
-            <img src={line3} alt="" width="3px" />
+            <img src={line3} alt="" width="2px" />
           </div>
           <div onClick={() => handleStart()} className={styles.button}>
             입장하기
           </div>
           <div>
-            <img src={line3} alt="" width="3px" />
+            <img src={line3} alt="" width="2px" />
           </div>
         </div>
         <div className={styles.zero}>

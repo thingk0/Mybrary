@@ -1,8 +1,6 @@
 import Container from "../components/frame/Container";
 import SharedPaper from "../components/paperplane/SharedPaper";
 import styles from "./style/PaperplanePage.module.css";
-import 예시이미지2 from "../assets/예시이미지2.png";
-import 이미지예시 from "../assets/이미지예시.png";
 import 종이비행기 from "../assets/종이비행기.png";
 import { useEffect, useState } from "react";
 import useStompStore from "../store/useStompStore";

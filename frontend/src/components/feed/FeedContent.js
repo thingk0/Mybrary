@@ -6,7 +6,6 @@ import icon_like from "../../assets/icon/icon_like.png";
 import icon_nolike from "../../assets/icon/icon_nolike.png";
 import icon_scrap from "../../assets/icon/icon_scrap.png";
 import icon_share from "../../assets/icon/icon_share.png";
-import user_img from "../../assets/이미지예시.png";
 import next from "../../assets/next.png";
 import prev from "../../assets/prev.png";
 import styles from "./FeedContent.module.css";

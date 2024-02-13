@@ -85,7 +85,7 @@
 .StackCarousel_above {
   opacity: 1;
   transition: transform 0.5s;
-  transform: translateY(-70rem) translateX(-30rem) rotate(-30deg);
+  transform: translateY(-120rem) translateX(-30rem) rotate(-30deg);
   filter: brightness(100%);
 }
 

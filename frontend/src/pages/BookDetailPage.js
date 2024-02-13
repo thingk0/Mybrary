@@ -7,6 +7,7 @@ import ContentItem from "../components/feed/ContentItem";
 import useUserStore from "../store/useUserStore";
 import useBookStore from "../store/useBookStore";
 import { getBook } from "../api/book/Book";
+import ContentItem2 from "../components/book/ContentItem2";
 
 export default function BookDetailPage() {
   const user = useUserStore((state) => state.user);
@@ -85,11 +86,11 @@ export default function BookDetailPage() {
           </div>
         </div>
         {pages.length ? (
-          <div>
+          <div className={styles.margin}>
             <HTMLFlipBook
               ref={bookRef}
-              width={600}
-              height={800}
+              width={570}
+              height={750}
               onFlip={onFlip}
               maxShadowOpacity={0.2}
               clickEventForward={true}
@@ -97,7 +98,21 @@ export default function BookDetailPage() {
             >
               {pages.map((page, index) => (
                 <div className={styles.page} key={index}>
-                  <ContentItem paper={page} />
+                  <div className={styles.flex}>
+                    <div className={styles.writer}>
+                      <div
+                        className={styles.writerImage}
+                        style={{
+                          background: `url("https://jingu.s3.ap-northeast-2.amazonaws.com/${page.writer.imageUrl}")no-repeat center/cover`,
+                        }}
+                      ></div>
+                      <div>{page.writer.nickname}</div>
+                    </div>
+                    <div>{".  .  ."}</div>
+                  </div>
+                  <div className={styles.main_content}>
+                    <ContentItem2 paper={page} />
+                  </div>
                 </div>
               ))}
             </HTMLFlipBook>
