@@ -89,12 +89,10 @@ public enum ErrorCode {
     // 스크랩 예외 처리
     SCRAP_NOT_FOUND(HttpStatus.NOT_FOUND, "스크랩을 찾을 수 없습니다."),
 
-
     // 태그 예외 처리
     TAG_NOT_FOUND(HttpStatus.NOT_FOUND, "태그리스트를 찾을 수 없습니다."),
 
     // 좋아요 예외 처리
-
     // 이미지 예외 처리
     IMAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "이미지를 찾을 수 없습니다."),
 
@@ -102,6 +100,8 @@ public enum ErrorCode {
     CHAT_ROOM_NOT_FOUND(HttpStatus.NOT_FOUND, "채팅방을 찾을 수 없습니다."),
     CHAT_JOIN_MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "상대방을 찾을 수 없습니다."),
     INVALID_CHATROOM_ACCESS(HttpStatus.UNAUTHORIZED, "해당 사용자는 지정된 채팅방의 참여자가 아닙니다."),
+    INVALID_MESSAGE(HttpStatus.BAD_REQUEST, "잘못된 메시지 형식입니다."),
+    INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "토큰 검증 실패하였습니다."),
 
     ROLLING_PAPER_NOT_FOUND (HttpStatus.NOT_FOUND, "롤링페이퍼를 찾을 수 없습니다.");
 
