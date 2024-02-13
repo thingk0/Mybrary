@@ -45,7 +45,7 @@ public class ChatMessageRepositoryImpl implements ChatMessageRepositoryCustom {
                  .where(chatRoom.id.eq(chatRoomId))
                  .limit(pageable.getPageSize())
                  .offset(pageable.getOffset())
-                 .orderBy(chatMessage.createdAt.asc())
+                 .orderBy(chatMessage.createdAt.desc())
                  .fetch();
 
         JPAQuery<ChatMessage> countQuery = query.select(chatMessage)
