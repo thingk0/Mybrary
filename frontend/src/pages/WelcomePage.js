@@ -10,11 +10,13 @@ import useUserStore from "../store/useUserStore";
 export default function WelcomePage() {
   const navigate = useNavigate();
   const token = localStorage.getItem("accessToken");
+  const tokenTimestamp = localStorage.getItem("tokenTimestamp");
   const user = useUserStore((state) => state.user);
   const handleStart = () => {
-    if (token && user.memberId) {
+    if (token && user.memberId && (Date.now() - tokenTimestamp) / 1000 < 800) {
       navigate(`/mybrary/${user.memberId}`);
     } else {
+      localStorage.clear();
       navigate("/join");
     }
   };
