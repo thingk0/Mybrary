@@ -124,8 +124,7 @@ export default function FeedContent({
                 onClick={() => navigate(`/mybrary/${thread.memberId}`)}
                 className={styles.user_follow}
               >
-                {thread.followed && "팔로잉중"}
-                {!thread.followed && "팔로우"}
+                {thread.followed ? "마이브러리방문" : "팔로우하러가기"}
               </div>
             )}
           </div>
@@ -164,6 +163,7 @@ export default function FeedContent({
                 left="0"
                 top="0"
                 header="이 페이퍼를 포함한 책"
+                paperId={paper.id}
               />
             </div>
 

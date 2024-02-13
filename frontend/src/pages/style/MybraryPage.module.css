@@ -465,6 +465,15 @@
   align-items: center;
   gap: 5%;
 }
+.프로필박스4 {
+  min-width: 110px;
+  max-width: 110px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5%;
+}
 .프로필박스3 {
   /* width: 15%; */
   cursor: pointer;

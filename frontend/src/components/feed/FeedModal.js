@@ -1,7 +1,8 @@
 //모달창을 당담합니다.
 import styles from "./FeedModal.module.css";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import useOnClickOutside from "../common/useOnClickOutside";
+import { getPaperinBook } from "../../api/book/Book";
 
 export default function FeedModal({
   isModalOpen,
@@ -14,7 +15,24 @@ export default function FeedModal({
   top,
   bottom,
   header,
+  paperId,
 }) {
+  const [booklist, setBooklist] = useState([]);
+
+  useEffect(() => {
+    console.log("으아아아아");
+    async function fetchData() {
+      try {
+        const response = await getPaperinBook(paperId);
+        console.log(response);
+        setBooklist(response.data);
+      } catch (error) {
+        console.log("데이터를 가져오는데 실패함");
+      }
+    }
+    if (paperId) fetchData(); // paperId가 존재할 때만 fetchData 함수를 호출합니다.
+  }, [paperId]);
+
   const ref = useRef();
   useOnClickOutside(ref, () => setIsModalOpen(false));
 
@@ -43,6 +61,18 @@ export default function FeedModal({
             </div>
           </div>
           {children}
+          {booklist.map((book) => (
+            <>
+              <div>
+                {book.bookId}
+                {book.bookTitle}
+              </div>
+              {book.memberId}
+              {book.nickname}
+              {book.profileImageId}
+              {book.profileImageUrl}
+            </>
+          ))}
         </div>
       )}
     </div>

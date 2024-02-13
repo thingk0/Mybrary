@@ -526,7 +526,7 @@ export default function MybraryPage() {
                     alt="대체 이미지"
                   />
                 </div>
-                <div className={styles.프로필박스}>
+                <div className={styles.프로필박스4}>
                   <div className={styles.닉네임폰트}>{userInfo.nickname}</div>
                   <div>{userInfo.name}</div>
                 </div>

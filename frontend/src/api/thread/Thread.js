@@ -43,9 +43,14 @@ export async function deleteThread(threadid) {
 
 /* 특정 회원의 쓰레드(나의게시물) 조회 */
 export async function getDeskThread(memberid, pagingObject) {
+  const params = {
+    page: 0,
+    size: 100,
+    sort: "string",
+  };
   try {
     const response = await axios.get(BASE_URL + `thread/${memberid}/desk`, {
-      pagingObject,
+      params,
     });
     return response.data;
   } catch (error) {
@@ -67,9 +72,14 @@ export async function getThreadList(page) {
 
 /* 나의 쓰레드 조회 */
 export async function getMyThreadList(pagingObject) {
+  const params = {
+    page: 0,
+    size: 100,
+    sort: "string",
+  };
   try {
     const response = await axios.get(BASE_URL + `thread/desk`, {
-      pagingObject,
+      params,
     });
     return response.data;
   } catch (error) {
