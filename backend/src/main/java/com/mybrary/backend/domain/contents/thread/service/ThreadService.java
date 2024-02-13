@@ -15,7 +15,7 @@ public interface ThreadService {
 
     int deleteThread(Long myId, Long threadId);
 
-    List<GetThreadDto> getMainAllThread(Long myId, Pageable pageable);
+    List<GetThreadDto> getMainAllThread(Long myId, int page);
 
     List<ThreadInfoGetDto> getMyAllThread(Long myId, Pageable pageable);
 

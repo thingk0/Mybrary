@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Log4j2
@@ -52,11 +53,11 @@ public class ThreadController {
     @GetMapping("/home")
     public ResponseEntity<?> getMainAllThread(
         @Parameter(hidden = true) Authentication authentication,
-        @PageableDefault(page = 0, size = 10) Pageable pageable) {
+        @RequestParam(name = "page") int page) {
         Member me = memberService.findMember(authentication.getName());
         Long myId = me.getId();
         return response.success(ResponseCode.MAIN_THREAD_LIST_FETCHED,
-            threadService.getMainAllThread(myId, pageable));
+            threadService.getMainAllThread(myId, page));
     }
     @Operation(summary = "나의 쓰레드 조회", description = "나의 마이브러리 책상에서의 쓰레드 목록 조회")
     @GetMapping("/desk")
@@ -108,6 +109,7 @@ public class ThreadController {
                                 threadService.getThread(authentication.getName(), myId, threadId));
 
     }
+
 
 
 //    @Operation(summary = "쓰레드 단건 조회", description = "쓰레드 아이디를 통한 쓰레드 조회")

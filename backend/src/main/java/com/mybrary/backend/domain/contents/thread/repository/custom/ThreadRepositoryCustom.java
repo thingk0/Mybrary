@@ -18,7 +18,7 @@ public interface ThreadRepositoryCustom {
     Optional<List<GetThreadDto>> getFollowingThreadDtoResults(Long memberId, Pageable pageable);
 
     /* 나와 내가 팔로잉중인 회원을 제외한 회원들의 랜덤 쓰레드 n개 조회  */
-    Optional<List<GetThreadDto>> getRandomThreadDtoResults(Long memberId, Pageable pageable, int count);
+    Optional<List<GetThreadDto>> getRandomThreadDtoResults(Long memberId, Pageable pageable);
 
     /* 이 두개는 쓰레드 목록 조회에 사용됨 */
         Optional<List<Thread>> getThreadsByMemberId(Long memberId, Pageable pageable);

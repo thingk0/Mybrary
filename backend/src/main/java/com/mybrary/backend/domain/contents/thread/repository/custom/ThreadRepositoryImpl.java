@@ -61,13 +61,13 @@ public class ThreadRepositoryImpl implements ThreadRepositoryCustom {
                                             .groupBy(thread.id)
                                             .orderBy(thread.createdAt.desc())
                                             .offset(pageable.getOffset())
-                                            .limit(5)
+                                            .limit(pageable.getPageSize())
                                             .fetch());
       }
 
       /* 나와 내가 팔로잉중인 회원을 제외한 회원들의 랜덤 쓰레드 n개 조회  */
       @Override
-      public Optional<List<GetThreadDto>> getRandomThreadDtoResults(Long memberId, Pageable pageable, int count) {
+      public Optional<List<GetThreadDto>> getRandomThreadDtoResults(Long memberId, Pageable pageable) {
 
             QFollow followSub = new QFollow("followSub");
 
@@ -81,7 +81,7 @@ public class ThreadRepositoryImpl implements ThreadRepositoryCustom {
                                             .groupBy(thread.id)
                                             .orderBy(thread.createdAt.desc())
                                             .offset(pageable.getOffset())
-                                            .limit(count)
+                                            .limit(pageable.getPageSize())
                                             .fetch());
       }
 
