@@ -69,6 +69,7 @@ public class ChatServiceImpl implements ChatService {
                                              .message(requestDto.getMessage())
                                              .threadId(requestDto.getThreadId())
                                              .build();
+        chatMessageRepository.save(chatMessage);
 
         log.info("action = {}, email = {}, chatRoomId = {}, messageId = {}", "saveChatMessage",
                  email, chatRoomId, chatMessage.getId());
