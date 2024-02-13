@@ -25,7 +25,7 @@ public class MessageController {
                             Principal principal,
                             MessageRequestDto message) {
 
-        log.info("method=sendMessage receiverId={}, email={}, message={}",
+        log.info("method=sendMessage chatRoomId={}, email={}, message={}",
                  chatRoomId, principal.getName(), message.getMessage());
 
         ChatMessageResponseDto content = chatService.save(principal.getName(), chatRoomId, message);

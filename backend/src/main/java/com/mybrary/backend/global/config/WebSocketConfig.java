@@ -27,30 +27,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/ws")
                 .setAllowedOriginPatterns("*")
-//                .setHandshakeHandler(new DefaultHandshakeHandler() {
-//                    @Override
-//                    protected Principal determineUser(ServerHttpRequest request, WebSocketHandler wsHandler,
-//                                                      Map<String, Object> attributes) {
-//
-//                        String accessToken = tokenService.extractAccessToken((HttpServletRequest) request);
-//                        log.info("accessToken = {}", accessToken);
-//
-//                        if (accessToken == null) {
-//                            throw new AccessTokenNotFoundException();
-//                        }
-//
-//                        return new Principal() {
-//                            private final String name = tokenProvider.extractEmail(accessToken);
-//
-//                            @Override
-//                            public String getName() {
-//                                return name;
-//                            }
-//                        };
-//                    }
-//                })
                 .withSockJS();
-
         registry.setErrorHandler(new ChatErrorHandler());
     }
 
