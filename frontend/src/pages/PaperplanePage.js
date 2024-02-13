@@ -3,14 +3,12 @@ import SharedPaper from "../components/paperplane/SharedPaper";
 import styles from "./style/PaperplanePage.module.css";
 import 종이비행기 from "../assets/종이비행기.png";
 import { useEffect, useState, useRef } from "react";
-import useStompStore from "../store/useStompStore";
 import useUserStore from "../store/useUserStore";
-import { getChatList } from "../api/chat/Chat.js";
+import { getChatList, getMessageList } from "../api/chat/Chat.js";
 import ChatProfile from "../components/paperplane/ChatProfile.js";
 import Iconuser2 from "../assets/icon/Iconuser2.png";
 import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
-import useNotificationStore from "../store/useNotificationStore.js";
 import { useNavigate } from "react-router-dom";
 
 export default function PaperplanePage() {
@@ -20,46 +18,47 @@ export default function PaperplanePage() {
   const [chatMessageList, setChatMessageList] = useState([]); // 접속중인 채팅방 채팅 내역
   const [nowChatRoom, setNowChatRoom] = useState(null); // 현재 내가 보고있는 채팅방 정보
   const [stompClient, setStompClient] = useState(null);
-  const { connect } = useStompStore();
-  const { setNewNotification } = useNotificationStore();
+  const [nowMessage, setNowMessage] = useState("");
   const chatContainerRef = useRef(null); // 채팅 컨테이너에 대한 ref 스크롤 아래로 관리하기 윟마
   const navigate = useNavigate();
 
+  //채팅페이지에 들어오면 구독 실행
   useEffect(() => {
-    // 채팅방 리스트들을 조회, 나에게 오는 메시지들을 받아볼 수 있도록 구독
-
     (async function asyncGetChatList() {
       const res = await getChatList();
       setChatRoomList(res.data.content);
     })();
 
-    // 해당 페이지가 unmount 될 때, 즉 해당 페이지를 떠날 때
-    // 오직 알림만을 위한 소켓 연결을 시도
-  }, []);
-
-  //채팅 방이 바뀔 때마다 해당 채팅 방으로 새로운 구독을 발행
-  useEffect(() => {
-    const token = localStorage.getItem("accessToken");
-    const client = new Client({
-      webSocketFactory: () => new SockJS("https://i10b207.p.ssafy.io/ws"),
-      connectHeaders: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    client.onConnect = function () {
-      console.log("채팅구독");
-      client.subscribe(`/sub/chatMemberId/${user.memberId}`, (message) => {
-        console.log("receive check!! ");
-        console.log(message);
+    if (!stompClient) {
+      const token = localStorage.getItem("accessToken");
+      const client = new Client({
+        webSocketFactory: () => new SockJS("https://i10b207.p.ssafy.io/ws"),
+        connectHeaders: {
+          Authorization: `Bearer ${token}`,
+        },
       });
-    };
 
-    client.activate();
-    setStompClient(client);
+      client.onConnect = function () {
+        console.log("채팅구독");
+        client.subscribe(`sub/chatMemberId/${user.memberId}`, (message) => {
+          const res = JSON.body(message.body);
+          setChatMessageList((prev) => [res, ...prev]);
+        });
+      };
+
+      client.activate();
+      setStompClient(client);
+    }
   }, []);
 
   useEffect(() => {
+    if (nowChatRoom) {
+      (async function asyncGetMessageList() {
+        const res = await getMessageList(nowChatRoom.chatRoomId);
+        setChatMessageList(res.data.content);
+      })();
+    }
+
     const scrollToBottom = () => {
       if (chatContainerRef.current) {
         chatContainerRef.current.scrollTop =
@@ -79,19 +78,44 @@ export default function PaperplanePage() {
     }
   }, [chatMessageList]); // chatMessageList가 변경될 때마다 실행
 
-  const sendMessage = () => {
-    const messageObject = {
-      chatRoomId: 9,
-      senderId: user.memberId,
-      receiverId: 2,
-      message: "안녕하세요",
-      threadId: 1,
-    };
+  const sendMessage = (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault(); // 기본 이벤트(여기서는 줄바꿈)를 방지
+      // 메시지 전송 로직
 
-    console.log(stompClient);
-    const destination = `/pub/chat/${nowChatRoom.chatRoomId}/send`;
-    const bodyData = JSON.stringify(messageObject);
-    stompClient.publish({ destination, body: bodyData });
+      if (nowMessage.trim() !== "") {
+        const messageObject = {
+          chatRoomId: nowChatRoom.chatRoomId,
+          senderId: user.memberId,
+          message: nowMessage,
+          threadId: 1,
+        };
+        const destination = `/pub/chat/${nowChatRoom.chatRoomId}/send`;
+        const bodyData = JSON.stringify(messageObject);
+        stompClient.publish({ destination, body: bodyData });
+
+        const message = {
+          chatRoomId: nowChatRoom.chatRoomId,
+          senderId: user.memberId,
+          nickname: user.nickname,
+          content: nowMessage,
+          profileImageUrl: user.profileImageUrl,
+          timestamp: nowChatRoom,
+        };
+        setChatMessageList((prev) => [message, ...prev]);
+
+        const scrollToBottom = () => {
+          if (chatContainerRef.current) {
+            chatContainerRef.current.scrollTop =
+              chatContainerRef.current.scrollHeight;
+          }
+        };
+
+        setTimeout(() => scrollToBottom(), 10);
+      }
+
+      setNowMessage(""); // 메시지 전송 후 입력 필드 초기화
+    }
   };
 
   const handleSelectChatRoom = (chatRoom) => {
@@ -138,7 +162,7 @@ export default function PaperplanePage() {
                         otherMemberProfileImageUrl={
                           chatRoom.otherMemberProfileImageUrl
                         }
-                        lastMessage={chatRoom.lastMessage}
+                        latestMessage={chatRoom.latestMessage}
                         unreadMessageCount={chatRoom.unreadMessageCount}
                       />
                     ))}
@@ -197,25 +221,23 @@ export default function PaperplanePage() {
                         className={styles.chatContainer}
                         ref={chatContainerRef}
                       >
-                        <div
-                          className={`${styles.message} ${
-                            true ? styles.sender : styles.receiver
-                          }`}
-                        >
-                          ㅋㅋㅋㅋㅋㅋ 개웃겨 이거 봄? ㅋㅋㅋㅋㅋㅋ 개웃겨 이거
-                          봄? ㅋㅋㅋㅋㅋㅋ 개웃겨 이거 봄? ㅋㅋㅋㅋㅋㅋ 개웃겨
-                          이거 봄?
-                        </div>
-                        <div
-                          className={`${styles.message} ${
-                            false ? styles.sender : styles.receiver
-                          }`}
-                        >
-                          안녕
-                        </div>
+                        {chatMessageList
+                          .slice()
+                          .reverse()
+                          .map((message, index) => (
+                            <div
+                              className={`${styles.message} ${
+                                message.senderId === user.memberId
+                                  ? styles.sender
+                                  : styles.receiver
+                              }`}
+                              key={index}
+                            >
+                              {message.content}
+                            </div>
+                          ))}
 
-                        <SharedPaper />
-                        <SharedPaper />
+                        {/* <SharedPaper /> */}
                       </div>
                     </div>
                     {/* 메시지 입력창 */}
@@ -237,9 +259,9 @@ export default function PaperplanePage() {
                           resize: "none", // 사용자가 크기 조절하지 못하도록 설정
                           overflow: "auto", // 내용이 넘칠 때 스크롤바 자동 생성
                         }}
-                        onKeyDown={() => {
-                          //엔터 누르면 전송, 쉬프트 + 엔터는 줄바꿈
-                        }}
+                        value={nowMessage}
+                        onChange={(e) => setNowMessage(e.target.value)}
+                        onKeyDown={sendMessage}
                       />
 
                       <img

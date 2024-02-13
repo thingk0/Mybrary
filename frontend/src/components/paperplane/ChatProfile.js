@@ -4,7 +4,7 @@ function ChatProfile({
   isSelected,
   otherMemberNickname,
   otherMemberProfileImageUrl,
-  lastMessage,
+  latestMessage,
   unreadMessageCount,
   onClick,
 }) {
@@ -26,7 +26,11 @@ function ChatProfile({
         onClick={onClick}
       >
         <img
-          src={`https://jingu.s3.ap-northeast-2.amazonaws.com/${otherMemberProfileImageUrl}`} // 선택된 이미지 또는 기본 이미지
+          src={
+            otherMemberProfileImageUrl
+              ? `https://jingu.s3.ap-northeast-2.amazonaws.com/${otherMemberProfileImageUrl}`
+              : Iconuser2
+          } // 선택된 이미지 또는 기본 이미지
           alt="프로필"
           style={{
             width: "14%",
@@ -56,8 +60,8 @@ function ChatProfile({
               color: "var(--main5)",
             }}
           >
-            {lastMessage ? (
-              <span>{lastMessage}</span>
+            {latestMessage ? (
+              <span>{latestMessage}</span>
             ) : (
               <span>종이 비행기를 보내 채팅을 시작하세요</span>
             )}
