@@ -15,12 +15,14 @@ public class ChatJoinRepositoryImpl implements ChatJoinRepositoryCustom {
     private final JPAQueryFactory query;
 
     @Override
-    public Optional<Member> getJoinMemberByMemberId(Long chatRoomId, Long myId) {
-        return Optional.ofNullable(query.select(member)
-                                        .from(chatJoin)
-                                        .leftJoin(member).on(chatJoin.joinMember.id.eq(member.id))
-                                        .where(chatJoin.chatRoom.id.eq(chatRoomId).and(member.id.ne(myId)))
-                                        .fetchOne());
+    public Optional<Member> findOtherMemberInChatRoom(Long chatRoomId, Long senderId) {
+        return Optional.ofNullable(query
+                                       .select(member)
+                                       .from(chatJoin)
+                                       .leftJoin(member).on(chatJoin.joinMember.id.eq(member.id)).fetchJoin()
+                                       .where(chatJoin.chatRoom.id.eq(chatRoomId)
+                                                                  .and(member.id.ne(senderId)))
+                                       .fetchOne());
     }
 
     @Override

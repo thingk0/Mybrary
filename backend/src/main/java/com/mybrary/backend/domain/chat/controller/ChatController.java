@@ -67,11 +67,11 @@ public class ChatController {
                                 chatService.loadMessagesByChatRoomId(authentication.getName(), chatRoomId, page));
     }
 
-    @Operation(summary = "회원정보에서 채팅 시작", description = "한번도 안했으면 리스트가 비어있고, 아니면 리스트가 있음")
+    @Operation(summary = "회원정보에서 채팅 시 작", description = "한번도 안했으면 리스트가 비어있고, 아니면 리스트가 있음")
     @GetMapping("/message")
-    public ResponseEntity<?> getAllChatByMemberId(
-        @Parameter(hidden = true) Authentication authentication, @RequestParam Long memberId,
-        @PageableDefault(page = 0, size = 20, sort = "createdAt", direction = Direction.DESC) Pageable page) {
+    public ResponseEntity<?> getAllChatByMemberId(@Parameter(hidden = true) Authentication authentication,
+                                                  @RequestParam Long memberId,
+                                                  @PageableDefault(page = 0, size = 20) Pageable page) {
 
         Map<String, Object> result = chatService.getAllChatByMemberId(authentication.getName(), memberId, page);
         result.put("page", page);
@@ -85,7 +85,6 @@ public class ChatController {
                                         @PathVariable("id") Long chatRoomId,
                                         @RequestBody ChatMessagePostDto message) {
         // TODO: 기존 코드에 @PathVariable("id") Long chatRoomId 이 빠져있었음. 해당 파라미터도 포함해서 로직 완성 !
-
         Long chatId = chatService.createChat(authentication.getName(), message);
         return response.success(ResponseCode.CHAT_MESSAGE_SENT, chatId);
     }

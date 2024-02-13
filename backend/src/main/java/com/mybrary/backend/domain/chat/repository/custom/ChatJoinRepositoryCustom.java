@@ -5,7 +5,7 @@ import java.util.Optional;
 
 public interface ChatJoinRepositoryCustom {
 
-    Optional<Member> getJoinMemberByMemberId(Long chatRoomId, Long myId);
+    Optional<Member> findOtherMemberInChatRoom(Long chatRoomId, Long myId);
 
     boolean isValidChatJoiner(Long chatRoomId, String email);
 

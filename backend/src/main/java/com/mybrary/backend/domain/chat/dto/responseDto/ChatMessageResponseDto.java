@@ -21,21 +21,23 @@ public class ChatMessageResponseDto {
     private Long chatRoomId;
     private Long chatMessageId;
     private Long senderId;
+    private Long receiverId;
     private String email;
     private String nickname;
     private String content;
     private String profileImageUrl;
     private LocalDateTime timestamp;
 
-    public static ChatMessageResponseDto of(ChatMessage chatMessage, Member member) {
+    public static ChatMessageResponseDto of(ChatMessage chatMessage, Member sender) {
         return ChatMessageResponseDto.builder()
                                      .chatRoomId(chatMessage.getChatRoom().getId())
                                      .chatMessageId(chatMessage.getId())
-                                     .senderId(member.getId())
-                                     .email(member.getEmail())
-                                     .nickname(member.getNickname())
+                                     .senderId(sender.getId())
+                                     .receiverId(chatMessage.getReceiver().getId())
+                                     .email(sender.getEmail())
+                                     .nickname(sender.getNickname())
                                      .content(chatMessage.getMessage())
-                                     .profileImageUrl(member.getProfileImage().getUrl())
+                                     .profileImageUrl(sender.getProfileImage().getUrl())
                                      .timestamp(chatMessage.getCreatedAt())
                                      .build();
     }

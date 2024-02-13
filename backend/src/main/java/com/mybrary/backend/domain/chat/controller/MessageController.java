@@ -9,6 +9,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
 @Log4j2
@@ -17,14 +18,17 @@ import org.springframework.stereotype.Controller;
 public class MessageController {
 
     private final ChatService chatService;
+    private final SimpMessagingTemplate template;
 
     @MessageMapping("/chat/{chatRoomId}/send")
-    @SendTo("/chatroom/{chatRoomId}")
-    public ChatMessageResponseDto sendMessage(@DestinationVariable Long chatRoomId,
-                                              Principal principal,
-                                              MessageRequestDto message) {
-        log.info("method=sendMessage chatRoomId={}, email={}, message={}",
+    public void sendMessage(@DestinationVariable Long chatRoomId,
+                            Principal principal,
+                            MessageRequestDto message) {
+
+        log.info("method=sendMessage receiverId={}, email={}, message={}",
                  chatRoomId, principal.getName(), message.getMessage());
-        return chatService.save(principal.getName(), chatRoomId, message);
+
+        ChatMessageResponseDto content = chatService.save(principal.getName(), chatRoomId, message);
+        template.convertAndSend("/chatMemberId/" + content.getReceiverId(), content);
     }
 }

@@ -1,7 +1,5 @@
 package com.mybrary.backend.domain.chat.service.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mybrary.backend.domain.chat.dto.requestDto.ChatMessagePostDto;
 import com.mybrary.backend.domain.chat.dto.requestDto.MessageRequestDto;
 import com.mybrary.backend.domain.chat.dto.responseDto.ChatMessageResponseDto;
@@ -18,7 +16,6 @@ import com.mybrary.backend.domain.chat.repository.ChatRoomRepository;
 import com.mybrary.backend.domain.chat.service.ChatService;
 import com.mybrary.backend.domain.contents.thread.dto.responseDto.ThreadShareGetDto;
 import com.mybrary.backend.domain.contents.thread.repository.ThreadRepository;
-import com.mybrary.backend.domain.member.dto.login.MemberInfo;
 import com.mybrary.backend.domain.member.dto.responseDto.MemberInfoDto;
 import com.mybrary.backend.domain.member.entity.Member;
 import com.mybrary.backend.domain.member.repository.MemberRepository;
@@ -28,17 +25,18 @@ import com.mybrary.backend.global.exception.chat.ChatRoomNotFoundException;
 import com.mybrary.backend.global.exception.chat.InvalidChatRoomAccessException;
 import com.mybrary.backend.global.exception.member.EmailNotFoundException;
 import com.mybrary.backend.global.exception.member.MemberNotFoundException;
-import com.mybrary.backend.global.jwt.provider.TokenProvider;
 import com.mybrary.backend.global.jwt.service.TokenService;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,15 +55,36 @@ public class ChatServiceImpl implements ChatService {
     private final TokenService tokenService;
     private final SimpMessagingTemplate messagingTemplate;
 
+    @Async
+    public CompletableFuture<Member> findSenderAsync(String email) {
+        return CompletableFuture.completedFuture(
+            memberRepository.searchByEmail(email).orElseThrow(EmailNotFoundException::new)
+        );
+    }
+
+    @Async
+    public CompletableFuture<ChatRoom> findChatRoomAsync(Long chatRoomId) {
+        return CompletableFuture.completedFuture(
+            chatRoomRepository.findById(chatRoomId).orElseThrow(ChatRoomNotFoundException::new)
+        );
+    }
+
     @Transactional
     @Override
     public ChatMessageResponseDto save(String email, Long chatRoomId, MessageRequestDto requestDto) {
 
-        Member sender = memberRepository.searchByEmail(email).orElseThrow(EmailNotFoundException::new);
-        ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId).orElseThrow(ChatRoomNotFoundException::new);
+        CompletableFuture<Member> senderFuture = findSenderAsync(email);
+        CompletableFuture<ChatRoom> chatRoomFuture = findChatRoomAsync(chatRoomId);
+
+        Member sender = senderFuture.join();
+        ChatRoom chatRoom = chatRoomFuture.join();
+        Member receiver = chatJoinRepository.findOtherMemberInChatRoom(chatRoomId, sender.getId())
+                                            .orElseThrow(ChatJoinMemberNotFoundException::new);
+
         ChatMessage chatMessage = ChatMessage.builder()
                                              .chatRoom(chatRoom)
                                              .sender(sender)
+                                             .receiver(receiver)
                                              .message(requestDto.getMessage())
                                              .threadId(requestDto.getThreadId())
                                              .build();
@@ -167,7 +186,7 @@ public class ChatServiceImpl implements ChatService {
         for (ChatMessage chatMessage : chatMessages) {
 
             // 2. 상대방 정보
-            Member you = chatJoinRepository.getJoinMemberByMemberId(chatRoomId, myId)
+            Member you = chatJoinRepository.findOtherMemberInChatRoom(chatRoomId, myId)
                                            .orElseThrow(ChatJoinMemberNotFoundException::new);
 
             // 3. 스레드Id가 null이 아닐 때 스레드 조회

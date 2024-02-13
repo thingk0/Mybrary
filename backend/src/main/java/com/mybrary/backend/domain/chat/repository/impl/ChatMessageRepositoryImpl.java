@@ -31,6 +31,7 @@ public class ChatMessageRepositoryImpl implements ChatMessageRepositoryCustom {
                                                  chatRoom.id,
                                                  chatMessage.id,
                                                  member.id,
+                                                 chatMessage.receiver.id,
                                                  member.email,
                                                  member.nickname,
                                                  chatMessage.message,
