@@ -56,7 +56,6 @@ public class ChatServiceImpl implements ChatService {
     private final ThreadRepository threadRepository;
     private final TokenService tokenService;
     private final SimpMessagingTemplate messagingTemplate;
-    private final ObjectMapper objectMapper;
 
     @Transactional
     @Override
@@ -64,25 +63,15 @@ public class ChatServiceImpl implements ChatService {
 
         Member sender = memberRepository.searchByEmail(email).orElseThrow(EmailNotFoundException::new);
         ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId).orElseThrow(ChatRoomNotFoundException::new);
-
         ChatMessage chatMessage = ChatMessage.builder()
                                              .chatRoom(chatRoom)
                                              .sender(sender)
                                              .message(requestDto.getMessage())
                                              .threadId(requestDto.getThreadId())
                                              .build();
-        try {
-            // 로깅 예시
-            log.info(objectMapper.writeValueAsString(Map.of(
-                "action", "saveChatMessage",
-                "email", email,
-                "chatRoomId", chatRoomId,
-                "messageId", chatMessage.getId()
-            )));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
 
+        log.info("action = {}, email = {}, chatRoomId = {}, messageId = {}", "saveChatMessage",
+                 email, chatRoomId, chatMessage.getId());
         return ChatMessageResponseDto.of(chatMessage, sender);
     }
 
