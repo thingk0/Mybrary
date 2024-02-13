@@ -29,6 +29,6 @@ public class MessageController {
                  chatRoomId, principal.getName(), message.getMessage());
 
         ChatMessageResponseDto content = chatService.save(principal.getName(), chatRoomId, message);
-        template.convertAndSend("/chatMemberId/" + content.getReceiverId(), content);
+        template.convertAndSend("/sub/chatMemberId/" + content.getReceiverId(), content);
     }
 }
