@@ -52,8 +52,7 @@ public class RedisConfig {
                                       .entryTtl(Duration.ofHours(1));
     }
 
-    // 이메일 인증 데이터를 위한 캐시 구성 (TTL: 3분)
-    private RedisCacheConfiguration emailVerificationCacheConfig() {
+    private RedisCacheConfiguration rollingPaperCacheConfig() {
         return RedisCacheConfiguration.defaultCacheConfig()
                                       .serializeKeysWith(
                                           RedisSerializationContext.SerializationPair.fromSerializer(
@@ -61,12 +60,12 @@ public class RedisConfig {
                                       .serializeValuesWith(
                                           RedisSerializationContext.SerializationPair.fromSerializer(
                                               new GenericJackson2JsonRedisSerializer()))
-                                      .entryTtl(Duration.ofMinutes(3));
+                                      .entryTtl(Duration.ofMinutes(5));
     }
 
     private Map<String, RedisCacheConfiguration> getRedisCacheConfigurationMap() {
         Map<String, RedisCacheConfiguration> cacheConfigurations = new HashMap<>();
-        cacheConfigurations.put("waiting", emailVerificationCacheConfig());
+        cacheConfigurations.put("rollingPaper", rollingPaperCacheConfig());
         return cacheConfigurations;
     }
 }
