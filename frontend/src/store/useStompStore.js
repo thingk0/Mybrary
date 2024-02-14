@@ -2,7 +2,12 @@ import { create } from "zustand";
 import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs"; // Stomp.Client로도 사용 가능
 import toast from "react-hot-toast";
-import useNotificationStore from "./useNotificationStore";
+
+const msgAlarm = (nickname) => {
+  toast(`${nickname}님으로부터 메시지 도착`, {
+    icon: "📩",
+  });
+};
 
 const showAlarm = (alarmObj) => {
   const type = alarmObj.notifyType;
@@ -12,9 +17,15 @@ const showAlarm = (alarmObj) => {
   console.log(alarmObj);
 
   if (type === 13) {
-    toast(`${nickname}님으로부터 메시지 도착`, {
-      icon: "📩",
-    });
+    // 현재 경로 확인
+    const currentPath = window.location.pathname;
+
+    // /paperplane 경로 확인 (쿼리 스트링 제외)
+    const isChatPage = currentPath.startsWith("/paperplane");
+    if (isChatPage) return;
+
+    // 채팅 페이지가 아닐 때만 알람 표시
+    msgAlarm(nickname);
 
     return;
   }
