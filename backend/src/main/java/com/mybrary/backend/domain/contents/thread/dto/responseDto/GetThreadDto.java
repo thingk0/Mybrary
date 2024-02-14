@@ -26,13 +26,13 @@ public class GetThreadDto {
     private Long memberId;
     private String memberName;
     private String nickname;
-
     private String profileUrl;
     private Long profileId;
 
     private boolean isFollowed = true;
     private boolean isPaperPublic;
     private boolean isScrapEnable;
+
 
     /* 해당 쓰레드에 포함된 paperId 목록, 이건 따로 조인해서 바인딩해야함 */
     private List<GetFollowingPaperDto> paperList;

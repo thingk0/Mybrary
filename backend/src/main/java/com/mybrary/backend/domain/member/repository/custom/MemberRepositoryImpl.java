@@ -135,17 +135,18 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                                                                     image.id, image.url, member.isProfilePublic, member.isNotifyEnabled))
                                         .from(member)
                                         .leftJoin(image).on(member.profileImage.id.eq(image.id))
-                                        .where(member.name.like('%' + keyword + '%').and(member.isProfilePublic.eq(true)
-                                                                                                               .or(member.isProfilePublic.eq(
-                                                                                                                   false).and(
-                                                                                                                   member.id.in(
-                                                                                                                       query.select(
-                                                                                                                                follow.following.id)
-                                                                                                                            .from(
-                                                                                                                                follow)
-                                                                                                                            .where(
-                                                                                                                                follow.follower.id.eq(
-                                                                                                                                    myId)))))))
+                                        .where(member.name.like('%' + keyword + '%'))
+//                                        .where(member.name.like('%' + keyword + '%').and(member.isProfilePublic.eq(true)
+//                                                                                                               .or(member.isProfilePublic.eq(
+//                                                                                                                   false).and(
+//                                                                                                                   member.id.in(
+//                                                                                                                       query.select(
+//                                                                                                                                follow.following.id)
+//                                                                                                                            .from(
+//                                                                                                                                follow)
+//                                                                                                                            .where(
+//                                                                                                                                follow.follower.id.eq(
+//                                                                                                                                    myId)))))))
                                         .offset(page.getOffset())
                                         .limit(page.getPageSize())
                                         .fetch());
@@ -158,17 +159,18 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                                                                     image.id, image.url, member.isProfilePublic, member.isNotifyEnabled))
                                         .from(member)
                                         .leftJoin(image).on(member.profileImage.id.eq(image.id))
-                                        .where(member.nickname.like('%' + keyword + '%').and(member.isProfilePublic.eq(true)
-                                                                                                                   .or(member.isProfilePublic.eq(
-                                                                                                                       false).and(
-                                                                                                                       member.id.in(
-                                                                                                                           query.select(
-                                                                                                                                    follow.following.id)
-                                                                                                                                .from(
-                                                                                                                                    follow)
-                                                                                                                                .where(
-                                                                                                                                    follow.follower.id.eq(
-                                                                                                                                        myId)))))))
+                                        .where(member.nickname.like('%' + keyword + '%'))
+//                                        .where(member.nickname.like('%' + keyword + '%').and(member.isProfilePublic.eq(true)
+//                                                                                                                   .or(member.isProfilePublic.eq(
+//                                                                                                                       false).and(
+//                                                                                                                       member.id.in(
+//                                                                                                                           query.select(
+//                                                                                                                                    follow.following.id)
+//                                                                                                                                .from(
+//                                                                                                                                    follow)
+//                                                                                                                                .where(
+//                                                                                                                                    follow.follower.id.eq(
+//                                                                                                                                        myId)))))))
                                         .offset(page.getOffset())
                                         .limit(page.getPageSize())
                                         .fetch());

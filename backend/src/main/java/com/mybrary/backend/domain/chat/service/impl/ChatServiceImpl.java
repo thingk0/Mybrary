@@ -36,6 +36,7 @@ import java.util.concurrent.CompletableFuture;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.Async;
@@ -190,7 +191,7 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public Map<String, Object> getAllChatByChatRoomId(String email,
-                                                      Long chatRoomId, Pageable page) {
+                                                      Long chatRoomId) {
         Member me = memberService.findMember(email);
         Long myId = me.getId();
 
@@ -198,6 +199,7 @@ public class ChatServiceImpl implements ChatService {
         List<TChatMessageGetDto> chatMessageList = new ArrayList<>();
 
         // 1. 채팅방의 메세지 리스트 조회
+        Pageable page = PageRequest.of(0, 100);
         List<ChatMessage> chatMessages = chatMessageRepository.getAllChatMessageByChatRoomId(chatRoomId, page);
 //        List<ChatMessage> chatMessages = chatMessageRepository.getAllChatMessageByChatRoomId2(chatRoomId, page);
         for (ChatMessage chatMessage : chatMessages) {
@@ -248,7 +250,7 @@ public class ChatServiceImpl implements ChatService {
             Long chatRoomId = chatJoin.getChatRoom().getId();
 
             // 위의 메서드를 사용해서 채팅 리스트 구하기
-            return getAllChatByChatRoomId(email, chatRoomId, page);
+            return getAllChatByChatRoomId(email, chatRoomId);
 
         } else {
             System.out.println("존재안함");
@@ -270,7 +272,7 @@ public class ChatServiceImpl implements ChatService {
             chatJoinRepository.save(chatJoin2);
 
             // 위의 메서드를 사용해서 채팅 리스트 구하기 (= 사실상 메세지는 없는 채팅 리스트)
-            return getAllChatByChatRoomId(email, chatRoomId, page);
+            return getAllChatByChatRoomId(email, chatRoomId);
         }
 
     }

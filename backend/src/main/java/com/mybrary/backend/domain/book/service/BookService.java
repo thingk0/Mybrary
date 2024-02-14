@@ -29,6 +29,6 @@ public interface BookService {
 
     void deletePaperFromBook(String email, Long bookId, Long paperId);
 
-    List<BookListGetFromPaperDto> getBookListFromPaper(Long paperId);
+    List<BookListGetFromPaperDto> getBookListFromPaper(Long memberId, Long paperId);
 
 }

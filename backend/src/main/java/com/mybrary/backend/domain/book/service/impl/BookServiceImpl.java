@@ -17,6 +17,7 @@ import com.mybrary.backend.domain.comment.repository.CommentRepository;
 import com.mybrary.backend.domain.contents.like.entity.Like;
 import com.mybrary.backend.domain.contents.like.repository.LikeRepository;
 import com.mybrary.backend.domain.contents.paper.dto.responseDto.PaperInBookGetDto;
+import com.mybrary.backend.domain.contents.paper.entity.Paper;
 import com.mybrary.backend.domain.contents.paper.repository.PaperRepository;
 import com.mybrary.backend.domain.contents.scrap.entity.Scrap;
 import com.mybrary.backend.domain.contents.scrap.repository.ScrapRepository;
@@ -351,14 +352,29 @@ public class BookServiceImpl implements BookService {
 
     @Transactional
     @Override
-    public List<BookListGetFromPaperDto> getBookListFromPaper(Long paperId) {
-        List<BookListGetFromPaperDto> bookList = bookRepository.getBookListFromPaper(paperId).orElseThrow(NullPointerException::new);
-//        List<Book> bookList = bookRepository.find
-        for(BookListGetFromPaperDto dto : bookList){
-            log.info(dto.getBookId());
-            log.info(dto.getCoverTitle());
-        }
+    public List<BookListGetFromPaperDto> getBookListFromPaper(Long myId, Long paperId) {
+        List<BookListGetFromPaperDto> bookList = bookRepository.getBookListFromPaper(paperId).orElse(new ArrayList<>());
+        if(!bookList.isEmpty()){
+            Long ownerId = bookList.get(0).getMemberId();
+            Member owner = memberRepository.findById(ownerId).orElseThrow(MemberNotFoundException::new);
+            boolean checkFollowed = false;
+            boolean checkProfilePublic = false;
+            Follow checkFollow = memberRepository.isFollowed(myId, ownerId).orElse(null);
+            if(checkFollow != null){
+                checkFollowed = true;
+            }
+            if(owner.isProfilePublic()) checkProfilePublic = true;
 
+            for(BookListGetFromPaperDto dto : bookList){
+//            log.info(dto.getBookId());
+//            log.info(dto.getCoverTitle());
+                /* 이 정보는 모든 dto들마다 똑같이 들어가서 비효율적인 코드가 되었지만 지금 반환형태를 바꾸기가 위험해서 이렇게 처리 */
+                dto.updateIsFollowed(checkFollowed);
+                dto.updateIsProfilePublic(checkProfilePublic);
+            }
+
+        }
+        
         return bookList;
 
     }

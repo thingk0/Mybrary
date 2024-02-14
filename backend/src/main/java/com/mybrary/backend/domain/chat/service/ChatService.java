@@ -23,7 +23,7 @@ public interface ChatService {
 
     void deleteChatRoom(String email, Long chatRoomId);
 
-    Map<String, Object> getAllChatByChatRoomId(String email, Long chatRoomId, Pageable page);
+    Map<String, Object> getAllChatByChatRoomId(String email, Long chatRoomId);
 
     Map<String, Object> getAllChatByMemberId(String email, Long memberId, Pageable page);
 

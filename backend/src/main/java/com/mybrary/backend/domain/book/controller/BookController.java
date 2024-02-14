@@ -120,7 +120,9 @@ public class BookController {
         @Parameter(hidden = true) Authentication authentication,
         @PathVariable(name = "id") Long paperId) {
 
-        return response.success(ResponseCode.BOOK_LIST_FROM_PAPER, bookService.getBookListFromPaper(paperId));
+        Member me = memberService.findMember(authentication.getName());
+        Long myId = me.getId();
+        return response.success(ResponseCode.BOOK_LIST_FROM_PAPER, bookService.getBookListFromPaper(myId, paperId));
     }
 
 

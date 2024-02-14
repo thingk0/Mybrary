@@ -24,8 +24,11 @@ public class BookListGetFromPaperDto {
 
     private Long bookId;
     private String coverTitle;
-    private Long memberId;
     private String coverImageUrl;
+    private Long memberId;
+
+    private boolean isProfilePublic;
+    private boolean isFollowed;
 
     public BookListGetFromPaperDto(Long bookId, String coverTitle, Long memberId, String coverImageUrl) {
         this.bookId = bookId;
@@ -34,17 +37,22 @@ public class BookListGetFromPaperDto {
         this.coverImageUrl = coverImageUrl;
     }
 
-//    private String nickname;
+    public void updateIsProfilePublic(boolean bool){
+        this.isProfilePublic = bool;
+    }
 
+    public void updateIsFollowed(boolean bool){
+        this.isFollowed = bool;
+    }
+
+
+
+//    private String nickname;
 //    private Long profileImageId;
 //    private String profileImageUrl;
-
-
 //    private int coverLayout;
 //    private int coverColorCode;
 //    private String coverTitle;
-
-
 //    private Long coverImageId;
 
 }
