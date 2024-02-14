@@ -46,8 +46,8 @@ public class PaperServiceImpl implements PaperService {
         List<Long> paperIdList = paperScrapDto.getPaperIdList();
 
         Long bookId = paperScrapDto.getBookId();
-        int scrapSeq = scrapRepository.findLastPaperSeq(bookId).orElseThrow(BookNotFoundException::new);
         Book book = bookRepository.findById(bookId).orElseThrow(BookNotFoundException::new);
+        int scrapSeq = scrapRepository.findLastPaperSeq(bookId).orElse(0);
         List<Paper> paperList = paperRepository.findAllById(paperIdList);
 
         List<Scrap> scrapList = new ArrayList<>();
