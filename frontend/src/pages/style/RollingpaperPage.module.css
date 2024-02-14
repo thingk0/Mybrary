@@ -5,6 +5,7 @@
 .초기화 {
   display: flex;
   justify-content: flex-end;
+  margin-bottom: 10px;
 }
 .main {
   display: flex;

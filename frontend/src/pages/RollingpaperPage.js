@@ -7,6 +7,10 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
 import useMybraryStore from "../store/useMybraryStore";
+import {
+  getRollingPaper,
+  saveRollingPaper,
+} from "../api/rollingpaper/RollingPaper";
 
 export default function RollingpaperPage() {
   const navigate = useNavigate();
@@ -69,18 +73,67 @@ export default function RollingpaperPage() {
     }
   }, []);
 
+  // 터치 시작 이벤트
+  const startPaintTouch = useCallback((event) => {
+    event.preventDefault(); // 기본 터치 이벤트 방지
+    const touch = event.touches[0];
+    const coordinates = getCoordinates(touch);
+    if (coordinates) {
+      isPainting.current = true;
+      startPoint.current = coordinates;
+    }
+  }, []);
+
+  // 터치로 그리기 이벤트
+  const paintTouch = useCallback(
+    (event) => {
+      event.preventDefault();
+      if (isPainting.current && event.touches.length > 0) {
+        const touch = event.touches[0];
+        const newPoint = getCoordinates(touch);
+        if (newPoint) {
+          drawLine(
+            startPoint.current.x,
+            startPoint.current.y,
+            newPoint.x,
+            newPoint.y,
+            lineColor
+          );
+          startPoint.current = newPoint;
+        }
+      }
+    },
+    [lineColor]
+  );
+
+  // 터치 종료 이벤트
+  const exitPaintTouch = useCallback((event) => {
+    event.preventDefault();
+    if (isPainting.current) {
+      sendImageData(); // 그리기 종료시 데이터 전송
+      isPainting.current = false;
+    }
+  }, []);
+
   const getCoordinates = (event) => {
     if (!canvasRef.current) {
       return;
     }
 
-    //console.log(event.target);
     const canvas = canvasRef.current;
+    const rect = canvas.getBoundingClientRect();
+
+    // 터치 이벤트인 경우
+    if (event.touches && event.touches.length > 0) {
+      return {
+        x: event.touches[0].clientX - rect.left,
+        y: event.touches[0].clientY - rect.top,
+      };
+    }
+    // 마우스 이벤트인 경우
     return {
-      // event.pageX 는 내가 클릭한 지점의 페이지 상에서의 절대 좌표
-      // offsetLeft는 요소의 왼쪽 가장 자리가 상위 요소의 왼쪽 가장자리로부터 얼마나 떨어져 있는지를 나타냄
-      x: event.pageX - canvas.parentElement.offsetLeft,
-      y: event.pageY - canvas.parentElement.offsetTop,
+      x: event.clientX - rect.left,
+      y: event.clientY - rect.top,
     };
   };
   /* 그림그리는 코드 끝 */
@@ -126,6 +179,11 @@ export default function RollingpaperPage() {
       initCanvas();
     }
 
+    // 어떻게 오는지 확인해보기.
+    //const loadedImage = getRollingPaper();
+    // 문자열을 캔버스에 로드하기
+    //if (loadedImage) setImageData(loadedImage);
+
     const token = localStorage.getItem("accessToken");
     stompClient.current = new Client({
       webSocketFactory: () => new SockJS("https://i10b207.p.ssafy.io/ws"),
@@ -162,6 +220,11 @@ export default function RollingpaperPage() {
       canvas.addEventListener("mousemove", paint);
       canvas.addEventListener("mouseup", exitPaint);
       canvas.addEventListener("mouseleave", exitPaint);
+
+      canvas.addEventListener("touchstart", startPaintTouch);
+      canvas.addEventListener("touchmove", paintTouch);
+      canvas.addEventListener("touchend", exitPaintTouch);
+      canvas.addEventListener("touchcancel", exitPaintTouch);
     }
 
     return () => {
@@ -169,8 +232,20 @@ export default function RollingpaperPage() {
       canvas.removeEventListener("mousemove", paint);
       canvas.removeEventListener("mouseup", exitPaint);
       canvas.removeEventListener("mouseleave", exitPaint);
+
+      canvas.removeEventListener("touchstart", startPaintTouch);
+      canvas.removeEventListener("touchmove", paintTouch);
+      canvas.removeEventListener("touchend", exitPaintTouch);
+      canvas.removeEventListener("touchcancel", exitPaintTouch);
     };
-  }, [lineColor, startPaint, exitPaint, paint]);
+  }, [
+    startPaint,
+    paint,
+    exitPaint,
+    startPaintTouch,
+    paintTouch,
+    exitPaintTouch,
+  ]);
 
   useEffect(() => {
     // imageData 상태가 변경될 때 실행되는 useEffect
@@ -212,6 +287,20 @@ export default function RollingpaperPage() {
       }
     }
   };
+
+  const handleRollingPaperSave = async (e) => {
+    e.preventDefault();
+    const imageData = canvasRef.current.toDataURL("image/png");
+    console.log(imageData);
+    if (imageData) {
+      const rollingObj = {
+        rollingPaperId: rollingpaperId,
+        rollingPaperString: imageData,
+      };
+
+      await saveRollingPaper(rollingObj);
+    }
+  };
   return (
     <>
       <Container>
@@ -240,7 +329,7 @@ export default function RollingpaperPage() {
         </div>
 
         <div className={styles.초기화} onClick={handleResetImage}>
-          <span>롤링페이퍼초기화</span>
+          <span>롤링페이퍼 초기화</span>
         </div>
         <div className={styles.main}>
           <div className={styles.롤링페이퍼}>
@@ -299,9 +388,8 @@ export default function RollingpaperPage() {
           </div>
           <div className={styles.저장}>
             <button
-              onClick={() => {
-                console.log(stompClient);
-              }}
+              style={{ padding: "5px 8px" }}
+              onClick={handleRollingPaperSave}
             >
               저장
             </button>
