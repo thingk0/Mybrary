@@ -72,14 +72,6 @@ function ChatProfile({
             width: "36px",
           }}
         >
-          <div
-            style={{
-              fontSize: "30px",
-              letterSpacing: "0.05em",
-            }}
-          >
-            ...
-          </div>
           {unreadMessageCount > 0 && isNew ? (
             <div style={{ marginBottom: "27px" }}>new</div>
           ) : (

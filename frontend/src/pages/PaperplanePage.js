@@ -262,14 +262,24 @@ export default function PaperplanePage() {
                       ></div>
                       <div>{nowChatRoom.otherMemberNickname}</div>
                     </div>
-                    <button
-                      className={styles.마이브러리가기}
-                      onClick={() => {
-                        navigate(`/mybrary/${nowChatRoom.otherMemberId}`);
-                      }}
-                    >
-                      마이브러리 가기
-                    </button>
+                    <div className={styles.flex}>
+                      <div
+                        className={styles.마이브러리가기}
+                        onClick={() => {
+                          navigate(`/mybrary/${nowChatRoom.otherMemberId}`);
+                        }}
+                      >
+                        마이브러리 가기
+                      </div>
+                      <div
+                        className={styles.채팅방나가기}
+                        onClick={() => {
+                          navigate(`/mybrary/${nowChatRoom.otherMemberId}`);
+                        }}
+                      >
+                        채팅방 나가기
+                      </div>
+                    </div>
                   </div>
                   {/* 채팅 메시지 내용 */}
                   <div className={styles.middle}>
