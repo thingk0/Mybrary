@@ -183,7 +183,10 @@ export default function ThreadCreatePage() {
           <div className={styles.title}>책선택</div>
           <div className={styles.subtitle}>스레드를 담을 책을 선택하세요.</div>
           <div className={styles.settingButtons}>
-            <button onClick={() => handleOpenBookList()}>
+            <button
+              onClick={() => handleOpenBookList()}
+              className={styles.책선택버튼}
+            >
               {bookId !== null ? book.title : "선택되지않음"}
             </button>
           </div>

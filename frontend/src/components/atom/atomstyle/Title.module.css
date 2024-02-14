@@ -1,6 +1,7 @@
 .back {
   padding-top: 50px;
   font-size: 19px;
+  cursor: pointer;
 }
 .title {
   margin: 0 auto;
@@ -18,6 +19,7 @@
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  cursor: pointer;
 }
 .right_title {
   display: flex;

@@ -100,10 +100,12 @@
 }
 .button {
   background-color: var(--main3);
+  cursor: pointer;
 }
 .select {
   background-color: var(--main2);
   color: var(--main4);
+  cursor: pointer;
 }
 
 .button:hover {
@@ -128,4 +130,15 @@
   border-radius: 5px;
   cursor: pointer;
   text-align: center;
+}
+.책선택버튼 {
+  text-align: center;
+  padding: 10px 15px;
+  border-radius: 5px;
+  border: 0px;
+  margin-left: 10px;
+  background-color: var(--main2);
+  transition: 0.3s;
+  color: var(--main4);
+  cursor: pointer;
 }

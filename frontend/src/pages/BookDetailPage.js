@@ -26,6 +26,7 @@ export default function BookDetailPage() {
 
   const onPrev = (hasFlip = "N") => {
     const pageIndex = bookRef.current.pageFlip().getCurrentPageIndex();
+    console.log("pageIndex", pageIndex);
     if (hasFlip === "Y") {
       bookRef.current.pageFlip().flipPrev("bottom");
     } else {
@@ -34,6 +35,7 @@ export default function BookDetailPage() {
   };
   const onNext = (hasFlip = "N") => {
     const pageIndex = bookRef.current.pageFlip().getCurrentPageIndex();
+    console.log("pageIndex", pageIndex);
     // 마지막 페이지에 도달했을 때
     if (pageIndex === 7) return;
     if (hasFlip === "Y") {
@@ -45,6 +47,7 @@ export default function BookDetailPage() {
   const onFlip = (e) => {
     const curPage = e.data;
     setCurPage(curPage);
+    console.log("flip", e);
   };
 
   const [pages, setPages] = useState([]);
@@ -52,7 +55,9 @@ export default function BookDetailPage() {
     async function getbook() {
       const pagelist = await getBook(book.bookId);
       setPages(pagelist.data.paperList ? pagelist.data.paperList : []);
+      console.log(pagelist);
     }
+    console.log(writerId, userId);
     getbook();
   }, []);
 

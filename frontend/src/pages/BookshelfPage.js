@@ -35,7 +35,7 @@ export default function BookshelfPage() {
         <BookshelfHeader />
         <div>
           <div className={styles.middle}>
-            <div>책갈피목록</div>
+            <div></div>
             <CategoryEditModal
               bookShelfId={bookShelfId}
               categoryList={categoryList}

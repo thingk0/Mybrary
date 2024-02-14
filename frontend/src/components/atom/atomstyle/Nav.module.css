@@ -63,6 +63,7 @@
   padding-left: 10px;
   justify-content: space-between;
   padding: 5px 15px;
+  cursor: pointer;
 }
 
 .nav_not_active {
