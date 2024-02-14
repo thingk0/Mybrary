@@ -49,7 +49,8 @@ public class NotificationServiceImpl implements NotificationService {
             // 알림을 보낸 사람 조회
             Member member = notify.getSender();
             MemberInfoDto sender = new MemberInfoDto(member.getId(), member.getNickname(),
-                                                     member.getIntro(), member.getProfileImage().getId(), member.getProfileImage().getUrl());
+                                                     member.getIntro(), member.getProfileImage().getId(),
+                                                     member.getProfileImage().getUrl());
 
             // DTO에 맞게 저장
             list.add(new NotificationGetDto(notify.getId(), sender, notify.getNotifyType(),
@@ -82,11 +83,12 @@ public class NotificationServiceImpl implements NotificationService {
 
         // 알림 발신자와 수신자 엔티티 조회
         Member sender = memberRepository.findById(notification.getSenderId()).get();
-        Member receiver = memberRepository.findById(notification.getSenderId()).get();
+        Member receiver = memberRepository.findById(notification.getReceiverId()).get();
 
         // 알림 엔티티 생성
         Notification newNotification = Notification.builder()
                                                    .sender(sender).receiver(receiver)
+                                                   .notifyType(notification.getNotifyType())
                                                    .bookId(notification.getBookId())
                                                    .threadId(notification.getThreadId())
                                                    .paperId(notification.getPaperId())
@@ -97,13 +99,20 @@ public class NotificationServiceImpl implements NotificationService {
         Notification savedNotification = notificationRepository.save(newNotification);
 
         // 알림 수신자의 알림구독주소에 저장된 알림 객체 반환하기
-        MemberInfoDto senderDto = new MemberInfoDto(sender.getId(), sender.getNickname(), sender.getIntro(), sender.getProfileImage().getId(), sender.getProfileImage().getUrl());
+        MemberInfoDto senderDto = new MemberInfoDto(sender.getId(), sender.getNickname(), sender.getIntro(),
+                                                    sender.getProfileImage().getId(), sender.getProfileImage().getUrl());
         String bookTitle = null;
-        if(savedNotification.getBookId() != null){
+        if (savedNotification.getBookId() != null) {
             Book book = bookRepository.findById(savedNotification.getBookId()).get();
             bookTitle = book.getCoverTitle();
         }
-        NotificationGetDto sendNotification = new NotificationGetDto(savedNotification.getId(), senderDto, savedNotification.getNotifyType(), savedNotification.getBookId(), bookTitle, savedNotification.getThreadId(), savedNotification.getPaperId(), savedNotification.getCommentId(), savedNotification.getReplyCommentId());
+        NotificationGetDto sendNotification = new NotificationGetDto(savedNotification.getId(), senderDto,
+                                                                     savedNotification.getNotifyType(),
+                                                                     savedNotification.getBookId(), bookTitle,
+                                                                     savedNotification.getThreadId(),
+                                                                     savedNotification.getPaperId(),
+                                                                     savedNotification.getCommentId(),
+                                                                     savedNotification.getReplyCommentId());
 
         // 웹소켓메서드
         String destination = "/sub/notification/" + receiver.getEmail(); // 구독 주소 + 받을 사람 이메일
