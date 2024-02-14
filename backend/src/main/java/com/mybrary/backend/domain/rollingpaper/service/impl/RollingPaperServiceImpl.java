@@ -58,6 +58,7 @@ public class RollingPaperServiceImpl implements RollingPaperService {
         return res;
     }
 
+    @Transactional
     @Override
     public Long saveRollingPaper(String email, RollingPaperPostDto rollingPaper) {
 
