@@ -11,6 +11,14 @@ const showAlarm = (alarmObj) => {
   let msg = "";
   console.log(alarmObj);
 
+  if (type === 13) {
+    toast(`${nickname}님으로부터 메시지 도착`, {
+      icon: "📩",
+    });
+
+    return;
+  }
+
   switch (type) {
     case 1:
       msg = "팔로우를 요청했습니다";
@@ -40,7 +48,7 @@ const showAlarm = (alarmObj) => {
       msg = "회원님의 페이퍼를 좋아합니다";
       break;
     default:
-      msg = "새로운 알림이 도착했습니다";
+      msg = "종을 흔들었습니다";
   }
 
   toast(`${nickname}님이 ${msg}`, {

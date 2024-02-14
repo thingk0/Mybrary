@@ -31,8 +31,8 @@ export default function SettingPage() {
     profileImageId: 0,
     nickname: "",
     intro: "string",
-    notifyEnable: true,
-    profilePublic: true,
+    notifyEnable: null,
+    profilePublic: null,
   });
 
   const [isNickNameChecked, setIsNickNameChecked] = useState(true); // 너가 true여야만 정보 수정 가능. 기본값은 true
@@ -131,7 +131,7 @@ export default function SettingPage() {
           nickname: response.data.nickname,
           intro: response.data.intro,
           notifyEnable: response.data.notifyEnable,
-          profilePublic: response.data.notifyEnable,
+          profilePublic: response.data.profilePublic,
         });
       } catch (error) {
         navigateToErrorPage();
@@ -254,6 +254,7 @@ export default function SettingPage() {
   };
 
   const handleProfilePublicUpdate = async (enable) => {
+    console.log(enable);
     const res = await updateProfile({
       ...form,
       profilePublic: enable,
