@@ -122,7 +122,6 @@ export default function ThreadUpdatePage() {
       scarpEnable,
     };
 
-    console.log(payload);
     // 백엔드에 payload 전송 로직
     // 예: axios.post('/api/savePaper', payload);
   };

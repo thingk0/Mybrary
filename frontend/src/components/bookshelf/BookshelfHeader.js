@@ -9,7 +9,6 @@ export default function BookshelfHeader() {
   const [user, setUser] = useState({});
   useEffect(() => {
     async function fetchMyData() {
-      console.log(userid);
       try {
         const response = await getMybrary(userid);
         setUser(response.data);

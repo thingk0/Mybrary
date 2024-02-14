@@ -42,9 +42,6 @@ export default function BookCreateOfCategory({
       return { categoryId: category.categoryId, name: category.name };
     });
     setCategorys(categoryList);
-    // console.log(user.memberId);
-    console.log(categoryList);
-    console.log(booklist);
   };
 
   useEffect(() => {
@@ -66,7 +63,6 @@ export default function BookCreateOfCategory({
     const formData = new FormData();
     formData.append("images", value.coverImage);
     const coverImageId = await uplodaImage(formData);
-    console.log(coverImageId.imageIds[0]);
     const bookId = await createBook({
       title: value.title,
       coverImageId: coverImageId.imageIds[0],

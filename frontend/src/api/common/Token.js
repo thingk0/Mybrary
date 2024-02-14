@@ -18,7 +18,6 @@ export async function renewToken(accessToken) {
 
     const data = await response.json(); // 응답 데이터를 JSON으로 파싱
     if (data.status === "SUCCESS") {
-      //console.log("갱신성공");
       return data.data; // 갱신된 토큰 반환
     } else {
       throw new Error("Token renewal failed"); // 토큰 갱신 실패 시 에러 발생

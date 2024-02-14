@@ -83,11 +83,6 @@ export default function SearchPage() {
           page: 10,
           size: 1,
         });
-
-        console.log(res1);
-        console.log(res2);
-        console.log(res3);
-        console.log(res4);
       } catch {
         navigate("/error");
       }

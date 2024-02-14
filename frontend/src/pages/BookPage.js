@@ -55,11 +55,8 @@ export default function BookPage() {
   useEffect(() => {
     async function fetchbookshelfData() {
       try {
-        console.log(categoryid);
         const response = await getBookList(categoryid);
         const response2 = await getCategoryList(bookShelfId);
-        console.log(response.data);
-        console.log(response2.data);
         setBookList(response.data);
         setCategoryList(response2.data);
         const selectedCategory = response2.data.find(
@@ -76,14 +73,12 @@ export default function BookPage() {
   const handleDelete = async () => {
     try {
       const a = await deleteBook(selectedBook.bookId);
-      console.log(a);
       const updatedBookList = bookList.filter(
         (book) => book.bookId !== selectedBook.bookId
       );
       setBookList(updatedBookList);
       setSelectedBookIndex(0); // 첫 번째 책 선택
       setBook(updatedBookList[0]); // 선택된 책 업데이트
-      console.log("책 삭제 성공");
       setDeleteModal(false);
     } catch (error) {
       console.error("책 삭제 중 오류 발생:", error);

@@ -43,9 +43,7 @@ export default function PaperplanePage() {
             setNowChatRoom(targetRoom);
           }
         }
-      } catch (e) {
-        console.log(e);
-      }
+      } catch (e) {}
     })();
 
     if (!stompClient) {
@@ -58,10 +56,8 @@ export default function PaperplanePage() {
       });
 
       client.onConnect = function () {
-        console.log("채팅구독");
         client.subscribe(`/sub/chatMemberId/${user.memberId}`, (message) => {
           const res = JSON.parse(message.body);
-          console.log(res);
           setChatMessageList((prev) => [res, ...prev]);
         });
       };
@@ -76,11 +72,8 @@ export default function PaperplanePage() {
       (async function asyncGetMessageList() {
         try {
           const res = await getMessageList(nowChatRoom.chatRoomId);
-          console.log(res);
           setChatMessageList(res.data.content);
-        } catch (e) {
-          console.log(e);
-        }
+        } catch (e) {}
       })();
     }
 
@@ -92,7 +85,6 @@ export default function PaperplanePage() {
     };
 
     scrollToBottom(); // 컴포넌트 마운트 시 실행
-    //console.log(nowChatRoom);
   }, [nowChatRoom]);
 
   useEffect(() => {

@@ -14,7 +14,6 @@ export default function SearchResultPage2() {
   const [recentSearches, setRecentSearches] = useState([]);
   const [userList, setUserList] = useState([]);
 
-  console.log(animateOut);
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -35,7 +34,6 @@ export default function SearchResultPage2() {
     }
     // 검색 결과 페이지로 이동 navigate(`/search/${d.text}`)
     setAnimateOut(true); // fadeOut 애니메이션 시작
-    console.log(animateOut);
     // 애니메이션이 끝난 후 페이지 전환
     setTimeout(() => {
       setAnimateOut(false);
@@ -69,7 +67,6 @@ export default function SearchResultPage2() {
     async function fetchData() {
       try {
         const response = await searchAccount(searchtext);
-        console.log(response);
         setUserList(response.data.accountList);
       } catch (error) {
         console.error("불러오지못함", error);
@@ -89,7 +86,6 @@ export default function SearchResultPage2() {
 
     // 검색 결과 페이지로 이동 navigate(`/search/${d.text}`)
     setAnimateOut(true); // fadeOut 애니메이션 시작
-    console.log(animateOut);
     // 애니메이션이 끝난 후 페이지 전환
     setTimeout(() => {
       setAnimateOut(false);
@@ -101,7 +97,6 @@ export default function SearchResultPage2() {
 
     // 검색 결과 페이지로 이동 navigate(`/search/${d.text}`)
     setAnimateOut(true); // fadeOut 애니메이션 시작
-    console.log(animateOut);
     // 애니메이션이 끝난 후 페이지 전환
     setTimeout(() => {
       setAnimateOut(false);
@@ -113,7 +108,6 @@ export default function SearchResultPage2() {
 
     // 검색 결과 페이지로 이동 navigate(`/search/${d.text}`)
     setAnimateOut(true); // fadeOut 애니메이션 시작
-    console.log(animateOut);
     // 애니메이션이 끝난 후 페이지 전환
     setTimeout(() => {
       setAnimateOut(false);

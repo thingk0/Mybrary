@@ -21,14 +21,10 @@ export default function FollowList({
       try {
         if (nowuser == me) {
           const response = await getMyFollowingList();
-          console.log(response.data);
-          console.log("내 팔로우리스트");
           setFollowList(response.data);
         } else {
           const response = await getFollowingList(nowuser);
-          console.log(response.data);
           setFollowList(response.data);
-          console.log("상대방의팔로우리스트");
         }
       } catch (error) {
         console.error("데이터를 가져오는 데 실패했습니다:", error);
@@ -49,7 +45,6 @@ export default function FollowList({
         updateFollowingCount(updatedFollowerList.length);
       } else {
         const response = await getFollowingList(nowuser);
-        console.log(response.data);
         setFollowList(response.data);
       }
       toast.success("팔로잉삭제 되었습니다.", {
