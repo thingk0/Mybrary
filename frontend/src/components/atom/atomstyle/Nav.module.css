@@ -84,3 +84,46 @@
   margin: 0 auto;
   text-align: center;
 }
+
+.header {
+  margin-top: 20px;
+  font-size: 30px;
+  margin-bottom: 40px;
+}
+
+.header2 {
+  font-size: 20px;
+}
+.subheader {
+  color: var(--main5);
+  margin-bottom: 10px;
+}
+.modalI {
+  width: 90%;
+  margin: 0 auto;
+}
+
+.modalInput {
+  width: 300px;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #eee3dd; /* 배경색 변경 */
+  outline: none; /* 포커스 시 나타나는 아웃라인 제거 */
+  margin-bottom: 40px;
+}
+
+.modalButton {
+  width: 150px;
+  padding: 10px 40px;
+  background-color: var(--main3);
+  border-radius: 5px;
+  transition: 0.3s;
+  margin: 0 auto;
+  cursor: pointer;
+}
+
+.modalButton:hover {
+  background-color: var(--main2);
+  color: var(--main3);
+}

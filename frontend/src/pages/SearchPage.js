@@ -163,7 +163,7 @@ export default function SearchPage() {
       .fontSize(function (d) {
         return d.size;
       })
-      .rotate(90)
+      .rotate(30)
       .spiral(customSpiral) // 이 부분을 추가하세요
       .on("end", draw)
       .start();

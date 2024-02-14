@@ -16,7 +16,6 @@ import { like } from "../../api/paper/Paper";
 import toast from "react-hot-toast";
 import useUserStore from "../../store/useUserStore";
 import { useNavigate } from "react-router-dom";
-import { deleteThread } from "../../api/thread/Thread";
 import { getPaperinBook } from "../../api/book/Book";
 import useBookStore from "../../store/useBookStore";
 import FeedModal2 from "./FeedModal2";
@@ -27,7 +26,7 @@ export default function FeedContent({
   setList,
   setCommentId,
   setZIndex,
-  setScrapModal,
+  handleOpenBookList,
 }) {
   const navigate = useNavigate();
   const user = useUserStore((state) => state.user);
@@ -167,7 +166,9 @@ export default function FeedContent({
               <img
                 src={icon_scrap}
                 alt=""
-                onClick={() => setScrapModal(true)}
+                onClick={() => {
+                  handleOpenBookList(thread.paperList);
+                }}
               />
               <div>{paper.scrapCount}</div>
               <img
