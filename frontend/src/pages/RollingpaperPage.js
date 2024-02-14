@@ -39,7 +39,6 @@ export default function RollingpaperPage() {
 
   const startPaint = useCallback((event) => {
     const coordinates = getCoordinates(event);
-    console.log(coordinates);
     if (coordinates) {
       isPainting.current = true;
       startPoint.current = coordinates;
@@ -51,7 +50,6 @@ export default function RollingpaperPage() {
       if (isPainting.current) {
         const newPoint = getCoordinates(event);
         if (newPoint) {
-          console.log(lineColor);
           drawLine(
             startPoint.current.x,
             startPoint.current.y,
@@ -140,7 +138,6 @@ export default function RollingpaperPage() {
 
   /* 초기화 코드 */
   const handleResetImage = () => {
-    console.log("reset");
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
     context.clearRect(0, 0, canvas.width, canvas.height); // 캔버스 내용 지우기
@@ -179,10 +176,16 @@ export default function RollingpaperPage() {
       initCanvas();
     }
 
-    // 어떻게 오는지 확인해보기.
-    //const loadedImage = getRollingPaper();
-    // 문자열을 캔버스에 로드하기
-    //if (loadedImage) setImageData(loadedImage);
+    //어떻게 오는지 확인해보기.
+    (async function () {
+      const res = await getRollingPaper(rollingpaperId);
+      if (res.status === "SUCCESS") {
+        const loadedImage = res.data.rollingPaperString;
+        console.log(loadedImage);
+        if (loadedImage) setImageData(loadedImage);
+      }
+    })();
+    //문자열을 캔버스에 로드하기
 
     const token = localStorage.getItem("accessToken");
     stompClient.current = new Client({
@@ -192,13 +195,9 @@ export default function RollingpaperPage() {
       },
     });
     stompClient.current.onConnect = () => {
-      console.log("Connected!");
-
       stompClient.current.subscribe(
         `/sub/rollingPaper/${rollingpaperId}`,
         (message) => {
-          console.log("receive check!! ");
-          console.log(message);
           const receivedImageData = JSON.parse(message.body);
           const base64Image = receivedImageData.rollingPaperString;
           setImageData(base64Image);
@@ -266,7 +265,6 @@ export default function RollingpaperPage() {
   }, [imageData]); // imageData가 변경될 때마다 이 useEffect가 실행됩니다.
 
   const sendImageData = () => {
-    console.log(stompClient.current);
     if (stompClient.current && canvasRef.current) {
       // Canvas에서 이미지 데이터를 Base64 문자열로 추출
       const imageData = canvasRef.current.toDataURL("image/png");
@@ -281,24 +279,20 @@ export default function RollingpaperPage() {
 
       try {
         stompClient.current.publish({ destination, body: bodyData });
-        console.log("hi");
-      } catch (err) {
-        console.log("전송에러");
-      }
+      } catch (err) {}
     }
   };
 
   const handleRollingPaperSave = async (e) => {
     e.preventDefault();
     const imageData = canvasRef.current.toDataURL("image/png");
-    console.log(imageData);
     if (imageData) {
       const rollingObj = {
         rollingPaperId: rollingpaperId,
         rollingPaperString: imageData,
       };
 
-      await saveRollingPaper(rollingObj);
+      const res = await saveRollingPaper(rollingObj);
     }
   };
   return (

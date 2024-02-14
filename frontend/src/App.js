@@ -7,7 +7,7 @@ import useStompStore from "./store/useStompStore";
 import useUserStore from "./store/useUserStore";
 import useNotificationStore from "./store/useNotificationStore";
 import { Toaster } from "react-hot-toast";
-import { renewToken } from "./api/common/Token";
+import { isTokenExpired, renewToken } from "./api/common/Token";
 import toast from "react-hot-toast";
 
 axios.defaults.withCredentials = true;
@@ -19,6 +19,12 @@ axios.interceptors.request.use(
     if (!accessToken) {
       return config;
     }
+
+    // if (isTokenExpired) {
+    //   const res = renewToken(accessToken);
+    //   localStorage.setItem("accessToken", res.data.token);
+    //   localStorage.setItem("tokenTimestamp", Date.now());
+    // }
 
     config.headers["Authorization"] = `Bearer ${accessToken}`;
     return config;
