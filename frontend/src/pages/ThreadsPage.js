@@ -112,7 +112,12 @@ export default function ThreadsPage() {
         width="1300px"
         height="860px"
       >
-        <OneThread threadId={tId} />
+        <OneThread
+          threadId={tId}
+          setThreadModal={setThreadModal}
+          setThreadList={setThreadList}
+          threadList={threadList}
+        />
       </BigModal>
     </>
   );

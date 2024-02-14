@@ -55,7 +55,7 @@ export default function BookDetailPage() {
     async function getbook() {
       const pagelist = await getBook(book.bookId);
       setPages(pagelist.data.paperList ? pagelist.data.paperList : []);
-      console.log(pagelist);
+      console.log(pagelist.data);
     }
     console.log(writerId, userId);
     getbook();
