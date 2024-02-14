@@ -2,15 +2,15 @@ import Container from "../components/frame/Container";
 import React, { useState, useEffect } from "react";
 import styles from "./style/ThreadsPage.module.css";
 import title from "../components/atom/atomstyle/Title.module.css";
-import bearImage from "../assets/예시이미지2.png";
 import 오른쪽 from "../assets/오른쪽.png";
 import 왼쪽 from "../assets/왼쪽.png";
 import Thread from "../components/common/Thread";
-import { getMyThreadList, getDeskThread } from "../api/thread/Thread";
-import { getMybrary } from "../api/mybrary/Mybrary";
+import { getDeskThread } from "../api/thread/Thread";
 import { useNavigate, useParams } from "react-router-dom";
 import useUserStore from "../store/useUserStore";
 import useMybraryStore from "../store/useMybraryStore";
+import BigModal from "../components/common/BigModal";
+import OneThread from "../components/threads/OneThread";
 
 export default function ThreadsPage() {
   const Params = useParams();
@@ -22,6 +22,9 @@ export default function ThreadsPage() {
   const [threadList, setThreadList] = useState([]);
   const [trueme, setTrueme] = useState(false);
   const mybrary = useMybraryStore((state) => state.mybrary);
+
+  const [threadModal, setThreadModal] = useState(false);
+  const [tId, setTId] = useState(0);
 
   useEffect(() => {
     async function fetchmyData() {
@@ -95,13 +98,26 @@ export default function ThreadsPage() {
               {/* 년-월 표시 */}
               <div className={styles.년도별스레드}>
                 {groupedData.get(yearMonth).map((thread) => (
-                  <Thread thread={thread} user={mybrary} trueme={trueme} />
+                  <Thread
+                    thread={thread}
+                    user={mybrary}
+                    setThreadModal={setThreadModal}
+                    setTId={setTId}
+                  />
                 ))}
               </div>
             </div>
           ))}
         </div>
       </Container>
+      <BigModal
+        modalIsOpen={threadModal}
+        setModalIsOpen={setThreadModal}
+        width="1300px"
+        height="860px"
+      >
+        <OneThread threadId={tId} />
+      </BigModal>
     </>
   );
 }
