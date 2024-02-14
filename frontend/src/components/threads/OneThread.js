@@ -78,6 +78,9 @@ export default function OneThread({
 
   return (
     <>
+      <div onClick={() => setThreadModal(false)} className={styles.close}>
+        닫기
+      </div>
       <div className={styles.flex}>
         <div
           className={s(
@@ -88,7 +91,10 @@ export default function OneThread({
           {list.map((thread, index) => (
             <div
               key={index}
-              className={s(styles.StackCarousel_content)}
+              className={s(
+                styles.StackCarousel_content,
+                comment ? styles.content : styles.content2
+              )}
               style={{ zIndex: `-${index}` }}
             >
               {/* 하나의 쓰레드에 해당 */}
