@@ -29,7 +29,7 @@ export default function PaperplanePage() {
         const res = await getChatList();
         setChatRoomList(res.data.content);
       } catch (e) {
-        navigate("/error");
+        console.log(e);
       }
     })();
 
@@ -61,9 +61,10 @@ export default function PaperplanePage() {
       (async function asyncGetMessageList() {
         try {
           const res = await getMessageList(nowChatRoom.chatRoomId);
+          console.log(res);
           setChatMessageList(res.data.content);
         } catch (e) {
-          navigate("/error");
+          console.log(e);
         }
       })();
     }
@@ -131,8 +132,29 @@ export default function PaperplanePage() {
     }
   };
 
-  const handleSelectChatRoom = (chatRoom) => {
-    setNowChatRoom(chatRoom);
+  const handleSelectChatRoom = (selectedChatRoom) => {
+    // 현재 선택된 채팅방 상태 업데이트
+    setNowChatRoom(selectedChatRoom);
+
+    // chatRoomList에서 선택된 채팅방의 인덱스 찾기 및 unreadMessageCount를 0으로 설정
+    setChatRoomList((prevChatRoomList) => {
+      const chatRoomIndex = prevChatRoomList.findIndex(
+        (chatRoom) => chatRoom.chatRoomId === selectedChatRoom.chatRoomId
+      );
+
+      if (chatRoomIndex !== -1) {
+        // 선택된 채팅방의 unreadMessageCount를 0으로 설정
+        const updatedChatRoomList = [...prevChatRoomList];
+        updatedChatRoomList[chatRoomIndex] = {
+          ...updatedChatRoomList[chatRoomIndex],
+          unreadMessageCount: 0,
+        };
+
+        return updatedChatRoomList; // 업데이트된 채팅방 리스트 반환
+      }
+
+      return prevChatRoomList; // 변화가 없는 경우 이전 상태 반환
+    });
   };
 
   // 메시지의 timestamp를 한국 시간으로 변환하는 함수
@@ -192,6 +214,7 @@ export default function PaperplanePage() {
                         }
                         latestMessage={chatRoom.latestMessage}
                         unreadMessageCount={chatRoom.unreadMessageCount}
+                        isNew={chatRoom.latestMessageSender !== user.memberId}
                       />
                     ))}
                   </>
@@ -285,7 +308,6 @@ export default function PaperplanePage() {
                                       ? styles.sender
                                       : styles.receiver
                                   }`}
-                                  key={index}
                                 >
                                   {message.content}
                                 </div>

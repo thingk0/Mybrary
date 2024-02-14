@@ -7,6 +7,7 @@ function ChatProfile({
   latestMessage,
   unreadMessageCount,
   onClick,
+  isNew,
 }) {
   return (
     <>
@@ -85,7 +86,7 @@ function ChatProfile({
           >
             ...
           </div>
-          {unreadMessageCount > 0 ? (
+          {unreadMessageCount > 0 && isNew ? (
             <div style={{ marginBottom: "27px" }}>new</div>
           ) : (
             <div style={{ marginBottom: "27px" }}>&nbsp;</div>

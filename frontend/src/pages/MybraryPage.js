@@ -521,7 +521,7 @@ export default function MybraryPage() {
           >
             <div className={styles.profileContainer}>
               <div className={styles.profile}>
-                <div className={styles.프로필박스2}>
+                <div className={`${styles.프로필박스2}`}>
                   <img
                     className={styles.프로필이미지곰}
                     src={userimg || gomimg}

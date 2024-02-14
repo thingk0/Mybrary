@@ -23,17 +23,17 @@ axios.interceptors.request.use(
       return config;
     }
 
-    try {
-      if ((Date.now - localStorage.getItem("tokenTimestamp")) / 1000 > 800) {
-        accessToken = await renewToken(accessToken);
-      }
-    } catch {
-      localStorage.clear();
-      window.location.href = "/join";
-      toast.error("로그인 토큰이 만료되었습니다.", {
-        position: "top-center",
-      });
-    }
+    // try {
+    //   if ((Date.now - localStorage.getItem("tokenTimestamp")) / 1000 > 800) {
+    //     accessToken = await renewToken(accessToken);
+    //   }
+    // } catch {
+    //   localStorage.clear();
+    //   window.location.href = "/join";
+    //   toast.error("로그인 토큰이 만료되었습니다.", {
+    //     position: "top-center",
+    //   });
+    // }
 
     // 매 요청마다 토큰 갱신
     // localStorage.setItem("accessToken", accessToken);
