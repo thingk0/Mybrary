@@ -67,10 +67,12 @@ export default function Nav() {
 
   const handleLogOut = async () => {
     try {
-      await doLogout(setUser);
+      //await doLogout(setUser);
       navigate("/join");
+      localStorage.clear();
     } catch (e) {
-      navigate("/error");
+      navigate("/join");
+      localStorage.clear();
     }
   };
 

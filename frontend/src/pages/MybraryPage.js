@@ -40,6 +40,7 @@ import FollowerList from "../components/mybrary/FollowerList";
 import FileInput from "../components/common/FileInput";
 import { uplodaImage } from "../api/image/Image";
 import { deleteFollow, follow, followCancel } from "../api/member/Follow";
+import { getFirstChat } from "../api/chat/Chat";
 
 export default function MybraryPage() {
   // 유저 관련
@@ -303,11 +304,12 @@ export default function MybraryPage() {
     );
   }
 
-  function handlePostboxClick() {
+  async function handlePostboxClick() {
     if (user.memberId === nowuser) {
       navigate("/paperplane");
     } else {
-      navigate("/paperplane");
+      await getFirstChat(nowuser);
+      navigate(`/paperplane?chatuserid=${nowuser}`);
     }
   }
 

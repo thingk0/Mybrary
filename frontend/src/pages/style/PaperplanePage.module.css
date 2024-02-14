@@ -311,7 +311,7 @@
   align-self: flex-end;
   background-color: #eee3dd;
   display: flex;
-  margin-left: 10px;
+  margin-left: 1px;
 }
 
 .receiver {
@@ -319,7 +319,7 @@
   display: flex;
   background-color: var(--Main2, #57423f);
   color: var(--Main4, #fff9f6);
-  margin-right: 10px;
+  margin-right: 8px;
 }
 
 .senderbox {
