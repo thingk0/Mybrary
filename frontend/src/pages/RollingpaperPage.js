@@ -17,8 +17,10 @@ export default function RollingpaperPage() {
   const startPoint = useRef({ x: 0, y: 0 });
   const [imageData, setImageData] = useState(null);
   const [lineColor, setLineColor] = useState("black");
+  const [stompClient, setStompClient] = useState(null);
   const mybrary = useMybraryStore((state) => state.mybrary);
 
+  /* 여기서부터 그림 그리는 코드 */
   const drawLine = (originalX, originalY, newX, newY, color) => {
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
@@ -62,7 +64,7 @@ export default function RollingpaperPage() {
 
   const exitPaint = useCallback(() => {
     if (isPainting.current) {
-      sendImageData();
+      sendImageData(); // 손 떼는 순간 웹소켓으로 전달
       isPainting.current = false;
     }
   }, []);
@@ -81,7 +83,9 @@ export default function RollingpaperPage() {
       y: event.pageY - canvas.parentElement.offsetTop,
     };
   };
+  /* 그림그리는 코드 끝 */
 
+  /* 초기화 코드 */
   const handleResetImage = () => {
     console.log("reset");
     const canvas = canvasRef.current;
@@ -109,33 +113,30 @@ export default function RollingpaperPage() {
     setLineColor(colors[num]);
   };
 
-  let client = null;
-
   const sendImageData = () => {
-    console.log(client);
-    if (client && canvasRef.current) {
+    if (stompClient && canvasRef.current) {
       // Canvas에서 이미지 데이터를 Base64 문자열로 추출
       const imageData = canvasRef.current.toDataURL("image/png");
       const message = {
-        content: imageData,
+        rollingPaperId: rollingpaperId,
+        rollingPaperString: imageData,
       };
 
       // STOMP를 통해 서버로 전송
-      const destination = `/pub/rp/${rollingpaperId}/draw`;
+      const destination = `/pub/rollingPaper/${rollingpaperId}`;
       const bodyData = JSON.stringify(message);
 
       try {
-        client.publish({ destination, body: "hi" });
+        stompClient.publish({ destination, body: bodyData });
       } catch (err) {
         console.log("전송에러");
-        console.log(err);
       }
     }
   };
 
   const connect = () => {
     const token = localStorage.getItem("accessToken");
-    client = new Client({
+    const client = new Client({
       webSocketFactory: () => new SockJS("https://i10b207.p.ssafy.io/ws"),
       connectHeaders: {
         Authorization: `Bearer ${token}`,
@@ -145,16 +146,17 @@ export default function RollingpaperPage() {
       console.log("Connected!");
       console.log(rollingpaperId);
 
-      client.subscribe(`/rp/${rollingpaperId}`, (message) => {
+      client.subscribe(`/sub/rollingPaper/${rollingpaperId}`, (message) => {
         console.log("receive check!! ");
         console.log(message);
         const receivedImageData = JSON.parse(message.body);
-        const base64Image = receivedImageData.content;
+        const base64Image = receivedImageData.rollingPaperString;
         setImageData(base64Image);
       });
     };
 
     client.activate();
+    setStompClient(client);
   };
 
   useEffect(() => {
@@ -174,7 +176,7 @@ export default function RollingpaperPage() {
       initCanvas();
     }
 
-    connect();
+    if (!stompClient) connect();
 
     return () => {
       canvas.removeEventListener("mousedown", startPaint);
