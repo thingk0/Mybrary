@@ -36,7 +36,7 @@ axios.interceptors.request.use(
 
 export default function App() {
   const { stompClient, connect } = useStompStore();
-  const { setNewNotification } = useNotificationStore();
+  const { setNewNotification, notifyEnable } = useNotificationStore();
   const email = useUserStore((state) => state.user?.email);
 
   useEffect(() => {
@@ -64,7 +64,7 @@ export default function App() {
       <div>
         <Outlet />
       </div>
-      <Toaster position="bottom-right" reverseOrder={false} />
+      {notifyEnable && <Toaster position="bottom-right" reverseOrder={false} />}
     </>
   );
 }
