@@ -30,6 +30,9 @@ export default function FeedContent({
   setCommentId,
   setZIndex,
   handleOpenBookList,
+  setThreadModal,
+  setThreadList,
+  threadList,
 }) {
   const navigate = useNavigate();
   const user = useUserStore((state) => state.user);
@@ -126,8 +129,13 @@ export default function FeedContent({
     const updatedThreadList = list.filter(
       (thread) => thread.threadId !== threadId
     );
+    const updatedThreadList2 = threadList.filter(
+      (thread) => thread.threadId !== threadId
+    );
     deleteThread(threadId);
     setList(updatedThreadList);
+    setThreadList(updatedThreadList2);
+    setThreadModal(false);
   };
   return (
     <div className={styles.content}>

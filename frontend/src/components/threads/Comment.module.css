@@ -13,9 +13,12 @@
 }
 /* 댓글목록공간 */
 .comment_item {
-  width: 100%;
+  width: 88%;
   border-radius: 5px;
+  /* background-color: #f8c3d2; */
+  padding: 0.7vw;
   box-shadow: 0 0 15px -5px var(--main2);
+  margin: 1vw;
   position: relative;
 }
 .대댓글박스 {
@@ -29,6 +32,7 @@
   width: 76%;
   border-radius: 5px;
   /* background-color: #f8c3d2; */
+  padding: 0.7vw;
   box-shadow: 0 0 15px -5px var(--main2);
   margin: 0.2vw;
   position: relative;
@@ -86,7 +90,7 @@
 .comment_create {
   background-color: var(--main3);
   border-radius: 5px;
-  width: 100%;
+  width: 89%;
   margin: 1vw;
   padding: 0.7vw;
 }

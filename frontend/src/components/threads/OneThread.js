@@ -8,19 +8,20 @@ import BigModal from "../common/BigModal";
 import Comment from "./Comment";
 import { getMYBooks } from "../../api/book/Book";
 import { getThread } from "../../api/thread/Thread";
-import { useNavigate } from "react-router-dom";
 
-export default function OneThread({ threadId }) {
-  const [activeIndex, setActiveIndex] = useState(0);
+export default function OneThread({
+  threadId,
+  setThreadModal,
+  setThreadList,
+  threadList,
+}) {
   const [list, setList] = useState([]);
-  const [page, setPage] = useState(0);
   const [scrapModal, setScrapModal] = useState(false);
 
   // console.log(threadList);
   const [comment, setComment] = useState(false);
   const [commentId, setCommentId] = useState(0);
   const [zIndex, setZIndex] = useState(-1);
-  const navigate = useNavigate();
 
   // 나의 북리스트 가져오기
   const [papers, setPapers] = useState([]);
@@ -38,7 +39,6 @@ export default function OneThread({ threadId }) {
     async function fetchMainFeedData() {
       try {
         const response = await getThread(threadId);
-        // setThreadList(response.data);
 
         setList([response.data]);
         console.log(response.data);
@@ -55,7 +55,6 @@ export default function OneThread({ threadId }) {
         ...thread,
         paperList: thread.paperList.map((paper) => {
           if (paper.id === paperId) {
-            // 해당 페이퍼의 commentCount를 1 증가
             return { ...paper, commentCount: paper.commentCount + 1 };
           }
           return paper;
@@ -69,7 +68,6 @@ export default function OneThread({ threadId }) {
         ...thread,
         paperList: thread.paperList.map((paper) => {
           if (paper.id === paperId) {
-            // 해당 페이퍼의 commentCount를 1 증가
             return { ...paper, commentCount: paper.commentCount - 1 };
           }
           return paper;
@@ -95,6 +93,9 @@ export default function OneThread({ threadId }) {
             >
               {/* 하나의 쓰레드에 해당 */}
               <FeedContent
+                threadList={threadList}
+                setThreadModal={setThreadModal}
+                setThreadList={setThreadList}
                 thread={thread}
                 list={list}
                 setList={setList}
