@@ -9,12 +9,7 @@ import Comment from "./Comment";
 import { getMYBooks } from "../../api/book/Book";
 import { getThread } from "../../api/thread/Thread";
 
-export default function OneThread({
-  threadId,
-  setThreadModal,
-  setThreadList,
-  threadList,
-}) {
+export default function OneThread({ threadId, setThreadModal }) {
   const [list, setList] = useState([]);
   const [scrapModal, setScrapModal] = useState(false);
 
@@ -99,9 +94,7 @@ export default function OneThread({
             >
               {/* 하나의 쓰레드에 해당 */}
               <FeedContent
-                threadList={threadList}
                 setThreadModal={setThreadModal}
-                setThreadList={setThreadList}
                 thread={thread}
                 list={list}
                 setList={setList}

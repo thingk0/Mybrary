@@ -53,7 +53,7 @@ export default function ThreadsPage() {
       } catch (error) {}
     }
     fetchmyData();
-  }, []);
+  }, [threadModal]);
 
   return (
     <>
@@ -112,12 +112,7 @@ export default function ThreadsPage() {
         width="1300px"
         height="860px"
       >
-        <OneThread
-          threadId={tId}
-          setThreadModal={setThreadModal}
-          setThreadList={setThreadList}
-          threadList={threadList}
-        />
+        <OneThread threadId={tId} setThreadModal={setThreadModal} />
       </BigModal>
     </>
   );
