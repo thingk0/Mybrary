@@ -1,5 +1,7 @@
 package com.mybrary.backend.domain.rollingpaper.controller;
 
+import com.mybrary.backend.domain.chat.dto.requestDto.MessageRequestDto;
+import com.mybrary.backend.domain.chat.dto.responseDto.ChatMessageResponseDto;
 import com.mybrary.backend.domain.rollingpaper.dto.RollingPaperGetDto;
 import com.mybrary.backend.domain.rollingpaper.dto.RollingPaperPostDto;
 import com.mybrary.backend.domain.rollingpaper.service.RollingPaperService;
@@ -8,6 +10,7 @@ import com.mybrary.backend.global.format.response.ResponseCode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.security.Principal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +18,7 @@ import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +35,7 @@ public class RollingPaperController {
 
     private final ApiResponse response;
     private final RollingPaperService rollingPaperService;
+    private final SimpMessagingTemplate template;
 
     @Operation(summary = "롤링페이퍼 조회", description = "롤링페이퍼 입장")
     @GetMapping("/{id}")
@@ -48,6 +53,14 @@ public class RollingPaperController {
 
         Long rollingPaperId = rollingPaperService.saveRollingPaper(authentication.getName(), rollingPaper);
         return response.success(ResponseCode.ROLLING_PAPER_SAVED, rollingPaperId);
+    }
+
+    @MessageMapping("/rollingPaper/{rollingPaperId}")
+    public void sendMessage(@DestinationVariable Long rollingPaperId,
+                            Principal principal,
+                            RollingPaperPostDto rollingPaper) {
+
+        template.convertAndSend("/sub/rollingPaperId/", rollingPaper.getRollingPaperString());
     }
 
 }
