@@ -119,6 +119,7 @@ public class NotificationServiceImpl implements NotificationService {
         // 웹소켓메서드
         String destination = "/sub/notification/" + receiver.getEmail(); // 구독 주소 + 받을 사람 이메일
         messagingTemplate.convertAndSend(destination, sendNotification); // destination으로 sendNotification을 보냄
+        System.out.println("알림타입 = " + sendNotification.getNotifyType());
 
     }
 
