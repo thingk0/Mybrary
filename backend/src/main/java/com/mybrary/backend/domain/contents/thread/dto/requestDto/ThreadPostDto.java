@@ -2,16 +2,17 @@ package com.mybrary.backend.domain.contents.thread.dto.requestDto;
 
 import com.mybrary.backend.domain.contents.paper.dto.requestDto.PostPaperDto;
 import java.util.List;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter @Setter
-@Builder
-@NoArgsConstructor
+@Getter
+@Setter
 @AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ThreadPostDto {
 
     /**

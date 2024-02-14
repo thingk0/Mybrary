@@ -39,11 +39,20 @@ public class PaperImage extends BaseEntity {
     @JoinColumn(name = "paper_id")
     private Paper paper;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE})
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "image_id")
     private Image image;
 
     @Column(name = "image_seq")
     private int imageSeq;
+
+
+    public static PaperImage of(Paper paper, Image image, int imageSeq) {
+        return PaperImage.builder()
+                         .paper(paper)
+                         .image(image)
+                         .imageSeq(imageSeq)
+                         .build();
+    }
 
 }

@@ -41,23 +41,29 @@ public class Thread extends BaseEntity {
     @JoinColumn(name = "mybrary_id")
     private Mybrary mybrary;
 
-    @Builder.Default()
     @Column(name = "is_scrap_enabled")
-    private boolean isScrapEnabled = true;
+    private boolean isScrapEnabled;
 
-    @Builder.Default()
     @Column(name = "is_paper_public")
-    private boolean isPaperPublic = true;
+    private boolean isPaperPublic;
 
-    /* thread - paper 양방향 관계 설정 */
-    @Builder.Default
-    @OneToMany(mappedBy = "thread", cascade = {CascadeType.REMOVE})
-    private List<Paper> paperList = new ArrayList<>();
+    @OneToMany(mappedBy = "thread", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
+    private List<Paper> paperList;
 
-    public void updateScrapEnabled(boolean enabled){
+    public static Thread create(Mybrary mybrary) {
+        return Thread.builder()
+                     .mybrary(mybrary)
+                     .isScrapEnabled(true)
+                     .isPaperPublic(true)
+                     .paperList(new ArrayList<>())
+                     .build();
+    }
+
+    public void updateScrapEnabled(boolean enabled) {
         isScrapEnabled = enabled;
     }
-    public void updatePaperPublic(boolean enabled){
+
+    public void updatePaperPublic(boolean enabled) {
         isPaperPublic = enabled;
     }
 }

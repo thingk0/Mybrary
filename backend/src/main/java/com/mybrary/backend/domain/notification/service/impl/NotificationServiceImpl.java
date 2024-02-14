@@ -107,6 +107,7 @@ public class NotificationServiceImpl implements NotificationService {
             Book book = bookRepository.findById(savedNotification.getBookId()).get();
             bookTitle = book.getCoverTitle();
         }
+
         NotificationGetDto sendNotification = new NotificationGetDto(savedNotification.getId(), senderDto,
                                                                      savedNotification.getNotifyType(),
                                                                      savedNotification.getBookId(), bookTitle,

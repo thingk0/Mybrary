@@ -9,7 +9,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface ThreadService {
 
-    Long createThread(Long myId, ThreadPostDto threadPostDto);
+    Long createThread(String email, ThreadPostDto threadPostDto);
 
     Long updateThread(Long myId, ThreadUpdateDto threadUpdateDto);
 

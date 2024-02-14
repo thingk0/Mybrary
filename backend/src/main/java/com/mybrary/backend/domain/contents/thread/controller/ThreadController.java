@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/thread")
 public class ThreadController {
-    
+
     private final ApiResponse response;
     private final ThreadService threadService;
     private final MemberService memberService;
@@ -40,15 +40,12 @@ public class ThreadController {
     @Operation(summary = "쓰레드 생성", description = "쓰레드 생성")
     @PostMapping
     public ResponseEntity<?> createThread(@Parameter(hidden = true) Authentication authentication,
-//        @RequestParam(required = false) List<MultipartFile> files,
-        @RequestBody ThreadPostDto threadPostDto ) {
-        log.info("시작");
-        Member me = memberService.findMember(authentication.getName());
-        Long myId = me.getId();
-        log.info("스레드 생성 컨트롤러 ");
+                                          @RequestBody ThreadPostDto threadPostDto) {
+
         return response.success(ResponseCode.THREAD_CREATED,
-            threadService.createThread(myId, threadPostDto));
+                                threadService.createThread(authentication.getName(), threadPostDto));
     }
+
     @Operation(summary = "메인홈 쓰레드 조회", description = "메인홈에서의 쓰레드 목록 조회")
     @GetMapping("/home")
     public ResponseEntity<?> getMainAllThread(
@@ -57,8 +54,9 @@ public class ThreadController {
         Member me = memberService.findMember(authentication.getName());
         Long myId = me.getId();
         return response.success(ResponseCode.MAIN_THREAD_LIST_FETCHED,
-            threadService.getMainAllThread(myId, page));
+                                threadService.getMainAllThread(myId, page));
     }
+
     @Operation(summary = "나의 쓰레드 조회", description = "나의 마이브러리 책상에서의 쓰레드 목록 조회")
     @GetMapping("/desk")
     public ResponseEntity<?> getMyAllThread(
@@ -67,8 +65,9 @@ public class ThreadController {
         Member me = memberService.findMember(authentication.getName());
         Long myId = me.getId();
         return response.success(ResponseCode.MY_THREAD_LIST_FETCHED,
-            threadService.getMyAllThread(myId, page));
+                                threadService.getMyAllThread(myId, page));
     }
+
     @Operation(summary = "특정 회원의 쓰레드 조회", description = "특정 회원의 마이브러리 책상에서의 쓰레드 목록 조회")
     @GetMapping("/{id}/desk")
     public ResponseEntity<?> getOtherAllThread(
@@ -78,24 +77,26 @@ public class ThreadController {
         Member me = memberService.findMember(authentication.getName());
         Long myId = me.getId();
         return response.success(ResponseCode.OTHER_MEMBER_THREAD_LIST_FETCHED,
-            threadService.getOtherAllThread(authentication.getName(), memberId, page));
+                                threadService.getOtherAllThread(authentication.getName(), memberId, page));
     }
+
     @Operation(summary = "쓰레드 수정", description = "쓰레드 수정")
     @PutMapping
     public ResponseEntity<?> updateThread(@Parameter(hidden = true) Authentication authentication,
-        @RequestBody ThreadUpdateDto threadUpdateDto) {
+                                          @RequestBody ThreadUpdateDto threadUpdateDto) {
         Member me = memberService.findMember(authentication.getName());
         Long myId = me.getId();
         return response.success(ResponseCode.THREAD_UPDATED, threadService.updateThread(myId, threadUpdateDto));
     }
+
     @Operation(summary = "쓰레드 삭제", description = "쓰레드 아이디를 통한 쓰레드 삭제")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteThread(@Parameter(hidden = true) Authentication authentication,
-        @PathVariable(name = "id") Long threadId) {
+                                          @PathVariable(name = "id") Long threadId) {
         Member me = memberService.findMember(authentication.getName());
         Long myId = me.getId();
         return response.success(ResponseCode.THREAD_DELETED,
-            threadService.deleteThread(myId, threadId));
+                                threadService.deleteThread(myId, threadId));
     }
 
     @Operation(summary = "쓰레드 단건 조회", description = "쓰레드 아이디를 통한 쓰레드 조회")
@@ -109,8 +110,6 @@ public class ThreadController {
                                 threadService.getThread(authentication.getName(), myId, threadId));
 
     }
-
-
 
 //    @Operation(summary = "쓰레드 단건 조회", description = "쓰레드 아이디를 통한 쓰레드 조회")
 //    @GetMapping("/{id}")

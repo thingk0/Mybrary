@@ -1,7 +1,6 @@
 package com.mybrary.backend.domain.mybrary.repository.custom;
 
 import static com.mybrary.backend.domain.bookshelf.entity.QBookshelf.bookshelf;
-import static com.mybrary.backend.domain.image.entity.QImage.image;
 import static com.mybrary.backend.domain.member.entity.QMember.member;
 import static com.mybrary.backend.domain.mybrary.entity.QMybrary.mybrary;
 import static com.mybrary.backend.domain.rollingpaper.entity.QRollingPaper.rollingPaper;
@@ -65,6 +64,16 @@ public class MybraryRepositoryImpl implements MybraryRepositoryCustom {
                                         .where(member.id.eq(otherId))
                                         .fetchFirst()
         );
+    }
+
+    @Override
+    public Optional<Mybrary> findMybraryByEmail(String email) {
+        return Optional.ofNullable(query
+                                       .select(mybrary)
+                                       .from(mybrary)
+                                       .innerJoin(mybrary.member, member).fetchJoin()
+                                       .where(member.email.eq(email))
+                                       .fetchFirst());
     }
 
     @Override

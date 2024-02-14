@@ -14,42 +14,42 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class ScrapRepositoryImpl implements ScrapRepositoryCustom {
 
-      private final JPAQueryFactory query;
+    private final JPAQueryFactory query;
 
-      @Override
-      public Optional<Integer> getScrapCount(Long paperId) {
-            return Optional.ofNullable(query.select(scrap.count().intValue())
-                                            .from(scrap)
-                                            .where(scrap.paper.id.eq(paperId))
-                                            .fetchOne()
-            );
-      }
+    @Override
+    public Optional<Integer> getScrapCount(Long paperId) {
+        return Optional.ofNullable(query.select(scrap.count().intValue())
+                                        .from(scrap)
+                                        .where(scrap.paper.id.eq(paperId))
+                                        .fetchOne()
+        );
+    }
 
-      @Override
-      public Optional<Scrap> getScrap(Long bookId, Long paperId) {
-            return Optional.ofNullable(query.select(scrap)
-                                           .from(scrap)
-                                           .where(scrap.book.id.eq(bookId).and(scrap.paper.id.eq(paperId)))
-                                           .fetchOne()
-            );
-      }
+    @Override
+    public Optional<Scrap> getScrap(Long bookId, Long paperId) {
+        return Optional.ofNullable(query.select(scrap)
+                                        .from(scrap)
+                                        .where(scrap.book.id.eq(bookId).and(scrap.paper.id.eq(paperId)))
+                                        .fetchOne()
+        );
+    }
 
-      @Override
-      public Optional<Integer> findLastPaperSeq(Long bookId) {
-            return Optional.ofNullable(query.select(scrap.paperSeq.max())
-                                           .from(scrap)
-                                           .where(scrap.book.id.eq(bookId)).fetchOne());
-      }
+    @Override
+    public Optional<Integer> findLastPaperSeq(Long bookId) {
+        return Optional.ofNullable(query.select(scrap.paperSeq.max())
+                                        .from(scrap)
+                                        .where(scrap.book.id.eq(bookId)).fetchOne());
+    }
 
-      @Override
-      public Optional<Integer> getThreadScrapCount(Long threadId) {
-            return Optional.ofNullable(query.select(scrap.count().intValue())
-                                            .from(scrap)
-                                            .leftJoin(paper).on(scrap.paper.id.eq(paper.id))
-                                            .where(paper.thread.id.eq(threadId))
-                                            .fetchOne()
-            );
-      }
+    @Override
+    public Optional<Integer> getThreadScrapCount(Long threadId) {
+        return Optional.ofNullable(query.select(scrap.count().intValue())
+                                        .from(scrap)
+                                        .leftJoin(paper).on(scrap.paper.id.eq(paper.id))
+                                        .where(paper.thread.id.eq(threadId))
+                                        .fetchOne()
+        );
+    }
 
 
 }

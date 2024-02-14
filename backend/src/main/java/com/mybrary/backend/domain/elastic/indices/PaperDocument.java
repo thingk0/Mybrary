@@ -1,5 +1,6 @@
 package com.mybrary.backend.domain.elastic.indices;
 
+import com.mybrary.backend.domain.contents.paper.entity.Paper;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -39,5 +40,15 @@ public class PaperDocument {
                     @InnerField(suffix = "autocomplete", type = FieldType.Text, analyzer = "autocomplete_analyzer")
                 })
     private String content2;
+
+
+    public static PaperDocument of(Long threadId, Paper paper) {
+        return PaperDocument.builder()
+                            .id(paper.getId())
+                            .threadId(threadId)
+                            .content1(paper.getContent1())
+                            .content2(paper.getContent2())
+                            .build();
+    }
 
 }
