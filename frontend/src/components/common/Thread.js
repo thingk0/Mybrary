@@ -62,7 +62,6 @@ export default function Thread({ thread, user, trueme }) {
       onMouseMove={(e) => handleMouseMove(e, thread.threadId)}
       onMouseOut={() => handleMouseOut(thread.threadId)}
       style={hoverStyle[thread.threadId]?.thread}
-      onClick={() => console.log(thread.threadId)}
     >
       {/* {trueme && <div className={styles.삭제버튼}> 트루입니당</div>} */}
       <div

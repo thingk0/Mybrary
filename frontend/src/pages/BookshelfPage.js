@@ -13,10 +13,8 @@ export default function BookshelfPage() {
   const { bookShelfId } = useParams();
   useEffect(() => {
     async function fetchbookshelfData() {
-      console.log(bookShelfId);
       try {
         const response = await getCategoryList(bookShelfId);
-        console.log(response);
 
         const newCategoryList = [...response.data];
         const sortedCategoryList = newCategoryList.sort(

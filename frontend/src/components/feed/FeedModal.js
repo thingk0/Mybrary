@@ -21,15 +21,11 @@ export default function FeedModal({
   const [booklist, setBooklist] = useState([]);
 
   useEffect(() => {
-    console.log("으아아아아");
     async function fetchData() {
       try {
         const response = await getPaperinBook(paperId);
-        console.log(response);
         setBooklist(response.data);
-      } catch (error) {
-        console.log("데이터를 가져오는데 실패함");
-      }
+      } catch (error) {}
     }
     if (paperId) fetchData(); // paperId가 존재할 때만 fetchData 함수를 호출합니다.
   }, [paperId]);
