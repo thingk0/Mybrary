@@ -293,6 +293,7 @@ export default function RollingpaperPage() {
       };
 
       const res = await saveRollingPaper(rollingObj);
+      console.log(res);
     }
   };
   return (
