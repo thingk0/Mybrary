@@ -1,14 +1,12 @@
 
 package com.mybrary.backend.domain.rollingpaper.service;
-import com.mybrary.backend.domain.mybrary.dto.MybraryGetDto;
-import com.mybrary.backend.domain.mybrary.dto.MybraryOtherGetDto;
-import com.mybrary.backend.domain.mybrary.dto.MybraryUpdateDto;
-import com.mybrary.backend.domain.rollingpaper.dto.RollingPaperGetDto;
-import com.mybrary.backend.domain.rollingpaper.dto.RollingPaperPostDto;
+
+import com.mybrary.backend.domain.rollingpaper.dto.RollingPaperDto;
 
 public interface RollingPaperService {
 
-    RollingPaperGetDto getRollingPaper(String email, Long rollingPaperId);
+    RollingPaperDto fetch(String email, Long rollingPaperId);
 
-    Long saveRollingPaper(String email, RollingPaperPostDto rollingPaper);
+    RollingPaperDto update(String email, RollingPaperDto rollingPaper);
+
 }
