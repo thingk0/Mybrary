@@ -1,5 +1,6 @@
 package com.mybrary.backend.domain.rollingpaper.controller;
 
+import com.mybrary.backend.domain.rollingpaper.dto.RollingPaperGetDto;
 import com.mybrary.backend.domain.rollingpaper.dto.RollingPaperPostDto;
 import com.mybrary.backend.domain.rollingpaper.service.RollingPaperService;
 import com.mybrary.backend.global.format.code.ApiResponse;
@@ -36,8 +37,8 @@ public class RollingPaperController {
     public ResponseEntity<?> getRollingPaper(@Parameter(hidden = true) Authentication authentication,
                                              @PathVariable("id") Long rollingPaperId) {
 
-        String rollingPaperString = rollingPaperService.getRollingPaper(authentication.getName(), rollingPaperId);
-        return response.success(ResponseCode.ROLLING_PAPER_FETCHED, rollingPaperString);
+        RollingPaperGetDto rollingPaper = rollingPaperService.getRollingPaper(authentication.getName(), rollingPaperId);
+        return response.success(ResponseCode.ROLLING_PAPER_FETCHED, rollingPaper);
     }
 
     @Operation(summary = "롤링페이퍼 저장", description = "롤링페이퍼 저장")

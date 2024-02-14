@@ -13,6 +13,6 @@ import lombok.NoArgsConstructor;
 public class RollingPaperGetDto {
 
     private Long rollingPaperId;
-    private ImagePostDto image;
+    private String rollingPaperString;
 
 }

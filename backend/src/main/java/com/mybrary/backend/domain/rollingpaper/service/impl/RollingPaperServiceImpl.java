@@ -15,6 +15,7 @@ import com.mybrary.backend.domain.mybrary.dto.MybraryOtherGetDto;
 import com.mybrary.backend.domain.mybrary.dto.MybraryUpdateDto;
 import com.mybrary.backend.domain.mybrary.entity.Mybrary;
 import com.mybrary.backend.domain.mybrary.repository.MybraryRepository;
+import com.mybrary.backend.domain.rollingpaper.dto.RollingPaperGetDto;
 import com.mybrary.backend.domain.rollingpaper.dto.RollingPaperPostDto;
 import com.mybrary.backend.domain.rollingpaper.entity.RollingPaper;
 import com.mybrary.backend.domain.rollingpaper.repository.RollingPaperRepository;
@@ -42,7 +43,7 @@ public class RollingPaperServiceImpl implements RollingPaperService {
     private final FollowRepository followRepository;
 
     @Override
-    public String getRollingPaper(String email, Long rollingPaperId) {
+    public RollingPaperGetDto getRollingPaper(String email, Long rollingPaperId) {
 
         Member member = memberRepository.searchByEmail(email).orElseThrow(MemberNotFoundException::new);
         RollingPaper rollingPaper = rollingPaperRepository.findById(rollingPaperId).orElseThrow(RollingPaperNotFoundException::new);
@@ -50,7 +51,11 @@ public class RollingPaperServiceImpl implements RollingPaperService {
         if(!owner.isProfilePublic()){
             Follow follow = followRepository.findFollow(member.getId(), owner.getId()).orElseThrow(FollowNotFoundException::new);
         }
-        return rollingPaper.getRollingPaperString();
+        RollingPaperGetDto res = RollingPaperGetDto.builder()
+            .rollingPaperId(rollingPaperId)
+            .rollingPaperString(rollingPaper.getRollingPaperString())
+            .build();
+        return res;
     }
 
     @Override
