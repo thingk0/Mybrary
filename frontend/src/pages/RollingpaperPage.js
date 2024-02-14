@@ -181,7 +181,6 @@ export default function RollingpaperPage() {
       const res = await getRollingPaper(rollingpaperId);
       if (res.status === "SUCCESS") {
         const loadedImage = res.data.rollingPaperString;
-        console.log(loadedImage);
         if (loadedImage) setImageData(loadedImage);
       }
     })();
@@ -293,7 +292,6 @@ export default function RollingpaperPage() {
       };
 
       const res = await saveRollingPaper(rollingObj);
-      console.log(res);
     }
   };
   return (

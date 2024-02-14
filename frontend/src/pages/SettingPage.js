@@ -116,6 +116,7 @@ export default function SettingPage() {
     async function fetchData() {
       try {
         const response = await getMyMybrary();
+        console.log(response);
         setName(response.data.name);
         setNickname(response.data.nickname);
         setIntro(response.data.intro);
@@ -243,20 +244,22 @@ export default function SettingPage() {
     }
   };
 
-  const handleNotifyUpdate = async () => {
-    await updateProfile({
+  const handleNotifyUpdate = async (enable) => {
+    const res = await updateProfile({
       ...form,
-      notifyEnable: !notifyEnable,
+      notifyEnable: enable,
     });
-    setNotifyEnable((prev) => !prev);
+    console.log(res);
+    setNotifyEnable(enable);
   };
 
-  const handleProfilePublicUpdate = async () => {
-    await updateProfile({
+  const handleProfilePublicUpdate = async (enable) => {
+    const res = await updateProfile({
       ...form,
-      profilePublic: !profilePublic,
+      profilePublic: enable,
     });
-    setProfilePublic((prev) => !prev);
+    console.log(res);
+    setProfilePublic(enable);
   };
 
   const handlePasswordUpdate = async () => {
@@ -446,7 +449,7 @@ export default function SettingPage() {
                   <button
                     onClick={() => {
                       showToast("계정이 공개상태로 변경되었습니다");
-                      handleProfilePublicUpdate();
+                      handleProfilePublicUpdate(true);
                     }}
                     className={profilePublic ? styles.버튼1 : styles.버튼2}
                   >
@@ -455,7 +458,7 @@ export default function SettingPage() {
                   <button
                     onClick={() => {
                       showToast("계정이 비공개상태로 변경되었습니다");
-                      handleProfilePublicUpdate();
+                      handleProfilePublicUpdate(false);
                     }}
                     className={profilePublic ? styles.버튼2 : styles.버튼1}
                   >
@@ -477,7 +480,7 @@ export default function SettingPage() {
                   <button
                     onClick={() => {
                       showToast("알림이 허용되었습니다");
-                      handleNotifyUpdate();
+                      handleNotifyUpdate(true);
                       setGlobalNotifyEnable(true);
                     }}
                     className={notifyEnable ? styles.버튼1 : styles.버튼2}
@@ -487,7 +490,7 @@ export default function SettingPage() {
                   <button
                     onClick={() => {
                       showToast("알림이 비허용되었습니다");
-                      handleNotifyUpdate();
+                      handleNotifyUpdate(false);
                       setGlobalNotifyEnable(false);
                     }}
                     className={notifyEnable ? styles.버튼2 : styles.버튼1}

@@ -2,6 +2,7 @@ import { create } from "zustand";
 import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs"; // Stomp.Client로도 사용 가능
 import toast from "react-hot-toast";
+import useNotificationStore from "./useNotificationStore";
 
 const showAlarm = (alarmObj) => {
   const type = alarmObj.notifyType;

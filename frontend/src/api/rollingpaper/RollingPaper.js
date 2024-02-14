@@ -12,7 +12,7 @@ export async function getRollingPaper(id) {
 
 export async function saveRollingPaper(object) {
   try {
-    const response = await axios.post(BASE_URL + `rollingpaper`, object);
+    const response = await axios.put(BASE_URL + `rollingpaper`, object);
     return response.data;
   } catch (error) {
     throw error;
