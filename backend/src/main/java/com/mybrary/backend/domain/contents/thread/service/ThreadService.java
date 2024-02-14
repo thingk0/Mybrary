@@ -21,5 +21,5 @@ public interface ThreadService {
 
     List<ThreadInfoGetDto> getOtherAllThread(String email, Long memberId, Pageable pageable);
 
-    Object getThread(String email, Long memberId, Long threadId);
+    GetThreadDto getThread(String email, Long memberId, Long threadId);
 }

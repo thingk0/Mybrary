@@ -250,4 +250,15 @@ public class ThreadRepositoryImpl implements ThreadRepositoryCustom {
             return Optional.empty();
       }
 
+      @Override
+      public Optional<GetThreadDto> getOneThread(Long threadId) {
+            return Optional.ofNullable(query.select(Projections.constructor(GetThreadDto.class, thread.id, thread.createdAt, member.id, member.name, member.nickname, image.url, image.id, thread.isPaperPublic, thread.isScrapEnabled))
+                                                        .from(thread)
+                                           .leftJoin(mybrary).on(thread.mybrary.id.eq(mybrary.id))
+                                           .leftJoin(member).on(mybrary.member.id.eq(member.id))
+                                           .leftJoin(image).on(member.profileImage.id.eq(image.id))
+                                           .where(thread.id.eq(threadId))
+                                           .fetchOne());
+      }
+
 }
