@@ -233,6 +233,25 @@
 }
 .유저이미지 {
   height: 3vw;
+  width: 3vw;
   border-radius: 100px;
 }
 /*  */
+.태그모음 {
+  max-width: 17vw;
+  margin-top: 1vw;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7vw;
+}
+.태그한줄 {
+  cursor: pointer;
+  padding: 0.5vw;
+  background-color: #80625c;
+  color: #fff1ef;
+  border-radius: 5px;
+}
+.책없음 {
+  padding: 1vw 0vw 0.4vw 1vw;
+  font-size: 1.2vw;
+}
