@@ -20,6 +20,9 @@ public class BookPaperGetDto {
      */
 
     private Long bookId;
+    private boolean isOwner;   //  해당 책을 내가 이미 구독중인지 여부
+    private boolean isPicked;   //  해당 책을 내가 이미 구독중인지 여부
+
     private List<PaperInBookGetDto> paperList;
 
 

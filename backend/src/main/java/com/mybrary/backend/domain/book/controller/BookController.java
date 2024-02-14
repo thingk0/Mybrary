@@ -3,7 +3,6 @@ package com.mybrary.backend.domain.book.controller;
 import com.mybrary.backend.domain.book.dto.requestDto.BookPostDto;
 import com.mybrary.backend.domain.book.dto.requestDto.BookSubscribeDto;
 import com.mybrary.backend.domain.book.dto.requestDto.BookUpdateDto;
-import com.mybrary.backend.domain.book.dto.responseDto.BookListGetFromPaperDto;
 import com.mybrary.backend.domain.book.dto.responseDto.BookPaperGetDto;
 import com.mybrary.backend.domain.book.service.BookService;
 import com.mybrary.backend.domain.member.entity.Member;
@@ -13,7 +12,6 @@ import com.mybrary.backend.global.format.response.ResponseCode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -122,8 +120,7 @@ public class BookController {
         @Parameter(hidden = true) Authentication authentication,
         @PathVariable(name = "id") Long paperId) {
 
-        List<BookListGetFromPaperDto> bookList = bookService.getBookListFromPaper(paperId);
-        return response.success(ResponseCode.BOOK_LIST_FROM_PAPER, bookList);
+        return response.success(ResponseCode.BOOK_LIST_FROM_PAPER, bookService.getBookListFromPaper(paperId));
     }
 
 

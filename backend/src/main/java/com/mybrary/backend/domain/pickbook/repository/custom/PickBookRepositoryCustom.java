@@ -17,4 +17,5 @@ public interface PickBookRepositoryCustom {
     Optional<List<PickBook>> findAllByBookId(Long bookId);
 
     Optional<List<PickBook>> getPickBookList(Long myId, Long bookId);
+
 }

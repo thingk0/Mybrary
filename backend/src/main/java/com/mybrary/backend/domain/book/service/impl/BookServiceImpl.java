@@ -50,6 +50,7 @@ import com.mybrary.backend.global.exception.tag.TagNotFoundException;
 import com.mybrary.backend.global.exception.thread.ThreadIdNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.xml.validation.SchemaFactoryConfigurationError;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -139,6 +140,8 @@ public class BookServiceImpl implements BookService {
         }
 
         List<PaperInBookGetDto> paperList = paperRepository.getPaperList(bookId).orElseThrow(PaperListNotFoundException::new);
+        boolean isPicked = false;
+        boolean isOwner = false;
 
         for (int i = 0;i<paperList.size();i++) {
 
@@ -173,13 +176,29 @@ public class BookServiceImpl implements BookService {
             paperList.get(i).setCommentCount(commentCount);
             paperList.get(i).setScrapCount(scrapCount);
             paperList.get(i).setLiked(isLiked);
-
+            /* 해당 책이 내가 이미 구독중인 책인지 확인 */
+            List<PickBook> pickBookList = pickBookRepository.getPickBookList(myId, bookId).orElse(null);
+            if(pickBookList != null){
+                List<Long> pickedBookList = pickBookList.stream()
+                                                        .map(PickBook::getBook)
+                                                        .map(Book::getId)
+                                                        .collect(Collectors.toList());
+                // 이미 책이 카테고리에 꽂혀있는 것
+                if(pickedBookList.contains(bookId)){
+                    isPicked = true;
+                }
+            }
         }
 
+        /* 내가 이 책의 주인인지 여부*/
+        if(bookWriter.getId().equals(myId)){ isOwner = true; }
+
         BookPaperGetDto book = BookPaperGetDto.builder()
-            .bookId(bookId)
-            .paperList(paperList)
-            .build();
+                                                .bookId(bookId)
+                                                .paperList(paperList)
+                                                .isPicked(isPicked)
+                                                .isOwner(isOwner)
+                                                .build();
 
         return book;
     }
@@ -307,8 +326,10 @@ public class BookServiceImpl implements BookService {
         if(!owner.isProfilePublic()){
             Follow follow = followRepository.findFollow(myId, owner.getId()).orElseThrow(BookAccessDeniedException::new);
         }
+        //내가 구독중인 pickbook 목록에 각 책이 있는지 여부 판단
+        List<BookGetDto> bookGetDtoList= bookRepository.getAllBookByCategoryId(categoryId).orElseThrow(BookNotFoundException::new);
 
-        return bookRepository.getAllBookByCategoryId(categoryId).orElseThrow(BookNotFoundException::new);
+        return bookGetDtoList;
     }
 
     @Override
@@ -328,10 +349,17 @@ public class BookServiceImpl implements BookService {
 
     }
 
+    @Transactional
     @Override
     public List<BookListGetFromPaperDto> getBookListFromPaper(Long paperId) {
+        List<BookListGetFromPaperDto> bookList = bookRepository.getBookListFromPaper(paperId).orElseThrow(NullPointerException::new);
+//        List<Book> bookList = bookRepository.find
+        for(BookListGetFromPaperDto dto : bookList){
+            log.info(dto.getBookId());
+            log.info(dto.getCoverTitle());
+        }
 
-        return bookRepository.getBookListFromPaper(paperId).orElseThrow(BookNotFoundException::new);
+        return bookList;
 
     }
 

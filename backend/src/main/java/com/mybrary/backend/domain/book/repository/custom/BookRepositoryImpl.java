@@ -7,7 +7,6 @@ import static com.mybrary.backend.domain.category.entity.QCategory.category;
 import static com.mybrary.backend.domain.contents.paper.entity.QPaper.paper;
 import static com.mybrary.backend.domain.contents.scrap.entity.QScrap.scrap;
 import static com.mybrary.backend.domain.follow.entity.QFollow.follow;
-import static com.mybrary.backend.domain.image.entity.QImage.image;
 import static com.mybrary.backend.domain.member.entity.QMember.member;
 import static com.mybrary.backend.domain.mybrary.entity.QMybrary.mybrary;
 import static com.mybrary.backend.domain.pickbook.entity.QPickBook.pickBook;
@@ -88,6 +87,7 @@ public class BookRepositoryImpl implements BookRepositoryCustom {
                  .fetch());
     }
 
+    /* 책의 스크랩된 페이퍼들중 책 멤버아이디와 페이퍼 아이디가 같은 페이퍼들, 즉 원작자 페이퍼와 일치하는 페이퍼의 책 목록 찾기  */
     @Override
     public Optional<List<BookListGetFromPaperDto>> getBookListFromPaper(Long paperId) {
 
@@ -95,10 +95,7 @@ public class BookRepositoryImpl implements BookRepositoryCustom {
         QImage coverImage = new QImage("coverImage");
 
         return Optional.ofNullable(query.select(Projections.constructor(BookListGetFromPaperDto.class,
-                                                                        book.id, member.id, member.nickname,
-                                                                        profileImage.id, profileImage.url, book.coverTitle,
-                                                                        coverImage.id, coverImage.url, book.coverLayout,
-                                                                        book.coverColor))
+                                            book.id, book.coverTitle, member.id, coverImage.url ))
                                         .from(paper)
                                         .leftJoin(scrap).on(scrap.paper.id.eq(paper.id))
                                         .leftJoin(book).on(scrap.book.id.eq(book.id))
@@ -110,6 +107,13 @@ public class BookRepositoryImpl implements BookRepositoryCustom {
                                         .fetch()
         );
     }
+
+//                    .from(scrap)
+//                           .leftJoin(book).on(book.id.eq(scrap.book.id))
+//        .leftJoin(member).on(book.member.id.eq(member.id))
+//        .leftJoin(paper).on(scrap.paper.id.eq(paper.id))
+//        .where(scrap.paper.member.id.eq(scrap.book.member.id).and(scrap.paper.id.eq(paperId)))
+
 
     @Override
     public Optional<List<BookForMainThreadDto>> getBookForMainThread(Long writerId, Long paperId) {

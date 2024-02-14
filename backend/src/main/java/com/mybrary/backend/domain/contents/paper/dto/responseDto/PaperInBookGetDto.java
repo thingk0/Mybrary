@@ -44,4 +44,5 @@ public class PaperInBookGetDto {
         this.content1 = content1;
         this.content2 = content2;
     }
+
 }
