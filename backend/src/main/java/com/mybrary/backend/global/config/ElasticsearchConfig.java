@@ -1,13 +1,9 @@
 package com.mybrary.backend.global.config;
 
-import co.elastic.clients.elasticsearch.ElasticsearchClient;
-import org.elasticsearch.client.RestClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.elasticsearch.client.ClientConfiguration;
 import org.springframework.data.elasticsearch.client.elc.ElasticsearchConfiguration;
-import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
-import org.springframework.data.elasticsearch.core.convert.ElasticsearchConverter;
 
 @Configuration
 public class ElasticsearchConfig extends ElasticsearchConfiguration {
@@ -29,14 +25,4 @@ public class ElasticsearchConfig extends ElasticsearchConfiguration {
                                   .build();
     }
 
-    @Override
-    public RestClient elasticsearchRestClient(ClientConfiguration clientConfiguration) {
-        return super.elasticsearchRestClient(clientConfiguration);
-    }
-
-    @Override
-    public ElasticsearchOperations elasticsearchOperations(ElasticsearchConverter elasticsearchConverter,
-                                                           ElasticsearchClient elasticsearchClient) {
-        return super.elasticsearchOperations(elasticsearchConverter, elasticsearchClient);
-    }
 }

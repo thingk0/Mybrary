@@ -201,7 +201,7 @@ public class ThreadServiceImpl implements ThreadService {
         }
 
         Thread savedThread = threadRepository.save(thread);
-        processAndIndexPapersAsync(savedThread);
+//        processAndIndexPapersAsync(savedThread);
         return savedThread.getId();
     }
 
