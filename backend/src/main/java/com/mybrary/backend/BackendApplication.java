@@ -8,8 +8,8 @@ import org.springframework.data.elasticsearch.repository.config.EnableElasticsea
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.scheduling.annotation.EnableAsync;
 
-@EnableJpaAuditing
 @EnableAsync
+@EnableJpaAuditing
 @EnableConfigurationProperties
 @EnableElasticsearchRepositories
 @EnableElasticsearchAuditing

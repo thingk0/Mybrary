@@ -25,7 +25,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class SearchServiceImpl implements SearchService {
 
-    private final ElasticsearchTemplate elasticsearchTemplate;
     private final ElasticsearchOperations elasticsearchOperations;
     private final MemberRepository memberRepository;
     private final BookRepository bookRepository;

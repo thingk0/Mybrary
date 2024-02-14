@@ -8,14 +8,17 @@ import org.springframework.data.elasticsearch.client.elc.ElasticsearchConfigurat
 @Configuration
 public class ElasticsearchConfig extends ElasticsearchConfiguration {
 
-    @Value("${spring.elasticsearch.uris}")
-    private String url;
+    private final String url;
+    private final String username;
+    private final String password;
 
-    @Value("${spring.elasticsearch.username}")
-    private String username;
-
-    @Value("${spring.elasticsearch.password}")
-    private String password;
+    public ElasticsearchConfig(@Value("${spring.elasticsearch.uris}") String url,
+                               @Value("${spring.elasticsearch.username}") String username,
+                               @Value("${spring.elasticsearch.password}") String password) {
+        this.url = url;
+        this.username = username;
+        this.password = password;
+    }
 
     @Override
     public ClientConfiguration clientConfiguration() {
@@ -24,5 +27,4 @@ public class ElasticsearchConfig extends ElasticsearchConfiguration {
                                   .withBasicAuth(username, password)
                                   .build();
     }
-
 }
