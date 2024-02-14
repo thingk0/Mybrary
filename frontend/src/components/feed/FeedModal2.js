@@ -3,7 +3,7 @@ import styles from "./FeedModal.module.css";
 import { useRef } from "react";
 import useOnClickOutside from "../common/useOnClickOutside";
 
-export default function FeedModal({
+export default function FeedModal2({
   isModalOpen,
   setIsModalOpen,
   children,
@@ -15,14 +15,14 @@ export default function FeedModal({
   bottom,
   header,
 }) {
-  const ref = useRef();
-  useOnClickOutside(ref, () => setIsModalOpen(false));
+  // const ref = useRef();
+  // useOnClickOutside(ref, () => setIsModalOpen(false));
 
   return (
     <div className={styles.modalContainer}>
       {isModalOpen && (
         <div
-          ref={ref}
+          // ref={ref}
           className={styles.modal}
           style={{
             width: width,

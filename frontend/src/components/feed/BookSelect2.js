@@ -1,22 +1,32 @@
-import styles from "./BookSelect.module.css";
+import styles from "../threadcreate/BookSelect.module.css";
 import line from "../../assets/오른쪽.png";
 import s from "classnames";
+import { scrap } from "../../api/paper/Paper";
+import { useState } from "react";
 
-export default function BookSelect({
+export default function BookSelect2({
   setModalIsOpen2,
   setModalIsOpen,
-  setBookId,
-  setBook,
-  book,
   booklist,
   papers,
 }) {
+  const [book, setBook] = useState({}); // 책선택
   const selectBook = (books) => {
     if (papers.length + books.paperCount <= 50) setBook(books);
   };
-  const handleSelect = () => {
+  const handleSelect = async () => {
     if (book.title) {
-      setBookId(book.bookId);
+      console.log(papers);
+      const paperIdList = papers.map((paper) => {
+        return paper.id;
+      });
+      const object = {
+        bookId: book.bookId,
+        paperIdList: paperIdList,
+      };
+      console.log(object);
+      const a = await scrap(object);
+      console.log(a);
       setModalIsOpen2(false);
     }
   };

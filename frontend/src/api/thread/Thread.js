@@ -61,9 +61,7 @@ export async function getDeskThread(memberid, pagingObject) {
 /* 메인피드 쓰레드 조회 */
 export async function getThreadList(page) {
   try {
-    const response = await axios.get(
-      BASE_URL + `thread/home?page=${page}&size=1&sort=string`
-    );
+    const response = await axios.get(BASE_URL + `thread/home?page=${page}`);
     return response.data;
   } catch (error) {
     throw error;

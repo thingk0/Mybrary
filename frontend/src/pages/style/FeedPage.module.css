@@ -32,8 +32,8 @@
 
 /* 콘텐츠들 */
 .StackCarousel_contents {
-  width: 37.4vi; /* 11*3.4 */
-  height: 51vi; /* 15*3.4 */
+  width: 37.4vw; /* 11*3.4 */
+  height: 51vw; /* 15*3.4 */
   display: grid;
   grid-auto-columns: 1fr;
   grid-auto-rows: minmax(0, 1fr);
@@ -84,14 +84,14 @@
 }
 .StackCarousel_above {
   opacity: 1;
-  transition: transform 0.5s;
+  transition: transform 1s;
   transform: translateY(-120rem) translateX(-30rem) rotate(-30deg);
   filter: brightness(100%);
 }
 
 /* 댓글 영역 */
 .commentContainer {
-  width: 33vi;
+  width: 33vw;
   transition: transform 0.8s, filter 0.8s;
   height: 92vh;
   margin-top: 4vh;

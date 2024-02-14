@@ -6,6 +6,9 @@ import Comment from "../components/feed/Comment";
 import FeedContent from "../components/feed/FeedContent";
 import { getThreadList } from "../api/thread/Thread";
 import BigModal from "../components/common/BigModal";
+import { getMYBooks } from "../api/book/Book";
+import BookSelect2 from "../components/feed/BookSelect2";
+import BookCreate from "../components/common/BookCreate";
 
 export default function FeedPage() {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -55,6 +58,18 @@ export default function FeedPage() {
     },
     [isThrottled, handlePrevClick, handleNextClick]
   );
+
+  // 나의 북리스트 가져오기
+  const [papers, setPapers] = useState([]);
+  const [booklist, setBookList] = useState([]);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const handleOpenBookList = async (paperList) => {
+    setPapers(paperList);
+    const booklists = await getMYBooks();
+    console.log(booklists.data);
+    setBookList(booklists.data);
+    setScrapModal(true);
+  };
 
   useEffect(() => {
     const stackCarouselContents = document.querySelector(
@@ -146,11 +161,14 @@ export default function FeedPage() {
               <FeedContent
                 index={index}
                 thread={thread}
+                list={list}
                 setList={setList}
                 setCommentId={setCommentId}
                 setComment={setComment}
                 setZIndex={setZIndex}
                 setScrapModal={setScrapModal}
+                setPapers={setPapers}
+                handleOpenBookList={handleOpenBookList}
               />
             </div>
           ))}
@@ -187,11 +205,25 @@ export default function FeedPage() {
         width="800px"
         height="600px"
       >
-        {/* <div>
-          {list.map((thread) => {
-            <div>kjdf</div>;
-          })}
-        </div> */}
+        <BookSelect2
+          setModalIsOpen={setModalIsOpen}
+          setModalIsOpen2={setScrapModal}
+          papers={papers}
+          booklist={booklist}
+        />
+      </BigModal>
+      <BigModal
+        modalIsOpen={modalIsOpen}
+        setModalIsOpen={setModalIsOpen}
+        width="1200px"
+        height="800px"
+        background="var(--main4)"
+      >
+        <BookCreate
+          setBookList={setBookList}
+          booklist={booklist}
+          setModalIsOpen={setModalIsOpen}
+        />
       </BigModal>
     </>
   );

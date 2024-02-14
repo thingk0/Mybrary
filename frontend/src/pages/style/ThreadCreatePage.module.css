@@ -1,28 +1,28 @@
 .container {
   margin: 0 auto;
-  width: 82vi;
+  width: 82vw;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 1vi;
+  gap: 1vw;
   height: 100vh;
 }
 .header {
-  width: 5vi;
-  height: 46vi;
+  width: 5vw;
+  height: 46vw;
 }
 .main {
-  width: 55vi;
-  height: 46vi;
+  width: 55vw;
+  height: 46vw;
   display: flex;
-  gap: 1vi;
+  gap: 1vw;
   justify-content: center;
   overflow: hidden;
 }
 
 .main_left,
 .main_right {
-  width: 18.8vi;
+  width: 18.8vw;
   height: 100%;
   position: relative;
   flex-shrink: 0;
@@ -30,7 +30,7 @@
 }
 
 .main_center {
-  width: 35.2vi;
+  width: 35.2vw;
   display: flex;
   align-items: flex-end;
   flex-shrink: 0;
@@ -38,57 +38,57 @@
 }
 
 .showLeftCenter .main_left {
-  transform: translateX(9.8vi);
+  transform: translateX(9.8vw);
 }
 .showLeftCenter .main_center {
-  transform: translateX(9.4vi);
+  transform: translateX(9.4vw);
 }
 .showLeftCenter .main_right {
-  transform: translateX(30vi);
+  transform: translateX(30vw);
 }
 
 .showCenterRight .main_left {
-  transform: translateX(-30vi);
+  transform: translateX(-30vw);
 }
 .showCenterRight .main_center {
-  transform: translateX(-9.4vi);
+  transform: translateX(-9.4vw);
 }
 .showCenterRight .main_right {
-  transform: translateX(-9.8vi);
+  transform: translateX(-9.8vw);
 }
 
 .setting {
-  width: 20vi;
-  height: 46vi;
+  width: 20vw;
+  height: 46vw;
 }
 
 .prevButton,
 .nextButton {
-  font-size: 1.2vi;
-  width: 16.8vi;
-  height: 2vi;
+  font-size: 1.2vw;
+  width: 16.8vw;
+  height: 2vw;
   background-color: var(--main2);
   color: var(--main4);
   border-radius: 5px;
   border: 0px;
   cursor: pointer;
-  margin: 1vi;
+  margin: 1vw;
 }
 
 .title {
-  padding: 1vi 1vi 0 1vi;
-  height: 2vi;
-  font-size: 1.2vi;
+  padding: 1vw 1vw 0 1vw;
+  height: 2vw;
+  font-size: 1.2vw;
 }
 .subtitle {
-  padding-left: 1vi;
-  font-size: 0.8vi;
+  padding-left: 1vw;
+  font-size: 0.8vw;
   color: var(--main5);
 }
 .settingButtons {
   display: flex;
   justify-content: flex-end;
-  margin: 1vi 1vi 3vi;
+  margin: 1vw 1vw 3vw;
 }
 .select,
 .button {
@@ -112,16 +112,16 @@
 }
 
 .postButtons {
-  height: 14vi;
+  height: 14vw;
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  margin: 5vi auto;
+  margin: 5vw auto;
 }
 
 .postButton {
-  font-size: 1.2vi;
-  width: 16.8vi;
+  font-size: 1.2vw;
+  width: 16.8vw;
   padding: 10px;
   background-color: var(--main2);
   color: var(--main3);

@@ -36,14 +36,14 @@
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-  width: calc(35.2vi * 1.045 * 0.32);
-  height: calc(48vi * 1.03 * 0.32);
+  width: calc(35.2vw * 1.045 * 0.32);
+  height: calc(48vw * 1.03 * 0.32);
   position: relative;
   cursor: pointer;
 }
 .cover {
-  width: calc(35.2vi * 0.32);
-  height: calc(48vi * 0.32);
+  width: calc(35.2vw * 0.32);
+  height: calc(48vw * 0.32);
   border-radius: 0 5px 5px 0;
   position: relative;
 }
@@ -51,8 +51,8 @@
   position: absolute;
   bottom: 0;
   right: 0;
-  width: calc(35.2vi * 0.32);
-  height: calc(48vi * 0.32);
+  width: calc(35.2vw * 0.32);
+  height: calc(48vw * 0.32);
   border-radius: 0 5px 5px 0;
   z-index: -3;
 }

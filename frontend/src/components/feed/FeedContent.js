@@ -12,23 +12,28 @@ import styles from "./FeedContent.module.css";
 import ContentItem from "./ContentItem";
 import { useState } from "react";
 import s from "classnames";
-import FeedModal from "./FeedModal";
 import { like } from "../../api/paper/Paper";
 import toast from "react-hot-toast";
 import useUserStore from "../../store/useUserStore";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { getPaperinBook } from "../../api/book/Book";
+import useBookStore from "../../store/useBookStore";
+import FeedModal2 from "./FeedModal2";
+import useUrlStore from "../../store/useUrlStore";
 import { deleteThread } from "../../api/thread/Thread";
 
 export default function FeedContent({
   thread,
   setComment,
+  list,
   setList,
   setCommentId,
   setZIndex,
-  setScrapModal,
+  handleOpenBookList,
 }) {
   const navigate = useNavigate();
   const user = useUserStore((state) => state.user);
+  const setBook = useBookStore((state) => state.setBook2);
   const [x, setX] = useState(1);
   const openComment = (id) => {
     setCommentId(id);
@@ -53,6 +58,7 @@ export default function FeedContent({
     });
   };
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [booklist, setBooklist] = useState([]);
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return (
@@ -98,6 +104,29 @@ export default function FeedContent({
       console.error("좋아요갱신실패", error);
     }
   };
+
+  const handelFeedModal = async (paperId) => {
+    const response = await getPaperinBook(paperId);
+    console.log(response);
+    setBooklist(response.data);
+  };
+
+  //현재 URL저장
+  const sampleLocation = useLocation();
+  const setUrl = useUrlStore((state) => state.setUrl);
+  const handelBookNavi = async (book) => {
+    setUrl({ url: sampleLocation.pathname });
+    await setBook(book);
+    navigate(`/book/${book.bookId}`);
+  };
+
+  const handleDeleteThread = (threadId) => {
+    const updatedThreadList = list.filter(
+      (thread) => thread.threadId !== threadId
+    );
+    deleteThread(threadId);
+    setList(updatedThreadList);
+  };
   return (
     <div className={styles.content}>
       {thread.paperList.map((paper, index) => (
@@ -130,7 +159,12 @@ export default function FeedContent({
               <div>
                 <span className={styles.수정글자}>수정</span>{" "}
                 <span className={styles.중간바}> | </span>{" "}
-                <span className={styles.삭제글자}>삭제</span>
+                <span
+                  className={styles.삭제글자}
+                  onClick={() => handleDeleteThread(thread.threadId)}
+                >
+                  삭제
+                </span>
               </div>
             )}
           </div>
@@ -151,7 +185,9 @@ export default function FeedContent({
               <img
                 src={icon_scrap}
                 alt=""
-                onClick={() => setScrapModal(true)}
+                onClick={() => {
+                  handleOpenBookList(thread.paperList);
+                }}
               />
               <div>{paper.scrapCount}</div>
               <img
@@ -159,18 +195,38 @@ export default function FeedContent({
                 alt=""
                 onClick={() => {
                   setIsModalOpen(true);
+                  handelFeedModal(paper.id);
                 }}
               />
-              <FeedModal
+              <FeedModal2
                 setIsModalOpen={setIsModalOpen}
                 isModalOpen={isModalOpen}
-                width="30vi"
-                height="37vi"
+                width="300px"
                 left="-7.4vi"
                 top="1.2vi"
                 header="이 페이퍼를 포함한 작성자의 책"
                 paperId={paper.id}
-              />
+              >
+                <div className={styles.책모음}>
+                  {booklist.map((book) => (
+                    <div
+                      className={styles.책한권}
+                      key={book.bookId}
+                      onClick={() => handelBookNavi(book)}
+                    >
+                      <div>
+                        <span className={styles.푸터}>
+                          <img
+                            className={styles.유저이미지}
+                            src={`https://jingu.s3.ap-northeast-2.amazonaws.com/${book.profileImageUrl}`}
+                          />
+                          {book.bookTitle}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </FeedModal2>
             </div>
 
             <img src={icon_share} alt="" className={styles.icon_right} />

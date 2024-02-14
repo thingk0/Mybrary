@@ -38,18 +38,18 @@
 }
 
 .왼쪽헤더 {
-  padding: 1vi;
-  height: 2vi;
+  padding: 1vw;
+  height: 2vw;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 .레이아웃글자 {
-  font-size: 1.2vi;
+  font-size: 1.2vw;
 }
 .레이아웃버튼 {
   display: flex;
-  gap: 0.5vi;
+  gap: 0.5vw;
 }
 .cutButton {
   padding: 10px;
@@ -65,12 +65,12 @@
 }
 
 .왼쪽미드레이아웃 {
-  padding: 1vi 0;
-  height: 36vi;
+  padding: 1vw 0;
+  height: 36vw;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 1vi;
+  gap: 1vw;
   overflow-y: auto;
 }
 .레이아웃이미지 {

@@ -10,22 +10,22 @@ import { getMyThreadList, getDeskThread } from "../api/thread/Thread";
 import { getMybrary } from "../api/mybrary/Mybrary";
 import { useNavigate, useParams } from "react-router-dom";
 import useUserStore from "../store/useUserStore";
+import useMybraryStore from "../store/useMybraryStore";
 
 export default function ThreadsPage() {
   const Params = useParams();
   const nowuser = Params.userid;
   const me = useUserStore((state) => state.user);
-  const [user, setUser] = useState({});
+  console.log(nowuser);
   const navigate = useNavigate();
   const [groupedData, setGroupedData] = useState(new Map());
   const [threadList, setThreadList] = useState([]);
   const [trueme, setTrueme] = useState(false);
+  const mybrary = useMybraryStore((state) => state.mybrary);
 
   useEffect(() => {
     async function fetchmyData() {
       try {
-        const response2 = await getMybrary(nowuser);
-        setUser(response2.data);
         const response = await getDeskThread(nowuser);
         setThreadList(response.data);
 
@@ -64,14 +64,16 @@ export default function ThreadsPage() {
         <div className={title.title}>
           <div
             className={title.left_title}
-            onClick={() => navigate("../rollingpaper")}
+            onClick={() =>
+              navigate(`../rollingpaper/${mybrary.rollingPaperId}`)
+            }
           >
             &lt; 롤링페이퍼
           </div>
-          <div className={title.main_title}>{user.nickname}'s thread</div>
+          <div className={title.main_title}>{mybrary.nickname}'s thread</div>
           <div
             className={title.right_title}
-            onClick={() => navigate(`../${user.bookShelfId}`)}
+            onClick={() => navigate(`../${mybrary.bookShelfId}`)}
           >
             {" "}
             책장 &gt;
@@ -90,7 +92,7 @@ export default function ThreadsPage() {
               {/* 년-월 표시 */}
               <div className={styles.년도별스레드}>
                 {groupedData.get(yearMonth).map((thread) => (
-                  <Thread thread={thread} user={user} trueme={trueme} />
+                  <Thread thread={thread} user={mybrary} trueme={trueme} />
                 ))}
               </div>
             </div>

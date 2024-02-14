@@ -1,15 +1,12 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-const useBookStore = create(
+const useUrlStore = create(
   persist(
     (set) => ({
-      book: {},
-      setBook: (Book) => {
-        set({ book: Book });
-      },
-      setBook2: (Book) => {
-        set({ book: Book });
+      url: {},
+      setUrl: (URL) => {
+        set({ url: URL });
       },
     }),
     {
@@ -19,4 +16,4 @@ const useBookStore = create(
   )
 );
 
-export default useBookStore;
+export default useUrlStore;

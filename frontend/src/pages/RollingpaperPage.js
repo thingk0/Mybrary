@@ -7,29 +7,19 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import SockJS from "sockjs-client";
 import { getMybrary } from "../api/mybrary/Mybrary";
 import { Client } from "@stomp/stompjs";
+import useMybraryStore from "../store/useMybraryStore";
 
 export default function RollingpaperPage() {
   const navigate = useNavigate();
   const Params = useParams();
-  const nowuser = Params.userid;
   const rollingpaperId = Params.rollingpaperId;
-  const [user, setUser] = useState({});
   const canvasRef = useRef(null);
   const isPainting = useRef(false);
   const startPoint = useRef({ x: 0, y: 0 });
   const [imageData, setImageData] = useState(null);
   const [lineColor, setLineColor] = useState("black");
+  const mybrary = useMybraryStore((state) => state.mybrary);
 
-  useEffect(() => {
-    console.log(rollingpaperId);
-    async function fetchmyData() {
-      try {
-        const response = await getMybrary(nowuser);
-        setUser(response.data);
-      } catch (error) {}
-    }
-    fetchmyData();
-  }, []);
   const drawLine = (originalX, originalY, newX, newY, color) => {
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
@@ -227,11 +217,13 @@ export default function RollingpaperPage() {
         <div className={title.title}>
           <div
             className={title.left_title}
-            onClick={() => navigate(`../${user.bookShelfId}`)}
+            onClick={() => navigate(`../${mybrary.bookShelfId}`)}
           >
             &lt; 책장
           </div>
-          <div className={title.main_title}>{user.nickname}'s rollingpaper</div>
+          <div className={title.main_title}>
+            {mybrary.nickname}'s rollingpaper
+          </div>
           <div
             className={title.right_title}
             onClick={() => navigate("../threads")}

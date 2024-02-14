@@ -167,20 +167,34 @@ export default function Nav() {
           </div>
         </div>
       </div>
-      <BigModal modalIsOpen={modalIsOpen} setModalIsOpen={setModalIsOpen}>
+      <BigModal
+        modalIsOpen={modalIsOpen}
+        setModalIsOpen={setModalIsOpen}
+        width="400px"
+        height="300px"
+      >
         <div className={styles.modal}>
-          <h2>비밀번호룰 확인한다요</h2>
-          <div>본인확인을 위해 비밀본호를 다시 입력해주요!!</div>
-          <div>
+          <div className={styles.header}>설정</div>
+          <div className={styles.header2}>비밀번호 확인</div>
+          <div className={styles.subheader}>
+            개인정보보호를 위해 비밀번호를 입력해주세요.
+          </div>
+          <div className={styles.modalI}>
             <input
               type="password"
-              placeholder="비밀본호룰 이ㅏㅂ룍해라"
+              placeholder="비밀번호룰 입력하세요"
               name="password"
               value={password}
               onChange={handleChange}
+              className={styles.modalInput}
             />
           </div>
-          <div onClick={() => handlePasswordCheck()}>확인</div>
+          <div
+            onClick={() => handlePasswordCheck()}
+            className={styles.modalButton}
+          >
+            확인
+          </div>
         </div>
       </BigModal>
     </>

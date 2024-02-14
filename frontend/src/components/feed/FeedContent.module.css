@@ -38,23 +38,23 @@
   position: relative;
 }
 .aa {
-  padding: 1vi;
+  padding: 1vw;
   transition: transform 0.3s;
 }
 .a1 {
-  transform: translateX(0vi);
+  transform: translateX(0vw);
 }
 .a2 {
-  transform: translateX(-37.3vi);
+  transform: translateX(-37.3vw);
 }
 .a3 {
-  transform: translateX(-74.6vi);
+  transform: translateX(-74.6vw);
 }
 .a4 {
-  transform: translateX(-111.9vi);
+  transform: translateX(-111.9vw);
 }
 .a5 {
-  transform: translateX(-149.2vi);
+  transform: translateX(-149.2vw);
 }
 .user_info {
   display: flex;
@@ -65,25 +65,25 @@
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 0.6vi;
+  gap: 0.6vw;
 }
 .user_img {
-  width: 2.5vi;
-  height: 2.5vi;
+  width: 2.5vw;
+  height: 2.5vw;
   cursor: pointer;
   border-radius: 100px;
 }
 .user_nickname {
-  font-size: 1vi;
+  font-size: 1vw;
 }
 .user_date {
-  font-size: 0.6vi;
+  font-size: 0.6vw;
   color: var(--main3);
-  margin-top: 0.1vi;
+  margin-top: 0.1vw;
 }
 
 .user_follow {
-  font-size: 1vi;
+  font-size: 1vw;
   background: var(--followcolor);
   background-clip: text;
   -webkit-background-clip: text;
@@ -96,7 +96,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 0.7vi 0.3vi;
+  margin: 0.7vw 0.3vw;
 }
 .icon_left {
   display: flex;
@@ -104,19 +104,19 @@
 }
 
 .icon_left > div {
-  margin-left: 0.2vi;
-  margin-right: 0.7vi;
+  margin-left: 0.2vw;
+  margin-right: 0.7vw;
   color: var(--main5);
-  font-size: 0.8vi;
+  font-size: 0.8vw;
 }
 .icon_left > img {
-  width: 1.5vi;
-  height: 1.5vi;
+  width: 1.5vw;
+  height: 1.5vw;
   cursor: pointer;
 }
 .icon_right {
-  width: 1.3vi;
-  height: 1.3vi;
+  width: 1.3vw;
+  height: 1.3vw;
   cursor: pointer;
 }
 
@@ -143,55 +143,96 @@
   margin: 0 auto;
   border: solid 1px var(--main2);
   border-radius: 5px;
-  width: 35.2vi; /* 11*3.2 */
-  height: 41.6vi; /* 13*3.2 */
+  width: 35.2vw; /* 11*3.2 */
+  height: 41.6vw; /* 13*3.2 */
 }
 
 /* --- */
 
 .tag_hash {
   position: absolute;
-  right: 1.5vi;
-  bottom: 3.3vi;
+  right: 1.5vw;
+  bottom: 3.3vw;
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: var(--blur2);
-  width: 2.7vi;
-  height: 2.5vi;
-  font-size: 1.7vi;
-  border-radius: 1vi;
+  width: 2.7vw;
+  height: 2.5vw;
+  font-size: 1.7vw;
+  border-radius: 1vw;
   color: var(--main5);
-  padding-top: 0.2vi;
+  padding-top: 0.2vw;
   cursor: pointer;
 }
 .page {
   position: absolute;
-  bottom: 1.5vi;
+  bottom: 1.5vw;
   left: 47%;
 }
 .next {
   position: absolute;
-  right: 0.5vi;
+  right: 0.5vw;
   top: 45%;
   cursor: pointer;
 }
 .next_icon {
-  width: 4vi;
+  width: 4vw;
 }
 .prev {
   position: absolute;
-  left: 0.5vi;
+  left: 0.5vw;
   top: 45%;
   cursor: pointer;
 }
 .prev_icon {
-  width: 4vi;
+  width: 4vw;
 }
-.navigate {
+.navwgate {
   opacity: 0;
   transition: 0.3s;
 }
-.content:hover .navigate {
+.content:hover .navwgate {
   opacity: 1;
 }
+
+.flex {
+  width: 95%;
+  display: flex;
+  justify-content: space-between;
+}
+.헤더 {
+  font-size: 1.3vw;
+}
+.modalClose {
+  color: var(--gomin5);
+  font-size: 1.3vw;
+}
+.책모음 {
+  width: 95%;
+  height: 95%;
+  /* background-color: rgb(238, 221, 255); */
+  display: flex;
+  flex-direction: column;
+  gap: 0.5vw;
+}
+.책한권 {
+  padding-top: 1vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10000;
+}
+.푸터 {
+  display: flex;
+  align-items: center;
+  gap: 0.4vw;
+  font-size: 1vw;
+}
+.유저이미지 {
+  height: 3vw;
+  border-radius: 100px;
+}
+/*  */
