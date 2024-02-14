@@ -25,18 +25,12 @@ export default function FollowerList({
       try {
         if (nowuser == me) {
           const response = await getMyFollowerList();
-          console.log(response.data);
           setFollowerList(response.data);
-          console.log("내 팔로워리스트");
         } else {
           const response = await getFollowerList(nowuser);
-          console.log(response.data);
           setFollowerList(response.data);
-          console.log("상대방의팔로워리스트");
         }
-      } catch (error) {
-        console.log("데이터를 가져오는데실패함");
-      }
+      } catch (error) {}
     }
     fetchFollowerData();
   }, []);
@@ -45,14 +39,10 @@ export default function FollowerList({
       try {
         if (nowuser == me) {
           const response = await getMyFollowingList();
-          console.log(response.data);
-          console.log("내 팔로우리스트");
           setFollowList(response.data);
         } else {
           const response = await getFollowingList(nowuser);
-          console.log(response.data);
           setFollowList(response.data);
-          console.log("상대방의팔로우리스트");
         }
       } catch (error) {
         console.error("데이터를 가져오는 데 실패했습니다:", error);
@@ -65,12 +55,10 @@ export default function FollowerList({
       await follow(memberId);
       if (me == nowuser) {
         const response = await getMyFollowerList();
-        console.log(response.data);
         setFollowerList(response.data);
         updateFollowingCount(followList.length + 1);
       } else {
         const response = await getFollowerList(nowuser);
-        console.log(response.data);
         setFollowerList(response.data);
       }
 
@@ -104,7 +92,6 @@ export default function FollowerList({
         updateFollowerCount(updatedFollowerList.length);
       } else {
         const response = await getFollowerList(nowuser);
-        console.log(response.data);
         setFollowerList(response.data);
       }
       toast.success("팔로우삭제 되었습니다.", {

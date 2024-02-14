@@ -11,7 +11,6 @@ export default function BookshelfHeader() {
   const mybrary = useMybraryStore((state) => state.mybrary);
   useEffect(() => {
     async function fetchMyData() {
-      console.log(userid);
       try {
         const response = await getMybrary(userid);
         setUser(response.data);

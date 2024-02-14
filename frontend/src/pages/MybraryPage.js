@@ -137,7 +137,6 @@ export default function MybraryPage() {
       try {
         // updateMybrary 함수를 호출하여 데이터 업데이트
         const response = await updateMybrary(updateData);
-        console.log("업데이트 성공:", response);
 
         toast.success("변경이 완료 되었습니다.", {
           style: {
@@ -166,13 +165,10 @@ export default function MybraryPage() {
         bookshelfColor: value.bookshelfColor,
         easelColor: value.easelColor,
       };
-      console.log(userInfo);
-      console.log(updateData);
 
       try {
         // updateMybrary 함수를 호출하여 데이터 업데이트
         const response = await updateMybrary(updateData);
-        console.log("업데이트 성공:", response);
 
         toast.success("변경이 완료 되었습니다.", {
           style: {
@@ -219,7 +215,6 @@ export default function MybraryPage() {
         if (memberId === +nowuser) {
           const response = await getMyMybrary();
           setCheckme(true);
-          console.log(response.data);
           setMybrary(response.data);
           setUserInfo(response.data);
           setBgColor(response.data.backgroundColor);
@@ -239,7 +234,6 @@ export default function MybraryPage() {
           const response = await getMybrary(nowuser);
           setMybrary(response.data);
           setCheckme(false);
-          console.log(response.data);
           setFollowStatus(response.data.followStatus);
           setUserInfo(response.data);
           setBgColor(response.data.backgroundColor);

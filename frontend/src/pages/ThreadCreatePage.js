@@ -89,9 +89,7 @@ export default function ThreadCreatePage() {
       scrapEnable,
     };
 
-    console.log(Thread);
     const threadId = await createThread(Thread);
-    console.log(threadId);
     navigate(`../mybrary/${user.memberId}/threads`);
   };
   const noneImg = () => {
@@ -114,7 +112,6 @@ export default function ThreadCreatePage() {
 
   const handleOpenBookList = async () => {
     const booklists = await getMYBooks();
-    console.log(booklists.data);
     setBookList(booklists.data);
     setModalIsOpen2(true);
   };

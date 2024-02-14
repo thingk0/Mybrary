@@ -16,7 +16,6 @@ export default function FeedPage() {
   const [page, setPage] = useState(0);
   const [scrapModal, setScrapModal] = useState(false);
 
-  // console.log(threadList);
   const [comment, setComment] = useState(false);
   const [commentId, setCommentId] = useState(0);
   const [zIndex, setZIndex] = useState(-1);
@@ -67,7 +66,6 @@ export default function FeedPage() {
   const handleOpenBookList = async (paperList) => {
     setPapers(paperList);
     const booklists = await getMYBooks();
-    console.log(booklists.data);
     setBookList(booklists.data);
     setScrapModal(true);
   };
@@ -95,11 +93,9 @@ export default function FeedPage() {
     async function fetchMainFeedData() {
       try {
         const response = await getThreadList(page);
-        // console.log(page);
         // setThreadList(response.data);
 
         setList([...list, ...response.data]);
-        console.log(response);
       } catch (error) {
         console.error("데이터불러오기실패");
       }

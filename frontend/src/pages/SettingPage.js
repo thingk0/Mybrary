@@ -103,7 +103,6 @@ export default function SettingPage() {
           });
         }
       } catch (e) {
-        console.log(e);
         navigateToErrorPage();
       }
     }
@@ -166,7 +165,6 @@ export default function SettingPage() {
         const res = await uplodaImage(formData);
         const id = res.imageIds[0];
 
-        console.log(id);
         setForm((prev) => ({
           ...prev,
           profileImageId: id,
@@ -201,8 +199,6 @@ export default function SettingPage() {
           ...form,
           nickname: nickname,
         });
-        console.log(res);
-        console.log(form);
         if (res.status === "SUCCESS") {
           showToast("닉네임을 변경했습니다");
         } else {
@@ -281,7 +277,6 @@ export default function SettingPage() {
             password: password,
             passwordConfirm: checkpassword,
           });
-          // console.log(res);
           if (res.status === "SUCCESS") {
             showToast("비밀번호를 변경했습니다");
           } else {

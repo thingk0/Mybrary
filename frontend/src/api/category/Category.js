@@ -31,9 +31,7 @@ export async function createCategory(newCategory) {
     const response = await axios.post(BASE_URL, newCategory);
 
     return response.data;
-  } catch (e) {
-    console.log(e);
-  }
+  } catch (e) {}
 }
 
 /* 카테고리 기반 책 조회 */

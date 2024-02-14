@@ -16,7 +16,6 @@ export default function ThreadsPage() {
   const Params = useParams();
   const nowuser = Params.userid;
   const me = useUserStore((state) => state.user);
-  console.log(nowuser);
   const navigate = useNavigate();
   const [groupedData, setGroupedData] = useState(new Map());
   const [threadList, setThreadList] = useState([]);
@@ -30,7 +29,6 @@ export default function ThreadsPage() {
     async function fetchmyData() {
       try {
         const response = await getDeskThread(nowuser);
-        console.log(response.data);
         setThreadList(response.data);
 
         const grouped = new Map();
@@ -52,9 +50,7 @@ export default function ThreadsPage() {
         if (me.memberId == nowuser) {
           setTrueme(true);
         }
-      } catch (error) {
-        console.log("데이터를 가져오는데 실패함");
-      }
+      } catch (error) {}
     }
     fetchmyData();
   }, []);

@@ -78,7 +78,6 @@ export default function FeedContent({
   const toggleLike = async (paperId, liked) => {
     try {
       const response = await like(paperId);
-      console.log(response);
       if (!liked) {
         showToast("좋아요 !");
       } else {

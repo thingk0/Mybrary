@@ -5,7 +5,6 @@ import title from "../components/atom/atomstyle/Title.module.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { useState, useRef, useEffect, useCallback } from "react";
 import SockJS from "sockjs-client";
-import { getMybrary } from "../api/mybrary/Mybrary";
 import { Client } from "@stomp/stompjs";
 import useMybraryStore from "../store/useMybraryStore";
 
@@ -18,8 +17,10 @@ export default function RollingpaperPage() {
   const startPoint = useRef({ x: 0, y: 0 });
   const [imageData, setImageData] = useState(null);
   const [lineColor, setLineColor] = useState("black");
+  const stompClient = useRef(null);
   const mybrary = useMybraryStore((state) => state.mybrary);
 
+  /* 여기서부터 그림 그리는 코드 */
   const drawLine = (originalX, originalY, newX, newY, color) => {
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
@@ -63,7 +64,7 @@ export default function RollingpaperPage() {
 
   const exitPaint = useCallback(() => {
     if (isPainting.current) {
-      sendImageData();
+      sendImageData(); // 손 떼는 순간 웹소켓으로 전달
       isPainting.current = false;
     }
   }, []);
@@ -82,7 +83,9 @@ export default function RollingpaperPage() {
       y: event.pageY - canvas.parentElement.offsetTop,
     };
   };
+  /* 그림그리는 코드 끝 */
 
+  /* 초기화 코드 */
   const handleResetImage = () => {
     console.log("reset");
     const canvas = canvasRef.current;
@@ -107,57 +110,7 @@ export default function RollingpaperPage() {
   };
 
   const handleChangeLineColor = (num) => {
-    console.log(colors[num]);
     setLineColor(colors[num]);
-    console.log(lineColor);
-  };
-
-  let client = null;
-
-  const sendImageData = () => {
-    console.log(client);
-    if (client && canvasRef.current) {
-      // Canvas에서 이미지 데이터를 Base64 문자열로 추출
-      const imageData = canvasRef.current.toDataURL("image/png");
-      const message = {
-        content: imageData,
-      };
-
-      // STOMP를 통해 서버로 전송
-      const destination = `/pub/rp/${rollingpaperId}/draw`;
-      const bodyData = JSON.stringify(message);
-
-      try {
-        client.publish({ destination, body: "hi" });
-      } catch (err) {
-        console.log("전송에러");
-        console.log(err);
-      }
-    }
-  };
-
-  const connect = () => {
-    const token = localStorage.getItem("accessToken");
-    client = new Client({
-      webSocketFactory: () => new SockJS("https://i10b207.p.ssafy.io/ws"),
-      connectHeaders: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    client.onConnect = () => {
-      console.log("Connected!");
-      console.log(rollingpaperId);
-
-      client.subscribe(`/rp/${rollingpaperId}`, (message) => {
-        console.log("receive check!! ");
-        console.log(message);
-        const receivedImageData = JSON.parse(message.body);
-        const base64Image = receivedImageData.content;
-        setImageData(base64Image);
-      });
-    };
-
-    client.activate();
   };
 
   useEffect(() => {
@@ -170,20 +123,35 @@ export default function RollingpaperPage() {
     };
 
     if (canvas) {
-      canvas.addEventListener("mousedown", startPaint);
-      // canvas.addEventListener("mousemove", paint);
-      canvas.addEventListener("mouseup", exitPaint);
-      canvas.addEventListener("mouseleave", exitPaint);
       initCanvas();
     }
 
-    connect();
+    const token = localStorage.getItem("accessToken");
+    stompClient.current = new Client({
+      webSocketFactory: () => new SockJS("https://i10b207.p.ssafy.io/ws"),
+      connectHeaders: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    stompClient.current.onConnect = () => {
+      console.log("Connected!");
+
+      stompClient.current.subscribe(
+        `/sub/rollingPaper/${rollingpaperId}`,
+        (message) => {
+          console.log("receive check!! ");
+          console.log(message);
+          const receivedImageData = JSON.parse(message.body);
+          const base64Image = receivedImageData.rollingPaperString;
+          setImageData(base64Image);
+        }
+      );
+    };
+
+    stompClient.current.activate();
 
     return () => {
-      canvas.removeEventListener("mousedown", startPaint);
-      // canvas.removeEventListener("mousemove", paint);
-      canvas.removeEventListener("mouseup", exitPaint);
-      canvas.removeEventListener("mouseleave", exitPaint);
+      //if (stompClient) stompClient.deactivate();
     };
   }, []);
 
@@ -221,6 +189,29 @@ export default function RollingpaperPage() {
       image.src = imageData;
     }
   }, [imageData]); // imageData가 변경될 때마다 이 useEffect가 실행됩니다.
+
+  const sendImageData = () => {
+    console.log(stompClient.current);
+    if (stompClient.current && canvasRef.current) {
+      // Canvas에서 이미지 데이터를 Base64 문자열로 추출
+      const imageData = canvasRef.current.toDataURL("image/png");
+      const message = {
+        rollingPaperId: rollingpaperId,
+        rollingPaperString: imageData,
+      };
+
+      // STOMP를 통해 서버로 전송
+      const destination = `/pub/rollingPaper/${rollingpaperId}`;
+      const bodyData = JSON.stringify(message);
+
+      try {
+        stompClient.current.publish({ destination, body: bodyData });
+        console.log("hi");
+      } catch (err) {
+        console.log("전송에러");
+      }
+    }
+  };
   return (
     <>
       <Container>
@@ -307,7 +298,13 @@ export default function RollingpaperPage() {
             ></div>
           </div>
           <div className={styles.저장}>
-            <button>저장</button>
+            <button
+              onClick={() => {
+                console.log(stompClient);
+              }}
+            >
+              저장
+            </button>
           </div>
         </div>
       </Container>

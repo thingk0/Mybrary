@@ -32,7 +32,6 @@ export default function Nav() {
         email: user.email,
         password: password,
       });
-      //console.log(res);
       if (res.status === "SUCCESS") {
         localStorage.setItem("accessToken", res.data.token);
         localStorage.setItem("tokenTimestamp", Date.now());

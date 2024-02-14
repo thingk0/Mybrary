@@ -80,8 +80,6 @@ function SignUpForm({ setPageremote }) {
   const handleVerifyEmail = async (e, mail) => {
     e.preventDefault();
 
-    //console.log(client);
-
     // 일단 유효성에 대한 검증을 먼저 한 후에, 유효성을 만족하면 검증 요청을 보냄. 응답에 따라 상태를 바꾼다.
     setFormErrors((prevFormErrors) => {
       const { email, ...rest } = prevFormErrors;
@@ -164,7 +162,6 @@ function SignUpForm({ setPageremote }) {
         }));
       }
     } catch (e) {
-      //console.log(e);
       navigateToErrorPage();
     }
   };
@@ -218,7 +215,6 @@ function SignUpForm({ setPageremote }) {
           }));
         }
       } catch (e) {
-        //console.log(e);
         navigateToErrorPage();
       }
     }

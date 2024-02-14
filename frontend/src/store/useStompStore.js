@@ -16,9 +16,6 @@ const useStompStore = create((set) => ({
     });
 
     client.onConnect = function (frame) {
-      console.log("웹소켓 연결");
-      console.log(frame);
-
       //client.subscribe(`/chat`);
 
       set({ stompClient: client });

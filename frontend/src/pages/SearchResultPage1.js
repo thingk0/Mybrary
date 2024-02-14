@@ -17,16 +17,12 @@ export default function SearchResultPage1() {
     async function fetchData() {
       try {
         const response = await searchBook(searchtext);
-        console.log(response.data.bookList);
         setBookList(response.data.bookList);
-      } catch (error) {
-        console.error("불러오지못함", error);
-      }
+      } catch (error) {}
     }
     fetchData();
   }, []);
 
-  console.log(animateOut);
   const handleSubmit = (e) => {
     e.preventDefault();
     if (searchtext.trim()) {
@@ -46,7 +42,6 @@ export default function SearchResultPage1() {
     }
     // 검색 결과 페이지로 이동 navigate(`/search/${d.text}`)
     setAnimateOut(true); // fadeOut 애니메이션 시작
-    console.log(animateOut);
     // 애니메이션이 끝난 후 페이지 전환
     setTimeout(() => {
       setAnimateOut(false);
@@ -88,7 +83,6 @@ export default function SearchResultPage1() {
 
     // 검색 결과 페이지로 이동 navigate(`/search/${d.text}`)
     setAnimateOut(true); // fadeOut 애니메이션 시작
-    console.log(animateOut);
     // 애니메이션이 끝난 후 페이지 전환
     setTimeout(() => {
       setAnimateOut(false);
@@ -100,7 +94,6 @@ export default function SearchResultPage1() {
 
     // 검색 결과 페이지로 이동 navigate(`/search/${d.text}`)
     setAnimateOut(true); // fadeOut 애니메이션 시작
-    console.log(animateOut);
     // 애니메이션이 끝난 후 페이지 전환
     setTimeout(() => {
       setAnimateOut(false);
@@ -112,7 +105,6 @@ export default function SearchResultPage1() {
 
     // 검색 결과 페이지로 이동 navigate(`/search/${d.text}`)
     setAnimateOut(true); // fadeOut 애니메이션 시작
-    console.log(animateOut);
     // 애니메이션이 끝난 후 페이지 전환
     setTimeout(() => {
       setAnimateOut(false);
