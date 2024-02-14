@@ -164,6 +164,7 @@ export default function FeedPage() {
               <FeedContent
                 index={index}
                 thread={thread}
+                list={list}
                 setList={setList}
                 setCommentId={setCommentId}
                 setComment={setComment}

@@ -20,10 +20,12 @@ import { getPaperinBook } from "../../api/book/Book";
 import useBookStore from "../../store/useBookStore";
 import FeedModal2 from "./FeedModal2";
 import useUrlStore from "../../store/useUrlStore";
+import { deleteThread } from "../../api/thread/Thread";
 
 export default function FeedContent({
   thread,
   setComment,
+  list,
   setList,
   setCommentId,
   setZIndex,
@@ -119,7 +121,13 @@ export default function FeedContent({
     navigate(`/book/${book.bookId}`);
   };
 
-  const handleDelete = () => {};
+  const handleDeleteThread = (threadId) => {
+    const updatedThreadList = list.filter(
+      (thread) => thread.threadId !== threadId
+    );
+    deleteThread(threadId);
+    setList(updatedThreadList);
+  };
   return (
     <div className={styles.content}>
       {thread.paperList.map((paper, index) => (
@@ -154,7 +162,7 @@ export default function FeedContent({
                 <span className={styles.중간바}> | </span>{" "}
                 <span
                   className={styles.삭제글자}
-                  onClick={() => handleDelete()}
+                  onClick={() => handleDeleteThread(thread.threadId)}
                 >
                   삭제
                 </span>
