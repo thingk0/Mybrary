@@ -20,6 +20,8 @@ import com.mybrary.backend.domain.member.dto.responseDto.MemberInfoDto;
 import com.mybrary.backend.domain.member.entity.Member;
 import com.mybrary.backend.domain.member.repository.MemberRepository;
 import com.mybrary.backend.domain.member.service.MemberService;
+import com.mybrary.backend.domain.notification.dto.NotificationPostDto;
+import com.mybrary.backend.domain.notification.service.NotificationService;
 import com.mybrary.backend.global.exception.chat.ChatJoinMemberNotFoundException;
 import com.mybrary.backend.global.exception.chat.ChatRoomNotFoundException;
 import com.mybrary.backend.global.exception.chat.InvalidChatRoomAccessException;
@@ -54,6 +56,7 @@ public class ChatServiceImpl implements ChatService {
     private final ThreadRepository threadRepository;
     private final TokenService tokenService;
     private final SimpMessagingTemplate messagingTemplate;
+    private final NotificationService notificationService;
 
     @Async
     public CompletableFuture<Member> findSenderAsync(String email) {
@@ -92,6 +95,15 @@ public class ChatServiceImpl implements ChatService {
 
         log.info("action = {}, email = {}, chatRoomId = {}, messageId = {}", "saveChatMessage",
                  email, chatRoomId, chatMessage.getId());
+
+        NotificationPostDto notification = NotificationPostDto.builder()
+                                                              .senderId(sender.getId())
+                                                              .receiverId(receiver.getId())
+                                                              .chatRoomId(chatRoomId)
+                                                              .notifyType(13)
+                                                              .build();
+        notificationService.saveNotification(notification);
+
         return ChatMessageResponseDto.of(chatMessage, sender);
     }
 

@@ -97,6 +97,7 @@ public class NotificationServiceImpl implements NotificationService {
                                                    .build();
         // 알림 저장
         Notification savedNotification = notificationRepository.save(newNotification);
+        System.out.println("알림저장");
 
         // 알림 수신자의 알림구독주소에 저장된 알림 객체 반환하기
         MemberInfoDto senderDto = new MemberInfoDto(sender.getId(), sender.getNickname(), sender.getIntro(),
@@ -112,7 +113,8 @@ public class NotificationServiceImpl implements NotificationService {
                                                                      savedNotification.getThreadId(),
                                                                      savedNotification.getPaperId(),
                                                                      savedNotification.getCommentId(),
-                                                                     savedNotification.getReplyCommentId());
+                                                                     savedNotification.getReplyCommentId(),
+                                                                     notification.getChatRoomId());
 
         // 웹소켓메서드
         String destination = "/sub/notification/" + receiver.getEmail(); // 구독 주소 + 받을 사람 이메일

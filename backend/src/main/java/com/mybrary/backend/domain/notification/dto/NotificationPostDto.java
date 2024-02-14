@@ -27,5 +27,6 @@ public class NotificationPostDto {
     private Long paperId;
     private Long commentId;
     private Long replyCommentId;
+    private Long chatRoomId;
 
 }

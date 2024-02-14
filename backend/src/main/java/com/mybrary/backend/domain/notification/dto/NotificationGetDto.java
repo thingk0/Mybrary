@@ -26,5 +26,18 @@ public class NotificationGetDto {
     private Long paperId;
     private Long commentId;
     private Long replyCommentId;
+    private Long chatRoomId;
 
+    public NotificationGetDto(Long notifyId, MemberInfoDto sender, int notifyType, Long bookId, String bookName, Long threadId,
+                              Long paperId, Long commentId, Long replyCommentId) {
+        this.notifyId = notifyId;
+        this.sender = sender;
+        this.notifyType = notifyType;
+        this.bookId = bookId;
+        this.bookName = bookName;
+        this.threadId = threadId;
+        this.paperId = paperId;
+        this.commentId = commentId;
+        this.replyCommentId = replyCommentId;
+    }
 }
