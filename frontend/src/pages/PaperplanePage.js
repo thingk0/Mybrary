@@ -135,6 +135,21 @@ export default function PaperplanePage() {
     setNowChatRoom(chatRoom);
   };
 
+  // 메시지의 timestamp를 한국 시간으로 변환하는 함수
+  // 메시지의 timestamp를 한국 시간 AM/PM으로 변환하는 함수
+  const formatTime = (timestamp) => {
+    const date = new Date(timestamp);
+    const options = {
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    };
+    return date
+      .toLocaleTimeString("ko-KR", options)
+      .replace("오전", "AM")
+      .replace("오후", "PM");
+  };
+
   return (
     <>
       <Container backgroundColor={"#FFFAFA"}>
@@ -238,16 +253,59 @@ export default function PaperplanePage() {
                           .slice()
                           .reverse()
                           .map((message, index) => (
-                            <div
-                              className={`${styles.message} ${
-                                message.senderId === user.memberId
-                                  ? styles.sender
-                                  : styles.receiver
-                              }`}
-                              key={index}
-                            >
-                              {message.content}
-                            </div>
+                            <>
+                              <div
+                                className={
+                                  message.senderId === user.memberId
+                                    ? styles.senderbox
+                                    : styles.receiverbox
+                                }
+                                style={{
+                                  display: "flex",
+                                }}
+                              >
+                                {message.senderId === user.memberId && (
+                                  <div
+                                    className={styles.messageTime}
+                                    style={{
+                                      fontSize: "12px",
+                                      display: "flex",
+                                      flexDirection: "column",
+                                      justifyContent: "flex-end",
+                                      marginBottom: "18px",
+                                      color: "#998481",
+                                    }}
+                                  >
+                                    {formatTime(message.timestamp)}
+                                  </div>
+                                )}
+                                <div
+                                  className={`${styles.message} ${
+                                    message.senderId === user.memberId
+                                      ? styles.sender
+                                      : styles.receiver
+                                  }`}
+                                  key={index}
+                                >
+                                  {message.content}
+                                </div>
+                                {message.senderId !== user.memberId && (
+                                  <div
+                                    className={styles.messageTime}
+                                    style={{
+                                      fontSize: "12px",
+                                      display: "flex",
+                                      flexDirection: "column",
+                                      justifyContent: "flex-end",
+                                      marginBottom: "18px",
+                                      color: "#998481",
+                                    }}
+                                  >
+                                    {formatTime(message.timestamp)}
+                                  </div>
+                                )}
+                              </div>
+                            </>
                           ))}
 
                         {/* <SharedPaper /> */}
