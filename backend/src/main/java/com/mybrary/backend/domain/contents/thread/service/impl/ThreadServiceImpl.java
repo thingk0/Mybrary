@@ -215,10 +215,11 @@ public class ThreadServiceImpl implements ThreadService {
                                 .orElseThrow(MainThreadListNotFoundException::new));
             System.out.println("2");
             System.out.println("크기" + threadDtoList.size());
-            for (int i = 5;i<10;i++) {
+            for (int i = 5;i<threadDtoList.size();i++) {
                   System.out.print(threadDtoList.get(i).getThreadId() + " ");
             }
             System.out.println();
+
             /* list 내에서 무작위로 순서 배정 */
             Collections.shuffle(threadDtoList);
             /* followingThreadDtos의 각 threadId에 해당하는 paper관련 정보 조회 */
@@ -228,6 +229,9 @@ public class ThreadServiceImpl implements ThreadService {
                   List<GetFollowingPaperDto> getFollowingPaperDtoList =
                       paperRepository.getFollowingPaperDtoResults(threadDto.getThreadId()).orElseThrow(PaperListNotFoundException::new);
                   System.out.println("3");
+                  System.out.println("스레드번호 = " + threadDto.getThreadId());
+                  System.out.println("스레드순서 = " + i);
+                  System.out.println("페이퍼개수 = " + getFollowingPaperDtoList.size());
                   /* 페이퍼 관련정보 처리 로직 */
                   for (int j = 0; j < getFollowingPaperDtoList.size(); j++) {
                         GetFollowingPaperDto paperDto = getFollowingPaperDtoList.get(j);

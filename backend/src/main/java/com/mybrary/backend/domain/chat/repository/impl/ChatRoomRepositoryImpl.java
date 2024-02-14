@@ -79,7 +79,8 @@ public class ChatRoomRepositoryImpl implements ChatRoomRepositoryCustom {
                                                  member.email,
                                                  member.nickname,
                                                  member.profileImage.url,
-                                                 chatMessage.message))
+                                                 chatMessage.message,
+                                                 chatMessage.sender.id))
                  .from(chatRoom)
                  .innerJoin(chatJoin).on(chatJoin.chatRoom.id.eq(chatRoom.id)).on(chatJoin.chatRoom.id.in(chatRoomSubQuery))
                  .leftJoin(chatJoin.joinMember, member)

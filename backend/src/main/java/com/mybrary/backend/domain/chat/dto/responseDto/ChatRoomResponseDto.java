@@ -18,16 +18,18 @@ public class ChatRoomResponseDto {
     private String otherMemberNickname;
     private String otherMemberProfileImageUrl;
     private String latestMessage;
+    private Long latestMessageSender;
 
 
     public ChatRoomResponseDto(Long chatRoomId, Long otherMemberId, String otherMemberEmail,
-                               String otherMemberNickname, String otherMemberProfileImageUrl, String latestMessage) {
+                               String otherMemberNickname, String otherMemberProfileImageUrl, String latestMessage, Long latestMessageSender) {
         this.chatRoomId = chatRoomId;
         this.otherMemberId = otherMemberId;
         this.otherMemberEmail = otherMemberEmail;
         this.otherMemberNickname = otherMemberNickname;
         this.otherMemberProfileImageUrl = otherMemberProfileImageUrl;
         this.latestMessage = latestMessage;
+        this.latestMessageSender = latestMessageSender;
     }
 
     @Setter

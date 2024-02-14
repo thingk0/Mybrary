@@ -79,7 +79,7 @@ public class BookRepositoryImpl implements BookRepositoryCustom {
 //                 .where(book.member.id.eq(memberId).and(pickBook.category.id.eq(categoryId)))
 //                 .groupBy(book.id)
 //                 .fetch());
-                query.select(Projections.constructor(MyBookGetDto.class, pickBook.book.id, pickBook.book.coverTitle, scrap.count()))
+            query.select(Projections.constructor(MyBookGetDto.class, pickBook.book.id, pickBook.book.coverTitle, scrap.count()))
                  .from(book)
                  .leftJoin(pickBook).on(pickBook.book.id.eq(book.id).and(pickBook.book.member.id.eq(memberId)))
                  .leftJoin(scrap).on(book.id.eq(scrap.book.id))
@@ -96,13 +96,15 @@ public class BookRepositoryImpl implements BookRepositoryCustom {
 
         return Optional.ofNullable(query.select(Projections.constructor(BookListGetFromPaperDto.class,
                                                                         book.id, member.id, member.nickname,
-                                                                        profileImage.id, profileImage.url, book.coverTitle, coverImage.id, coverImage.url, book.coverLayout, book.coverColor))
+                                                                        profileImage.id, profileImage.url, book.coverTitle,
+                                                                        coverImage.id, coverImage.url, book.coverLayout,
+                                                                        book.coverColor))
                                         .from(paper)
                                         .leftJoin(scrap).on(scrap.paper.id.eq(paper.id))
                                         .leftJoin(book).on(scrap.book.id.eq(book.id))
                                         .leftJoin(member).on(paper.member.id.eq(member.id))
                                         .leftJoin(profileImage).on(member.profileImage.id.eq(profileImage.id))
-                                       .leftJoin(coverImage).on(book.coverImage.id.eq(coverImage.id))
+                                        .leftJoin(coverImage).on(book.coverImage.id.eq(coverImage.id))
                                         .where(paper.id.eq(paperId).and(paper.member.id.eq(book.member.id)))
                                         .fetch()
         );
@@ -166,12 +168,12 @@ public class BookRepositoryImpl implements BookRepositoryCustom {
     @Override
     public Optional<Member> findMemberByCategoryId(Long categoryId) {
         return Optional.ofNullable(query.select(member)
-                                       .from(category)
-                                       .leftJoin(bookshelf).on(category.bookshelf.id.eq(bookshelf.id)).fetchJoin()
-                                       .leftJoin(mybrary).on(bookshelf.mybrary.id.eq(mybrary.id)).fetchJoin()
-                                       .leftJoin(member).on(mybrary.member.id.eq(member.id)).fetchJoin()
-                                       .where(category.id.eq(categoryId))
-                                       .fetchOne());
+                                        .from(category)
+                                        .leftJoin(bookshelf).on(category.bookshelf.id.eq(bookshelf.id)).fetchJoin()
+                                        .leftJoin(mybrary).on(bookshelf.mybrary.id.eq(mybrary.id)).fetchJoin()
+                                        .leftJoin(member).on(mybrary.member.id.eq(member.id)).fetchJoin()
+                                        .where(category.id.eq(categoryId))
+                                        .fetchOne());
     }
 
 //    @Override
