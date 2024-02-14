@@ -21,6 +21,7 @@ export default function RollingpaperPage() {
   const [lineColor, setLineColor] = useState("black");
 
   useEffect(() => {
+    console.log(rollingpaperId);
     async function fetchmyData() {
       try {
         const response = await getMybrary(nowuser);

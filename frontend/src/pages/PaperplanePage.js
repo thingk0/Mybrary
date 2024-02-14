@@ -65,6 +65,12 @@ export default function PaperplanePage() {
       client.activate();
       setStompClient(client);
     }
+
+    return () => {
+      if (stompClient) {
+        stompClient.deactivate();
+      }
+    };
   }, []);
 
   useEffect(() => {
