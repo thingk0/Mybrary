@@ -14,9 +14,9 @@ export default function Bookshelf({ category, categoryName, sort }) {
           category && category.categoryId !== "empty"
             ? category.bookCount > 10
               ? 10
-              : category.bookCount < 4
-              ? 4
-              : category.bookCount
+              : category.bookCount >= 1
+              ? category.bookCount + 1
+              : 1
             : 2
         }`,
       }}

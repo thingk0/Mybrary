@@ -195,9 +195,10 @@
   padding-bottom: 4px;
 }
 .유저아이콘 {
-  height: 68px;
-  border-radius: 100px;
-  padding-left: 6px;
+  height: 3.5vw;
+  width: 3.5vw;
+  border-radius: 1000px;
+  margin-left: 6px;
 }
 .유저인트로와팔로우 {
   width: 70%;

@@ -239,7 +239,7 @@ export default function FeedContent({
               </FeedModal2>
             </div>
 
-            <img src={icon_share} alt="" className={styles.icon_right} />
+            {/* <img src={icon_share} alt="" className={styles.icon_right} /> */}
           </div>
           <div className={styles.main_content}>
             {/* 레이아웃번호, 글1, 글2, 사진1, 사진2 */}
