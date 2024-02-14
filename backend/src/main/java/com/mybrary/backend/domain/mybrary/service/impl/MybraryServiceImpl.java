@@ -55,12 +55,12 @@ public class MybraryServiceImpl implements MybraryService {
     @Override
     public MybraryOtherGetDto getOtherMybrary(String myEmail, Long memberId) {
 
-        /* 마이브러리 접근 권한 판단 */
+//        /* 마이브러리 접근 권한 판단 */
         Long myId = memberRepository.searchByEmail(myEmail).orElseThrow(MemberNotFoundException::new).getId();
-        Member Owner = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
-        if(!Owner.isProfilePublic()){
-            Follow follow = followRepository.findFollow(myId, Owner.getId()).orElseThrow(MybraryAccessDeniedException::new);
-        }
+//        Member Owner = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
+//        if(!Owner.isProfilePublic()){
+//            Follow follow = followRepository.findFollow(myId, Owner.getId()).orElseThrow(MybraryAccessDeniedException::new);
+//        }
 
         MybraryOtherGetDto mybrary = mybraryRepository.getOtherMybrary(memberId).orElseThrow(MybraryNotFoundException::new);
         mybrary.setThreadCount(threadRepository.countMyThread(mybrary.getMybraryId()).orElse(0));

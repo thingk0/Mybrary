@@ -11,5 +11,5 @@ public interface FollowRepositoryCustom {
 
     Optional<Integer> countMyFollowing(Long myId);
 
-    Optional<Follow> findFollow(@Param("myId") Long myId, @Param("memberId") Long memberId);
+    Optional<Follow> findFollow(Long myId, Long memberId);
 }
