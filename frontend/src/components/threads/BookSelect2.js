@@ -7,6 +7,7 @@ import { useState } from "react";
 export default function BookSelect2({
   setModalIsOpen2,
   setModalIsOpen,
+  incrementScrapCount,
   booklist,
   papers,
 }) {
@@ -24,6 +25,7 @@ export default function BookSelect2({
         bookId: book.bookId,
         paperIdList: paperIdList,
       };
+      incrementScrapCount(paperIdList[0]);
       console.log(object);
       const a = await scrap(object);
       console.log(a);

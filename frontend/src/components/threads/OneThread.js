@@ -70,6 +70,20 @@ export default function OneThread({ threadId, setThreadModal }) {
       }))
     );
   };
+  const incrementScrapCount = (paperId) => {
+    setList((currentList) =>
+      currentList.map((thread) => ({
+        ...thread,
+        paperList: thread.paperList.map((paper) => {
+          if (paper.id === paperId) {
+            // 해당 페이퍼의 스크립카운트 1 증가
+            return { ...paper, scrapCount: paper.scrapCount + 1 };
+          }
+          return paper;
+        }),
+      }))
+    );
+  };
 
   return (
     <>
@@ -133,6 +147,7 @@ export default function OneThread({ threadId, setThreadModal }) {
         <BookSelect2
           setModalIsOpen={setModalIsOpen}
           setModalIsOpen2={setScrapModal}
+          incrementScrapCount={incrementScrapCount}
           papers={papers}
           booklist={booklist}
         />
