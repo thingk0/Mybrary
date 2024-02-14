@@ -10,8 +10,8 @@ const useUserStore = create(
         nickname: "",
         profileImageUrl: "",
       },
-      setUser: (userInfo) => {
-        set({ user: userInfo });
+      setUser: (user) => {
+        set({ user: user });
       },
     }),
     {
