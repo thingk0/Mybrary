@@ -22,9 +22,11 @@ export async function getChatList() {
 }
 
 /* 회원정보에서 채팅 시작 */
-export async function getFirstChat() {
+export async function getFirstChat(memberId) {
   try {
-    const response = await axios.get(BASE_URL + `chat/message`);
+    const response = await axios.get(BASE_URL + `chat/message`, {
+      params: { memberId },
+    });
     return response.data;
   } catch (error) {
     throw error;

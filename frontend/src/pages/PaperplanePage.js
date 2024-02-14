@@ -9,9 +9,16 @@ import ChatProfile from "../components/paperplane/ChatProfile.js";
 import Iconuser2 from "../assets/icon/Iconuser2.png";
 import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
+}
 
 export default function PaperplanePage() {
+  const query = useQuery();
+  const targetUserId = query.get("chatuserid");
+
   /* 웹소켓: 채팅용 주소를 구독 */
   const user = useUserStore((state) => state.user);
   const [chatRoomList, setChatRoomList] = useState([]); // 채팅방 리스트
@@ -28,6 +35,14 @@ export default function PaperplanePage() {
       try {
         const res = await getChatList();
         setChatRoomList(res.data.content);
+        if (targetUserId) {
+          const targetRoom = res.data.content.find(
+            (room) => room.otherMemberId.toString() === targetUserId
+          );
+          if (targetRoom) {
+            setNowChatRoom(targetRoom);
+          }
+        }
       } catch (e) {
         console.log(e);
       }
@@ -272,63 +287,69 @@ export default function PaperplanePage() {
                         className={styles.chatContainer}
                         ref={chatContainerRef}
                       >
-                        {chatMessageList
-                          .slice()
-                          .reverse()
-                          .map((message, index) => (
-                            <>
-                              <div
-                                className={
-                                  message.senderId === user.memberId
-                                    ? styles.senderbox
-                                    : styles.receiverbox
-                                }
-                                style={{
-                                  display: "flex",
-                                }}
-                              >
-                                {message.senderId === user.memberId && (
+                        {chatMessageList.length > 0 &&
+                          chatMessageList
+                            .slice()
+                            .reverse()
+                            .map((message, index) => (
+                              <>
+                                {message.content && (
                                   <div
-                                    className={styles.messageTime}
+                                    key={index}
+                                    className={
+                                      message.senderId === user.memberId
+                                        ? styles.senderbox
+                                        : styles.receiverbox
+                                    }
                                     style={{
-                                      fontSize: "12px",
                                       display: "flex",
-                                      flexDirection: "column",
-                                      justifyContent: "flex-end",
-                                      marginBottom: "18px",
-                                      color: "#998481",
                                     }}
                                   >
-                                    {formatTime(message.timestamp)}
+                                    {message.senderId === user.memberId && (
+                                      <div
+                                        className={styles.messageTime}
+                                        style={{
+                                          fontSize: "12px",
+                                          display: "flex",
+                                          flexDirection: "column",
+                                          justifyContent: "flex-end",
+                                          marginBottom: "18px",
+                                          color: "#998481",
+                                          minWidth: "60px",
+                                        }}
+                                      >
+                                        {formatTime(message.timestamp)}
+                                      </div>
+                                    )}
+                                    <div
+                                      className={`${styles.message} ${
+                                        message.senderId === user.memberId
+                                          ? styles.sender
+                                          : styles.receiver
+                                      }`}
+                                    >
+                                      {message.content}
+                                    </div>
+                                    {message.senderId !== user.memberId && (
+                                      <div
+                                        className={styles.messageTime}
+                                        style={{
+                                          fontSize: "12px",
+                                          display: "flex",
+                                          flexDirection: "column",
+                                          justifyContent: "flex-end",
+                                          marginBottom: "18px",
+                                          color: "#998481",
+                                          whiteSpace: "nowrap",
+                                        }}
+                                      >
+                                        {formatTime(message.timestamp)}
+                                      </div>
+                                    )}
                                   </div>
                                 )}
-                                <div
-                                  className={`${styles.message} ${
-                                    message.senderId === user.memberId
-                                      ? styles.sender
-                                      : styles.receiver
-                                  }`}
-                                >
-                                  {message.content}
-                                </div>
-                                {message.senderId !== user.memberId && (
-                                  <div
-                                    className={styles.messageTime}
-                                    style={{
-                                      fontSize: "12px",
-                                      display: "flex",
-                                      flexDirection: "column",
-                                      justifyContent: "flex-end",
-                                      marginBottom: "18px",
-                                      color: "#998481",
-                                    }}
-                                  >
-                                    {formatTime(message.timestamp)}
-                                  </div>
-                                )}
-                              </div>
-                            </>
-                          ))}
+                              </>
+                            ))}
 
                         {/* <SharedPaper /> */}
                       </div>
