@@ -16,4 +16,12 @@ spring:
 
 logging:
   level:
-    org.springframework.boot.autoconfigure.security: ERROR
+    org:
+      springframework:
+        boot:
+          autoconfigure:
+            security: ERROR
+        data:
+          repository:
+            config:
+              RepositoryConfigurationExtensionSupport: ERROR
