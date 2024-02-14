@@ -30,4 +30,6 @@ public interface ThreadRepositoryCustom {
     ThreadShareGetDto getThreadShare(Long threadId);
 
     Optional<List<ThreadSearchGetDto>> searchThreadByKeyword(Long myId, String keyword, Pageable page);
+
+    Optional<GetThreadDto> getOneThread(Long threadId);
 }

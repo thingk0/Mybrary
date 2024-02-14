@@ -46,6 +46,7 @@ import com.mybrary.backend.global.exception.member.MemberNotFoundException;
 import com.mybrary.backend.global.exception.paper.PaperListNotFoundException;
 import com.mybrary.backend.global.exception.thread.MainThreadListNotFoundException;
 import com.mybrary.backend.global.exception.thread.ThreadAccessDeniedException;
+import com.mybrary.backend.global.exception.thread.ThreadIdNotFoundException;
 import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -328,63 +329,115 @@ public class ThreadServiceImpl implements ThreadService {
       /* 쓰레드 아이디로 쓰레드 단건조회 */
       @Transactional
       @Override
-      public ThreadGetDto getThread(String email, Long memberId, Long threadId) {
+      public GetThreadDto getThread(String email, Long memberId, Long threadId) {
+
+            GetThreadDto thread = threadRepository.getOneThread(threadId).orElseThrow(ThreadIdNotFoundException::new);
+
             /* 스레드 접근 권한 판단 */
             Long myId = memberRepository.searchByEmail(email).orElseThrow(MemberNotFoundException::new).getId();
-            Member Owner = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
-            if(!Owner.isProfilePublic()){
-                  Follow follow = followRepository.findFollow(myId, Owner.getId()).orElseThrow(ThreadAccessDeniedException::new);
+            if(!thread.isPaperPublic()){
+                  Follow follow = followRepository.findFollow(myId, thread.getMemberId()).orElseThrow(ThreadAccessDeniedException::new);
             }
-            /* paperGetDtoList 정보 조회 및 생성 */
-            List<PaperGetDto> paperGetDtoList = paperRepository.getPaperGetDto(threadId).orElseThrow(PaperListNotFoundException::new);
-            /**/
-            log.info("2");
-            log.info("size: " + paperGetDtoList.size());
-            for (int i = 0;i<paperGetDtoList.size();i++) {
-                  PaperGetDto paper = paperGetDtoList.get(i);
-                  paper.setLikeCount(likeRepository.getLikeCount(paper.getPaperId()).orElse(0));
-                  paper.setCommentCount(commentRepository.getCommentCount(paper.getPaperId()).orElse(0));
-                  paper.setScrapCount(scrapRepository.getScrapCount(paper.getPaperId()).orElse(0));
-                  log.info("fd" + paper.getPaperId());
-                  paper.updateIsLiked(likeService.checkIsLiked(paper.getPaperId(), memberId));
-                  log.info("checkisliked");
-                  List<Tag> tagList = tagRepository.getTagsByPaperId(paper.getPaperId())
-                                                   .orElse(Collections.emptyList());
-                  /**/
-                  log.info("3");
-                  List<String> tagNameList = new ArrayList<>();
-                  if (!tagList.isEmpty()) {
-                        tagNameList = tagList.stream()
-                                             .map(Tag::getTagName)
-                                             .toList();
+            
+            /* threadId에 해당하는 paper 관련 정보 dto 목록 조회 */
+            List<GetFollowingPaperDto> getFollowingPaperDtoList =
+                paperRepository.getFollowingPaperDtoResults(thread.getThreadId()).orElseThrow(PaperListNotFoundException::new);
+            /* 페이퍼 관련정보 처리 로직 */
+            for (int j = 0; j < getFollowingPaperDtoList.size(); j++) {
+                  GetFollowingPaperDto paperDto = getFollowingPaperDtoList.get(j);
+                  /* 좋아요 여부 판단, 태그목록 포함 처리, 이미지 url들 포함 처리*/
+                  List<Long> imageUrls = imageRepository.findPaperImage(paperDto.getId()).orElseThrow(ImageNotFoundException::new);
+                  System.out.println("4");
+                  if(imageUrls.size() == 1){
+                        paperDto.setImageId1(imageUrls.get(0));
+                        paperDto.setImageUrl1(imageRepository.findById(imageUrls.get(0)).orElse(null).getUrl());
+                  } else if (imageUrls.size() == 2) {
+                        paperDto.setImageId1(imageUrls.get(0));
+                        paperDto.setImageUrl1(imageRepository.findById(imageUrls.get(0)).orElse(null).getUrl());
+                        paperDto.setImageId2(imageUrls.get(1));
+                        paperDto.setImageUrl2(imageRepository.findById(imageUrls.get(1)).orElse(null).getUrl());
                   }
-                  paper.updateTagList(tagNameList);
-                  /* image id와 url은 따로 */
-                  Image image1 = imageRepository.findImage1ByPaperId(paper.getPaperId()).orElse(null);
-                  Image image2 = imageRepository.findImage2ByPaperId(paper.getPaperId()).orElse(null);
-                  if(image1 != null){
-                        paper.updateImageId1(image1.getId());
-                        paper.updateImageUrl1(image1.getUrl());
+                  paperDto.setLikesCount(likeRepository.getLikeCount(paperDto.getId()).orElse(0));
+                  paperDto.setCommentCount(commentRepository.getCommentCount(paperDto.getId()).orElse(0));
+                  paperDto.setScrapCount(scrapRepository.getScrapCount(paperDto.getId()).orElse(0));
+                  paperDto.setLiked(likeService.checkIsLiked(paperDto.getId(), myId));
+                  paperDto.setTagList(tagRepository.getTagList(paperDto.getId()).orElse(new ArrayList<>()));
+
+                  List<MentionListDto> mentionList = new ArrayList<>();
+                  StringTokenizer st = new StringTokenizer(paperDto.getMentionListString());
+                  while(st.hasMoreTokens()) {
+                        Long id = Long.parseLong(st.nextToken());
+                        String nickname = memberRepository.findById(id)
+                                                          .orElseThrow()
+                                                          .getNickname();
+                        mentionList.add(new MentionListDto(id, nickname));
                   }
-                  if(image2 != null){
-                        paper.updateImageId2(image2.getId());
-                        paper.updateImageUrl2(image2.getUrl());
-                  }
+                  paperDto.setMentionList(mentionList);
+                  System.out.println("5");
+                  paperDto.setBookList(
+                      bookRepository.getBookForMainThread(thread.getMemberId(), paperDto.getId()).orElse(new ArrayList<>()));
             }
-            /**/
-            log.info("4");
-            /* ThreadGetDto 생성 */
-            Paper firstPaper = paperRepository.findById(paperGetDtoList.get(0).getPaperId())
-                                              .orElseThrow(NullPointerException::new);
-            MemberInfoDto memberInfoDto = memberRepository.getMemberInfo(memberId).orElseThrow(MemberNotFoundException::new);
-            ThreadGetDto threadGetDto = ThreadGetDto.builder()
-                                                    .threadId(threadId)
-                                                    .member(memberInfoDto)
-                                                    .paperList(paperGetDtoList)
-                                                    .build();
-            threadGetDto.updateIsPublicEnable(firstPaper.isPaperPublic());
-            threadGetDto.updateIsScrapEnable(firstPaper.isScrapEnabled());
-            return threadGetDto;
+            thread.setPaperList(getFollowingPaperDtoList);
+            thread.setPaperPublic(getFollowingPaperDtoList.get(0).isPaperPublic());
+            thread.setScrapEnable(getFollowingPaperDtoList.get(0).isScrapEnable());
+
+            return thread;
+//            /* 스레드 접근 권한 판단 */
+//            Long myId = memberRepository.searchByEmail(email).orElseThrow(MemberNotFoundException::new).getId();
+//            Member Owner = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
+//            if(!Owner.isProfilePublic()){
+//                  Follow follow = followRepository.findFollow(myId, Owner.getId()).orElseThrow(ThreadAccessDeniedException::new);
+//            }
+//            /* paperGetDtoList 정보 조회 및 생성 */
+//            List<PaperGetDto> paperGetDtoList = paperRepository.getPaperGetDto(threadId).orElseThrow(PaperListNotFoundException::new);
+//            /**/
+//            log.info("2");
+//            log.info("size: " + paperGetDtoList.size());
+//            for (int i = 0;i<paperGetDtoList.size();i++) {
+//                  PaperGetDto paper = paperGetDtoList.get(i);
+//                  paper.setLikeCount(likeRepository.getLikeCount(paper.getPaperId()).orElse(0));
+//                  paper.setCommentCount(commentRepository.getCommentCount(paper.getPaperId()).orElse(0));
+//                  paper.setScrapCount(scrapRepository.getScrapCount(paper.getPaperId()).orElse(0));
+//                  log.info("fd" + paper.getPaperId());
+//                  paper.updateIsLiked(likeService.checkIsLiked(paper.getPaperId(), memberId));
+//                  log.info("checkisliked");
+//                  List<Tag> tagList = tagRepository.getTagsByPaperId(paper.getPaperId())
+//                                                   .orElse(Collections.emptyList());
+//                  /**/
+//                  log.info("3");
+//                  List<String> tagNameList = new ArrayList<>();
+//                  if (!tagList.isEmpty()) {
+//                        tagNameList = tagList.stream()
+//                                             .map(Tag::getTagName)
+//                                             .toList();
+//                  }
+//                  paper.updateTagList(tagNameList);
+//                  /* image id와 url은 따로 */
+//                  Image image1 = imageRepository.findImage1ByPaperId(paper.getPaperId()).orElse(null);
+//                  Image image2 = imageRepository.findImage2ByPaperId(paper.getPaperId()).orElse(null);
+//                  if(image1 != null){
+//                        paper.updateImageId1(image1.getId());
+//                        paper.updateImageUrl1(image1.getUrl());
+//                  }
+//                  if(image2 != null){
+//                        paper.updateImageId2(image2.getId());
+//                        paper.updateImageUrl2(image2.getUrl());
+//                  }
+//            }
+//            /**/
+//            log.info("4");
+//            /* ThreadGetDto 생성 */
+//            Paper firstPaper = paperRepository.findById(paperGetDtoList.get(0).getPaperId())
+//                                              .orElseThrow(NullPointerException::new);
+//            MemberInfoDto memberInfoDto = memberRepository.getMemberInfo(memberId).orElseThrow(MemberNotFoundException::new);
+//            ThreadGetDto threadGetDto = ThreadGetDto.builder()
+//                                                    .threadId(threadId)
+//                                                    .member(memberInfoDto)
+//                                                    .paperList(paperGetDtoList)
+//                                                    .build();
+//            threadGetDto.updateIsPublicEnable(firstPaper.isPaperPublic());
+//            threadGetDto.updateIsScrapEnable(firstPaper.isScrapEnabled());
+//            return threadGetDto;
       }
       @Transactional
       @Override
