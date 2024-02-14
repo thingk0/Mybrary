@@ -7,12 +7,16 @@ import useUserStore from "../store/useUserStore";
 import useBookStore from "../store/useBookStore";
 import { getBook } from "../api/book/Book";
 import ContentItem2 from "../components/book/ContentItem2";
+import useUrlStore from "../store/useUrlStore";
+import { useNavigate } from "react-router-dom";
 
 export default function BookDetailPage() {
+  const navigate = useNavigate();
   const userId = useUserStore((state) => state.user.memberId);
   const writerId2 = useBookStore((state) => state.book?.memberId);
   const writerId = useBookStore((state) => state.book?.writer?.memberId);
   const book = useBookStore((state) => state.book);
+  const url = useUrlStore((state) => state.url.url);
 
   const bookRef = useRef();
   const [curPage, setCurPage] = useState();
@@ -61,7 +65,9 @@ export default function BookDetailPage() {
     <>
       <div className={s(styles.bookContainer)}>
         <div className={styles.header}>
-          <div className={styles.headerLeft}>뒤로가기</div>
+          <div className={styles.headerLeft} onClick={() => navigate(url)}>
+            뒤로가기
+          </div>
           <div className={styles.headerMain}>
             {book.coverTitle || book.bookTitle}
           </div>

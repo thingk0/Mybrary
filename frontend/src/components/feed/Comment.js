@@ -19,7 +19,6 @@ export default function Comment({
   const [commentList, setCommentList] = useState([]);
   const [childComments, setChildComments] = useState({}); // 대댓글 목록 상태
   const user = useUserStore((state) => state.user);
-  console.log(commentId);
 
   const showToast = (string) => {
     toast.success(`${string}`, {

@@ -2,7 +2,7 @@ import Container from "../components/frame/Container";
 import styles from "./style/BookPage.module.css";
 import title from "../components/atom/atomstyle/Title.module.css";
 import React, { useState, useRef, useEffect, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { getBookList, getCategoryList } from "../api/category/Category";
 import useBookStore from "../store/useBookStore";
@@ -14,6 +14,7 @@ import BigModal from "../components/common/BigModal";
 import { deleteBook } from "../api/book/Book";
 import BookCreate from "../components/common/BookCreate";
 import BookCreateOfCategory from "../components/common/BookCreateOfCategory";
+import useUrlStore from "../store/useUrlStore";
 
 export default function BookPage() {
   const { userid, bookShelfId, categoryid } = useParams();
@@ -36,8 +37,11 @@ export default function BookPage() {
     setSelectedBook(bookList[index]); // 첫 번째 책 선택
   };
 
-  const handleBookClick = () => {
-    setBook(selectedBook);
+  const sampleLocation = useLocation();
+  const setUrl = useUrlStore((state) => state.setUrl);
+  const handleBookClick = async () => {
+    setUrl({ url: sampleLocation.pathname });
+    await setBook(selectedBook);
     navigate(`/book/${selectedBook.bookId}`);
   };
   const handleCategory = (id) => {

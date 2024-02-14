@@ -15,10 +15,11 @@ import s from "classnames";
 import { like } from "../../api/paper/Paper";
 import toast from "react-hot-toast";
 import useUserStore from "../../store/useUserStore";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getPaperinBook } from "../../api/book/Book";
 import useBookStore from "../../store/useBookStore";
 import FeedModal2 from "./FeedModal2";
+import useUrlStore from "../../store/useUrlStore";
 
 export default function FeedContent({
   thread,
@@ -109,10 +110,16 @@ export default function FeedContent({
     setBooklist(response.data);
   };
 
+  //현재 URL저장
+  const sampleLocation = useLocation();
+  const setUrl = useUrlStore((state) => state.setUrl);
   const handelBookNavi = async (book) => {
+    setUrl({ url: sampleLocation.pathname });
     await setBook(book);
     navigate(`/book/${book.bookId}`);
   };
+
+  const handleDelete = () => {};
   return (
     <div className={styles.content}>
       {thread.paperList.map((paper, index) => (
@@ -145,7 +152,12 @@ export default function FeedContent({
               <div>
                 <span className={styles.수정글자}>수정</span>{" "}
                 <span className={styles.중간바}> | </span>{" "}
-                <span className={styles.삭제글자}>삭제</span>
+                <span
+                  className={styles.삭제글자}
+                  onClick={() => handleDelete()}
+                >
+                  삭제
+                </span>
               </div>
             )}
           </div>
