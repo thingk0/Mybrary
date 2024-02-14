@@ -66,7 +66,6 @@ export default function FeedPage() {
   const handleOpenBookList = async (paperList) => {
     setPapers(paperList);
     const booklists = await getMYBooks();
-    console.log(booklists.data);
     setBookList(booklists.data);
     setScrapModal(true);
   };

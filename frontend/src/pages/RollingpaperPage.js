@@ -34,6 +34,7 @@ export default function RollingpaperPage() {
 
   const startPaint = useCallback((event) => {
     const coordinates = getCoordinates(event);
+    console.log(coordinates);
     if (coordinates) {
       isPainting.current = true;
       startPoint.current = coordinates;
@@ -45,6 +46,7 @@ export default function RollingpaperPage() {
       if (isPainting.current) {
         const newPoint = getCoordinates(event);
         if (newPoint) {
+          console.log(lineColor);
           drawLine(
             startPoint.current.x,
             startPoint.current.y,
@@ -71,6 +73,7 @@ export default function RollingpaperPage() {
       return;
     }
 
+    //console.log(event.target);
     const canvas = canvasRef.current;
     return {
       // event.pageX 는 내가 클릭한 지점의 페이지 상에서의 절대 좌표
@@ -81,6 +84,7 @@ export default function RollingpaperPage() {
   };
 
   const handleResetImage = () => {
+    console.log("reset");
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
     context.clearRect(0, 0, canvas.width, canvas.height); // 캔버스 내용 지우기
@@ -103,12 +107,15 @@ export default function RollingpaperPage() {
   };
 
   const handleChangeLineColor = (num) => {
+    console.log(colors[num]);
     setLineColor(colors[num]);
+    console.log(lineColor);
   };
 
   let client = null;
 
   const sendImageData = () => {
+    console.log(client);
     if (client && canvasRef.current) {
       // Canvas에서 이미지 데이터를 Base64 문자열로 추출
       const imageData = canvasRef.current.toDataURL("image/png");
@@ -122,7 +129,10 @@ export default function RollingpaperPage() {
 
       try {
         client.publish({ destination, body: "hi" });
-      } catch (err) {}
+      } catch (err) {
+        console.log("전송에러");
+        console.log(err);
+      }
     }
   };
 
@@ -135,7 +145,12 @@ export default function RollingpaperPage() {
       },
     });
     client.onConnect = () => {
+      console.log("Connected!");
+      console.log(rollingpaperId);
+
       client.subscribe(`/rp/${rollingpaperId}`, (message) => {
+        console.log("receive check!! ");
+        console.log(message);
         const receivedImageData = JSON.parse(message.body);
         const base64Image = receivedImageData.content;
         setImageData(base64Image);

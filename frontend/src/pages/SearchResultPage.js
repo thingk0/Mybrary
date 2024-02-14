@@ -183,7 +183,6 @@ export default function SearchResultPage() {
 
     // 검색 결과 페이지로 이동 navigate(`/search/${d.text}`)
     setAnimateOut(true); // fadeOut 애니메이션 시작
-    console.log(animateOut);
     // 애니메이션이 끝난 후 페이지 전환
     setTimeout(() => {
       setAnimateOut(false);
