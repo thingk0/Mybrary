@@ -14,7 +14,7 @@
 }
 
 .bg {
-  width: 100vi;
+  width: 100vw;
   height: 100vh;
   background-repeat: no-repeat;
   background-position: center;
@@ -130,8 +130,8 @@
 }
 .책장가자 {
   position: absolute;
-  bottom: 6.4vi;
-  left: 22vi;
+  bottom: 6.4vw;
+  left: 22vw;
   font-size: 21px;
   width: max-content;
   padding: 10px 15px 10px 15px;
@@ -143,25 +143,25 @@
 }
 .bookshelf {
   position: absolute;
-  bottom: -8.4vi;
-  left: 7vi;
+  bottom: -8.4vw;
+  left: 7vw;
   width: 14vw;
 }
 .bookshelfColor {
-  bottom: 4vi;
-  left: 22vi;
-  width: 21vi;
+  bottom: 4vw;
+  left: 22vw;
+  width: 21vw;
 }
 .table {
   position: absolute;
-  bottom: -22.4vi;
-  left: -13.2vi;
+  bottom: -22.4vw;
+  left: -13.2vw;
   width: 20vw;
 }
 .테이블가자 {
   position: absolute;
-  bottom: -19.4vi;
-  left: 2vi;
+  bottom: -19.4vw;
+  left: 2vw;
   font-size: 21px;
   width: max-content;
   padding: 10px 15px 10px 15px;
@@ -172,20 +172,20 @@
   text-align: center;
 }
 .tableColor {
-  bottom: -20vi;
-  left: 5vi;
-  width: 22vi;
+  bottom: -20vw;
+  left: 5vw;
+  width: 22vw;
 }
 .easel {
   position: absolute;
-  bottom: -19.4vi;
-  left: -40.2vi;
+  bottom: -19.4vw;
+  left: -40.2vw;
   width: 12vw;
 }
 .이젤가자 {
   position: absolute;
-  bottom: -10vi;
-  left: -28vi;
+  bottom: -10vw;
+  left: -28vw;
   font-size: 21px;
   width: max-content;
   padding: 10px 15px 10px 15px;
@@ -196,24 +196,24 @@
   text-align: center;
 }
 .easelColor {
-  bottom: 2vi;
-  left: -40vi;
-  /* width: 20vi; */
+  bottom: 2vw;
+  left: -40vw;
+  /* width: 20vw; */
 }
 .이젤이미지변경 {
-  bottom: 13vi;
-  left: -26vi;
+  bottom: 13vw;
+  left: -26vw;
 }
 .frame {
   position: absolute;
-  bottom: 0vi;
-  left: -30.2vi;
+  bottom: 0vw;
+  left: -30.2vw;
   width: 12vw;
 }
 .액자가자 {
   position: absolute;
-  bottom: 13vi;
-  left: -41vi;
+  bottom: 13vw;
+  left: -41vw;
   font-size: 21px;
   width: max-content;
   padding: 10px 15px 10px 15px;
@@ -243,20 +243,20 @@
   height: 12.6vw;
   transform: skewY(-30deg);
   position: absolute;
-  bottom: 4.5vi;
-  left: 1.5vi;
+  bottom: 4.5vw;
+  left: 1.5vw;
 }
 
 .door {
   position: absolute;
-  bottom: 0vi;
-  left: -10.2vi;
+  bottom: 0vw;
+  left: -10.2vw;
   width: 8vw;
 }
 .문가자 {
   position: absolute;
-  bottom: 1.3vi;
-  left: -22vi;
+  bottom: 1.3vw;
+  left: -22vw;
   font-size: 21px;
   width: max-content;
   padding: 10px 15px 10px 15px;
@@ -268,14 +268,14 @@
 }
 .postbox {
   position: absolute;
-  bottom: -20.4vi;
-  left: 25.2vi;
+  bottom: -20.4vw;
+  left: 25.2vw;
   width: 10vw;
 }
 .알림가자 {
   position: absolute;
-  bottom: -2vi;
-  left: 27vi;
+  bottom: -2vw;
+  left: 27vw;
   font-size: 21px;
   width: max-content;
   padding: 10px 15px 10px 15px;
@@ -526,9 +526,9 @@
   margin-right: 20px;
 }
 .color {
-  width: 2vi;
-  height: 2vi;
-  border-radius: 3vi;
+  width: 2vw;
+  height: 2vw;
+  border-radius: 3vw;
 }
 
 .color1 {
@@ -550,11 +550,11 @@
   background-color: #4f566a;
 }
 .select {
-  margin: 0.45vi;
-  width: 1vi;
-  height: 1vi;
-  border-radius: 1vi;
-  border: solid 0.1vi #ffffff;
+  margin: 0.45vw;
+  width: 1vw;
+  height: 1vw;
+  border-radius: 1vw;
+  border: solid 0.1vw #ffffff;
   background-color: #343434;
 }
 .inputContainer {

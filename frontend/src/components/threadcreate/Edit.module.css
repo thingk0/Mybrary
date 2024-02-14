@@ -33,11 +33,11 @@
 
 .미드중앙사이즈조정 {
   position: relative;
-  width: 35.2vi;
-  height: 41.6vi;
+  width: 35.2vw;
+  height: 41.6vw;
   background-color: var(--blur2);
   border-radius: 5px;
-  border: solid 0.05vi var(--main2);
+  border: solid 0.05vw var(--main2);
 }
 .이미지업로드부분 {
   position: absolute;
@@ -69,28 +69,28 @@
 
 .toolbar {
   position: absolute;
-  top: -4.5vi;
+  top: -4.5vw;
   left: 0;
   z-index: 4;
 }
 /* .toolbar a {
-  font-size: 1vi;
+  font-size: 1vw;
 }
 .toolbar div {
-  margin: 0px 0.1vi;
+  margin: 0px 0.1vw;
 }
 .toolbar > div {
-  padding: 0.1vi 0px;
+  padding: 0.1vw 0px;
   margin: 0;
 }
 .toolbar > div > div {
-  width: 1.3vi;
-  height: 0.9vi;
+  width: 1.3vw;
+  height: 0.9vw;
 }
 
 .toolbar > div:nth-child(2) > div {
-  width: 11.4vi;
-  height: 1.42vi;
+  width: 11.4vw;
+  height: 1.42vw;
 } */
 
 .FileInput_hidden_overlay {

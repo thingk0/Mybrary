@@ -1,5 +1,5 @@
 .header_container {
-  height: 46vi;
+  height: 46vw;
   display: flex;
   flex-direction: column;
   align-content: center;
@@ -7,7 +7,7 @@
 
 .title {
   margin-top: 20px;
-  font-size: 1.8vi;
+  font-size: 1.8vw;
 }
 .buttons {
   padding-top: 20px;

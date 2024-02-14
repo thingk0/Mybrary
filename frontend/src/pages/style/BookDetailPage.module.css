@@ -73,8 +73,8 @@
 .main_content {
   margin: 0 auto;
   border-radius: 5px;
-  width: 35.2vi; /* 11*3.2 */
-  height: 41.6vi; /* 13*3.2 */
+  width: 35.2vw; /* 11*3.2 */
+  height: 41.6vw; /* 13*3.2 */
   transform: scale(0.8) translateX(-70px) translateY(-110px);
 }
 

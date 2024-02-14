@@ -45,7 +45,7 @@
   justify-content: center;
   text-align: center;
   align-items: center;
-  font-size: 2vi;
+  font-size: 2vw;
   text-shadow: 0 0 5px var(--main3);
 }
 /* 댓글목록공간 */
@@ -53,9 +53,9 @@
   width: 88%;
   border-radius: 5px;
   /* background-color: #f8c3d2; */
-  padding: 0.7vi;
+  padding: 0.7vw;
   box-shadow: 0 0 15px -5px var(--main2);
-  margin: 1vi;
+  margin: 1vw;
   position: relative;
 }
 .대댓글박스 {
@@ -69,42 +69,42 @@
   width: 76%;
   border-radius: 5px;
   /* background-color: #f8c3d2; */
-  padding: 0.7vi;
+  padding: 0.7vw;
   box-shadow: 0 0 15px -5px var(--main2);
-  margin: 0.2vi;
+  margin: 0.2vw;
   position: relative;
 }
 .comment_nickname {
-  font-size: 0.8vi;
-  margin-bottom: 0.3vi;
+  font-size: 0.8vw;
+  margin-bottom: 0.3vw;
   color: #3e2825;
 }
 .comment_text {
-  font-size: 1vi;
-  margin-bottom: 0.3vi;
+  font-size: 1vw;
+  margin-bottom: 0.3vw;
   color: #2a2525;
   padding-top: 5px;
   padding-bottom: 2px;
 }
 .수정글자 {
-  font-size: 0.8vi;
+  font-size: 0.8vw;
   color: #3bb8d4;
 }
 .삭제글자 {
   cursor: pointer;
-  font-size: 0.8vi;
+  font-size: 0.8vw;
   color: #e2567e;
 }
 .답글달기글자 {
   cursor: pointer;
-  font-size: 0.8vi;
+  font-size: 0.8vw;
 }
 .대댓글수 {
-  font-size: 0.8vi;
+  font-size: 0.8vw;
   cursor: pointer;
 }
 .중간막대기 {
-  font-size: 0.8vi;
+  font-size: 0.8vw;
   color: #bfa6a2;
 }
 .삭제글자 {
@@ -119,8 +119,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 0.3vi;
-  font-size: 1vi;
+  gap: 0.3vw;
+  font-size: 1vw;
 }
 
 /* 댓글작성공간 */
@@ -128,12 +128,12 @@
   background-color: var(--main3);
   border-radius: 5px;
   width: 89%;
-  margin: 1vi;
-  padding: 0.7vi;
+  margin: 1vw;
+  padding: 0.7vw;
 }
 .user_img {
-  width: 2.5vi;
-  height: 2.5vi;
+  width: 2.5vw;
+  height: 2.5vw;
   cursor: pointer;
   border-radius: 100px;
 }
@@ -146,19 +146,19 @@
 .comment_create_left {
   display: flex;
   align-items: center;
-  gap: 0.4vi;
+  gap: 0.4vw;
 }
 .user_nickname {
-  font-size: 1vi;
+  font-size: 1vw;
 }
 .comment_colors {
   display: flex;
-  gap: 0.2vi;
+  gap: 0.2vw;
 }
 .comment_colors > div {
-  width: 2vi;
-  height: 2vi;
-  border-radius: 1.5vi;
+  width: 2vw;
+  height: 2vw;
+  border-radius: 1.5vw;
   border: solid 1.5px rgb(65, 65, 65);
   cursor: pointer;
 }
@@ -187,7 +187,7 @@
 }
 
 .comment_input {
-  margin-top: 1vi;
+  margin-top: 1vw;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -196,8 +196,8 @@
   cursor: pointer;
   border: 0px;
   width: 8%;
-  height: 2vi;
-  border-radius: 0.5vi;
+  height: 2vw;
+  border-radius: 0.5vw;
   background-color: #fffffe;
   transition: 0.3s;
 }
@@ -209,8 +209,8 @@
   cursor: pointer;
   border: 0px;
   background-color: #b7aaaa;
-  padding: 0.4vi;
-  border-radius: 0.5vi;
+  padding: 0.4vw;
+  border-radius: 0.5vw;
   transition: 0.3s;
 }
 .cancelReplyButton:hover {
@@ -219,10 +219,10 @@
 
 .comment_input > input {
   width: 87%;
-  height: 2vi;
-  padding: 0 0.5vi;
-  border-radius: 0.5vi;
-  font-size: 1vi;
+  height: 2vw;
+  padding: 0 0.5vw;
+  border-radius: 0.5vw;
+  font-size: 1vw;
   outline: none;
   border: none;
 }
