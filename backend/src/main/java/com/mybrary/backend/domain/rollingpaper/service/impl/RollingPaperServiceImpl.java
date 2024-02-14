@@ -14,13 +14,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Log4j2
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class RollingPaperServiceImpl implements RollingPaperService {
 
     private final RollingPaperRepository rollingPaperRepository;
 
-    @Cacheable(value = "rollingPapers", key = "#rollingPaperId")
+    @Cacheable(value = "rollingPaper", key = "#rollingPaperId")
     @Transactional(readOnly = true)
     @Override
     public RollingPaperDto fetch(String email, Long rollingPaperId) {
@@ -29,7 +28,8 @@ public class RollingPaperServiceImpl implements RollingPaperService {
         return RollingPaperDto.from(rollingPaper);
     }
 
-    @CachePut(value = "rollingPapers", key = "#rollingPaper.getRollingPaperId()")
+    @CachePut(value = "rollingPaper", key = "#rollingPaper.getRollingPaperId()")
+    @Transactional
     @Override
     public RollingPaperDto update(String email, RollingPaperDto rollingPaper) {
         RollingPaper beforeRollingPaper = rollingPaperRepository.findById(rollingPaper.getRollingPaperId())
