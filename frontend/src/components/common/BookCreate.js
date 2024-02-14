@@ -8,6 +8,7 @@ import { getCategoryList } from "../../api/category/Category";
 import useUserStore from "../../store/useUserStore";
 import { uplodaImage } from "../../api/image/Image";
 import { createBook } from "../../api/book/Book";
+import toast from "react-hot-toast";
 
 export default function BookCreate({ setBookList, booklist, setModalIsOpen }) {
   const layouts = [1, 2, 3, 4, 5, 6];
@@ -47,9 +48,11 @@ export default function BookCreate({ setBookList, booklist, setModalIsOpen }) {
   }, []);
 
   const [title, setTitle] = useState("선택되지 않음");
+  const [t, setT] = useState(false);
   const handleCategory = (category) => {
     handleChange("categoryId", category.categoryId);
     setTitle(category.name);
+    setT(true);
     setOpen(false);
   };
   const addNewBookToCategory = (categoryId, newBook) => {
@@ -65,6 +68,16 @@ export default function BookCreate({ setBookList, booklist, setModalIsOpen }) {
     setBookList(updatedBookList);
   };
 
+  const noneImg = () => {
+    toast.error("이미지를 추가해주세요", {
+      position: "top-center",
+    });
+  };
+  const nonecate = () => {
+    toast.error("책의 카테고리를 선택해주세요", {
+      position: "top-center",
+    });
+  };
   const handleSubmit = async () => {
     const formData = new FormData();
     formData.append("images", value.coverImage);
@@ -180,7 +193,12 @@ export default function BookCreate({ setBookList, booklist, setModalIsOpen }) {
           </div>
         </div>
       </div>
-      <div className={s(styles.bookCreate)} onClick={() => handleSubmit()}>
+      <div
+        className={s(styles.bookCreate)}
+        onClick={() =>
+          value.coverImage ? (t ? handleSubmit() : nonecate()) : noneImg()
+        }
+      >
         생성
       </div>
     </div>

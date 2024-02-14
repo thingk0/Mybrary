@@ -125,14 +125,15 @@ export default function FeedContent({
     navigate(`/book/${book.bookId}`);
   };
 
-  const handleDeleteThread = (threadId) => {
+  const handleDeleteThread = async (threadId) => {
     const updatedThreadList = list.filter(
       (thread) => thread.threadId !== threadId
     );
     const updatedThreadList2 = threadList.filter(
       (thread) => thread.threadId !== threadId
     );
-    deleteThread(threadId);
+    const a = await deleteThread(threadId);
+    console.log(a);
     setList(updatedThreadList);
     setThreadList(updatedThreadList2);
     setThreadModal(false);
