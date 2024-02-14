@@ -1,11 +1,26 @@
 .flex {
   display: flex;
 }
+.close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 25px;
+  color: var(--gomin5);
+}
 /* 콘텐츠들 */
 .StackCarousel_contents {
   width: 715px;
   height: 700px;
+  transition: 0.8s;
+}
+.content {
   transform: scale(0.9) translateX(-30px) translateY(-35px);
+  transition: 0.8s;
+}
+.content2 {
+  transform: scale(0.9) translateX(300px) translateY(-35px);
+  transition: 0.8s;
 }
 
 /* 콘텐츠  */

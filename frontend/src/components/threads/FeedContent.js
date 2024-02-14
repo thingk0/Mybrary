@@ -31,8 +31,6 @@ export default function FeedContent({
   setZIndex,
   handleOpenBookList,
   setThreadModal,
-  setThreadList,
-  threadList,
 }) {
   const navigate = useNavigate();
   const user = useUserStore((state) => state.user);
@@ -129,13 +127,9 @@ export default function FeedContent({
     const updatedThreadList = list.filter(
       (thread) => thread.threadId !== threadId
     );
-    const updatedThreadList2 = threadList.filter(
-      (thread) => thread.threadId !== threadId
-    );
     const a = await deleteThread(threadId);
     console.log(a);
     setList(updatedThreadList);
-    setThreadList(updatedThreadList2);
     setThreadModal(false);
   };
   return (

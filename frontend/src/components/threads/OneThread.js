@@ -9,12 +9,7 @@ import Comment from "./Comment";
 import { getMYBooks } from "../../api/book/Book";
 import { getThread } from "../../api/thread/Thread";
 
-export default function OneThread({
-  threadId,
-  setThreadModal,
-  setThreadList,
-  threadList,
-}) {
+export default function OneThread({ threadId, setThreadModal }) {
   const [list, setList] = useState([]);
   const [scrapModal, setScrapModal] = useState(false);
 
@@ -78,6 +73,9 @@ export default function OneThread({
 
   return (
     <>
+      <div onClick={() => setThreadModal(false)} className={styles.close}>
+        닫기
+      </div>
       <div className={styles.flex}>
         <div
           className={s(
@@ -88,14 +86,15 @@ export default function OneThread({
           {list.map((thread, index) => (
             <div
               key={index}
-              className={s(styles.StackCarousel_content)}
+              className={s(
+                styles.StackCarousel_content,
+                comment ? styles.content : styles.content2
+              )}
               style={{ zIndex: `-${index}` }}
             >
               {/* 하나의 쓰레드에 해당 */}
               <FeedContent
-                threadList={threadList}
                 setThreadModal={setThreadModal}
-                setThreadList={setThreadList}
                 thread={thread}
                 list={list}
                 setList={setList}

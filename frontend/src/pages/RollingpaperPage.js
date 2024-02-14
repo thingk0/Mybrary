@@ -7,6 +7,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
 import useMybraryStore from "../store/useMybraryStore";
+import useUserStore from "../store/useUserStore";
 import {
   getRollingPaper,
   saveRollingPaper,
@@ -23,6 +24,9 @@ export default function RollingpaperPage() {
   const [lineColor, setLineColor] = useState("black");
   const stompClient = useRef(null);
   const mybrary = useMybraryStore((state) => state.mybrary);
+
+  //이 둘이 같으면 나, 다르면 딴사람
+  const isMe = +Params.userid === useUserStore((state) => state.user.memberId);
 
   /* 여기서부터 그림 그리는 코드 */
   const drawLine = (originalX, originalY, newX, newY, color) => {
@@ -321,71 +325,70 @@ export default function RollingpaperPage() {
           </div>
         </div>
 
-        <div className={styles.초기화} onClick={handleResetImage}>
-          <span>롤링페이퍼 초기화</span>
-        </div>
+        {isMe && (
+          <div className={styles.초기화} onClick={handleResetImage}>
+            <span>롤링페이퍼 초기화</span>
+          </div>
+        )}
         <div className={styles.main}>
           <div className={styles.롤링페이퍼}>
             {" "}
             <canvas ref={canvasRef}></canvas>
           </div>
-          <div className={styles.색변경}>
-            <div
-              className={s(styles.color1, styles.color)}
-              onClick={() => handleChangeLineColor(1)}
-            ></div>
-            <div
-              className={s(styles.color2, styles.color)}
-              onClick={() => handleChangeLineColor(2)}
-            ></div>
-            <div
-              className={s(styles.color3, styles.color)}
-              onClick={() => handleChangeLineColor(3)}
-            ></div>
-            <div
-              className={s(styles.color4, styles.color)}
-              onClick={() => handleChangeLineColor(4)}
-            ></div>
-            <div
-              className={s(styles.color5, styles.color)}
-              onClick={() => handleChangeLineColor(5)}
-            ></div>
-            <div
-              className={s(styles.color6, styles.color)}
-              onClick={() => handleChangeLineColor(6)}
-            ></div>
-            <div
-              className={s(styles.color7, styles.color)}
-              onClick={() => handleChangeLineColor(7)}
-            ></div>
-            <div
-              className={s(styles.color8, styles.color)}
-              onClick={() => handleChangeLineColor(8)}
-            ></div>
-            <div
-              className={s(styles.color9, styles.color)}
-              onClick={() => handleChangeLineColor(9)}
-            ></div>
-            <div
-              className={s(styles.color10, styles.color)}
-              onClick={() => handleChangeLineColor(10)}
-            ></div>
-            <div
-              className={s(styles.color11, styles.color)}
-              onClick={() => handleChangeLineColor(11)}
-            ></div>
-            <div
-              className={s(styles.color12, styles.color)}
-              onClick={() => handleChangeLineColor(12)}
-            ></div>
-          </div>
-          <div className={styles.저장}>
-            <button
-              style={{ padding: "5px 8px" }}
-              onClick={handleRollingPaperSave}
-            >
+          <div className={styles.flex}>
+            <div className={styles.색변경}>
+              <div
+                className={s(styles.color1, styles.color)}
+                onClick={() => handleChangeLineColor(1)}
+              ></div>
+              <div
+                className={s(styles.color2, styles.color)}
+                onClick={() => handleChangeLineColor(2)}
+              ></div>
+              <div
+                className={s(styles.color3, styles.color)}
+                onClick={() => handleChangeLineColor(3)}
+              ></div>
+              <div
+                className={s(styles.color4, styles.color)}
+                onClick={() => handleChangeLineColor(4)}
+              ></div>
+              <div
+                className={s(styles.color5, styles.color)}
+                onClick={() => handleChangeLineColor(5)}
+              ></div>
+              <div
+                className={s(styles.color6, styles.color)}
+                onClick={() => handleChangeLineColor(6)}
+              ></div>
+              <div
+                className={s(styles.color7, styles.color)}
+                onClick={() => handleChangeLineColor(7)}
+              ></div>
+              <div
+                className={s(styles.color8, styles.color)}
+                onClick={() => handleChangeLineColor(8)}
+              ></div>
+              <div
+                className={s(styles.color9, styles.color)}
+                onClick={() => handleChangeLineColor(9)}
+              ></div>
+              <div
+                className={s(styles.color10, styles.color)}
+                onClick={() => handleChangeLineColor(10)}
+              ></div>
+              <div
+                className={s(styles.color11, styles.color)}
+                onClick={() => handleChangeLineColor(11)}
+              ></div>
+              <div
+                className={s(styles.color12, styles.color)}
+                onClick={() => handleChangeLineColor(12)}
+              ></div>
+            </div>
+            <div className={styles.저장} onClick={handleRollingPaperSave}>
               저장
-            </button>
+            </div>
           </div>
         </div>
       </Container>

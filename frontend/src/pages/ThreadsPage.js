@@ -18,7 +18,6 @@ export default function ThreadsPage() {
   const me = useUserStore((state) => state.user);
   const navigate = useNavigate();
   const [groupedData, setGroupedData] = useState(new Map());
-  const [threadList, setThreadList] = useState([]);
   const [trueme, setTrueme] = useState(false);
   const mybrary = useMybraryStore((state) => state.mybrary);
 
@@ -29,7 +28,6 @@ export default function ThreadsPage() {
     async function fetchmyData() {
       try {
         const response = await getDeskThread(nowuser);
-        setThreadList(response.data);
 
         const grouped = new Map();
 
@@ -53,7 +51,7 @@ export default function ThreadsPage() {
       } catch (error) {}
     }
     fetchmyData();
-  }, []);
+  }, [threadModal]);
 
   return (
     <>
@@ -112,12 +110,7 @@ export default function ThreadsPage() {
         width="1300px"
         height="860px"
       >
-        <OneThread
-          threadId={tId}
-          setThreadModal={setThreadModal}
-          setThreadList={setThreadList}
-          threadList={threadList}
-        />
+        <OneThread threadId={tId} setThreadModal={setThreadModal} />
       </BigModal>
     </>
   );
