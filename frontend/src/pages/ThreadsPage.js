@@ -16,7 +16,6 @@ export default function ThreadsPage() {
   const Params = useParams();
   const nowuser = Params.userid;
   const me = useUserStore((state) => state.user);
-  console.log(nowuser);
   const navigate = useNavigate();
   const [groupedData, setGroupedData] = useState(new Map());
   const [threadList, setThreadList] = useState([]);

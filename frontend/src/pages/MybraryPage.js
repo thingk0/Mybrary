@@ -215,7 +215,6 @@ export default function MybraryPage() {
         if (memberId === +nowuser) {
           const response = await getMyMybrary();
           setCheckme(true);
-          console.log(response.data);
           setMybrary(response.data);
           setUserInfo(response.data);
           setBgColor(response.data.backgroundColor);

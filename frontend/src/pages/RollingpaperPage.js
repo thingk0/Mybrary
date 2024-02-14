@@ -5,7 +5,6 @@ import title from "../components/atom/atomstyle/Title.module.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { useState, useRef, useEffect, useCallback } from "react";
 import SockJS from "sockjs-client";
-import { getMybrary } from "../api/mybrary/Mybrary";
 import { Client } from "@stomp/stompjs";
 import useMybraryStore from "../store/useMybraryStore";
 
@@ -107,9 +106,7 @@ export default function RollingpaperPage() {
   };
 
   const handleChangeLineColor = (num) => {
-    console.log(colors[num]);
     setLineColor(colors[num]);
-    console.log(lineColor);
   };
 
   let client = null;
