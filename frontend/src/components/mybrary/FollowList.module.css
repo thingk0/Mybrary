@@ -31,8 +31,8 @@
   padding: 0px 10px 0px 10px;
 }
 .img {
-  width: 100%;
-  height: 100%;
+  width: 3vw;
+  height: 3vw;
   border-radius: 100px;
 }
 .이름정보들 {
@@ -67,11 +67,26 @@
   overflow-y: auto;
   height: 100%;
 }
+.팔로잉박스 {
+  width: 7.2vw;
+}
 .팔로잉글자 {
   color: rgb(48, 154, 200);
   cursor: pointer;
+  font-size: 0.8vw;
   transition: 0.3s;
+  padding-left: 1vw;
 }
 .팔로잉글자:hover {
   color: rgb(215, 83, 74);
+}
+.팔로잉글자2 {
+  color: rgb(42, 147, 26);
+  cursor: pointer;
+  font-size: 0.72vw;
+  transition: 0.3s;
+  padding-right: 1vw;
+}
+.팔로잉글자2:hover {
+  color: rgb(65, 231, 101);
 }

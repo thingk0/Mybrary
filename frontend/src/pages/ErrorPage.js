@@ -14,7 +14,9 @@ export default function ErrorPage() {
             <span className={styles.잘못된}> 잘못된 접근입니다 ! </span>
             <span>다시확인해주세요</span>
             <Link to="/join">
-              <button>로그인페이지로 이동하기</button>
+              <button className={styles.로그인페이지이동}>
+                로그인페이지로 이동하기
+              </button>
             </Link>
           </div>
           <div className={styles.이미지공간}>

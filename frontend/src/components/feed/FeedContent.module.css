@@ -233,6 +233,7 @@
 }
 .유저이미지 {
   height: 3vw;
+  width: 3vw;
   border-radius: 100px;
 }
 /*  */
@@ -249,4 +250,8 @@
   background-color: #80625c;
   color: #fff1ef;
   border-radius: 5px;
+}
+.책없음 {
+  padding: 1vw 0vw 0.4vw 1vw;
+  font-size: 1.2vw;
 }
