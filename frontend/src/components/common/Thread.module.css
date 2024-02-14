@@ -15,8 +15,8 @@
   height: 20px;
 }
 .userimage2 {
-  width: 40px;
-  height: 40px;
+  width: 2.2vw;
+  height: 2.2vw;
   border-radius: 100px;
 }
 .fontsize1 {
@@ -60,7 +60,11 @@
   width: 100%;
   padding: 23px 0 16px;
 }
-
+.크기조정 {
+  width: 95%;
+  display: flex;
+  justify-content: space-between;
+}
 .작성자 {
   flex: 3;
   display: flex;
@@ -74,7 +78,7 @@
   display: flex;
   align-items: center;
   text-align: center;
-  font-size: 11px;
+  font-size: 0.9vw;
 }
 .나머지좋댓스 {
   flex: 2.5;
