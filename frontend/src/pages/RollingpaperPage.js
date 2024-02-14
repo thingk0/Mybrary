@@ -208,7 +208,7 @@ export default function RollingpaperPage() {
     stompClient.current.activate();
 
     return () => {
-      //if (stompClient) stompClient.deactivate();
+      if (stompClient.current) stompClient.current.deactivate();
     };
   }, []);
 
