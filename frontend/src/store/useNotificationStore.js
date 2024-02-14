@@ -5,10 +5,11 @@ const useNotificationStore = create(
   persist(
     (set) => ({
       hasNewNotification: false, // 새 알림이 있는지 여부
-      notificationMessage: "", // 알림 메시지 내용
 
-      setNewNotification: (hasNew, message = "") =>
-        set({ hasNewNotification: hasNew, notificationMessage: message }),
+      notifyEnable: true,
+
+      setNewNotification: (hasNew) => set({ hasNewNotification: hasNew }),
+      setNotifyEnable: (enable) => set({ notifyEnable: enable }),
     }),
     {
       name: "user-storage", // 로컬 스토리지에 저장될 때 사용될 키 이름

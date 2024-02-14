@@ -14,8 +14,10 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { uplodaImage } from "../api/image/Image";
 import { useAsyncError, useNavigate } from "react-router-dom";
+import useNotificationStore from "../store/useNotificationStore";
 
 export default function SettingPage() {
+  const { setNotifyEnable: setGlobalNotifyEnable } = useNotificationStore();
   const [file, setFile] = useState(null);
   const [name, setName] = useState("");
   const [nickname, setNickname] = useState("");
@@ -476,6 +478,7 @@ export default function SettingPage() {
                     onClick={() => {
                       showToast("알림이 허용되었습니다");
                       handleNotifyUpdate();
+                      setGlobalNotifyEnable(true);
                     }}
                     className={notifyEnable ? styles.버튼1 : styles.버튼2}
                   >
@@ -485,6 +488,7 @@ export default function SettingPage() {
                     onClick={() => {
                       showToast("알림이 비허용되었습니다");
                       handleNotifyUpdate();
+                      setGlobalNotifyEnable(false);
                     }}
                     className={notifyEnable ? styles.버튼2 : styles.버튼1}
                   >

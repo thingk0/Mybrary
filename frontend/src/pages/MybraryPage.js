@@ -41,8 +41,10 @@ import FileInput from "../components/common/FileInput";
 import { uplodaImage } from "../api/image/Image";
 import { deleteFollow, follow, followCancel } from "../api/member/Follow";
 import { getFirstChat } from "../api/chat/Chat";
+import useNotificationStore from "../store/useNotificationStore";
 
 export default function MybraryPage() {
+  const { setNotifyEnable } = useNotificationStore();
   // 유저 관련
   const navigate = useNavigate();
   const Params = useParams();
@@ -214,6 +216,7 @@ export default function MybraryPage() {
         const memberId = user.memberId;
         if (memberId === +nowuser) {
           const response = await getMyMybrary();
+          setNotifyEnable(response.data.notifyEnable);
           setCheckme(true);
           setMybrary(response.data);
           setUserInfo(response.data);
