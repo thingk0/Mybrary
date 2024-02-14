@@ -158,7 +158,6 @@ export default function FeedPage() {
             >
               {/* 하나의 쓰레드에 해당 */}
               <FeedContent
-                index={index}
                 thread={thread}
                 list={list}
                 setList={setList}

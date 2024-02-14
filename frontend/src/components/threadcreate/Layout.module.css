@@ -56,6 +56,7 @@
   background-color: #ffeee6;
   transition: 0.3s;
   border-radius: 5px;
+  cursor: pointer;
 }
 .cutButton:hover {
   background-color: var(--main3);
@@ -72,6 +73,9 @@
   flex-wrap: wrap;
   gap: 1vw;
   overflow-y: auto;
+}
+.왼쪽미드레이아웃 > div {
+  cursor: pointer;
 }
 .레이아웃이미지 {
   height: 130px;

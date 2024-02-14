@@ -3,10 +3,8 @@ import styles from "./Thread.module.css";
 import heart from "../../assets/icon/icon_like.png";
 import msg from "../../assets/icon/icon_comment.png";
 import clip from "../../assets/icon/icon_scrap.png";
-import human from "../../assets/이미지예시.png";
-import bearImage from "../../assets/예시이미지2.png";
 
-export default function Thread({ thread, user, trueme }) {
+export default function Thread({ thread, user, setTId, setThreadModal }) {
   function Infobox({ icon, count }) {
     return (
       <div className={styles.infobox}>
@@ -55,49 +53,57 @@ export default function Thread({ thread, user, trueme }) {
       },
     });
   };
+
+  const handleOpen = (threadId) => {
+    setTId(threadId);
+    setThreadModal(true);
+  };
   return (
-    <div
-      key={thread.threadId}
-      className={styles.thread}
-      onMouseMove={(e) => handleMouseMove(e, thread.threadId)}
-      onMouseOut={() => handleMouseOut(thread.threadId)}
-      style={hoverStyle[thread.threadId]?.thread}
-    >
-      {/* {trueme && <div className={styles.삭제버튼}> 트루입니당</div>} */}
+    <>
       <div
-        className={styles.overlay}
-        style={hoverStyle[thread.threadId]?.overlay}
-      ></div>
-      <div className={styles.좋댓스}>
-        <div className={styles.작성자}>
+        key={thread.threadId}
+        className={styles.thread}
+        onMouseMove={(e) => handleMouseMove(e, thread.threadId)}
+        onMouseOut={() => handleMouseOut(thread.threadId)}
+        style={hoverStyle[thread.threadId]?.thread}
+        onClick={() => handleOpen(thread.threadId)}
+      >
+        {/* {trueme && <div className={styles.삭제버튼}> 트루입니당</div>} */}
+        <div
+          className={styles.overlay}
+          style={hoverStyle[thread.threadId]?.overlay}
+        ></div>
+        <div className={styles.좋댓스}>
+          <div className={styles.작성자}>
+            <div
+              className={styles.userimage2}
+              style={{
+                background: `url("https://jingu.s3.ap-northeast-2.amazonaws.com/${user.profileImageUrl}")`,
+                backgroundRepeat: "no-repeat",
+                backgroundPosition: "center",
+                backgroundSize: "cover",
+              }}
+            ></div>
+            <span className={styles.작성자폰트}>{user.nickname} </span>
+          </div>
+          <div className={styles.나머지좋댓스}>
+            <Infobox icon={heart} count={thread.likesCount} />
+            <Infobox icon={msg} count={thread.commentCount} />
+            <Infobox icon={clip} count={thread.scrapCount} />
+          </div>
+        </div>
+        <div className={styles.main이미지}>
           <div
-            className={styles.userimage2}
+            className={styles.스레드이미지}
             style={{
-              background: `url("https://jingu.s3.ap-northeast-2.amazonaws.com/${user.profileImageUrl}")`,
+              background: `url("https://jingu.s3.ap-northeast-2.amazonaws.com/${thread.imageUrl}")`,
               backgroundRepeat: "no-repeat",
               backgroundPosition: "center",
               backgroundSize: "cover",
             }}
           ></div>
-          <span className={styles.작성자폰트}>{user.nickname} </span>
-        </div>
-        <div className={styles.나머지좋댓스}>
-          <Infobox icon={heart} count={thread.likesCount} />
-          <Infobox icon={msg} count={thread.commentCount} />
-          <Infobox icon={clip} count={thread.scrapCount} />
         </div>
       </div>
-      <div className={styles.main이미지}>
-        <div
-          className={styles.스레드이미지}
-          style={{
-            background: `url("https://jingu.s3.ap-northeast-2.amazonaws.com/${thread.imageUrl}")`,
-            backgroundRepeat: "no-repeat",
-            backgroundPosition: "center",
-            backgroundSize: "cover",
-          }}
-        ></div>
-      </div>
-    </div>
+    </>
   );
 }

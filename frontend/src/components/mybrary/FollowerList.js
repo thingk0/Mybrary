@@ -126,14 +126,12 @@ export default function FollowerList({
           {followerList.map((follow) => (
             <div key={follow.memberId} className={styles.팔로우리스트}>
               <div className={styles.userimg}>
-                <img
+                <div
                   className={styles.img}
-                  src={
-                    `https://jingu.s3.ap-northeast-2.amazonaws.com/${follow.profileImageUrl}` ||
-                    Iconuser2
-                  }
-                  alt="이미지없음"
-                />
+                  style={{
+                    background: `url("https://jingu.s3.ap-northeast-2.amazonaws.com/${follow.profileImageUrl}")no-repeat center/cover`,
+                  }}
+                ></div>
               </div>
               <div className={styles.이름정보들}>
                 <div
@@ -143,24 +141,33 @@ export default function FollowerList({
                   <span>{follow.nickname}</span>
                   <span className={styles.사용자이름}>{follow.name}</span>
                 </div>
-                {follow.memberId != me &&
-                  (follow.followed === false ? (
-                    <span
-                      onClick={() => handleFollow(follow.memberId)}
-                      className={styles.팔로우글자}
-                    >
-                      팔로우
-                    </span>
-                  ) : null)}
               </div>
               {me == nowuser && follow.memberId != me && (
                 <div className={styles.팔로잉박스}>
-                  <span
-                    onClick={() => handleDeleteFollower(follow.memberId)}
-                    className={styles.삭제글자}
-                  >
-                    삭제
-                  </span>
+                  {follow.followStatus == 1 && (
+                    <>
+                      <span
+                        onClick={() => handleFollow(follow.memberId)}
+                        className={styles.팔로우글자}
+                      >
+                        팔로우
+                      </span>
+                      <span
+                        onClick={() => handleDeleteFollower(follow.memberId)}
+                        className={styles.삭제글자}
+                      >
+                        삭제
+                      </span>
+                    </>
+                  )}
+                  {follow.followStatus == 3 && (
+                    <span
+                      onClick={() => handleDeleteFollower(follow.memberId)}
+                      className={styles.삭제글자}
+                    >
+                      삭제
+                    </span>
+                  )}
                 </div>
               )}
             </div>

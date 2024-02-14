@@ -32,7 +32,7 @@ import {
   getMybrary,
   updateMybrary,
 } from "../api/mybrary/Mybrary";
-import gomimg from "../assets/곰탱이.png";
+import gomimg from "../assets/icon/Iconuser2.png";
 import BigModal from "../components/common/BigModal";
 import Loading from "../components/common/Loading";
 import FollowList from "../components/mybrary/FollowList";
@@ -61,7 +61,7 @@ export default function MybraryPage() {
   const [tbColor, setTbColor] = useState(table1);
   const [bsColor, setBsColor] = useState(shelf1);
   const [frameimgurl, setFrameimgurl] = useState("");
-  const [userimg, setUserimg] = useState("");
+  const [userimg, setUserimg] = useState("null");
 
   // 상테 체크
   const [isLoading, setIsLoading] = useState(true); // 로딩 상태
@@ -224,9 +224,11 @@ export default function MybraryPage() {
           setFrameimgurl(
             `https://jingu.s3.ap-northeast-2.amazonaws.com/${response.data.frameImageUrl}`
           );
-          setUserimg(
-            `https://jingu.s3.ap-northeast-2.amazonaws.com/${response.data.profileImageUrl}`
-          );
+          if (response.data.profileImageUrl != null) {
+            setUserimg(
+              `https://jingu.s3.ap-northeast-2.amazonaws.com/${response.data.profileImageUrl}`
+            );
+          }
           setIsLoading(false);
         } else {
           const response = await getMybrary(nowuser);
@@ -241,9 +243,11 @@ export default function MybraryPage() {
           setFrameimgurl(
             `https://jingu.s3.ap-northeast-2.amazonaws.com/${response.data.frameImageUrl}`
           );
-          setUserimg(
-            `https://jingu.s3.ap-northeast-2.amazonaws.com/${response.data.profileImageUrl}`
-          );
+          if (response.data.profileImageUrl != null) {
+            setUserimg(
+              `https://jingu.s3.ap-northeast-2.amazonaws.com/${response.data.profileImageUrl}`
+            );
+          }
           setIsLoading(false);
         }
       } catch (error) {
@@ -522,11 +526,21 @@ export default function MybraryPage() {
             <div className={styles.profileContainer}>
               <div className={styles.profile}>
                 <div className={`${styles.프로필박스2}`}>
-                  <img
-                    className={styles.프로필이미지곰}
-                    src={userimg || gomimg}
-                    alt="대체 이미지"
-                  />
+                  {userimg != "null" ? (
+                    <div
+                      className={styles.프로필이미지곰}
+                      style={{
+                        background: `url(${userimg})no-repeat center/cover`,
+                      }}
+                    ></div>
+                  ) : (
+                    <div
+                      className={styles.프로필이미지곰}
+                      style={{
+                        background: `url(${gomimg})no-repeat center/cover`,
+                      }}
+                    ></div>
+                  )}
                 </div>
                 <div className={styles.프로필박스4}>
                   <div className={styles.닉네임폰트}>{userInfo.nickname}</div>

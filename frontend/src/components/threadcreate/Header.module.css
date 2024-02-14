@@ -27,6 +27,7 @@
 .page {
   background-color: var(--main3);
   color: var(--main2);
+  cursor: pointer;
 }
 .page:hover {
   background-color: var(--main2);
@@ -40,6 +41,7 @@
 .newPage {
   background-color: var(--gomin3);
   color: var(--main4);
+  cursor: pointer;
 }
 .newPage:hover {
   background-color: #acbee6;
@@ -50,6 +52,7 @@
   color: var(--main4);
   position: absolute;
   bottom: 20px;
+  cursor: pointer;
 }
 .deletePage:hover {
   background-color: #eeb8c7;

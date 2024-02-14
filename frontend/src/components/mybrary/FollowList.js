@@ -80,14 +80,12 @@ export default function FollowList({
           {followList.map((follow) => (
             <div key={follow.memberId} className={styles.팔로우리스트}>
               <div className={styles.userimg}>
-                <img
+                <div
                   className={styles.img}
-                  src={
-                    `https://jingu.s3.ap-northeast-2.amazonaws.com/${follow.profileImageUrl}` ||
-                    Iconuser2
-                  }
-                  alt="이미지없음"
-                />
+                  style={{
+                    background: `url("https://jingu.s3.ap-northeast-2.amazonaws.com/${follow.profileImageUrl}")no-repeat center/cover`,
+                  }}
+                ></div>
               </div>
               <div
                 className={styles.이름정보들}
@@ -96,13 +94,46 @@ export default function FollowList({
                 <span>{follow.nickname}</span>
                 <span className={styles.사용자이름}>{follow.name}</span>
               </div>
-              {follow.memberId != me && (
+              {nowuser != me ? (
+                <>
+                  {follow.memberId != me && (
+                    <div className={styles.팔로잉박스}>
+                      {follow.followStatus == 3 && (
+                        <span
+                          onClick={() => handleDeleteFollow(follow.memberId)}
+                          className={styles.팔로잉글자}
+                        >
+                          팔로잉 중
+                        </span>
+                      )}
+                      {follow.followStatus == 2 && (
+                        <span
+                          onClick={() => handleDeleteFollow(follow.memberId)}
+                          className={styles.팔로잉글자}
+                        >
+                          요청응답중
+                        </span>
+                      )}
+                      {follow.followStatus == 1 && (
+                        <span
+                          onClick={() =>
+                            navigate(`/mybrary/${follow.memberId}`)
+                          }
+                          className={styles.팔로잉글자2}
+                        >
+                          팔로잉 하러하기
+                        </span>
+                      )}
+                    </div>
+                  )}
+                </>
+              ) : (
                 <div className={styles.팔로잉박스}>
                   <span
                     onClick={() => handleDeleteFollow(follow.memberId)}
                     className={styles.팔로잉글자}
                   >
-                    팔로잉
+                    팔로잉 중
                   </span>
                 </div>
               )}

@@ -12,7 +12,6 @@ import styles from "./FeedContent.module.css";
 import ContentItem from "./ContentItem";
 import { useState } from "react";
 import s from "classnames";
-import 곰탱이 from "../../assets/icon/Iconuser2.png";
 import { like } from "../../api/paper/Paper";
 import toast from "react-hot-toast";
 import useUserStore from "../../store/useUserStore";
@@ -31,6 +30,9 @@ export default function FeedContent({
   setCommentId,
   setZIndex,
   handleOpenBookList,
+  setThreadModal,
+  setThreadList,
+  threadList,
 }) {
   const navigate = useNavigate();
   const user = useUserStore((state) => state.user);
@@ -78,6 +80,7 @@ export default function FeedContent({
   const toggleLike = async (paperId, liked) => {
     try {
       const response = await like(paperId);
+      console.log(response);
       if (!liked) {
         showToast("좋아요 !");
       } else {
@@ -126,8 +129,13 @@ export default function FeedContent({
     const updatedThreadList = list.filter(
       (thread) => thread.threadId !== threadId
     );
+    const updatedThreadList2 = threadList.filter(
+      (thread) => thread.threadId !== threadId
+    );
     deleteThread(threadId);
     setList(updatedThreadList);
+    setThreadList(updatedThreadList2);
+    setThreadModal(false);
   };
   return (
     <div className={styles.content}>
@@ -138,16 +146,11 @@ export default function FeedContent({
               className={styles.user_profile}
               onClick={() => navigate(`/mybrary/${thread.memberId}`)}
             >
-              {thread.profileUrl != null ? (
-                <div
-                  className={styles.user_img}
-                  style={{
-                    background: `url("https://jingu.s3.ap-northeast-2.amazonaws.com/${thread.profileUrl}")no-repeat center/cover`,
-                  }}
-                ></div>
-              ) : (
-                <img src={곰탱이} alt="" className={styles.user_img} />
-              )}
+              <img
+                src={`https://jingu.s3.ap-northeast-2.amazonaws.com/${thread.profileUrl}`}
+                alt=""
+                className={styles.user_img}
+              />
               <div className={styles.user_nickdate}>
                 <div className={styles.user_nickname}>{thread.nickname}</div>
                 <div className={styles.user_date}>
@@ -209,49 +212,34 @@ export default function FeedContent({
                 setIsModalOpen={setIsModalOpen}
                 isModalOpen={isModalOpen}
                 width="300px"
-                left="-7.4vw"
-                top="1.2vw"
+                left="-7.4vi"
+                top="1.2vi"
                 header="이 페이퍼를 포함한 작성자의 책"
                 paperId={paper.id}
               >
-                {booklist.length != 0 ? (
-                  <div className={styles.책모음}>
-                    {booklist.map((book) => (
-                      <div
-                        className={styles.책한권}
-                        key={book.bookId}
-                        onClick={() => handelBookNavi(book)}
-                      >
-                        <div>
-                          <div className={styles.푸터}>
-                            {book.coverImageUrl != null ? (
-                              <div
-                                className={styles.유저이미지}
-                                style={{
-                                  background: `url("https://jingu.s3.ap-northeast-2.amazonaws.com/${book.coverImageUrl}")no-repeat center/cover`,
-                                }}
-                              ></div>
-                            ) : (
-                              <div
-                                className={styles.유저이미지}
-                                style={{
-                                  background: `url("${곰탱이}")no-repeat center/cover`,
-                                }}
-                              ></div>
-                            )}
-                            {book.coverTitle}
-                          </div>
-                        </div>
+                <div className={styles.책모음}>
+                  {booklist.map((book) => (
+                    <div
+                      className={styles.책한권}
+                      key={book.bookId}
+                      onClick={() => handelBookNavi(book)}
+                    >
+                      <div>
+                        <span className={styles.푸터}>
+                          <img
+                            className={styles.유저이미지}
+                            src={`https://jingu.s3.ap-northeast-2.amazonaws.com/${book.profileImageUrl}`}
+                          />
+                          {book.bookTitle}
+                        </span>
                       </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className={styles.책없음}>꽃힌 책이 없습니다</div>
-                )}
+                    </div>
+                  ))}
+                </div>
               </FeedModal2>
             </div>
 
-            {/* <img src={icon_share} alt="" className={styles.icon_right} /> */}
+            <img src={icon_share} alt="" className={styles.icon_right} />
           </div>
           <div className={styles.main_content}>
             {/* 레이아웃번호, 글1, 글2, 사진1, 사진2 */}
