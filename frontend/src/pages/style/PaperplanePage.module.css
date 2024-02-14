@@ -299,10 +299,12 @@
 .message {
   margin: 15px 25px;
   padding: 10px;
-  max-width: 60%;
+  max-width: 100%;
   border-radius: 10px;
   font-size: 16px;
   white-space: pre-wrap;
+  word-wrap: break-word;
+  word-break: break-word;
 }
 
 .sender {
@@ -321,9 +323,11 @@
 }
 
 .senderbox {
+  max-width: 500px;
   align-self: flex-end;
 }
 
 .receiverbox {
+  max-width: 500px;
   align-self: flex-start;
 }
