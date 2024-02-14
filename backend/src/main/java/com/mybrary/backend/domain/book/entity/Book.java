@@ -68,12 +68,12 @@ public class Book extends BaseEntity {
 
     /* book - pickbook 양방향 관계 설정 */
     @Builder.Default
-    @OneToMany(mappedBy = "book", cascade = {CascadeType.REMOVE})
+    @OneToMany(mappedBy = "book", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     private List<PickBook> pickBookList = new ArrayList<>();
 
     /* book - scrap 양방향 관계 설정 */
     @Builder.Default
-    @OneToMany(mappedBy = "book", cascade = {CascadeType.REMOVE})
+    @OneToMany(mappedBy = "book", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     private List<Scrap> scrapList = new ArrayList<>();
 
 }

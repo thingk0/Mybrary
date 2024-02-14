@@ -116,37 +116,37 @@ public class Member extends BaseEntity {
     /**
      * 양방향 관계 - 팔로잉/팔로워, 알림 발신자/수신자, 채팅참여, 메시지, 좋아요
      */
-    @OneToMany(mappedBy = "following", cascade = {CascadeType.REMOVE})
+    @OneToMany(mappedBy = "following", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     private List<Follow> followingList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "follower", cascade = {CascadeType.REMOVE})
+    @OneToMany(mappedBy = "follower", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     private List<Follow> followerList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "sender", cascade = {CascadeType.REMOVE})
+    @OneToMany(mappedBy = "sender", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     private List<Notification> sendList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "receiver", cascade = {CascadeType.REMOVE})
+    @OneToMany(mappedBy = "receiver", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     private List<Notification> receiveList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "joinMember", cascade = {CascadeType.REMOVE})
+    @OneToMany(mappedBy = "joinMember", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     private List<ChatJoin> chatJoinList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "receiver", cascade = {CascadeType.REMOVE})
+    @OneToMany(mappedBy = "receiver", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     private List<ChatMessage> messageList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", cascade = {CascadeType.REMOVE})
+    @OneToMany(mappedBy = "member", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     private List<Like> likeList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", cascade = {CascadeType.REMOVE})
+    @OneToMany(mappedBy = "member", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     private List<Comment> commentList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", cascade = {CascadeType.REMOVE})
+    @OneToMany(mappedBy = "member", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     private List<Paper> paperList = new ArrayList<>();
 
-    @OneToOne(mappedBy = "member", cascade = {CascadeType.REMOVE})
+    @OneToOne(mappedBy = "member", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     private Mybrary mybrary;
 
-    @OneToMany(mappedBy = "member", cascade = {CascadeType.REMOVE})
+    @OneToMany(mappedBy = "member", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     private List<Book> bookList = new ArrayList<>();
 
 }

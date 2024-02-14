@@ -56,7 +56,7 @@ public class Comment extends BaseEntity {
     private int colorCode;
 
     @Builder.Default
-    @OneToMany(mappedBy = "parentComment", cascade = {CascadeType.REMOVE})
+    @OneToMany(mappedBy = "parentComment", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     private List<Comment> childComments = new ArrayList<>();
 
 }
