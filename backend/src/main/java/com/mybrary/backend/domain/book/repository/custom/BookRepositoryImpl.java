@@ -106,6 +106,7 @@ public class BookRepositoryImpl implements BookRepositoryCustom {
                                         .leftJoin(profileImage).on(member.profileImage.id.eq(profileImage.id))
                                         .leftJoin(coverImage).on(book.coverImage.id.eq(coverImage.id))
                                         .where(paper.id.eq(paperId).and(paper.member.id.eq(book.member.id)))
+                                        .groupBy(book.id)
                                         .fetch()
         );
     }
