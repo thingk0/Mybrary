@@ -12,6 +12,16 @@
   align-items: center;
   justify-content: center;
 }
+.imgotheruser {
+  width: 3.6vw;
+  height: 3.6vw;
+  border-radius: 100px;
+}
+.imgotheruser2 {
+  width: 3vw;
+  height: 3vw;
+  border-radius: 100px;
+}
 .pipi {
   height: 4%;
   width: 90%;

@@ -125,14 +125,15 @@ export default function FeedContent({
     navigate(`/book/${book.bookId}`);
   };
 
-  const handleDeleteThread = (threadId) => {
+  const handleDeleteThread = async (threadId) => {
     const updatedThreadList = list.filter(
       (thread) => thread.threadId !== threadId
     );
     const updatedThreadList2 = threadList.filter(
       (thread) => thread.threadId !== threadId
     );
-    deleteThread(threadId);
+    const a = await deleteThread(threadId);
+    console.log(a);
     setList(updatedThreadList);
     setThreadList(updatedThreadList2);
     setThreadModal(false);
@@ -239,7 +240,7 @@ export default function FeedContent({
               </FeedModal2>
             </div>
 
-            <img src={icon_share} alt="" className={styles.icon_right} />
+            {/* <img src={icon_share} alt="" className={styles.icon_right} /> */}
           </div>
           <div className={styles.main_content}>
             {/* 레이아웃번호, 글1, 글2, 사진1, 사진2 */}

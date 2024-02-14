@@ -121,7 +121,7 @@ export default function FollowList({
                           }
                           className={styles.팔로잉글자2}
                         >
-                          팔로잉 하러하기
+                          팔로우 하러하기
                         </span>
                       )}
                     </div>

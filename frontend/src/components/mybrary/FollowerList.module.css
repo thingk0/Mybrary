@@ -96,3 +96,20 @@
   gap: 0.2vh;
   width: 15vh;
 }
+.팔로잉글자2 {
+  color: rgb(42, 147, 26);
+  cursor: pointer;
+  font-size: 0.72vw;
+  transition: 0.3s;
+  padding-right: 1vw;
+}
+.팔로잉글자2:hover {
+  color: rgb(65, 231, 101);
+}
+.팔로잉글자 {
+  color: rgb(48, 154, 200);
+  cursor: pointer;
+  font-size: 0.8vw;
+  transition: 0.3s;
+  padding-left: 1vw;
+}

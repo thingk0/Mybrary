@@ -1,4 +1,5 @@
 import Iconuser2 from "../../assets/icon/Iconuser2.png";
+import styles from "../../pages/style/PaperplanePage.module.css";
 
 function ChatProfile({
   isSelected,
@@ -26,23 +27,16 @@ function ChatProfile({
         }}
         onClick={onClick}
       >
-        <img
-          src={
-            otherMemberProfileImageUrl
-              ? `https://jingu.s3.ap-northeast-2.amazonaws.com/${otherMemberProfileImageUrl}`
-              : Iconuser2
-          } // 선택된 이미지 또는 기본 이미지
-          alt="프로필"
+        <div
+          className={styles.imgotheruser2}
           style={{
-            width: "14%",
-            objectFit: "cover",
-            borderRadius: "50%",
-            marginRight: "6px",
+            background: `url("https://jingu.s3.ap-northeast-2.amazonaws.com/${otherMemberProfileImageUrl}")no-repeat center/cover`,
           }}
-        />
+        ></div>
         <div
           style={{
-            width: "70%",
+            width: "65%",
+            marginLeft: "1vw",
           }}
         >
           <div

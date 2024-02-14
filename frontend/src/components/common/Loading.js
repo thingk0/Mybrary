@@ -6,11 +6,13 @@ import LottieAnimation from "./LottieAnimation.js";
 export default function Loading() {
   return (
     <>
-      <div className={styles.modalContainer}>
-        <div className={styles.modal}>
-          <LottieAnimation animationPath={animationData} />
+      <Container>
+        <div className={styles.modalContainer}>
+          {/* <div className={styles.modal}>
+            <LottieAnimation animationPath={animationData} />
+          </div> */}
         </div>
-      </div>
+      </Container>
     </>
   );
 }

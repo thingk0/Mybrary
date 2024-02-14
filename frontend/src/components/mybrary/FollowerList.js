@@ -170,6 +170,28 @@ export default function FollowerList({
                   )}
                 </div>
               )}
+              {me != nowuser && follow.memberId != me && (
+                <div className={styles.팔로잉박스}>
+                  {follow.followStatus == 1 && (
+                    <>
+                      <span
+                        onClick={() => navigate(`/mybrary/${follow.memberId}`)}
+                        className={styles.팔로잉글자2}
+                      >
+                        팔로우 하러가기
+                      </span>
+                    </>
+                  )}
+                  {follow.followStatus == 3 && (
+                    <span
+                      className={styles.팔로잉글자}
+                      onClick={() => navigate(`/mybrary/${follow.memberId}`)}
+                    >
+                      팔로잉 중
+                    </span>
+                  )}
+                </div>
+              )}
             </div>
           ))}
         </div>

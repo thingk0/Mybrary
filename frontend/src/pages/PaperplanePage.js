@@ -254,19 +254,12 @@ export default function PaperplanePage() {
                   <div className={styles.header}>
                     {/* 상대방 프로필 이미지와 닉네임 */}
                     <div className={styles.이미지닉네임}>
-                      <img
-                        src={
-                          nowChatRoom.otherMemberProfileImageUrl
-                            ? `https://jingu.s3.ap-northeast-2.amazonaws.com/${nowChatRoom.otherMemberProfileImageUrl}`
-                            : Iconuser2
-                        } // 선택된 이미지 또는 기본 이미지
-                        alt="프로필"
+                      <div
+                        className={styles.imgotheruser}
                         style={{
-                          width: "23%",
-                          objectFit: "cover",
-                          borderRadius: "50%",
+                          background: `url("https://jingu.s3.ap-northeast-2.amazonaws.com/${nowChatRoom.otherMemberProfileImageUrl}")no-repeat center/cover`,
                         }}
-                      />
+                      ></div>
                       <div>{nowChatRoom.otherMemberNickname}</div>
                     </div>
                     <button

@@ -7,6 +7,7 @@ import Modal from "./Modal";
 import { getBookList } from "../../api/category/Category";
 import { uplodaImage } from "../../api/image/Image";
 import { createBook } from "../../api/book/Book";
+import toast from "react-hot-toast";
 
 export default function BookCreateOfCategory({
   booklist,
@@ -52,6 +53,7 @@ export default function BookCreateOfCategory({
   const handleCategory = (category) => {
     handleChange("categoryId", category.categoryId);
     setTitle(category.name);
+    setT(true);
     setOpen(false);
   };
   const addNewBookToCategory = async (categoryId) => {
@@ -72,6 +74,17 @@ export default function BookCreateOfCategory({
     });
     addNewBookToCategory(value.categoryId);
     setModalIsOpen(false);
+  };
+  const [t, setT] = useState(false);
+  const noneImg = () => {
+    toast.error("이미지를 추가해주세요", {
+      position: "top-center",
+    });
+  };
+  const nonecate = () => {
+    toast.error("책의 카테고리를 선택해주세요", {
+      position: "top-center",
+    });
   };
 
   return (
@@ -169,7 +182,12 @@ export default function BookCreateOfCategory({
           </div>
         </div>
       </div>
-      <div className={s(styles.bookCreate)} onClick={() => handleSubmit()}>
+      <div
+        className={s(styles.bookCreate)}
+        onClick={() =>
+          value.coverImage ? (t ? handleSubmit() : nonecate()) : noneImg()
+        }
+      >
         생성
       </div>
     </div>

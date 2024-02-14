@@ -5,12 +5,15 @@ import CategoryEditModal from "../components/bookshelf/CategoryEditModal";
 import BookshelfHeader from "../components/bookshelf/BookshelfHeader";
 import Bookshelf from "../components/bookshelf/Bookshelf";
 import { getCategoryList } from "../api/category/Category.js";
-
+import useUserStore from "../store/useUserStore";
 import { useParams } from "react-router-dom";
 
 export default function BookshelfPage() {
   const [categoryList, setCategoryList] = useState([]);
-  const { bookShelfId } = useParams();
+  const { userid, bookShelfId } = useParams();
+  const user = useUserStore((state) => state.user);
+  const [checkme, setCheckme] = useState(false); //로그인한 회원인지 체크
+
   useEffect(() => {
     async function fetchbookshelfData() {
       try {
@@ -25,6 +28,9 @@ export default function BookshelfPage() {
         console.error("데이터를 가져오는 데 실패했습니다:", error);
       }
     }
+    if (userid == user.memberId) {
+      setCheckme(true);
+    }
 
     fetchbookshelfData();
   }, []); // bookshelfId를 의존성 배열에 추가
@@ -36,12 +42,14 @@ export default function BookshelfPage() {
         <div>
           <div className={styles.middle}>
             <div></div>
-            <CategoryEditModal
-              bookShelfId={bookShelfId}
-              categoryList={categoryList}
-              setCategoryList={setCategoryList}
-              content="카테고리수정"
-            />
+            {checkme && (
+              <CategoryEditModal
+                bookShelfId={bookShelfId}
+                categoryList={categoryList}
+                setCategoryList={setCategoryList}
+                content="카테고리수정"
+              />
+            )}
           </div>
         </div>
         <div className={styles.bookshelf_container}>

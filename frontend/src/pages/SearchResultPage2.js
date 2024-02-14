@@ -179,11 +179,17 @@ export default function SearchResultPage2() {
                 <div className={styles.유저들이들어갈공간}>
                   {userList.map((user) => (
                     <div key={user.memberId} className={styles.유저박스}>
-                      <img
+                      {/* <img
                         className={styles.유저아이콘}
                         src={`https://jingu.s3.ap-northeast-2.amazonaws.com/${user.profileImageUrl}`}
                         alt={`Thread ${user.memberId}`}
-                      />
+                      /> */}
+                      <div
+                        className={styles.유저아이콘}
+                        style={{
+                          background: `url("https://jingu.s3.ap-northeast-2.amazonaws.com/${user.profileImageUrl}")no-repeat center/cover`,
+                        }}
+                      ></div>
                       <div className={styles.유저이름들}>
                         <div>
                           <span className={styles.유저닉네임}>
