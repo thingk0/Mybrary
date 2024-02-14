@@ -15,6 +15,7 @@ import useUserStore from "../../store/useUserStore";
 import BigModal from "../common/BigModal";
 import { login } from "../../api/member/Login";
 import toast from "react-hot-toast";
+import FeedModal from "../feed/FeedModal";
 
 export default function Nav() {
   const user = useUserStore((state) => state.user);
@@ -53,10 +54,14 @@ export default function Nav() {
   );
   const navigate = useNavigate();
   const { setUser } = useUserStore();
+
+  //이부분 알림왔을때만 트루되게!!
   const { setNewNotification } = useNotificationStore();
 
+  const [alarmModal, setAlarmModal] = useState(false);
   const handleOffAlarm = () => {
     setNewNotification(false, "");
+    setAlarmModal(true);
   };
 
   const handleSetting = () => {
@@ -86,7 +91,7 @@ export default function Nav() {
                   className={s(styles.nav_icon)}
                   onClick={() => handleOffAlarm()}
                 >
-                  <img src={hasNewNotification ? bell : setting} alt="" />
+                  <img src={!hasNewNotification ? bell : setting} alt="" />
                 </div>
                 <div
                   className={s(styles.nav_icon)}
@@ -100,6 +105,19 @@ export default function Nav() {
                 >
                   <img src={logout} alt="" />
                 </div>
+                <FeedModal
+                  isModalOpen={alarmModal}
+                  setIsModalOpen={setAlarmModal}
+                  width="400px"
+                  height="700px"
+                  bottom={"-100px"}
+                  left={"50px"}
+                >
+                  <div>
+                    여기에 형이 적고싶은거 적어ㅋㅋ 폰트사이즈 알어서 적으셈
+                    px로 적으셈
+                  </div>
+                </FeedModal>
               </div>
             </div>
           </div>
