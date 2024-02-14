@@ -5,13 +5,13 @@ import CategoryEditModal from "../components/bookshelf/CategoryEditModal";
 import BookshelfHeader from "../components/bookshelf/BookshelfHeader";
 import Bookshelf from "../components/bookshelf/Bookshelf";
 import { getCategoryList } from "../api/category/Category.js";
-import useUserStore from "../store/useUserStore";
+import useMyStore from "../store/useMyStore";
 import { useParams } from "react-router-dom";
 
 export default function BookshelfPage() {
   const [categoryList, setCategoryList] = useState([]);
   const { userid, bookShelfId } = useParams();
-  const user = useUserStore((state) => state.user);
+  const user = useMyStore((state) => state.my);
   const [checkme, setCheckme] = useState(false); //로그인한 회원인지 체크
 
   useEffect(() => {
