@@ -103,7 +103,7 @@ public class ThreadServiceImpl implements ThreadService {
         int paperSeq = 0;
         if (threadPostDto.getBookId() != null) {
             paperSeq = scrapRepository.findLastPaperSeq(threadPostDto.getBookId())
-                                      .orElseThrow(ScrapNotFoundException::new);
+                                      .orElse(0);
         }
 
         /* paper 객체 하나씩 생성하고 저장 */
