@@ -4,7 +4,7 @@ import styles from "./style/PaperplanePage.module.css";
 import 종이비행기 from "../assets/종이비행기.png";
 import { useEffect, useState, useRef } from "react";
 import useUserStore from "../store/useUserStore";
-import { getChatList, getMessageList } from "../api/Chat/Chat.js";
+import { getChatList, getMessageList } from "../api/chat/Chat.js";
 import ChatProfile from "../components/paperplane/ChatProfile.js";
 import Iconuser2 from "../assets/icon/Iconuser2.png";
 import SockJS from "sockjs-client";
@@ -180,6 +180,21 @@ export default function PaperplanePage() {
         timestamp: Date.now(),
       };
       setChatMessageList((prev) => [message, ...prev]);
+
+      setChatRoomList((prevChatRoomList) => {
+        const updatedList = prevChatRoomList.map((chatRoom) => {
+          if (chatRoom.chatRoomId === nowChatRoom.chatRoomId) {
+            // 현재 채팅방에 메시지를 보냈으므로, 최신 메시지 정보를 업데이트
+            return {
+              ...chatRoom,
+              latestMessage: message.content,
+              latestMessageSender: user.memberId,
+            };
+          }
+          return chatRoom;
+        });
+        return updatedList;
+      });
 
       const scrollToBottom = () => {
         if (chatContainerRef.current) {
