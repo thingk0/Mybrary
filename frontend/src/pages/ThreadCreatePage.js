@@ -17,7 +17,9 @@ import toast from "react-hot-toast";
 import { createThread } from "../api/thread/Thread";
 import { useNavigate } from "react-router-dom";
 import useUserStore from "../store/useUserStore";
-
+import LoadModal from "../components/common/LoadModal";
+import LottieAnimation from "../components/common/LottieAnimation";
+import animationData from "../assets/lottie/loading.json";
 const initialPaper = () => ({
   layoutType: 1101,
   editorState: EditorState.createEmpty(),
@@ -39,6 +41,7 @@ export default function ThreadCreatePage() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [modalIsOpen2, setModalIsOpen2] = useState(false);
   const [postPossible, setPostPossible] = useState(false);
+  const [Loading, setLoading] = useState(false);
 
   const layouts = [
     1101, 1102, 1103, 1201, 1202, 1203, 1204, 1205, 1301, 1302, 1303, 1304,
@@ -51,8 +54,10 @@ export default function ThreadCreatePage() {
   const [book, setBook] = useState({}); // 책선택
   const [bookId, setBookId] = useState(null); // 책 ID 상태 추가
   const saveContent = async () => {
+    setLoading(true);
     let a = 0;
     const formData = new FormData();
+
     for (let paper of papers) {
       if (Math.floor(paper.layoutType / 1000) === 1) {
         formData.append("images", paper.image1);
@@ -278,6 +283,22 @@ export default function ThreadCreatePage() {
           setModalIsOpen={setModalIsOpen}
         />
       </BigModal>
+      <LoadModal
+        modalIsOpen={Loading}
+        setModalIsOpen={setLoading}
+        width="400px"
+        height="500px"
+      >
+        <div className={styles.loadTitle}>업로드 중</div>
+        <div className={styles.loadSub}>
+          이미지 용량이 크면 오래걸릴 수 있습니다.
+        </div>
+        <LottieAnimation
+          animationPath={animationData}
+          className={styles.loadImg}
+        />
+        <div className={styles.loadSub2}>중간에 닫거나 이동하지 마세요!!!</div>
+      </LoadModal>
     </>
   );
 }

@@ -77,7 +77,7 @@ export default function Tag({ children, papers, setPapers, currentPage }) {
         </form>
         <div className={styles.추가된태그들}>
           {papers[currentPage].tagList.map((tag, index) => (
-            <div className={styles.글자태그} key={index}>
+            <div className={styles.친구태그} key={index}>
               <div># {tag}</div>
               <div
                 className={styles.x버튼}
@@ -89,9 +89,9 @@ export default function Tag({ children, papers, setPapers, currentPage }) {
           ))}
         </div>
       </div>
-      <div className={styles.title}>친구태그</div>
+      <div className={styles.title}></div>
       <div className={styles.tagInputContainer}>
-        <form onSubmit={handleSubmitFriendTag}>
+        {/* <form onSubmit={handleSubmitFriendTag}>
           <input
             type="text"
             id="add2"
@@ -116,7 +116,7 @@ export default function Tag({ children, papers, setPapers, currentPage }) {
               </div>
             </div>
           ))}
-        </div>
+        </div> */}
       </div>
       {children}
     </div>

@@ -438,7 +438,7 @@ export default function SettingPage() {
                   확인
                 </button>
               </div>
-              <div className={styles.설정한줄크기}>
+              {/* <div className={styles.설정한줄크기}>
                 <div className={styles.고정크기}>
                   <span>계정공개</span>
                 </div>
@@ -462,7 +462,7 @@ export default function SettingPage() {
                     비공개
                   </button>
                 </div>
-              </div>
+              </div> */}
             </div>
             <div className={styles.설정과이미지}>
               <span>알림설정</span>

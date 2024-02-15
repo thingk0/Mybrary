@@ -14,6 +14,7 @@ import Iconuser2 from "../assets/icon/Iconuser2.png";
 import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
 import { useNavigate, useLocation } from "react-router-dom";
+import useNavStore from "../store/useNavStore.js";
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -21,6 +22,8 @@ function useQuery() {
 
 export default function PaperplanePage() {
   const query = useQuery();
+
+  const setNav = useNavStore((state) => state.setNav);
   const targetUserId = query.get("chatuserid");
 
   const location = useLocation();
@@ -44,10 +47,25 @@ export default function PaperplanePage() {
   const chatContainerRef = useRef(null); // 채팅 컨테이너에 대한 ref 스크롤 아래로 관리하기 위함
   const navigate = useNavigate();
 
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+
+    if (searchQuery.trim() !== "") {
+      navigate(`/search/${encodeURIComponent(searchQuery)}/2`);
+    }
+  };
+
+  const handleInputChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
   //채팅페이지에 들어오면 구독 실행
   useEffect(() => {
     (async function asyncGetChatList() {
       try {
+        await setNav(2);
         const res = await getChatList();
         setChatRoomList(res.data.content);
         if (targetUserId) {
@@ -287,23 +305,28 @@ export default function PaperplanePage() {
             <div className={styles.member}>
               <div className={styles.pipi}>Paper Plane</div>
               <div className={styles.search}>
-                <>
-                  <form action="/search" method="get" style={{ width: "100%" }}>
-                    <label htmlFor="search"></label>
-                    <div className={styles.searchContainer}>
-                      <button type="submit" className={styles.searchButton}>
-                        검색
-                      </button>
-                      <input
-                        type="text"
-                        id="search"
-                        name="q"
-                        placeholder=""
-                        className={styles.searchInput}
-                      />
-                    </div>
-                  </form>
-                </>
+                <form
+                  action="/search/"
+                  method="get"
+                  style={{ width: "100%" }}
+                  onSubmit={handleSearch}
+                >
+                  <label htmlFor="search"></label>
+                  <div className={styles.searchContainer}>
+                    <button type="submit" className={styles.searchButton}>
+                      검색
+                    </button>
+                    <input
+                      type="text"
+                      id="search"
+                      name="q"
+                      placeholder=""
+                      className={styles.searchInput}
+                      value={searchQuery}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                </form>
               </div>
               <div className={styles.users} style={{ marginTop: "15px" }}>
                 {chatRoomList.length > 0 ? (

@@ -32,6 +32,7 @@ import {
   getMybrary,
   updateMybrary,
 } from "../api/mybrary/Mybrary";
+import 기본액자 from "../assets/예시이미지2.png";
 import gomimg from "../assets/icon/Iconuser2.png";
 import BigModal from "../components/common/BigModal";
 import Loading from "../components/common/Loading";
@@ -43,6 +44,7 @@ import { deleteFollow, follow, followCancel } from "../api/member/Follow";
 import { getFirstChat } from "../api/chat/Chat";
 import useNotificationStore from "../store/useNotificationStore";
 import useMyStore from "../store/useMyStore";
+import useNavStore from "../store/useNavStore";
 
 export default function MybraryPage() {
   const { setNotifyEnable } = useNotificationStore();
@@ -54,6 +56,7 @@ export default function MybraryPage() {
   const setMybrary = useMybraryStore((state) => state.setMybrary);
   const setMy = useMyStore((state) => state.setMy);
   const client = useStompStore((state) => state.stompClient);
+  const setNav = useNavStore((state) => state.setNav);
 
   // 각각의 색상옵션들
   const color = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
@@ -64,7 +67,7 @@ export default function MybraryPage() {
   const [esColor, setEsColor] = useState(easel1);
   const [tbColor, setTbColor] = useState(table1);
   const [bsColor, setBsColor] = useState(shelf1);
-  const [frameimgurl, setFrameimgurl] = useState("");
+  const [frameimgurl, setFrameimgurl] = useState(기본액자);
   const [userimg, setUserimg] = useState("null");
 
   // 상테 체크
@@ -227,18 +230,22 @@ export default function MybraryPage() {
           setEsColor(easelImgs[response.data.easelColor - 1]);
           setTbColor(tableImgs[response.data.deskColor - 1]);
           setBsColor(bookshelfImgs[response.data.bookshelfColor - 1]);
-          setFrameimgurl(
-            `https://jingu.s3.ap-northeast-2.amazonaws.com/${response.data.frameImageUrl}`
-          );
+          if (response.data.frameImageUrl != null) {
+            setFrameimgurl(
+              `https://jingu.s3.ap-northeast-2.amazonaws.com/${response.data.frameImageUrl}`
+            );
+          }
           if (response.data.profileImageUrl != null) {
             setUserimg(
               `https://jingu.s3.ap-northeast-2.amazonaws.com/${response.data.profileImageUrl}`
             );
           }
           setIsLoading(false);
+          await setNav(0);
         } else {
           const response = await getMybrary(nowuser);
           setMybrary(response.data);
+          console.log(response.data);
           setCheckme(false);
           setFollowStatus(response.data.followStatus);
           setUserInfo(response.data);
@@ -246,9 +253,11 @@ export default function MybraryPage() {
           setEsColor(easelImgs[response.data.easelColor - 1]);
           setTbColor(tableImgs[response.data.deskColor - 1]);
           setBsColor(bookshelfImgs[response.data.bookshelfColor - 1]);
-          setFrameimgurl(
-            `https://jingu.s3.ap-northeast-2.amazonaws.com/${response.data.frameImageUrl}`
-          );
+          if (response.data.frameImageUrl != null) {
+            setFrameimgurl(
+              `https://jingu.s3.ap-northeast-2.amazonaws.com/${response.data.frameImageUrl}`
+            );
+          }
           if (response.data.profileImageUrl != null) {
             setUserimg(
               `https://jingu.s3.ap-northeast-2.amazonaws.com/${response.data.profileImageUrl}`

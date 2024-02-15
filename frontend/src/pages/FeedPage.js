@@ -9,17 +9,21 @@ import BigModal from "../components/common/BigModal";
 import { getMYBooks } from "../api/book/Book";
 import BookSelect2 from "../components/feed/BookSelect2";
 import BookCreate from "../components/common/BookCreate";
+import useNavStore from "../store/useNavStore";
 
 export default function FeedPage() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [list, setList] = useState([]);
   const [page, setPage] = useState(0);
   const [scrapModal, setScrapModal] = useState(false);
+  const [scr, setScr] = useState(true);
 
   const [comment, setComment] = useState(false);
   const [commentId, setCommentId] = useState(0);
   const [zIndex, setZIndex] = useState(-1);
   const navigate = useNavigate();
+
+  const setNav = useNavStore((state) => state.setNav);
 
   // 스로틀링을 위한 상태
   const [isThrottled, setIsThrottled] = useState(false);
@@ -54,6 +58,7 @@ export default function FeedPage() {
         }
         setIsThrottled(true);
         setTimeout(() => setIsThrottled(false), 500); // 0.5초 동안 다음 이벤트 차단
+        setScr(false);
       }
     },
     [isThrottled, handlePrevClick, handleNextClick]
@@ -92,10 +97,12 @@ export default function FeedPage() {
   useEffect(() => {
     async function fetchMainFeedData() {
       try {
+        await setNav(1);
         const response = await getThreadList(page);
         // setThreadList(response.data);
 
         setList([...list, ...response.data]);
+        console.log(list);
       } catch (error) {
         console.error("데이터불러오기실패");
       }
@@ -200,6 +207,12 @@ export default function FeedPage() {
           />
         </div>
       </div>
+      {scr && (
+        <div className={styles.apsol}>
+          <div>아래로 스크롤</div>
+          <div className={styles.aps}>{">>>"}</div>
+        </div>
+      )}
       <div className={styles.create} onClick={() => navigate("/threadCreate")}>
         + 스레드 작성하러가기
       </div>

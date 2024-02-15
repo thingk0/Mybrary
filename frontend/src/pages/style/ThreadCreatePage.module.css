@@ -67,12 +67,19 @@
   font-size: 1.2vw;
   width: 16.8vw;
   height: 2vw;
-  background-color: var(--main2);
+  background-color: rgb(44, 54, 102);
   color: var(--main4);
   border-radius: 5px;
   border: 0px;
   cursor: pointer;
   margin: 1vw;
+  transition: 0.3s;
+}
+.nextButton:hover {
+  background-color: rgb(91, 144, 182);
+}
+.prevButton:hover {
+  background-color: rgb(91, 144, 182);
 }
 
 .title {
@@ -141,4 +148,22 @@
   transition: 0.3s;
   color: var(--main4);
   cursor: pointer;
+}
+.loadTitle {
+  text-align: center;
+  font-size: 25px;
+}
+.loadImg {
+  margin: 30px;
+  height: 100px;
+}
+.loadSub {
+  text-align: center;
+  margin: 10px;
+  color: var(--main5);
+}
+.loadSub2 {
+  text-align: center;
+  margin: 10px;
+  color: var(--gomin5);
 }

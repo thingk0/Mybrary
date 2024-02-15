@@ -91,7 +91,7 @@ export default function BookPage() {
     <>
       <Container>
         <div>
-          <div className={title.back} onClick={() => navigate("../")}>
+          <div className={title.back} onClick={() => navigate(-1)}>
             &lt; 뒤로가기
           </div>
         </div>

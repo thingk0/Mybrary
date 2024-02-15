@@ -78,6 +78,7 @@
   align-items: center;
 }
 .추가된태그들 {
+  max-height: 190%;
   display: flex;
   flex-wrap: wrap;
   gap: 10px;

@@ -99,6 +99,7 @@ export default function BookDetailPage() {
     try {
       await unsubsribeBook(bookinfo.bookId);
       setUnSubscribeModal(false);
+      navigate(-1);
     } catch (error) {
       console.error("책 구독취소 중 오류 발생:", error);
     }
@@ -125,7 +126,7 @@ export default function BookDetailPage() {
     <>
       <div className={s(styles.bookContainer)}>
         <div className={styles.header}>
-          <div className={styles.headerLeft} onClick={() => navigate(url)}>
+          <div className={styles.headerLeft} onClick={() => navigate(-1)}>
             뒤로가기
           </div>
           <div className={styles.headerMain}>
