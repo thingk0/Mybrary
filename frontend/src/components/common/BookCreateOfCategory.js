@@ -156,7 +156,7 @@ export default function BookCreateOfCategory({
                   width={"200px"}
                   title={title}
                   bottom={"40px"}
-                  left={"-15px"}
+                  left={"-90px"}
                   open={open}
                   setOpen={setOpen}
                   header={"카테고리 선택"}
@@ -177,7 +177,7 @@ export default function BookCreateOfCategory({
                   </div>
                 </Modal>
               </div>
-              <img className={styles.categoryImg} src={three} alt="" />
+              {/* <img className={styles.categoryImg} src={three} alt="" /> */}
             </div>
           </div>
         </div>
