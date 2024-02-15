@@ -4,7 +4,11 @@ import styles from "./style/PaperplanePage.module.css";
 import 종이비행기 from "../assets/종이비행기.png";
 import { useEffect, useState, useRef } from "react";
 import useUserStore from "../store/useUserStore";
-import { getChatList, getMessageList } from "../api/chat/Chat.js";
+import {
+  deleteChatRoom,
+  getChatList,
+  getMessageList,
+} from "../api/chat/Chat.js";
 import ChatProfile from "../components/paperplane/ChatProfile.js";
 import Iconuser2 from "../assets/icon/Iconuser2.png";
 import SockJS from "sockjs-client";
@@ -36,7 +40,8 @@ export default function PaperplanePage() {
   const [nowChatRoom, setNowChatRoom] = useState(null); // 현재 내가 보고있는 채팅방 정보
   const [stompClient, setStompClient] = useState(null);
   const [nowMessage, setNowMessage] = useState("");
-  const chatContainerRef = useRef(null); // 채팅 컨테이너에 대한 ref 스크롤 아래로 관리하기 윟마
+  const [sendedMessage, setSendedMessage] = useState("");
+  const chatContainerRef = useRef(null); // 채팅 컨테이너에 대한 ref 스크롤 아래로 관리하기 위함
   const navigate = useNavigate();
 
   //채팅페이지에 들어오면 구독 실행
@@ -66,9 +71,11 @@ export default function PaperplanePage() {
       });
 
       client.onConnect = function () {
+        console.log("연결");
         client.subscribe(`/sub/chatMemberId/${user.memberId}`, (message) => {
           const res = JSON.parse(message.body);
-          setChatMessageList((prev) => [res, ...prev]);
+
+          setSendedMessage(res);
         });
       };
 
@@ -104,6 +111,59 @@ export default function PaperplanePage() {
   }, [nowChatRoom]);
 
   useEffect(() => {
+    if (sendedMessage) {
+      if (nowChatRoom && nowChatRoom.chatRoomId === sendedMessage.chatRoomId) {
+        setChatMessageList((prev) => [sendedMessage, ...prev]);
+      }
+
+      // 채팅방 목록도 실시간 렌더링
+      // chatRoomList를 검사하면서 아이디가 있는 걸 찾아봐야 함
+      const chatRoomIndex = chatRoomList.findIndex(
+        (chatRoom) => chatRoom.chatRoomId === sendedMessage.chatRoomId
+      );
+
+      if (chatRoomIndex !== -1) {
+        // 일치하는 채팅방이 있으면
+        const updatedChatRoom = { ...chatRoomList[chatRoomIndex] };
+
+        // 필요한 정보를 업데이트. 예를 들어, 최신 메시지 내용을 업데이트 할 수 있음
+        updatedChatRoom.latestMessage = sendedMessage.content; // 예시: res 객체의 메시지를 최신 메시지로 설정
+        if (
+          nowChatRoom &&
+          nowChatRoom.chatRoomId !== updatedChatRoom.chatRoomId
+        ) {
+          updatedChatRoom.unreadMessageCount++;
+        }
+
+        if (!nowChatRoom) {
+          updatedChatRoom.unreadMessageCount++;
+        }
+
+        updatedChatRoom.latestMessageSender = sendedMessage.senderId;
+
+        // chatRoomList를 업데이트
+        setChatRoomList((prev) => [
+          updatedChatRoom,
+          ...prev.slice(0, chatRoomIndex),
+          ...prev.slice(chatRoomIndex + 1),
+        ]);
+      } else {
+        // 새로운 채팅방이 열려야 한다면
+
+        const newChatRoom = {
+          chatRoomId: sendedMessage.chatRoomId,
+          otherMemberNickname: sendedMessage.nickname, // 가정한 예시 정보
+          otherMemberProfileImageUrl: sendedMessage.profileImageUrl, // 가정한 예시 정보
+          latestMessage: sendedMessage.content,
+          latestMessageSender: sendedMessage.senderId,
+          unreadMessageCount: 1, // 새 메시지 수신으로 인한 unread 카운트 1 설정};
+        };
+        setChatRoomList((prev) => [newChatRoom, ...prev]);
+      }
+    }
+  }, [sendedMessage]);
+
+  useEffect(() => {
     // 채팅 메시지 컨테이너의 스크롤을 맨 아래로 이동
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTop =
@@ -134,6 +194,21 @@ export default function PaperplanePage() {
         timestamp: Date.now(),
       };
       setChatMessageList((prev) => [message, ...prev]);
+
+      setChatRoomList((prevChatRoomList) => {
+        const updatedList = prevChatRoomList.map((chatRoom) => {
+          if (chatRoom.chatRoomId === nowChatRoom.chatRoomId) {
+            // 현재 채팅방에 메시지를 보냈으므로, 최신 메시지 정보를 업데이트
+            return {
+              ...chatRoom,
+              latestMessage: message.content,
+              latestMessageSender: user.memberId,
+            };
+          }
+          return chatRoom;
+        });
+        return updatedList;
+      });
 
       const scrollToBottom = () => {
         if (chatContainerRef.current) {
@@ -195,6 +270,17 @@ export default function PaperplanePage() {
       .replace("오후", "PM");
   };
 
+  const handleChatRoomLeave = async (chatRoomId) => {
+    const res = await deleteChatRoom(chatRoomId);
+    console.log(res);
+    setNowChatRoom(null);
+
+    setChatRoomList((currentChatRoomList) =>
+      currentChatRoomList.filter(
+        (chatRoom) => chatRoom.chatRoomId !== chatRoomId
+      )
+    );
+  };
   return (
     <>
       <Container backgroundColor={"#FFFAFA"}>
@@ -286,7 +372,7 @@ export default function PaperplanePage() {
                       <div
                         className={styles.채팅방나가기}
                         onClick={() => {
-                          navigate(`/mybrary/${nowChatRoom.otherMemberId}`);
+                          handleChatRoomLeave(nowChatRoom.chatRoomId);
                         }}
                       >
                         채팅방 나가기

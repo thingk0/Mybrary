@@ -33,23 +33,23 @@ export async function getFirstChat(memberId) {
   }
 }
 
-/* 채팅 메시지 보내기 */
-export async function sendMessage(roomid, object) {
-  try {
-    const response = await axios.post(
-      BASE_URL + `/chat/${roomid}/message`,
-      object
-    );
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
-}
+// /* 채팅 메시지 보내기 */
+// export async function sendMessage(roomid, object) {
+//   try {
+//     const response = await axios.post(
+//       BASE_URL + `chat/${roomid}/message`,
+//       object
+//     );
+//     return response.data;
+//   } catch (error) {
+//     throw error;
+//   }
+// }
 
 /* 채팅방 나가기 */
 export async function deleteChatRoom(roomid) {
   try {
-    const response = await axios.delete(`/api/v1/chat/${roomid}`);
+    const response = await axios.delete(BASE_URL + `chat/${roomid}`);
     return response.data;
   } catch (error) {
     throw error;

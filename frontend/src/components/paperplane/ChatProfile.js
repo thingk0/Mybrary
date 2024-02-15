@@ -37,8 +37,9 @@ function ChatProfile({
         ></div>
         <div
           style={{
-            width: "65%",
             marginLeft: "1vw",
+            // minWidth: "60%",
+            maxWidth: "60%",
           }}
         >
           <div
@@ -51,6 +52,8 @@ function ChatProfile({
           <div
             style={{
               fontSize: "14px",
+              minWidth: "60%",
+              maxwidth: "60%",
               overflow: "hidden", // 내용이 넘치면 숨김
               whiteSpace: "nowrap", // 텍스트를 한 줄로 표시
               textOverflow: "ellipsis", // 넘치는 텍스트는 ...으로 표시
@@ -72,10 +75,18 @@ function ChatProfile({
             alignItems: "center",
             gap: "17px",
             width: "36px",
+            right: "10%",
+            position: "absolute",
           }}
         >
           {unreadMessageCount > 0 && isNew ? (
-            <div style={{ marginBottom: "27px" }}>new</div>
+            <div
+              style={{
+                marginBottom: "27px",
+              }}
+            >
+              new
+            </div>
           ) : (
             <div style={{ marginBottom: "27px" }}>&nbsp;</div>
           )}

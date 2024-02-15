@@ -3,10 +3,11 @@
   width: 130%;
   height: 900px;
   align-items: center;
+  justify-content: flex-start;
 }
 .main {
   height: 100%;
-  width: 100%;
+  width: 97%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -92,7 +93,7 @@
   align-items: center;
 }
 .ring {
-  width: 220%;
+  width: 240%;
   height: 2.4%;
   border-radius: 10px;
   background-color: #57423f;
@@ -100,7 +101,7 @@
 }
 .chat {
   height: 100%;
-  width: 100%;
+  width: 64.4%;
   background-color: #fff9f6;
   box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.25);
   backdrop-filter: blur(12.5px);
@@ -321,6 +322,7 @@
 .chatContainer {
   display: flex;
   flex-direction: column;
+  width: 100%;
   max-height: 800px;
   overflow-y: auto;
 }
