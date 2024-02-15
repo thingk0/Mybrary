@@ -339,7 +339,7 @@ function SignUpForm({ setPageremote }) {
                 {!isEmailVerified && (
                   <button
                     onClick={(e) => handleVerifyEmail(e, formData.email)}
-                    disabled={isEmailVerifying || isEmailVerified}
+                    disabled={isEmailVerified}
                     style={{ padding: "0 4px" }}
                   >
                     이메일 인증
