@@ -51,11 +51,9 @@ function Main() {
           <Route path="join" element={<JoinPage />} />
           <Route path="search">
             <Route index element={<SearchPage />} />
-            <Route path=":word">
-              <Route index element={<SearchResultPage />} />
-              <Route path="1" element={<SearchResultPage1 />} />
-              <Route path="2" element={<SearchResultPage2 />} />
-            </Route>
+            <Route path=":word" element={<SearchResultPage />} />
+            <Route path="1/:word" element={<SearchResultPage1 />} />
+            <Route path="2/:word" element={<SearchResultPage2 />} />
           </Route>
           <Route path="threadCreate" element={<ThreadCreatePage />} />
           <Route path="threadUpdate" element={<ThreadUpdatePage />} />

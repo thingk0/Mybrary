@@ -54,8 +54,6 @@ export default function ThreadUpdatePage() {
   ];
 
   useEffect(() => {
-    console.log(thread);
-
     setPaperPublic(thread.paperPublic);
     setScrapEnable(thread.scrapEnable);
 

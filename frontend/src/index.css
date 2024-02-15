@@ -4,6 +4,7 @@ body {
   background: linear-gradient(135deg, #f8e9e1 0%, #fdeaea 50%, #f8e9e1 100%);
   animation: gradientBG 5s ease infinite;
   background-size: 5000% 5000%;
+  overflow-x: hidden;
 }
 @keyframes gradientBG {
   0% {

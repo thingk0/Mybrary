@@ -1,32 +1,26 @@
 .fadeIn {
-  animation: fadeInAnimation 0.4s ease-in-out forwards;
+  animation: fadeInAnimation 0.3s ease-in-out forwards;
 }
 
 .fadeOut {
-  animation: fadeOutAnimation 0.4s ease-in-out forwards;
+  animation: fadeOutAnimation 0.3s ease-in-out forwards;
 }
 
 @keyframes fadeInAnimation {
   0% {
-    transform: scale(0);
+    transform: translateX(100%);
   }
-  /* 70% {
-    transform: scale(1.1);
-  } */
   100% {
-    transform: scale(1);
+    transform: translateX(0%);
   }
 }
 
 @keyframes fadeOutAnimation {
   0% {
-    transform: scale(1);
+    transform: translateX(0%);
   }
-  /* 30% {
-    transform: scale(1.2);
-  } */
   100% {
-    transform: scale(0);
+    transform: translateX(-100%);
   }
 }
 .검색글자 {
@@ -218,4 +212,37 @@
 }
 .노노팔로우 {
   color: blue;
+}
+
+.title {
+  font-size: 25px;
+  margin-bottom: 10px;
+}
+.relative {
+  position: relative;
+}
+.absolute {
+  position: absolute;
+  top: 60px;
+  left: 60px;
+  background-color: var(--main3);
+  padding: 20px;
+  border-radius: 5px;
+  width: 200px;
+  font-size: 20px;
+  max-height: 295px;
+  overflow: hidden;
+  z-index: 100;
+  box-shadow: 0 0 15 0 var(--main3);
+}
+.hr {
+  border: 2px 0 0 0;
+}
+.key {
+  cursor: pointer;
+  transition: 0.3s;
+}
+.key:hover {
+  transform: scale(1.04);
+  color: var(--gomin5);
 }

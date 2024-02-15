@@ -16,6 +16,15 @@ export async function searchContents(keyword) {
     throw error;
   }
 }
+/* 추천 검색어 조회 */ //
+export async function keyword(keyword) {
+  try {
+    const response = await axios.get(BASE_URL + `search?keyword=${keyword}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}
 
 /* 인기 검색어 조회 */ //
 export async function getPopularList() {

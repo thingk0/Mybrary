@@ -3,7 +3,7 @@ import styles from "./style/SearchResultPage2.module.css";
 import { useNavigate, useParams } from "react-router-dom";
 import searchicon from "../assets/searchicon.png";
 import React, { useState, useEffect } from "react";
-import { searchAccount } from "../api/search/Search";
+import { keyword, searchAccount } from "../api/search/Search";
 import iconhome from "../assets/icon/icon_home.png";
 import gomimg from "../assets/icon/Iconuser2.png";
 import useUserStore from "../store/useUserStore";
@@ -28,22 +28,36 @@ export default function SearchResultPage2() {
         if (updatedSearches.includes(searchtext)) {
           updatedSearches.splice(updatedSearches.indexOf(searchtext), 1);
         }
-        updatedSearches.unshift(searchtext); // 새 검색어를 앞에 추가
-        const newSearches = updatedSearches.slice(0, 5); // 최대 5개의 검색어만 유지
-
-        // localStorage에 저장
+        updatedSearches.unshift(searchtext);
+        const newSearches = updatedSearches.slice(0, 5);
         localStorage.setItem("recentSearches", JSON.stringify(newSearches));
-
         return newSearches;
       });
     }
-    // 검색 결과 페이지로 이동 navigate(`/search/${d.text}`)
-    setAnimateOut(true); // fadeOut 애니메이션 시작
-    // 애니메이션이 끝난 후 페이지 전환
+    setAnimateOut(true);
     setTimeout(() => {
       setAnimateOut(false);
-      navigate(`/search/${searchtext}`); // 페이지 전환
-    }, 500);
+      navigate(`/search/2/${searchtext}`);
+    }, 200);
+  };
+  const handleSubmit2 = (e) => {
+    if (searchtext.trim()) {
+      setRecentSearches((prevSearches) => {
+        const updatedSearches = [...prevSearches];
+        if (updatedSearches.includes(searchtext)) {
+          updatedSearches.splice(updatedSearches.indexOf(searchtext), 1);
+        }
+        updatedSearches.unshift(searchtext);
+        const newSearches = updatedSearches.slice(0, 5);
+        localStorage.setItem("recentSearches", JSON.stringify(newSearches));
+        return newSearches;
+      });
+    }
+    setAnimateOut(true);
+    setTimeout(() => {
+      setAnimateOut(false);
+      navigate(`/search/2/${searchtext}`);
+    }, 200);
   };
   const handleRecentSearchClick = (search) => {
     setAnimateOut(true);
@@ -53,10 +67,8 @@ export default function SearchResultPage2() {
         if (updatedSearches.includes(search)) {
           updatedSearches.splice(updatedSearches.indexOf(search), 1);
         }
-        updatedSearches.unshift(search); // 클릭된 단어를 앞에 추가
-        const newSearches = updatedSearches.slice(0, 5); // 최대 5개의 검색어만 유지
-
-        // localStorage에 저장
+        updatedSearches.unshift(search);
+        const newSearches = updatedSearches.slice(0, 5);
         localStorage.setItem("recentSearches", JSON.stringify(newSearches));
 
         return newSearches;
@@ -65,57 +77,63 @@ export default function SearchResultPage2() {
     setTimeout(() => {
       setSearchtext(search);
       setAnimateOut(false);
-      navigate(`/search/${search}`); // 페이지 전환
-    }, 500);
+      navigate(`/search/${search}`);
+    }, 200);
   };
+  const [list, setList] = useState([]);
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await searchAccount(searchtext);
-        setUserList(response.data.accountList);
+        if (searchtext.trim !== "") {
+          const response = await keyword(searchtext);
+          setList(response.data);
+        }
+      } catch (error) {}
+    }
+    fetchData();
+  }, [searchtext]);
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        if (searchtext.trim !== "") {
+          const response = await searchAccount(searchtext);
+          setUserList(response.data.accountList);
+        }
       } catch (error) {}
     }
     fetchData();
   }, []);
+
   useEffect(() => {
-    // 컴포넌트 마운트 시 localStorage에서 최근 검색어 불러오기
     const savedSearches = JSON.parse(localStorage.getItem("recentSearches"));
     if (savedSearches) {
       setRecentSearches(savedSearches);
     }
   }, []);
+
   const handle0 = (e) => {
     e.preventDefault();
-
-    // 검색 결과 페이지로 이동 navigate(`/search/${d.text}`)
-    setAnimateOut(true); // fadeOut 애니메이션 시작
-    // 애니메이션이 끝난 후 페이지 전환
+    setAnimateOut(true);
     setTimeout(() => {
       setAnimateOut(false);
-      navigate(`/search/${searchtext}`); // 페이지 전환
-    }, 500);
+      navigate(`/search/${searchtext}`);
+    }, 200);
   };
   const handle1 = (e) => {
     e.preventDefault();
-
-    // 검색 결과 페이지로 이동 navigate(`/search/${d.text}`)
-    setAnimateOut(true); // fadeOut 애니메이션 시작
-    // 애니메이션이 끝난 후 페이지 전환
+    setAnimateOut(true);
     setTimeout(() => {
       setAnimateOut(false);
-      navigate(`/search/${searchtext}/1`); // 페이지 전환
-    }, 500);
+      navigate(`/search/1/${searchtext}`);
+    }, 200);
   };
   const handle2 = (e) => {
     e.preventDefault();
-
-    // 검색 결과 페이지로 이동 navigate(`/search/${d.text}`)
-    setAnimateOut(true); // fadeOut 애니메이션 시작
-    // 애니메이션이 끝난 후 페이지 전환
+    setAnimateOut(true);
     setTimeout(() => {
       setAnimateOut(false);
-      navigate(`/search/${searchtext}/2`); // 페이지 전환
-    }, 500);
+      navigate(`/search/2/${searchtext}`);
+    }, 200);
   };
 
   const handleChatStart = async (memberId) => {
@@ -132,7 +150,7 @@ export default function SearchResultPage2() {
         <div className={styles.main}>
           <div className={styles.header}>
             <span className={styles.검색글자}>검색</span>
-            <div>
+            <div className={styles.relative}>
               <>
                 <form onSubmit={handleSubmit}>
                   <label htmlFor="search"></label>
@@ -154,6 +172,22 @@ export default function SearchResultPage2() {
                     />
                   </div>
                 </form>
+                {list.length !== 0 && (
+                  <div className={styles.absolute}>
+                    <div className={styles.title}>추천검색어</div>
+                    {list?.map((key) => (
+                      <>
+                        <div
+                          className={styles.key}
+                          onClick={() => handleSubmit2()}
+                        >
+                          {key}
+                        </div>
+                        <hr className={styles.hr}></hr>
+                      </>
+                    ))}
+                  </div>
+                )}
               </>
             </div>
             <div className={styles.최근검색어}>

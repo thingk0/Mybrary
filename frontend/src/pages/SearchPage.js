@@ -5,13 +5,8 @@ import Container from "../components/frame/Container";
 import styles from "./style/SearchPage.module.css";
 import searchicon from "../assets/searchicon.png";
 import { useNavigate } from "react-router-dom";
-import {
-  searchBook,
-  searchAccount,
-  searchContents,
-  getPopularList,
-} from "../api/search/Search";
 import useNavStore from "../store/useNavStore";
+import { keyword } from "../api/search/Search";
 
 export default function SearchPage() {
   const [searchtext, setSearchtext] = useState("");
@@ -41,7 +36,7 @@ export default function SearchPage() {
       setSearchtext(search);
       setAnimateOut(false);
       navigate(`/search/${search}`); // 페이지 전환
-    }, 500);
+    }, 200);
   };
 
   const handleSubmit = (e) => {
@@ -66,9 +61,44 @@ export default function SearchPage() {
     // 애니메이션이 끝난 후 페이지 전환
     setTimeout(() => {
       navigate(`/search/${searchtext}`); // 페이지 전환
-    }, 500);
+    }, 200);
+  };
+  const handleSubmit2 = (e) => {
+    if (searchtext.trim()) {
+      setRecentSearches((prevSearches) => {
+        const updatedSearches = [...prevSearches];
+        if (updatedSearches.includes(searchtext)) {
+          updatedSearches.splice(updatedSearches.indexOf(searchtext), 1);
+        }
+        updatedSearches.unshift(searchtext); // 새 검색어를 앞에 추가
+        const newSearches = updatedSearches.slice(0, 5); // 최대 5개의 검색어만 유지
+
+        // localStorage에 저장
+        localStorage.setItem("recentSearches", JSON.stringify(newSearches));
+
+        return newSearches;
+      });
+    }
+    // 검색 결과 페이지로 이동 navigate(`/search/${d.text}`)
+    setAnimateOut(true); // fadeOut 애니메이션 시작
+    // 애니메이션이 끝난 후 페이지 전환
+    setTimeout(() => {
+      navigate(`/search/${searchtext}`); // 페이지 전환
+    }, 200);
   };
 
+  const [list, setList] = useState([]);
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        if (searchtext.trim !== "") {
+          const response = await keyword(searchtext);
+          setList(response.data);
+        }
+      } catch (error) {}
+    }
+    fetchData();
+  }, [searchtext]);
   useEffect(() => {
     async function nav() {
       await setNav(3);
@@ -249,7 +279,7 @@ export default function SearchPage() {
         <div className={styles.main}>
           <div className={styles.header}>
             <span className={styles.검색글자}>검색</span>
-            <div>
+            <div className={styles.relative}>
               <>
                 <form onSubmit={handleSubmit}>
                   <label htmlFor="search"></label>
@@ -271,6 +301,22 @@ export default function SearchPage() {
                     />
                   </div>
                 </form>
+                {list.length !== 0 && (
+                  <div className={styles.absolute}>
+                    <div className={styles.title}>추천검색어</div>
+                    {list?.map((key) => (
+                      <>
+                        <div
+                          className={styles.key}
+                          onClick={() => handleSubmit2()}
+                        >
+                          {key}
+                        </div>
+                        <hr className={styles.hr}></hr>
+                      </>
+                    ))}
+                  </div>
+                )}
               </>
             </div>
             <div className={styles.최근검색어}>

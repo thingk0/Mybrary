@@ -3,7 +3,7 @@ import styles from "./style/SearchResultPage1.module.css";
 import { useNavigate, useParams } from "react-router-dom";
 import searchicon from "../assets/searchicon.png";
 import React, { useState, useEffect } from "react";
-import { searchBook } from "../api/search/Search";
+import { keyword, searchBook } from "../api/search/Search";
 import s from "classnames";
 import useBookStore from "../store/useBookStore";
 export default function SearchResultPage1() {
@@ -14,7 +14,6 @@ export default function SearchResultPage1() {
   const [recentSearches, setRecentSearches] = useState([]);
   const [bookList, setBookList] = useState([]);
   const setBook = useBookStore((state) => state.setBook);
-
   const handleBook = async (book) => {
     await setBook(book);
     navigate(`/book/${book.bookId}`);
@@ -22,12 +21,14 @@ export default function SearchResultPage1() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await searchBook(searchtext);
-        setBookList(response.data.bookList);
+        if (searchtext.trim !== "") {
+          const response = await searchBook(searchtext);
+          setBookList(response.data.bookList);
+        }
       } catch (error) {}
     }
     fetchData();
-  }, []);
+  }, [searchtext]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -46,13 +47,33 @@ export default function SearchResultPage1() {
         return newSearches;
       });
     }
-    // 검색 결과 페이지로 이동 navigate(`/search/${d.text}`)
-    setAnimateOut(true); // fadeOut 애니메이션 시작
-    // 애니메이션이 끝난 후 페이지 전환
+    setAnimateOut(true);
     setTimeout(() => {
       setAnimateOut(false);
-      navigate(`/search/${searchtext}`); // 페이지 전환
-    }, 500);
+      navigate(`/search/1/${searchtext}`);
+    }, 200);
+  };
+  const handleSubmit2 = (e) => {
+    if (searchtext.trim()) {
+      setRecentSearches((prevSearches) => {
+        const updatedSearches = [...prevSearches];
+        if (updatedSearches.includes(searchtext)) {
+          updatedSearches.splice(updatedSearches.indexOf(searchtext), 1);
+        }
+        updatedSearches.unshift(searchtext); // 새 검색어를 앞에 추가
+        const newSearches = updatedSearches.slice(0, 5); // 최대 5개의 검색어만 유지
+
+        // localStorage에 저장
+        localStorage.setItem("recentSearches", JSON.stringify(newSearches));
+
+        return newSearches;
+      });
+    }
+    setAnimateOut(true);
+    setTimeout(() => {
+      setAnimateOut(false);
+      navigate(`/search/1/${searchtext}`);
+    }, 200);
   };
   const handleRecentSearchClick = (search) => {
     setAnimateOut(true);
@@ -75,8 +96,20 @@ export default function SearchResultPage1() {
       setSearchtext(search);
       setAnimateOut(false);
       navigate(`/search/${search}`); // 페이지 전환
-    }, 500);
+    }, 200);
   };
+  const [list, setList] = useState([]);
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        if (searchtext.trim !== "") {
+          const response = await keyword(searchtext);
+          setList(response.data);
+        }
+      } catch (error) {}
+    }
+    fetchData();
+  }, [searchtext]);
   useEffect(() => {
     // 컴포넌트 마운트 시 localStorage에서 최근 검색어 불러오기
     const savedSearches = JSON.parse(localStorage.getItem("recentSearches"));
@@ -84,6 +117,7 @@ export default function SearchResultPage1() {
       setRecentSearches(savedSearches);
     }
   }, []);
+
   const handle0 = (e) => {
     e.preventDefault();
 
@@ -93,7 +127,7 @@ export default function SearchResultPage1() {
     setTimeout(() => {
       setAnimateOut(false);
       navigate(`/search/${searchtext}`); // 페이지 전환
-    }, 500);
+    }, 200);
   };
   const handle1 = (e) => {
     e.preventDefault();
@@ -103,8 +137,8 @@ export default function SearchResultPage1() {
     // 애니메이션이 끝난 후 페이지 전환
     setTimeout(() => {
       setAnimateOut(false);
-      navigate(`/search/${searchtext}/1`); // 페이지 전환
-    }, 500);
+      navigate(`/search/1/${searchtext}`); // 페이지 전환
+    }, 200);
   };
   const handle2 = (e) => {
     e.preventDefault();
@@ -114,8 +148,8 @@ export default function SearchResultPage1() {
     // 애니메이션이 끝난 후 페이지 전환
     setTimeout(() => {
       setAnimateOut(false);
-      navigate(`/search/${searchtext}/2`); // 페이지 전환
-    }, 500);
+      navigate(`/search/2/${searchtext}`); // 페이지 전환
+    }, 200);
   };
   return (
     <>
@@ -123,7 +157,7 @@ export default function SearchResultPage1() {
         <div className={styles.main}>
           <div className={styles.header}>
             <span className={styles.검색글자}>검색</span>
-            <div>
+            <div className={styles.relative}>
               <>
                 <form onSubmit={handleSubmit}>
                   <label htmlFor="search"></label>
@@ -145,6 +179,22 @@ export default function SearchResultPage1() {
                     />
                   </div>
                 </form>
+                {list.length !== 0 && (
+                  <div className={styles.absolute}>
+                    <div className={styles.title}>추천검색어</div>
+                    {list?.map((key) => (
+                      <>
+                        <div
+                          className={styles.key}
+                          onClick={() => handleSubmit2()}
+                        >
+                          {key}
+                        </div>
+                        <hr className={styles.hr}></hr>
+                      </>
+                    ))}
+                  </div>
+                )}
               </>
             </div>
             <div className={styles.최근검색어}>
