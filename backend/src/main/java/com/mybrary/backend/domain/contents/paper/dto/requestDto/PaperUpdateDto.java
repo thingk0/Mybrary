@@ -15,18 +15,13 @@ import lombok.Setter;
 public class PaperUpdateDto {
 
     /**
-     *  스레드 수정 요청
-     *  스레드 저장과 마찬가지로 페이퍼리스트 포함
+     * 스레드 수정 요청 스레드 저장과 마찬가지로 페이퍼리스트 포함
      */
 
-    private Long paperId;
     private int layoutType;
+    private Long paperId;
     private String content1;
     private String content2;
-//    private Long bookId;
-//    private Long imageId1;
-//    private Long imageId2;
     private List<String> tagList;
-//    private List<Long> mentionList;
 
 }

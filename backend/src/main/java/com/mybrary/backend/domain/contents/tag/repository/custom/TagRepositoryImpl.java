@@ -13,20 +13,14 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class TagRepositoryImpl implements TagRepositoryCustom {
 
-      private final JPAQueryFactory query;
+    private final JPAQueryFactory query;
 
-      public Long deleteAllByPaperId(Long paperId) {
-            return query.delete(tag)
-                        .where(tag.paper.id.eq(paperId))
-                        .execute();
-      }
-
-      @Override
-      public Optional<List<String>> getTagList(Long paperId) {
-            return Optional.ofNullable(query.select(tag.tagName)
-                                            .from(tag)
-                                            .where(tag.paper.id.eq(paperId))
-                                            .fetch()
-            );
-      }
+    @Override
+    public Optional<List<String>> getTagList(Long paperId) {
+        return Optional.ofNullable(query.select(tag.tagName)
+                                        .from(tag)
+                                        .where(tag.paper.id.eq(paperId))
+                                        .fetch()
+        );
+    }
 }

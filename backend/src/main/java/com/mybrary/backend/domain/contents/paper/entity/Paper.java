@@ -3,11 +3,13 @@ package com.mybrary.backend.domain.contents.paper.entity;
 import com.mybrary.backend.domain.base.BaseEntity;
 import com.mybrary.backend.domain.comment.entity.Comment;
 import com.mybrary.backend.domain.contents.like.entity.Like;
+import com.mybrary.backend.domain.contents.paper.dto.requestDto.PaperUpdateDto;
 import com.mybrary.backend.domain.contents.paper.dto.requestDto.PostPaperDto;
 import com.mybrary.backend.domain.contents.paper_image.entity.PaperImage;
 import com.mybrary.backend.domain.contents.scrap.entity.Scrap;
 import com.mybrary.backend.domain.contents.tag.entity.Tag;
 import com.mybrary.backend.domain.contents.thread.dto.requestDto.ThreadPostDto;
+import com.mybrary.backend.domain.contents.thread.dto.requestDto.ThreadUpdateDto;
 import com.mybrary.backend.domain.contents.thread.entity.Thread;
 import com.mybrary.backend.domain.member.entity.Member;
 import jakarta.persistence.CascadeType;
@@ -121,29 +123,16 @@ public class Paper extends BaseEntity {
                     .build();
     }
 
-    /* 스레드 수정에 사용 */
-    public void updateLayoutType(int type) {
-        layoutType = type;
-    }
-
-    public void updateContent1(String content) {
-        content1 = content;
-    }
-
-    public void updateContent2(String content) {
-        content2 = content;
+    public void update(PaperUpdateDto paperUpdateDto, ThreadUpdateDto threadUpdateDto) {
+        this.layoutType = paperUpdateDto.getLayoutType();
+        this.content1 = paperUpdateDto.getContent1();
+        this.content2 = paperUpdateDto.getContent2();
+        this.isScrapEnabled = threadUpdateDto.isScrapEnable();
+        this.isPaperPublic = threadUpdateDto.isPaperPublic();
     }
 
     public void updateMentionList(String mentionList) {
         this.mentionList = mentionList;
-    }
-
-    public void updateScrapEnabled(boolean enabled) {
-        isScrapEnabled = enabled;
-    }
-
-    public void updatePaperPublic(boolean enabled) {
-        isPaperPublic = enabled;
     }
 
 }

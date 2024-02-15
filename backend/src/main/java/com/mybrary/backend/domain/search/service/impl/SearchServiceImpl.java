@@ -1,12 +1,19 @@
 package com.mybrary.backend.domain.search.service.impl;
 
+import co.elastic.clients.elasticsearch._types.FieldSort;
+import co.elastic.clients.elasticsearch._types.SortOptions;
+import co.elastic.clients.elasticsearch._types.SortOrder;
+import co.elastic.clients.elasticsearch._types.query_dsl.MatchAllQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
+import co.elastic.clients.elasticsearch._types.query_dsl.Query.Builder;
+import co.elastic.clients.elasticsearch.core.SearchRequest;
+import co.elastic.clients.util.ObjectBuilder;
 import com.mybrary.backend.domain.book.dto.responseDto.BookGetDto;
 import com.mybrary.backend.domain.book.repository.BookRepository;
 import com.mybrary.backend.domain.contents.paper.repository.PaperRepository;
-import com.mybrary.backend.domain.contents.thread.repository.ThreadRepository;
 import com.mybrary.backend.domain.elastic.indices.PaperDocument;
-import com.mybrary.backend.domain.elastic.repository.PaperDocumentRepository;
+import com.mybrary.backend.domain.elastic.indices.SearchTermDocument;
+import com.mybrary.backend.domain.elastic.repository.SearchTermDocumentRepository;
 import com.mybrary.backend.domain.member.dto.responseDto.MemberGetDto;
 import com.mybrary.backend.domain.member.entity.Member;
 import com.mybrary.backend.domain.member.repository.MemberRepository;
@@ -15,55 +22,106 @@ import com.mybrary.backend.domain.search.service.SearchService;
 import com.mybrary.backend.global.exception.book.BookNotFoundException;
 import com.mybrary.backend.global.exception.member.MemberNotFoundException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.sort.SortBuilders;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.client.elc.NativeQuery;
+import org.springframework.data.elasticsearch.client.elc.NativeQueryBuilder;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHits;
-import org.springframework.data.elasticsearch.core.query.Criteria;
-import org.springframework.data.elasticsearch.core.query.CriteriaQuery;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Log4j2
 @Service
-@Transactional(readOnly = true)
+@Transactional
 @RequiredArgsConstructor
 public class SearchServiceImpl implements SearchService {
 
-    private final PaperDocumentRepository paperDocumentRepository;
-    private final ElasticsearchOperations elasticsearchOperations;
+    private final SearchTermDocumentRepository searchTermDocumentRepository;
+    private final ElasticsearchOperations operations;
     private final MemberRepository memberRepository;
     private final BookRepository bookRepository;
-    private final ThreadRepository threadRepository;
     private final PaperRepository paperRepository;
 
     @Override
-    public List<String> listSuggestedTerms(String keyword) {
-        return null;
+    public List<String> getRealTimeSuggestedSearchTerms(String keyword) {
+        try {
+            // 키워드 기반 검색어 조회 쿼리 생성
+            Query query = Query.of(qb -> qb
+                .bool(bq -> bq
+                    .should(sh -> sh.matchPhrasePrefix(mpq -> mpq
+                        .field("searchTerm.autocomplete")
+                        .query(keyword)))
+                )
+            );
+
+            NativeQuery nativeQuery = NativeQuery.builder()
+                                                 .withQuery(query)
+                                                 .build();
+
+            SearchHits<SearchTermDocument> searchHits = operations.search(nativeQuery, SearchTermDocument.class);
+
+            // 조회된 검색어 추출 및 반환
+            return searchHits.getSearchHits().stream()
+                             .map(hit -> hit.getContent().getSearchTerm())
+                             .distinct()
+                             .collect(Collectors.toList());
+
+        } catch (Exception e) {
+            log.error("Error retrieving real-time suggested search terms for keyword: {}", keyword, e);
+            return Collections.emptyList();
+        }
     }
 
-    @Override
-    public Page<SearchPaperResponseDto> searchThread(String keyword, Pageable pageable) {
 
+    @Override
+    public List<PaperDocument> getPaperDocumentListByThreadId(Long threadId) {
+        SearchHits<PaperDocument> searchHits =
+            operations.search(NativeQuery.builder()
+                                         .withQuery(Query.of(qb -> qb
+                                             .match(mt -> mt
+                                                 .field("threadId").query(threadId))))
+                                         .build(), PaperDocument.class);
+
+        return searchHits.getSearchHits().stream()
+                         .map(hit -> hit.getContent())
+                         .collect(Collectors.toList());
+    }
+
+    @Async
+    public CompletableFuture<Void> asyncSaveSearchTermDocument(String email, String keyword) {
+        searchTermDocumentRepository.save(SearchTermDocument.of(email, keyword));
+        return CompletableFuture.completedFuture(null);
+    }
+
+
+    @Override
+    public Page<SearchPaperResponseDto> searchThread(String email, String keyword, Pageable pageable) {
+        asyncSaveSearchTermDocument(email, keyword);
         Query query = Query.of(qb -> qb
             .bool(bq -> bq
-                .should(sh -> sh.match(mq -> mq.field("tagList").query(keyword)))
-                .should(sh -> sh.match(mq -> mq.field("content1").query(keyword)))
-                .should(sh -> sh.match(mq -> mq.field("content2").query(keyword)))
+                .should(sh -> sh.match(mq -> mq.field("tagList").query(keyword).boost(3.0F)))
+                .should(sh -> sh.match(mq -> mq.field("content1").query(keyword).boost(2.0F)))
+                .should(sh -> sh.match(mq -> mq.field("content2").query(keyword).boost(1.0F)))
             )
         );
 
-        NativeQuery nativeQuery = NativeQuery.builder()
-                                             .withQuery(query)
-                                             .withPageable(pageable)
-                                             .build();
-
-        SearchHits<PaperDocument> searchHits = elasticsearchOperations.search(nativeQuery, PaperDocument.class);
+        SearchHits<PaperDocument> searchHits = operations.search(NativeQuery.builder()
+                                                                            .withQuery(query)
+                                                                            .withPageable(pageable)
+                                                                            .build(), PaperDocument.class);
 
         List<Long> paperIds = searchHits.getSearchHits().stream()
                                         .map(hit -> hit.getContent().getId())
@@ -124,6 +182,25 @@ public class SearchServiceImpl implements SearchService {
 
         return accountList;
     }
+
+    @Override
+    public List<String> getRecentSearchTerms() {
+        SearchHits<SearchTermDocument> searchHits =
+            operations.search(NativeQuery.builder()
+                                         .withQuery(q -> q.matchAll(
+                                             MatchAllQuery.of(mof -> mof.queryName("recentSearchTerms"))))
+                                         .withSort(s -> s
+                                             .field(f -> f
+                                                 .field("timestamp")
+                                                 .order(SortOrder.Desc)
+                                             ))
+                                         .withPageable(PageRequest.of(0, 30))
+                                         .build(), SearchTermDocument.class);
+        return searchHits.getSearchHits().stream()
+                         .map(hit -> hit.getContent().getSearchTerm())
+                         .collect(Collectors.toList());
+    }
+
 
     // 문자열이 한글인지 확인하는 메서드
     public static boolean isKorean(String str) {

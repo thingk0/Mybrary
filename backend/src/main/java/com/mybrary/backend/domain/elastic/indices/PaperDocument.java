@@ -1,7 +1,10 @@
 package com.mybrary.backend.domain.elastic.indices;
 
+import com.mybrary.backend.domain.contents.paper.dto.requestDto.PaperUpdateDto;
 import com.mybrary.backend.domain.contents.paper.entity.Paper;
+import com.mybrary.backend.domain.contents.tag.entity.Tag;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -57,6 +60,22 @@ public class PaperDocument {
                             .content2(paper.getContent2())
                             .tagList(tagList)
                             .build();
+    }
+
+    public void update(PaperUpdateDto updateDto) {
+        this.content1 = updateDto.getContent1();
+        this.content2 = updateDto.getContent2();
+        this.tagList = getTags(updateDto.getTagList()).toString();
+    }
+
+    private static String getTags(List<String> tagList) {
+        StringBuilder tags = new StringBuilder();
+        if (!tagList.isEmpty()) {
+            for (String tag : tagList) {
+                tags.append(tag).append(' ');
+            }
+        }
+        return tags.toString();
     }
 
 }

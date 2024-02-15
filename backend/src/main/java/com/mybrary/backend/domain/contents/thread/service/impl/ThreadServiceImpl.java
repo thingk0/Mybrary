@@ -36,17 +36,14 @@ import com.mybrary.backend.domain.mybrary.entity.Mybrary;
 import com.mybrary.backend.domain.mybrary.repository.MybraryRepository;
 import com.mybrary.backend.domain.notification.dto.NotificationPostDto;
 import com.mybrary.backend.domain.notification.service.NotificationService;
-import com.mybrary.backend.global.exception.book.BookNotFoundException;
+import com.mybrary.backend.domain.search.service.SearchService;
 import com.mybrary.backend.global.exception.image.ImageNotFoundException;
-import com.mybrary.backend.global.exception.member.EmailNotFoundException;
 import com.mybrary.backend.global.exception.member.MemberNotFoundException;
 import com.mybrary.backend.global.exception.mybrary.MybraryNotFoundException;
 import com.mybrary.backend.global.exception.paper.PaperListNotFoundException;
-import com.mybrary.backend.global.exception.scrap.ScrapNotFoundException;
 import com.mybrary.backend.global.exception.thread.MainThreadListNotFoundException;
 import com.mybrary.backend.global.exception.thread.ThreadAccessDeniedException;
 import com.mybrary.backend.global.exception.thread.ThreadIdNotFoundException;
-import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -61,9 +58,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Log4j2
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ThreadServiceImpl implements ThreadService {
 
@@ -81,14 +80,16 @@ public class ThreadServiceImpl implements ThreadService {
     private final CommentRepository commentRepository;
     private final NotificationService notificationService;
     private final FollowRepository followRepository;
-    private final PaperDocumentRepository paperDocumentRepository;
 
-    @Transactional
+    private final PaperDocumentRepository paperDocumentRepository;
+    private final SearchService searchService;
+
+
     @Override
     public Long createThread(String email, ThreadPostDto threadPostDto) {
 
-        CompletableFuture<Optional<Book>> bookAsync = findBookAsync(threadPostDto.getBookId());
-        CompletableFuture<Mybrary> mybraryAsync = findMybraryAsync(email);
+        CompletableFuture<Optional<Book>> bookAsync = asyncFetchBookById(threadPostDto.getBookId());
+        CompletableFuture<Mybrary> mybraryAsync = asyncFetchMybraryByEmail(email);
 
         Optional<Book> book = bookAsync.join();
         Mybrary mybrary = mybraryAsync.join();
@@ -121,8 +122,8 @@ public class ThreadServiceImpl implements ThreadService {
             thread.addPaper(paper);
 
             /* Image 객체 찾기 */
-            CompletableFuture<Optional<Image>> image1Async = findImageAsync(dto.getImageId1());
-            CompletableFuture<Optional<Image>> image2Async = findImageAsync(dto.getImageId2());
+            CompletableFuture<Optional<Image>> image1Async = asyncFetchImageById(dto.getImageId1());
+            CompletableFuture<Optional<Image>> image2Async = asyncFetchImageById(dto.getImageId2());
 
             Optional<Image> image1 = image1Async.join();
             Optional<Image> image2 = image2Async.join();
@@ -143,7 +144,7 @@ public class ThreadServiceImpl implements ThreadService {
 
             /* tag 목록 생성 */
             List<String> tagNameList = dto.getTagList();
-            CompletableFuture<Void> tagListSavesAsync = processTagListSavesAsync(tagNameList, paperTagList, paper);
+            CompletableFuture<Void> tagListSavesAsync = asyncProcessAndSaveAllTag(tagNameList, paperTagList, paper);
 
             /* 여기서 페이퍼에 대한 멘션 알림 보내는 로직 */
             /* 쓰레드를 생성한 멤버가 sender, 멘션된 회원이 receiver, 알람타입은 11 */
@@ -160,12 +161,11 @@ public class ThreadServiceImpl implements ThreadService {
             }
             tagListSavesAsync.join();
         }
-        processAndIndexPapersAsync(thread, paperTagList);
+        asyncProcessAndSaveAllPaperDocument(thread, paperTagList);
         return thread.getId();
     }
 
     /* 메인 피드 thread 조회하기 */
-    @Transactional
     @Override
     public List<GetThreadDto> getMainAllThread(Long myId, int page) {
 
@@ -255,14 +255,11 @@ public class ThreadServiceImpl implements ThreadService {
         }
         return threadDtoList;
     }
-    /* 나의 모든 thread들만 조회하기 */
 
-    @Transactional
+    /* 나의 모든 thread들만 조회하기 */
     @Override
     public List<ThreadInfoGetDto> getMyAllThread(Long myId, Pageable pageable) {
-        Member member = memberRepository.findById(myId)
-                                        .orElseThrow(NullPointerException::new);
-        log.info("memeberId:" + myId);
+
         List<Thread> threadList = threadRepository.getThreadsByMemberId(myId, pageable)
                                                   .orElse(new ArrayList<>());
         List<ThreadInfoGetDto> threadInfoGetDtoList = new ArrayList<>();
@@ -277,9 +274,8 @@ public class ThreadServiceImpl implements ThreadService {
         }
         return threadInfoGetDtoList;
     }
-    /* 특정 member의 모든 thread들만 조회하기 */
 
-    @Transactional
+    /* 특정 member의 모든 thread들만 조회하기 */
     @Override
     public List<ThreadInfoGetDto> getOtherAllThread(String email, Long memberId, Pageable pageable) {
         /* 스레드 접근 권한 판단 */
@@ -305,9 +301,8 @@ public class ThreadServiceImpl implements ThreadService {
         }
         return threadInfoGetDtoList;
     }
-    /* 쓰레드 아이디로 쓰레드 단건조회 */
 
-    @Transactional
+    /* 쓰레드 아이디로 쓰레드 단건조회 */
     @Override
     public GetThreadDto getThread(String email, Long memberId, Long threadId) {
         GetThreadDto thread = threadRepository.getOneThread(threadId).orElseThrow(ThreadIdNotFoundException::new);
@@ -319,6 +314,7 @@ public class ThreadServiceImpl implements ThreadService {
         /* threadId에 해당하는 paper 관련 정보 dto 목록 조회 */
         List<GetFollowingPaperDto> getFollowingPaperDtoList =
             paperRepository.getFollowingPaperDtoResults(thread.getThreadId()).orElseThrow(PaperListNotFoundException::new);
+
         /* 페이퍼 관련정보 처리 로직 */
         for (int j = 0; j < getFollowingPaperDtoList.size(); j++) {
             GetFollowingPaperDto paperDto = getFollowingPaperDtoList.get(j);
@@ -415,102 +411,100 @@ public class ThreadServiceImpl implements ThreadService {
 //            return threadGetDto;
     }
 
-    @Transactional
     @Override
     public Long updateThread(Long myId, ThreadUpdateDto threadUpdateDto) {
-        Thread thread = threadRepository.findById(threadUpdateDto.getThreadId())
-                                        .orElseThrow(NullPointerException::new);
-        Member member = memberRepository.findById(myId)
-                                        .orElseThrow(EmailNotFoundException::new);
-        List<PaperUpdateDto> paperUpdateDtoList = threadUpdateDto.getPaperList();
-        for (PaperUpdateDto paperDto : paperUpdateDtoList) {
-            Paper paper = paperRepository.findById(paperDto.getPaperId())
-                                         .orElseThrow(NullPointerException::new);
-            /* scrap을 하지 않았을수도 있기때문에 이 밑의 두개는 null일수도 있음 */
-//            Scrap getScrap = scrapRepository.findByPaperId(paperDto.getPaperId()).orElse(null);
-//            Book updateBook = bookRepository.findById(paperDto.getBookId()).orElse(null);
-//            Long updateBookId = paperDto.getBookId();
 
-            /* 스크랩 수정 주의! */
-//            if (getScrap == null) {
-//                /* 이전에 책선택을 하지 않았을경우 */
-//                if (updateBookId != null) {
-//                    /*이전에 책스크랩을 하지 않았으면서 이번에 책에 스크랩하는경우*/
-//                    Integer lastSeq = scrapRepository.findLastPaperSeq(updateBookId)
-//                                                     .orElseThrow(
-//                                                         BookNotFoundException::new);
-//                    Scrap newScrap = Scrap.builder()
-//                                          .book(updateBook)
-//                                          .paper(paper)
-//                                          .paperSeq(lastSeq + 1)
-//                                          .build();
-//                    scrapRepository.save(newScrap);
-//                    /*이전에 책스크랩을 하지 않았으면서 이번에도 책에 스크랩하지 않으려는경우는 아무일도없음 */
-//                }
-//            } else {
-//                /* 이전에 책선택을 했을 경우*/
-//                if (updateBookId != null) {
-//                    /*이전에 책스크랩을 했으면서 이번에도 (다른)책에 스크랩하는경우*/
-//                    Integer lastSeq = scrapRepository.findLastPaperSeq(updateBookId)
-//                                                     .orElseThrow(BookNotFoundException::new);
-//                    getScrap.updateBook(updateBook);
-//                } else {
-//                    /*이전에 책스크랩을 했는데 이번에는 스크랩을 하지 않으려는 경우 */
-//                    scrapRepository.delete(getScrap);
-//                }
+        Thread thread = getThreadById(threadUpdateDto.getThreadId());
+
+//        for (PaperUpdateDto paperUpdateDto : threadUpdateDto.getPaperList()) {
+//            paper.update(paperUpdateDto, threadUpdateDto);
+//
+//            /* 기존 태그들 삭제 */
+//            tagRepository.deleteAllByPaperId(paper.getId());
+//
+//            List<Tag> tagList = new ArrayList<>();
+//            for (String tagNames : paperUpdateDto.getTagList()) {
+//                tagList.add(Tag.builder()
+//                               .tagName(tagNames)
+//                               .paper(paper)
+//                               .build());
 //            }
-            paper.updateLayoutType(paperDto.getLayoutType());
-            paper.updateContent1(paperDto.getContent1());
-            paper.updateContent2(paperDto.getContent2());
-            paper.updatePaperPublic(threadUpdateDto.isPaperPublic());
-            paper.updateScrapEnabled(threadUpdateDto.isScrapEnable());
+//
+//            tagRepository.saveAll(tagList);
+//            updatePaperContentAsync(paper.getId(), paperUpdateDto);
+//            }
+//        }
 
-            /* 기존 태그들 삭제 */
-            List<String> tagNameList = paperDto.getTagList();
-            tagRepository.deleteAllByPaperId(paper.getId());
-            List<Tag> tagEntityList = new ArrayList<>();
-            for (String tagNames : tagNameList) {
-                /* paperId, tag명 */
-                Tag tag = Tag.builder()
-                             .tagName(tagNames)
-                             .paper(paper)
-                             .build();
-                tagEntityList.add(tag);
-            }
-            tagRepository.saveAll(tagEntityList);
-        } //paperDto for문 끝
+        List<CompletableFuture<Void>> futures = new ArrayList<>();
+        for (PaperUpdateDto paperUpdateDto : threadUpdateDto.getPaperList()) {
+            Paper paper = getPaperById(paperUpdateDto.getPaperId());
+            futures.add(asyncDeleteAllTagByPaperId(paper.getId()));
+            futures.add(asyncSaveAllTag(paperUpdateDto.getTagList(), paper));
+            futures.add(asyncUpdatePaperDocument(paperUpdateDto.getPaperId(), paperUpdateDto));
+        }
 
+        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
         return thread.getId();
     }
 
-    @Transactional
+
     @Override
     public int deleteThread(Long myId, Long threadId) {
         /* 삭제된 페이퍼 개수 반환 */
         Thread thread = threadRepository.findById(threadId)
                                         .orElseThrow(NullPointerException::new);
         int count = thread.getPaperList().size();
-//        paperRepository.deleteAll(thread.getPaperList());
         threadRepository.delete(thread);
+        asyncDeleteAllPaperDocumentByThreadId(threadId);
         return count;
     }
 
-    private Member findMemberByEmail(String email) {
-        return memberRepository.searchByEmail(email)
-                               .orElseThrow(EmailNotFoundException::new);
+    @Async
+    public CompletableFuture<Void> asyncDeleteAllTagByPaperId(Long paperId) {
+        tagRepository.deleteAllByPaperId(paperId);
+        return CompletableFuture.completedFuture(null);
     }
 
     @Async
-    public CompletableFuture<Optional<Image>> findImageAsync(Long imageId) {
+    public CompletableFuture<Void> asyncSaveAllTag(List<String> tagNames, Paper paper) {
+        List<Tag> tagList = new ArrayList<>();
+        for (String tag : tagNames) {
+            tagList.add(Tag.builder()
+                           .tagName(tag)
+                           .paper(paper)
+                           .build());
+        }
+
+        tagRepository.saveAll(tagList);
+        return CompletableFuture.completedFuture(null);
+    }
+
+    @Async
+    public CompletableFuture<Void> asyncUpdatePaperDocument(Long paperId, PaperUpdateDto updateDto) {
+        PaperDocument paperDocument = paperDocumentRepository.findById(paperId)
+                                                             .orElseThrow(NullPointerException::new);
+
+        paperDocument.update(updateDto);
+        paperDocumentRepository.save(paperDocument);
+        return CompletableFuture.completedFuture(null);
+    }
+
+    @Async
+    public CompletableFuture<Void> asyncDeleteAllPaperDocumentByThreadId(Long threadId) {
+        paperDocumentRepository.deleteAll(searchService.getPaperDocumentListByThreadId(threadId));
+        return CompletableFuture.completedFuture(null);
+    }
+
+    @Async
+    public CompletableFuture<Optional<Image>> asyncFetchImageById(Long imageId) {
         if (imageId == null) {
             return CompletableFuture.completedFuture(Optional.empty());
         }
         return CompletableFuture.completedFuture(imageRepository.findById(imageId));
     }
 
-
     @Async
-    public CompletableFuture<Optional<Book>> findBookAsync(Long bookId) {
+    public CompletableFuture<Optional<Book>> asyncFetchBookById(Long bookId) {
         if (bookId == null) {
             return CompletableFuture.completedFuture(Optional.empty());
         }
@@ -518,7 +512,7 @@ public class ThreadServiceImpl implements ThreadService {
     }
 
     @Async
-    public CompletableFuture<Mybrary> findMybraryAsync(String email) {
+    public CompletableFuture<Mybrary> asyncFetchMybraryByEmail(String email) {
         return CompletableFuture.completedFuture(
             mybraryRepository.findMybraryByEmail(email)
                              .orElseThrow(MybraryNotFoundException::new)
@@ -526,32 +520,39 @@ public class ThreadServiceImpl implements ThreadService {
     }
 
     @Async
-    public CompletableFuture<Void> processTagListSavesAsync(List<String> tagNameList, Map<Long, String> paperTagList,
-                                                            Paper paper) {
-        StringBuilder tagList = new StringBuilder();
-        List<Tag> tagEntityList = new ArrayList<>();
+    public CompletableFuture<Void> asyncProcessAndSaveAllTag(List<String> tagNameList,
+                                                             Map<Long, String> paperTagList,
+                                                             Paper paper) {
+        StringBuilder tags = new StringBuilder();
+        List<Tag> tagList = new ArrayList<>();
         if (!tagNameList.isEmpty()) {
             for (String tagName : tagNameList) {
-                Tag tag = Tag.builder()
-                             .tagName(tagName)
-                             .paper(paper)
-                             .build();
-                tagEntityList.add(tag);
-                tagList.append(tagName).append(' ');
+                tagList.add(Tag.builder()
+                               .tagName(tagName)
+                               .paper(paper)
+                               .build());
+                tags.append(tagName).append(' ');
             }
-            tagRepository.saveAll(tagEntityList);
+            tagRepository.saveAll(tagList);
         }
-
-        paperTagList.put(paper.getId(), tagList.toString());
+        paperTagList.put(paper.getId(), tags.toString());
         return CompletableFuture.completedFuture(null);
     }
 
     @Async
-    public CompletableFuture<Void> processAndIndexPapersAsync(Thread savedThread, Map<Long, String> tagList) {
+    public CompletableFuture<Void> asyncProcessAndSaveAllPaperDocument(Thread savedThread, Map<Long, String> tagList) {
         List<PaperDocument> paperDocuments = new ArrayList<>();
         savedThread.getPaperList().forEach(
             paper -> paperDocuments.add(PaperDocument.of(savedThread.getId(), paper, tagList.get(paper.getId()))));
         paperDocumentRepository.saveAll(paperDocuments);
         return CompletableFuture.completedFuture(null);
+    }
+
+    private Paper getPaperById(Long id) {
+        return paperRepository.findById(id).orElseThrow(NullPointerException::new);
+    }
+
+    private Thread getThreadById(Long id) {
+        return threadRepository.findById(id).orElseThrow(ThreadIdNotFoundException::new);
     }
 }

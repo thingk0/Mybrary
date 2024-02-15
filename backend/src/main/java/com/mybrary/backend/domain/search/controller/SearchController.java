@@ -13,7 +13,6 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,18 +29,29 @@ public class SearchController {
     private final ApiResponse response;
     private final SearchService searchService;
 
-    @Operation(summary = "인기검색어 조회", description = "인기검색어 조회")
+    @Operation(summary = "추천 검색어 조회", description = "추천 검색어 조회")
+    @GetMapping
+    public ResponseEntity<?> getRealTimeSuggestedSearchTerms(@RequestParam(name = "keyword") String keyword) {
+
+        return response.success(ResponseCode.REALTIME_RECOMMENDED_KEYWORDS_FETCHED,
+                                searchService.getRealTimeSuggestedSearchTerms(keyword));
+    }
+
+    @Operation(summary = "최근 검색어 조회", description = "최근 검색어 조회")
     @GetMapping("/popular")
-    public ResponseEntity<?> getPopularKeyword() {
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<?> getTrendingSearchTerms() {
+
+        return response.success(ResponseCode.POPULAR_KEYWORDS_FETCHED, searchService.getRecentSearchTerms());
     }
 
     @Operation(summary = "컨텐츠 검색", description = "컨텐츠 태그와 내용 기반 검색")
     @GetMapping("/contents")
-    public ResponseEntity<?> searchByThread(@RequestParam(name = "keyword") String keyword,
+    public ResponseEntity<?> searchByThread(@Parameter(hidden = true) Authentication authentication,
+                                            @RequestParam(name = "keyword") String keyword,
                                             @PageableDefault(page = 0, size = 20) Pageable page) {
 
-        return response.success(ResponseCode.CONTENTS_SEARCHED, searchService.searchThread(keyword, page));
+        return response.success(ResponseCode.CONTENTS_SEARCHED,
+                                searchService.searchThread(authentication.getName(), keyword, page));
     }
 
     @Operation(summary = "책 검색", description = "책 제목 기반 검색")
@@ -64,21 +74,6 @@ public class SearchController {
                                              @RequestParam(name = "keyword") String keyword,
                                              @PageableDefault(page = 0, size = 10) Pageable page) {
 
-//        MemberGetDto memberdetail1 = new MemberGetDto(1L, "wndgh@ssafy.com", "최준호", "wnsgh", "안녕하세요 최준호입니다", "123123", true,
-//                                                      true);
-//        MemberGetDto memberdetail2 = new MemberGetDto(2L, "aksrl@ssafy.com", "서만기", "aksrl", "안녕하세요 서만기입니다", "666666", true,
-//                                                      true);
-//        MemberGetDto memberdetail3 = new MemberGetDto(3L, "gPtjs@ssafy.com", "박헤선", "gPtjs", "안녕하세요 박혜선입니다", "145643", true,
-//                                                      true);
-//        MemberGetDto memberdetail4 = new MemberGetDto(4L, "thdud@ssafy.com", "최소영", "thdud", "안녕하세요 최소영입니다", "000000", true,
-//                                                      true);
-//
-//        List<MemberGetDto> list = new ArrayList<>();
-//        list.add(memberdetail1);
-//        list.add(memberdetail2);
-//        list.add(memberdetail3);
-//        list.add(memberdetail4);
-
         List<MemberGetDto> accountList = searchService.searchAccount(authentication.getName(), keyword, page);
         HashMap<String, Object> map = new HashMap<>();
         map.put("accountList", accountList);
@@ -89,27 +84,10 @@ public class SearchController {
 
     @Operation(summary = "멘션을 하기 위한 계정 검색", description = "계정 닉네임 or 이름 기반 검색")
     @GetMapping("/mention")
-    public ResponseEntity<?> searchByAccountForMention(
-        @RequestParam(name = "keyword") String keyword,
-        @PageableDefault(page = 0, size = 10) Pageable page) {
-
-//        MemberGetDto memberdetail1 = new MemberGetDto(1L, "wndgh@ssafy.com", "최준호", "wnsgh", "안녕하세요 최준호입니다", "123123", true,
-//                                                      true);
-//        MemberGetDto memberdetail2 = new MemberGetDto(2L, "aksrl@ssafy.com", "서만기", "aksrl", "안녕하세요 서만기입니다", "666666", true,
-//                                                      true);
-//        MemberGetDto memberdetail3 = new MemberGetDto(3L, "gPtjs@ssafy.com", "박헤선", "gPtjs", "안녕하세요 박혜선입니다", "145643", true,
-//                                                      true);
-//        MemberGetDto memberdetail4 = new MemberGetDto(4L, "thdud@ssafy.com", "최소영", "thdud", "안녕하세요 최소영입니다", "000000", true,
-//                                                      true);
-
-//        List<MemberGetDto> list = new ArrayList<>();
-//        list.add(memberdetail1);
-//        list.add(memberdetail2);
-//        list.add(memberdetail3);
-//        list.add(memberdetail4);
+    public ResponseEntity<?> searchByAccountForMention(@RequestParam(name = "keyword") String keyword,
+                                                       @PageableDefault(page = 0, size = 10) Pageable page) {
 
         HashMap<String, Object> map = new HashMap<>();
-//        map.put("accountList", list);
         map.put("page", page);
 
         return response.success(ResponseCode.MENTION_ACCOUNTS_SEARCHED, map);

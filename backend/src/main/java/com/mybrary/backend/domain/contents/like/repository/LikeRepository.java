@@ -5,5 +5,4 @@ import com.mybrary.backend.domain.contents.like.repository.custom.LikeRepository
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface LikeRepository extends JpaRepository<Like, Long>, LikeRepositoryCustom {
-
 }

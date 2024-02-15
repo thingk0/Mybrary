@@ -10,4 +10,6 @@ public interface TagRepository extends JpaRepository<Tag, Long>, TagRepositoryCu
 
     Optional<List<Tag>> getTagsByPaperId(Long paperId);
 
+    Long deleteAllByPaperId(Long paperId);
+
 }

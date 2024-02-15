@@ -1,9 +1,10 @@
-package com.mybrary.backend.domain.contents.like.repository.custom;
+package com.mybrary.backend.domain.contents.like.repository.impl;
 
 import static com.mybrary.backend.domain.contents.like.entity.QLike.like;
 import static com.mybrary.backend.domain.contents.paper.entity.QPaper.paper;
 
 import com.mybrary.backend.domain.contents.like.entity.Like;
+import com.mybrary.backend.domain.contents.like.repository.custom.LikeRepositoryCustom;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;

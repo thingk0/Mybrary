@@ -93,6 +93,8 @@ public enum ResponseCode {
     BOOKS_SEARCHED(HttpStatus.OK, "책 검색 결과가 성공적으로 조회되었습니다."),
     ACCOUNTS_SEARCHED(HttpStatus.OK, "계정 검색 결과가 성공적으로 조회되었습니다."),
     MENTION_ACCOUNTS_SEARCHED(HttpStatus.OK, "멘션을 위한 계정 검색 결과가 성공적으로 조회되었습니다."),
+    REALTIME_RECOMMENDED_KEYWORDS_FETCHED(HttpStatus.OK, "실시간 추천 검색어가 성공적으로 조회되었습니다."),
+
 
     /* 롤링페이퍼(RollingPaper) */
     ROLLING_PAPER_FETCHED(HttpStatus.OK, "롤링페이퍼가 성공적으로 조회되었습니다."),
