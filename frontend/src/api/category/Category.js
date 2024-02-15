@@ -29,7 +29,7 @@ export async function updateCategory(object) {
 export async function createCategory(newCategory) {
   try {
     const response = await axios.post(BASE_URL, newCategory);
-
+    console.log(response.data);
     return response.data;
   } catch (e) {}
 }

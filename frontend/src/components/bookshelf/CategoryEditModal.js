@@ -32,6 +32,7 @@ export default function CategoryEditModal({
       bookCount: 0,
     };
 
+    console.log(id);
     setCategoryList([...categoryList, newCategory]);
     setNewCategoryName("");
   };

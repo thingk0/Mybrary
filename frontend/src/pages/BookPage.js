@@ -98,12 +98,6 @@ export default function BookPage() {
 
         <div className={title.title}>
           <div
-            className={title.left_title}
-            onClick={() => navigate("../../rollingpaper")}
-          >
-            &lt; 롤링페이퍼
-          </div>
-          <div
             className={s(title.main_title, styles.fff)}
             onClick={() => setOpen(true)}
           >
@@ -133,26 +127,19 @@ export default function BookPage() {
             </Modal>
             <img className={styles.categoryImg} src={three} alt="" />
           </div>
-
-          <div
-            className={title.right_title}
-            onClick={() => navigate("../../bookshelf")}
-          >
-            {" "}
-            책장 &gt;
-          </div>
         </div>
 
-        <div className={styles.header}>
-          {+userid === memberId && (
-            <div className={styles.책추가} onClick={() => setCreateModal(true)}>
-              책추가
-            </div>
-          )}
-        </div>
         {bookList.length ? (
           <div className={styles.flex}>
             <div className={styles.middle}>
+              {+userid === memberId && (
+                <div
+                  className={styles.책추가}
+                  onClick={() => setCreateModal(true)}
+                >
+                  책추가
+                </div>
+              )}
               <div className={styles.캐러셀}>
                 {bookList?.map((book, index) => {
                   // 선택된 아이템
@@ -307,7 +294,12 @@ export default function BookPage() {
             <div className={styles.noneTitle}>
               카테고리에 책이 하나도 없습니다.
             </div>
-            <div className={styles.noneButton}>책 추가하기</div>
+            <div
+              className={styles.noneButton}
+              onClick={() => setCreateModal(true)}
+            >
+              책 추가하기
+            </div>
           </div>
         )}
       </Container>

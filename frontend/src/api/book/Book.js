@@ -89,3 +89,15 @@ export async function unsubsribeBook(id) {
     throw error;
   }
 }
+
+/* 책 페이퍼 제거 */
+export async function deletePaper(id, paperId) {
+  try {
+    const response = await axios.delete(
+      BASE_URL + `book/${id}/delete-paper?paperId=${paperId}`
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}

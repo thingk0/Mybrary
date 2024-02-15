@@ -17,7 +17,7 @@ export default function BookshelfPage() {
   useEffect(() => {
     async function fetchbookshelfData() {
       try {
-        const response = await getCategoryList(bookShelfId);
+        const response = await getCategoryList(user.bookShelfId);
 
         const newCategoryList = [...response.data];
         const sortedCategoryList = newCategoryList.sort(

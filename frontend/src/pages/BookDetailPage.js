@@ -2,10 +2,10 @@ import React, { useEffect, useRef, useState } from "react";
 import HTMLFlipBook from "react-pageflip";
 import styles from "./style/BookDetailPage.module.css";
 import s from "classnames";
-import FeedModal from "../components/feed/FeedModal";
 import useBookStore from "../store/useBookStore";
 import {
   deleteBook,
+  deletePaper,
   getBook,
   subscribeBook,
   unsubsribeBook,
@@ -16,6 +16,8 @@ import { useNavigate } from "react-router-dom";
 import BigModal from "../components/common/BigModal";
 import { getCategoryList } from "../api/category/Category";
 import useMyStore from "../store/useMyStore";
+import OneThread from "../components/threads/OneThread";
+import FeedModal2 from "../components/feed/FeedModal2";
 
 export default function BookDetailPage() {
   const navigate = useNavigate();
@@ -57,6 +59,7 @@ export default function BookDetailPage() {
       const pagelist = await getBook(book.bookId);
       setPages(pagelist.data.paperList ? pagelist.data.paperList : []);
       setBookinfo(pagelist.data);
+      console.log(pagelist.data.paperList);
     }
     getbook();
   }, []);
@@ -103,6 +106,25 @@ export default function BookDetailPage() {
       console.error("책 구독취소 중 오류 발생:", error);
     }
   };
+
+  const [threadModal, setThreadModal] = useState(false);
+  const [tId, setTId] = useState(0);
+  const goTread = (threadId) => {
+    setTId(threadId);
+    setThreadModal(true);
+  };
+
+  const handleDeletePaper = async (paperId) => {
+    try {
+      await deletePaper(bookinfo.bookId, paperId);
+      console.log(bookinfo.bookId, paperId);
+      const updatedPages = pages.filter((page) => page.paperId !== paperId);
+      setPages(updatedPages);
+    } catch (error) {
+      console.error("책 페이퍼 제거 중 오류 발생:", error);
+    }
+  };
+
   return (
     <>
       <div className={s(styles.bookContainer)}>
@@ -172,7 +194,7 @@ export default function BookDetailPage() {
                             >
                               {".  .  ."}
                             </div>
-                            <FeedModal
+                            <FeedModal2
                               width="150px"
                               setIsModalOpen={setListModal1}
                               isModalOpen={listModal1}
@@ -180,12 +202,20 @@ export default function BookDetailPage() {
                               top="10px"
                             >
                               <div className={styles.option}>
-                                <div>해당 스레드 보러가기</div>
+                                <div onClick={() => goTread(page.threadId)}>
+                                  해당 스레드 보러가기
+                                </div>
                                 {bookinfo.owner && (
-                                  <div>책에서 페이퍼 제거</div>
+                                  <div
+                                    onClick={() =>
+                                      handleDeletePaper(page.paperId)
+                                    }
+                                  >
+                                    책에서 페이퍼 제거
+                                  </div>
                                 )}
                               </div>
-                            </FeedModal>
+                            </FeedModal2>
                           </div>
                         ) : (
                           <div>
@@ -197,7 +227,7 @@ export default function BookDetailPage() {
                             >
                               {".  .  ."}
                             </div>
-                            <FeedModal
+                            <FeedModal2
                               width="150px"
                               setIsModalOpen={setListModal2}
                               isModalOpen={listModal2}
@@ -205,12 +235,20 @@ export default function BookDetailPage() {
                               top="10px"
                             >
                               <div className={styles.option}>
-                                <div>해당 스레드 보러가기</div>
+                                <div onClick={() => goTread(page.threadId)}>
+                                  해당 스레드 보러가기
+                                </div>
                                 {bookinfo.owner && (
-                                  <div>책에서 페이퍼 제거</div>
+                                  <div
+                                    onClick={() =>
+                                      handleDeletePaper(page.paperId)
+                                    }
+                                  >
+                                    책에서 페이퍼 제거
+                                  </div>
                                 )}
                               </div>
-                            </FeedModal>
+                            </FeedModal2>
                           </div>
                         )}
                       </div>
@@ -313,6 +351,14 @@ export default function BookDetailPage() {
             삭제
           </div>
         </div>
+      </BigModal>
+      <BigModal
+        modalIsOpen={threadModal}
+        setModalIsOpen={setThreadModal}
+        width="1300px"
+        height="860px"
+      >
+        <OneThread threadId={tId} setThreadModal={setThreadModal} />
       </BigModal>
     </>
   );
