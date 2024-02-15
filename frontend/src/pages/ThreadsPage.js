@@ -11,7 +11,6 @@ import useMybraryStore from "../store/useMybraryStore";
 import BigModal from "../components/common/BigModal";
 import OneThread from "../components/threads/OneThread";
 import useMyStore from "../store/useMyStore";
-
 export default function ThreadsPage() {
   const Params = useParams();
   const nowuser = Params.userid;
