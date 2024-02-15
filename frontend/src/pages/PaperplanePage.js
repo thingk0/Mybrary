@@ -19,6 +19,16 @@ export default function PaperplanePage() {
   const query = useQuery();
   const targetUserId = query.get("chatuserid");
 
+  const location = useLocation();
+
+  useEffect(() => {
+    // URL에서 쿼리 스트링이 있는지 확인
+    if (location.search) {
+      // 쿼리 스트링을 제거하고 /paperplane으로 리다이렉트
+      navigate("/paperplane", { replace: true });
+    }
+  }, []);
+
   /* 웹소켓: 채팅용 주소를 구독 */
   const user = useUserStore((state) => state.user);
   const [chatRoomList, setChatRoomList] = useState([]); // 채팅방 리스트
@@ -257,7 +267,9 @@ export default function PaperplanePage() {
                       <div
                         className={styles.imgotheruser}
                         style={{
-                          background: `url("https://jingu.s3.ap-northeast-2.amazonaws.com/${nowChatRoom.otherMemberProfileImageUrl}")no-repeat center/cover`,
+                          background: nowChatRoom.otherMemberProfileImageUrl
+                            ? `url("https://jingu.s3.ap-northeast-2.amazonaws.com/${nowChatRoom.otherMemberProfileImageUrl}")no-repeat center/cover`
+                            : `url(${Iconuser2}) no-repeat center/cover`,
                         }}
                       ></div>
                       <div>{nowChatRoom.otherMemberNickname}</div>
