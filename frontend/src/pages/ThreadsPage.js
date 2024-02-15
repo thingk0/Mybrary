@@ -60,16 +60,14 @@ export default function ThreadsPage() {
         <div className={title.title}>
           <div
             className={title.left_title}
-            onClick={() =>
-              navigate(`../rollingpaper/${mybrary.rollingPaperId}`)
-            }
+            onClick={() => navigate(`../rollingpaper/${my.rollingPaperId}`)}
           >
             &lt; 롤링페이퍼
           </div>
-          <div className={title.main_title}>{mybrary.nickname}'s thread</div>
+          <div className={title.main_title}>{my.nickname}'s thread</div>
           <div
             className={title.right_title}
-            onClick={() => navigate(`../${mybrary.bookShelfId}`)}
+            onClick={() => navigate(`../${my.bookShelfId}`)}
           >
             {" "}
             책장 &gt;
@@ -90,7 +88,7 @@ export default function ThreadsPage() {
                 {groupedData.get(yearMonth).map((thread) => (
                   <Thread
                     thread={thread}
-                    user={mybrary}
+                    user={my}
                     setThreadModal={setThreadModal}
                     setTId={setTId}
                   />
