@@ -67,12 +67,19 @@
   font-size: 1.2vw;
   width: 16.8vw;
   height: 2vw;
-  background-color: var(--main2);
+  background-color: rgb(44, 54, 102);
   color: var(--main4);
   border-radius: 5px;
   border: 0px;
   cursor: pointer;
   margin: 1vw;
+  transition: 0.3s;
+}
+.nextButton:hover {
+  background-color: rgb(91, 144, 182);
+}
+.prevButton:hover {
+  background-color: rgb(91, 144, 182);
 }
 
 .title {

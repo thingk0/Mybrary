@@ -5,6 +5,7 @@ import searchicon from "../assets/searchicon.png";
 import React, { useState, useEffect } from "react";
 import { searchAccount } from "../api/search/Search";
 import iconhome from "../assets/icon/icon_home.png";
+import gomimg from "../assets/icon/Iconuser2.png";
 
 export default function SearchResultPage2() {
   const navigate = useNavigate();
@@ -68,6 +69,7 @@ export default function SearchResultPage2() {
       try {
         const response = await searchAccount(searchtext);
         setUserList(response.data.accountList);
+        console.log(response.data.accountList);
       } catch (error) {
         console.error("불러오지못함", error);
       }
@@ -179,17 +181,21 @@ export default function SearchResultPage2() {
                 <div className={styles.유저들이들어갈공간}>
                   {userList.map((user) => (
                     <div key={user.memberId} className={styles.유저박스}>
-                      {/* <img
-                        className={styles.유저아이콘}
-                        src={`https://jingu.s3.ap-northeast-2.amazonaws.com/${user.profileImageUrl}`}
-                        alt={`Thread ${user.memberId}`}
-                      /> */}
-                      <div
-                        className={styles.유저아이콘}
-                        style={{
-                          background: `url("https://jingu.s3.ap-northeast-2.amazonaws.com/${user.profileImageUrl}")no-repeat center/cover`,
-                        }}
-                      ></div>
+                      {user.profileImageUrl != null ? (
+                        <div
+                          className={styles.유저아이콘}
+                          style={{
+                            background: `url("https://jingu.s3.ap-northeast-2.amazonaws.com/${user.profileImageUrl}")no-repeat center/cover`,
+                          }}
+                        ></div>
+                      ) : (
+                        <div
+                          className={styles.유저아이콘}
+                          style={{
+                            background: `url(${gomimg})no-repeat center/cover`,
+                          }}
+                        ></div>
+                      )}
                       <div className={styles.유저이름들}>
                         <div>
                           <span className={styles.유저닉네임}>

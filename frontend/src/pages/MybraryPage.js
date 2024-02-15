@@ -32,6 +32,7 @@ import {
   getMybrary,
   updateMybrary,
 } from "../api/mybrary/Mybrary";
+import 기본액자 from "../assets/예시이미지2.png";
 import gomimg from "../assets/icon/Iconuser2.png";
 import BigModal from "../components/common/BigModal";
 import Loading from "../components/common/Loading";
@@ -64,7 +65,7 @@ export default function MybraryPage() {
   const [esColor, setEsColor] = useState(easel1);
   const [tbColor, setTbColor] = useState(table1);
   const [bsColor, setBsColor] = useState(shelf1);
-  const [frameimgurl, setFrameimgurl] = useState("");
+  const [frameimgurl, setFrameimgurl] = useState(기본액자);
   const [userimg, setUserimg] = useState("null");
 
   // 상테 체크
@@ -227,9 +228,11 @@ export default function MybraryPage() {
           setEsColor(easelImgs[response.data.easelColor - 1]);
           setTbColor(tableImgs[response.data.deskColor - 1]);
           setBsColor(bookshelfImgs[response.data.bookshelfColor - 1]);
-          setFrameimgurl(
-            `https://jingu.s3.ap-northeast-2.amazonaws.com/${response.data.frameImageUrl}`
-          );
+          if (response.data.frameImageUrl != null) {
+            setFrameimgurl(
+              `https://jingu.s3.ap-northeast-2.amazonaws.com/${response.data.frameImageUrl}`
+            );
+          }
           if (response.data.profileImageUrl != null) {
             setUserimg(
               `https://jingu.s3.ap-northeast-2.amazonaws.com/${response.data.profileImageUrl}`
@@ -239,6 +242,7 @@ export default function MybraryPage() {
         } else {
           const response = await getMybrary(nowuser);
           setMybrary(response.data);
+          console.log(response.data);
           setCheckme(false);
           setFollowStatus(response.data.followStatus);
           setUserInfo(response.data);
@@ -246,9 +250,11 @@ export default function MybraryPage() {
           setEsColor(easelImgs[response.data.easelColor - 1]);
           setTbColor(tableImgs[response.data.deskColor - 1]);
           setBsColor(bookshelfImgs[response.data.bookshelfColor - 1]);
-          setFrameimgurl(
-            `https://jingu.s3.ap-northeast-2.amazonaws.com/${response.data.frameImageUrl}`
-          );
+          if (response.data.frameImageUrl != null) {
+            setFrameimgurl(
+              `https://jingu.s3.ap-northeast-2.amazonaws.com/${response.data.frameImageUrl}`
+            );
+          }
           if (response.data.profileImageUrl != null) {
             setUserimg(
               `https://jingu.s3.ap-northeast-2.amazonaws.com/${response.data.profileImageUrl}`

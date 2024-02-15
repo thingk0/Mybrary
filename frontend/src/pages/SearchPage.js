@@ -68,26 +68,26 @@ export default function SearchPage() {
   };
 
   useEffect(() => {
-    const test = async () => {
-      try {
-        const res1 = await getPopularList(); // data로 아무것도 안넘어옴
-        const res2 = await searchThread("키워드", {
-          page: 10,
-          size: 1,
-        });
-        const res3 = await searchBook("키워드", {
-          page: 10,
-          size: 1,
-        });
-        const res4 = await searchAccount("키워드", {
-          page: 10,
-          size: 1,
-        });
-      } catch {
-        navigate("/error");
-      }
-    };
-    test();
+    // const test = async () => {
+    //   try {
+    //     const res1 = await getPopularList(); // data로 아무것도 안넘어옴
+    //     const res2 = await searchThread("키워드", {
+    //       page: 10,
+    //       size: 1,
+    //     });
+    //     const res3 = await searchBook("키워드", {
+    //       page: 10,
+    //       size: 1,
+    //     });
+    //     const res4 = await searchAccount("키워드", {
+    //       page: 10,
+    //       size: 1,
+    //     });
+    //   } catch {
+    //     navigate("/error");
+    //   }
+    // };
+    // test();
     // 컴포넌트 마운트 시 localStorage에서 최근 검색어 불러오기
     const savedSearches = JSON.parse(localStorage.getItem("recentSearches"));
     if (savedSearches) {
