@@ -43,7 +43,7 @@ public class ChatMessageRepositoryImpl implements ChatMessageRepositoryCustom {
                  .leftJoin(member).on(chatMessage.sender.id.eq(member.id))
                  .leftJoin(image).on(member.profileImage.id.eq(image.id))
                  .where(chatRoom.id.eq(chatRoomId))
-                 .limit(pageable.getPageSize())
+                 .limit(100)
                  .offset(pageable.getOffset())
                  .orderBy(chatMessage.createdAt.desc())
                  .fetch();

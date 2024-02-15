@@ -302,6 +302,13 @@ public class ChatServiceImpl implements ChatService {
         ChatMessage savedMessage = chatMessageRepository.save(newMessage);
 
 
+        /* 채팅을 받을 상대방이 채팅방을 나간 상태이면 다시 나가지않은 상태로 바꿔주기 */
+        ChatJoin chatJoin = chatMessageRepository.isExistChatRoom(receiver.getId(), myId);
+        if (chatJoin != null) {
+            // 해당 chatJoin 나감여부를 해제하기
+            chatJoin.setExited(false);
+        }
+
         /*     웹소켓코드     */
 
         // 웹소켓 주소로 보내야할 객체 TChatMessageWebSocketGetDto
