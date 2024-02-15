@@ -189,14 +189,18 @@ export default function FeedContent({
                 onClick={() => openComment(paper.id)}
               />
               <div>{paper.commentCount}</div>
-              <img
-                src={icon_scrap}
-                alt=""
-                onClick={() => {
-                  handleOpenBookList(thread.paperList);
-                }}
-              />
-              <div>{paper.scrapCount}</div>
+              {thread.scrapEnable && (
+                <>
+                  <img
+                    src={icon_scrap}
+                    alt=""
+                    onClick={() => {
+                      handleOpenBookList(thread.paperList);
+                    }}
+                  />
+                  <div>{paper.scrapCount}</div>
+                </>
+              )}
               <img
                 src={icon_book}
                 alt=""
