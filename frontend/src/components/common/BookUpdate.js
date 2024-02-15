@@ -1,15 +1,14 @@
 import styles from "./BookCreate.module.css";
 import three from "../../assets/three.png";
 import s from "classnames";
-import FileInput from "../common/FileInput";
 import { useEffect, useState } from "react";
 import Modal from "./Modal";
 import { getBookList } from "../../api/category/Category";
-import { uplodaImage } from "../../api/image/Image";
-import { createBook } from "../../api/book/Book";
+import { updateBook } from "../../api/book/Book";
 import toast from "react-hot-toast";
 
-export default function BookCreateOfCategory({
+export default function BookUpdate({
+  book,
   booklist,
   setModalIsOpen,
   setList,
@@ -20,11 +19,11 @@ export default function BookCreateOfCategory({
   const [open, setOpen] = useState(false);
 
   const [value, setValue] = useState({
-    title: "",
-    coverImage: null,
-    coverLayout: 1,
-    coverColorCode: 1,
-    categoryId: 0,
+    title: book.coverTitle,
+    coverLayout: book.coverLayout,
+    coverColorCode: book.coverColorCode,
+    categoryId: book.categoryId,
+    imageUrl: book.imageUrl,
   });
   const handleChange = (name, value) => {
     setValue((prevValue) => ({
@@ -38,7 +37,6 @@ export default function BookCreateOfCategory({
   };
 
   const loadCategory = async () => {
-    // const list = await getCategoryList(user.memberId);
     const categoryList = booklist.map((category) => {
       return { categoryId: category.categoryId, name: category.name };
     });
@@ -62,25 +60,18 @@ export default function BookCreateOfCategory({
   };
 
   const handleSubmit = async () => {
-    const formData = new FormData();
-    formData.append("images", value.coverImage);
-    const coverImageId = await uplodaImage(formData);
-    await createBook({
+    await updateBook({
+      bookId: book.bookId,
       title: value.title,
-      coverImageId: coverImageId.imageIds[0],
       coverLayout: value.coverLayout,
       coverColorCode: value.coverColorCode,
-      categoryId: value.categoryId,
+      beforeCategoryId: book.categoryId,
+      afterCategoryId: value.categoryId,
     });
     addNewBookToCategory(value.categoryId);
     setModalIsOpen(false);
   };
   const [t, setT] = useState(false);
-  const noneImg = () => {
-    toast.error("이미지를 추가해주세요", {
-      position: "top-center",
-    });
-  };
   const nonecate = () => {
     toast.error("책의 카테고리를 선택해주세요", {
       position: "top-center",
@@ -95,12 +86,12 @@ export default function BookCreateOfCategory({
           <div
             className={s(styles.cover, styles[`color${value.coverColorCode}`])}
           >
-            <FileInput
+            <div
               className={s(styles.book, styles[`layImg${value.coverLayout}`])}
-              name="coverImage"
-              value={value.coverImage}
-              onChange={handleChange}
-            />
+              style={{
+                background: `url("https://jingu.s3.ap-northeast-2.amazonaws.com/${value.imageUrl}")no-repeat center/cover`,
+              }}
+            ></div>
             <textarea
               placeholder="표지명을 작성하세요"
               name="title"
@@ -184,11 +175,9 @@ export default function BookCreateOfCategory({
       </div>
       <div
         className={s(styles.bookCreate)}
-        onClick={() =>
-          value.coverImage ? (t ? handleSubmit() : nonecate()) : noneImg()
-        }
+        onClick={() => (t ? handleSubmit() : nonecate())}
       >
-        생성
+        수정
       </div>
     </div>
   );

@@ -15,6 +15,7 @@ import { deleteBook } from "../api/book/Book";
 import BookCreate from "../components/common/BookCreate";
 import BookCreateOfCategory from "../components/common/BookCreateOfCategory";
 import useUrlStore from "../store/useUrlStore";
+import BookUpdate from "../components/common/BookUpdate";
 
 export default function BookPage() {
   const { userid, bookShelfId, categoryid } = useParams();
@@ -324,9 +325,17 @@ export default function BookPage() {
       <BigModal
         modalIsOpen={editModal}
         setModalIsOpen={setEditModal}
-        width="400px"
-        height="160px"
-      ></BigModal>
+        width="1200px"
+        height="800px"
+        background="var(--main4)"
+      >
+        <BookUpdate
+          book={selectedBook}
+          booklist={categoryList}
+          setModalIsOpen={setEditModal}
+          setList={setBookList}
+        />
+      </BigModal>
       <BigModal
         modalIsOpen={createModal}
         setModalIsOpen={setCreateModal}

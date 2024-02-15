@@ -4,8 +4,6 @@ import s from "classnames";
 import FileInput from "../common/FileInput";
 import { useEffect, useState } from "react";
 import Modal from "./Modal";
-import { getCategoryList } from "../../api/category/Category";
-import useUserStore from "../../store/useUserStore";
 import { uplodaImage } from "../../api/image/Image";
 import { createBook } from "../../api/book/Book";
 import toast from "react-hot-toast";
@@ -14,7 +12,6 @@ export default function BookCreate({ setBookList, booklist, setModalIsOpen }) {
   const layouts = [1, 2, 3, 4, 5, 6];
   const colors = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
   const [categorys, setCategorys] = useState([]);
-  const user = useUserStore((state) => state.user);
   const [open, setOpen] = useState(false);
 
   const [value, setValue] = useState({

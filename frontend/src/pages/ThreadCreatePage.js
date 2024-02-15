@@ -88,13 +88,13 @@ export default function ThreadCreatePage() {
     });
 
     const Thread = {
-      bookId,
+      bookId: bookId,
       postPaperDto,
-      paperPublic,
-      scrapEnable,
+      paperPublic: paperPublic,
+      scrapEnable: scrapEnable,
     };
 
-    const threadId = await createThread(Thread);
+    await createThread(Thread);
     navigate(`../mybrary/${user.memberId}/threads`);
   };
   const noneImg = () => {

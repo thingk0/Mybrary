@@ -22,6 +22,7 @@ import useBookStore from "../../store/useBookStore";
 import FeedModal2 from "./FeedModal2";
 import useUrlStore from "../../store/useUrlStore";
 import { deleteThread } from "../../api/thread/Thread";
+import useThreadStore from "../../store/useThreadStore";
 
 export default function FeedContent({
   thread,
@@ -35,6 +36,7 @@ export default function FeedContent({
   const navigate = useNavigate();
   const user = useUserStore((state) => state.user);
   const setBook = useBookStore((state) => state.setBook2);
+  const setThread = useThreadStore((state) => state.setThread);
   const [x, setX] = useState(1);
   const openComment = (id) => {
     setCommentId(id);
@@ -163,7 +165,15 @@ export default function FeedContent({
               </div>
             ) : (
               <div>
-                <span className={styles.수정글자}>수정</span>{" "}
+                <span
+                  className={styles.수정글자}
+                  onClick={async () => {
+                    await setThread(thread);
+                    navigate("/threadUpdate");
+                  }}
+                >
+                  수정
+                </span>{" "}
                 <span className={styles.중간바}> | </span>{" "}
                 <span
                   className={styles.삭제글자}

@@ -9,6 +9,10 @@ import Edit from "../components/threadupdate/Edit";
 import Tag from "../components/threadupdate/Tag";
 import Header from "../components/threadupdate/Header";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import useThreadStore from "../store/useThreadStore";
+import { updateThread } from "../api/thread/Thread";
+import useUserStore from "../store/useUserStore";
+import { useNavigate } from "react-router-dom";
 
 const initialPaper = () => ({
   layoutType: null,
@@ -34,10 +38,13 @@ const htmlToEditorState = (html) => {
 };
 
 export default function ThreadUpdatePage() {
+  const navigate = useNavigate();
   const [papers, setPapers] = useState([initialPaper()]);
   const [paperPublic, setPaperPublic] = useState(true);
-  const [scarpEnable, setScarpEnable] = useState(true);
+  const [scrapEnable, setScrapEnable] = useState(true);
   const [currentPage, setCurrentPage] = useState(0);
+  const thread = useThreadStore((state) => state.thread);
+  const user = useUserStore((state) => state.user);
 
   const layouts = [
     1101, 1102, 1103, 1201, 1202, 1203, 1204, 1205, 1301, 1302, 1303, 1304,
@@ -47,61 +54,30 @@ export default function ThreadUpdatePage() {
   ];
 
   useEffect(() => {
-    // 백엔드에서 데이터를 가져오는 로직을 구현합니다.
-    // 예시를 위해 목 데이터를 사용합니다.
-    const fetchedData = {
-      paperList: [
-        {
-          content1: "<p>첫 번째 페이지의 첫 번째 텍스트 내용입니다.</p>",
-          content2: "<p>첫 번째 페이지의 두 번째 텍스트 내용입니다.</p>",
-          image1: "null",
-          image2: "null",
-          layoutType: 2333,
-          tagList: ["태그1", "태그2"],
-          mentionIdList: [101, 102],
-        },
-        {
-          content1: "<p>두 번째 페이지의 첫 번째 텍스트 내용입니다.</p>",
-          content2: "<p>두 번째 페이지의 두 번째 텍스트 내용입니다.</p>",
-          image1: "null",
-          image2: "null",
-          layoutType: 2332,
-          tagList: ["태그3", "태그4"],
-          mentionIdList: [103, 104],
-        },
-        {
-          content1: "<p>세 번째 페이지의 첫 번째 텍스트 내용입니다.</p>",
-          content2: "<p>세 번째 페이지의 두 번째 텍스트 내용입니다.</p>",
-          image1: "null",
-          image2: null,
-          layoutType: 1303,
-          tagList: ["태그5", "태그6"],
-          mentionIdList: ["105", 106],
-        },
-      ],
-      paperPublic: true,
-      scarpEnable: true,
-    };
+    console.log(thread);
 
-    setPaperPublic(fetchedData.paperPublic);
-    setScarpEnable(fetchedData.scarpEnable);
+    setPaperPublic(thread.paperPublic);
+    setScrapEnable(thread.scrapEnable);
 
-    const loadedPapers = fetchedData.paperList.map((paper) => ({
+    const loadedPapers = thread.paperList.map((paper) => ({
       ...initialPaper(),
       editorState: htmlToEditorState(paper.content1),
       editorState2: htmlToEditorState(paper.content2),
       layoutType: paper.layoutType,
-      tagList: paper.tagList, // 태그 리스트 저장
-      mentionIdList: paper.mentionIdList, // 멘션 리스트 저장
-      // ... 기타 필드 설정
+      tagList: paper.tagList,
+      mentionList: paper.mentionList,
+      imageUrl1: paper.imageUrl1,
+      imageUrl2: paper.imageUrl2,
+      paperId: paper.id,
     }));
 
     setPapers(loadedPapers);
   }, []);
 
-  const saveContent = () => {
+  const saveContent = async () => {
     const paperList = papers.map((paper) => {
       return {
+        paperId: paper.paperId,
         layoutType: paper.layoutType,
         content1: draftToHtml(
           convertToRaw(paper.editorState.getCurrentContent())
@@ -109,21 +85,19 @@ export default function ThreadUpdatePage() {
         content2: draftToHtml(
           convertToRaw(paper.editorState2.getCurrentContent())
         ),
-        image1: paper.image1,
-        image2: paper.image2,
         tagList: paper.tagList,
-        mentionIdList: paper.mentionIdList,
       };
     });
 
     const payload = {
+      threadId: thread.threadId,
       paperList,
-      paperPublic,
-      scarpEnable,
+      paperPublic: paperPublic,
+      scrapEnable: scrapEnable,
     };
 
-    // 백엔드에 payload 전송 로직
-    // 예: axios.post('/api/savePaper', payload);
+    await updateThread(payload);
+    navigate(`../mybrary/${user.memberId}/threads`);
   };
   const [sectionVisible, setSectionVisible] = useState("left-center"); // 상태 변수 추가
 
@@ -179,10 +153,6 @@ export default function ThreadUpdatePage() {
             <Tag
               papers={papers}
               setPapers={setPapers}
-              paperPublic={paperPublic}
-              setPaperPublic={setPaperPublic}
-              scarpEnable={scarpEnable}
-              setScarpEnable={setScarpEnable}
               currentPage={currentPage}
             >
               <button
@@ -211,7 +181,7 @@ export default function ThreadUpdatePage() {
               className={!paperPublic ? styles.select : styles.button}
               onClick={() => {
                 setPaperPublic(false);
-                setScarpEnable(false);
+                setScrapEnable(false);
               }}
             >
               나만보기
@@ -225,16 +195,16 @@ export default function ThreadUpdatePage() {
           <div className={styles.settingButtons}>
             {paperPublic && (
               <div
-                className={scarpEnable ? styles.select : styles.button}
-                onClick={() => setScarpEnable(true)}
+                className={scrapEnable ? styles.select : styles.button}
+                onClick={() => setScrapEnable(true)}
               >
                 스크랩 허용
               </div>
             )}
 
             <div
-              className={!scarpEnable ? styles.select : styles.button}
-              onClick={() => setScarpEnable(false)}
+              className={!scrapEnable ? styles.select : styles.button}
+              onClick={() => setScrapEnable(false)}
             >
               스크랩 비허용
             </div>

@@ -51,10 +51,10 @@ export default function Edit({ currentPage, papers, setPapers }) {
         toolbar={{
           options: [
             "inline",
-            "blockType",
-            "colorPicker",
             "emoji",
             "link",
+            "colorPicker",
+            "blockType",
             "textAlign",
             "history",
           ],
@@ -87,10 +87,10 @@ export default function Edit({ currentPage, papers, setPapers }) {
         toolbar={{
           options: [
             "inline",
-            "blockType",
-            "colorPicker",
             "emoji",
             "link",
+            "colorPicker",
+            "blockType",
             "textAlign",
             "history",
           ],
@@ -105,12 +105,18 @@ export default function Edit({ currentPage, papers, setPapers }) {
         onBlur={handleBlur}
       />
 
-      <div className={item[`img1_${papers[currentPage].layoutType}`]}>
-        <img src={papers[currentPage].image1} alt="이미지1" />
-      </div>
-      <div className={item[`img2_${papers[currentPage].layoutType}`]}>
-        <img src={papers[currentPage].image2} alt="이미지2" />
-      </div>
+      <div
+        className={item[`img1_${papers[currentPage].layoutType}`]}
+        style={{
+          background: `url("https://jingu.s3.ap-northeast-2.amazonaws.com/${papers[currentPage].imageUrl1}")no-repeat center/cover`,
+        }}
+      ></div>
+      <div
+        className={item[`img2_${papers[currentPage].layoutType}`]}
+        style={{
+          background: `url("https://jingu.s3.ap-northeast-2.amazonaws.com/${papers[currentPage].imageUrl2}")no-repeat center/cover`,
+        }}
+      ></div>
     </div>
   );
 }
