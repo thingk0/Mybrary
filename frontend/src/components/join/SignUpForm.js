@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./SignUpForm.module.css";
 import toast from "react-hot-toast";
+import Iconuser2 from "../../assets/icon/Iconuser2.png";
+import 예시이미지2 from "../../assets/예시이미지2.png";
 
 import {
   checkNickName,
@@ -9,6 +11,7 @@ import {
   verifyCode,
   verifyEmail,
 } from "../../api/member/SignUp";
+import { uplodaImage } from "../../api/image/Image";
 
 function SignUpForm({ setPageremote }) {
   /* 에러페이지 이동 */
@@ -229,7 +232,26 @@ function SignUpForm({ setPageremote }) {
       // 여기에 폼 제출 로직을 추가하세요.
       // 여기서 회원가입 post 요청을 보내면 된다. 이 요청은 api 폴더에 있기 때문에 import 해온 것을 쓰면 된다.
       try {
-        const data = await signup(formData);
+        // 여기서 이미지 업로드
+        const res1 = await fetch(Iconuser2);
+        const blob1 = await res1.blob();
+
+        const res2 = await fetch(예시이미지2);
+        const blob2 = await res2.blob();
+
+        const images = new FormData();
+        images.append("images", blob1, "Iconuser2.png");
+        images.append("images", blob2, "예시이미지2.png");
+
+        const res = await uplodaImage(images);
+        console.log(res);
+
+        const data = await signup({
+          ...formData,
+          profileImageId: res.imageIds[0],
+          frameImageId: res.imageIds[1],
+        });
+        console.log(data);
         if (data.status === "SUCCESS") {
           showToast("회원가입이 완료되었습니다.");
           setPageremote((prev) => !prev);

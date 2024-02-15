@@ -116,7 +116,6 @@ export default function SettingPage() {
     async function fetchData() {
       try {
         const response = await getMyMybrary();
-        console.log(response);
         setName(response.data.name);
         setNickname(response.data.nickname);
         setIntro(response.data.intro);
@@ -249,17 +248,14 @@ export default function SettingPage() {
       ...form,
       notifyEnable: enable,
     });
-    console.log(res);
     setNotifyEnable(enable);
   };
 
   const handleProfilePublicUpdate = async (enable) => {
-    console.log(enable);
     const res = await updateProfile({
       ...form,
       profilePublic: enable,
     });
-    console.log(res);
     setProfilePublic(enable);
   };
 
