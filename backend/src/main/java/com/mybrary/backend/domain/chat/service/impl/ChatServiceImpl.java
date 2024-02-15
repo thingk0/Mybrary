@@ -94,6 +94,10 @@ public class ChatServiceImpl implements ChatService {
                                              .build();
         chatMessageRepository.save(chatMessage);
 
+        /* 채팅을 받을 상대방이 채팅방을 나간 상태이면 다시 나가지않은 상태로 바꿔주기 */
+        ChatJoin chatJoin1 = chatMessageRepository.isExistChatRoom(receiver.getId(), sender.getId());
+        chatJoin1.setExited(false);
+
         log.info("action = {}, email = {}, chatRoomId = {}, messageId = {}", "saveChatMessage",
                  email, chatRoomId, chatMessage.getId());
 
@@ -307,6 +311,7 @@ public class ChatServiceImpl implements ChatService {
         chatJoin1.setExited(false);
         ChatJoin chatJoin2 = chatMessageRepository.isExistChatRoom(myId, receiver.getId());
         chatJoin2.setExited(false);
+        System.out.println("채팅나감여부" + chatJoin1.isExited());
 
         /*     웹소켓코드     */
 
