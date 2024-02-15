@@ -8,5 +8,7 @@ public class BookNotFoundException extends RuntimeException {
 
     private final ErrorCode errorCode;
 
-    public BookNotFoundException() {this.errorCode = ErrorCode.BOOK_NOT_FOUND; }
+    public BookNotFoundException() {
+        this.errorCode = ErrorCode.BOOK_NOT_FOUND;
+    }
 }

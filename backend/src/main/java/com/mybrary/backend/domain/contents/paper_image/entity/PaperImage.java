@@ -46,7 +46,6 @@ public class PaperImage extends BaseEntity {
     @Column(name = "image_seq")
     private int imageSeq;
 
-
     public static PaperImage of(Paper paper, Image image, int imageSeq) {
         return PaperImage.builder()
                          .paper(paper)
