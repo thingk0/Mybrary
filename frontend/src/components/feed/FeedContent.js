@@ -109,7 +109,6 @@ export default function FeedContent({
 
   const handelFeedModal = async (paperId) => {
     const response = await getPaperinBook(paperId);
-    console.log(response);
     setBooklist(response.data);
   };
 

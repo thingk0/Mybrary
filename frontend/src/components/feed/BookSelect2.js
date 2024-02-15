@@ -17,7 +17,6 @@ export default function BookSelect2({
   };
   const handleSelect = async () => {
     if (book.title) {
-      console.log(papers);
       const paperIdList = papers.map((paper) => {
         return paper.id;
       });
@@ -26,9 +25,7 @@ export default function BookSelect2({
         paperIdList: paperIdList,
       };
       incrementScrapCount(paperIdList[0]);
-      // console.log(object);
       const a = await scrap(object);
-      // console.log(a);
       setModalIsOpen2(false);
     }
   };

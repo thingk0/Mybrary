@@ -79,7 +79,6 @@ export default function FeedContent({
   const toggleLike = async (paperId, liked) => {
     try {
       const response = await like(paperId);
-      console.log(response);
       if (!liked) {
         showToast("좋아요 !");
       } else {
@@ -111,7 +110,6 @@ export default function FeedContent({
 
   const handelFeedModal = async (paperId) => {
     const response = await getPaperinBook(paperId);
-    console.log(response);
     setBooklist(response.data);
   };
 
@@ -129,7 +127,6 @@ export default function FeedContent({
       (thread) => thread.threadId !== threadId
     );
     const a = await deleteThread(threadId);
-    console.log(a);
     setList(updatedThreadList);
     setThreadModal(false);
   };

@@ -13,7 +13,6 @@ export default function OneThread({ threadId, setThreadModal }) {
   const [list, setList] = useState([]);
   const [scrapModal, setScrapModal] = useState(false);
 
-  // console.log(threadList);
   const [comment, setComment] = useState(false);
   const [commentId, setCommentId] = useState(0);
   const [zIndex, setZIndex] = useState(-1);
@@ -25,7 +24,6 @@ export default function OneThread({ threadId, setThreadModal }) {
   const handleOpenBookList = async (paperList) => {
     setPapers(paperList);
     const booklists = await getMYBooks();
-    console.log(booklists.data);
     setBookList(booklists.data);
     setScrapModal(true);
   };
@@ -36,7 +34,6 @@ export default function OneThread({ threadId, setThreadModal }) {
         const response = await getThread(threadId);
 
         setList([response.data]);
-        console.log(response.data);
       } catch (error) {
         console.error("데이터불러오기실패");
       }
