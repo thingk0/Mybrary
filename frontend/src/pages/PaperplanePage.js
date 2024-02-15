@@ -109,7 +109,6 @@ export default function PaperplanePage() {
   useEffect(() => {
     if (sendedMessage) {
       if (nowChatRoom && nowChatRoom.chatRoomId === sendedMessage.chatRoomId) {
-        console.log("hi");
         setChatMessageList((prev) => [sendedMessage, ...prev]);
       }
 
@@ -128,8 +127,14 @@ export default function PaperplanePage() {
         if (
           nowChatRoom &&
           nowChatRoom.chatRoomId !== updatedChatRoom.chatRoomId
-        )
+        ) {
           updatedChatRoom.unreadMessageCount++;
+        }
+
+        if (!nowChatRoom) {
+          updatedChatRoom.unreadMessageCount++;
+        }
+
         updatedChatRoom.latestMessageSender = sendedMessage.senderId;
 
         // chatRoomList를 업데이트
