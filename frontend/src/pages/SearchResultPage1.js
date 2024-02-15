@@ -5,6 +5,7 @@ import searchicon from "../assets/searchicon.png";
 import React, { useState, useEffect } from "react";
 import { searchBook } from "../api/search/Search";
 import s from "classnames";
+import useBookStore from "../store/useBookStore";
 export default function SearchResultPage1() {
   const navigate = useNavigate();
   const Params = useParams();
@@ -12,7 +13,12 @@ export default function SearchResultPage1() {
   const [animateOut, setAnimateOut] = useState(false);
   const [recentSearches, setRecentSearches] = useState([]);
   const [bookList, setBookList] = useState([]);
+  const setBook = useBookStore((state) => state.setBook);
 
+  const handleBook = async (book) => {
+    await setBook(book);
+    navigate(`/book/${book.bookId}`);
+  };
   useEffect(() => {
     async function fetchData() {
       try {
@@ -178,7 +184,7 @@ export default function SearchResultPage1() {
                     <div
                       key={index}
                       className={styles.main_left}
-                      onClick={() => navigate(`/book/${book.bookId}`)}
+                      onClick={() => handleBook(book)}
                     >
                       <div
                         className={s(

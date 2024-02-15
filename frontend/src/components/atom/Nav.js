@@ -24,6 +24,7 @@ export default function Nav() {
   const nav = useNavStore((state) => state.nav);
   const setNav = useNavStore((state) => state.setNav);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [modalIsOpen2, setModalIsOpen2] = useState(false);
   const [password, setPassword] = useState("");
 
   const handleChange = (e) => {
@@ -79,6 +80,7 @@ export default function Nav() {
   const handleLogOut = async () => {
     try {
       //await doLogout(setUser);
+
       navigate("/join");
       localStorage.clear();
     } catch (e) {
@@ -111,7 +113,7 @@ export default function Nav() {
                 </div>
                 <div
                   className={s(styles.nav_icon)}
-                  onClick={() => handleLogOut()}
+                  onClick={() => setModalIsOpen2(true)}
                 >
                   <img src={logout} alt="" />
                 </div>
@@ -222,6 +224,25 @@ export default function Nav() {
             className={styles.modalButton}
           >
             확인
+          </div>
+        </div>
+      </BigModal>
+      <BigModal
+        modalIsOpen={modalIsOpen2}
+        setModalIsOpen={setModalIsOpen2}
+        width="400px"
+        height="220px"
+      >
+        <div className={styles.modal}>
+          <div className={styles.log}>로그아웃</div>
+          <div>정말로 로그아웃 하시겠습니까?ㅠㅠㅠ</div>
+          <div className={styles.flex}>
+            <div onClick={() => setModalIsOpen2(false)} className={styles.no}>
+              취소
+            </div>
+            <div onClick={() => handleLogOut()} className={styles.ok}>
+              확인
+            </div>
           </div>
         </div>
       </BigModal>
