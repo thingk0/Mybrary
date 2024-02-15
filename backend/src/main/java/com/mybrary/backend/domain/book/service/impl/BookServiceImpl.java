@@ -307,6 +307,7 @@ public class BookServiceImpl implements BookService {
         return savedSubscribe.getId();
     }
 
+    @Transactional
     @Override
     public Long unsubscribeBook(String email, Long bookId) {
 
