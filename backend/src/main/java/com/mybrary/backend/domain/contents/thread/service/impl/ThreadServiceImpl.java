@@ -93,7 +93,7 @@ public class ThreadServiceImpl implements ThreadService {
         Optional<Book> book = bookAsync.join();
         Mybrary mybrary = mybraryAsync.join();
 
-        Thread thread = Thread.create(mybrary);
+        Thread thread = Thread.create(mybrary, threadPostDto.isPaperPublic(), threadPostDto.isScrapEnable());
         threadRepository.save(thread);
 
         Member member = mybrary.getMember();
@@ -160,7 +160,7 @@ public class ThreadServiceImpl implements ThreadService {
             }
             tagListSavesAsync.join();
         }
-        processAndIndexPapersAsync(thread);
+        processAndIndexPapersAsync(thread, paperTagList);
         return thread.getId();
     }
 
@@ -544,9 +544,10 @@ public class ThreadServiceImpl implements ThreadService {
     }
 
     @Async
-    public CompletableFuture<Void> processAndIndexPapersAsync(Thread savedThread) {
+    public CompletableFuture<Void> processAndIndexPapersAsync(Thread savedThread, Map<Long, String> tagList) {
         List<PaperDocument> paperDocuments = new ArrayList<>();
-        savedThread.getPaperList().forEach(paper -> paperDocuments.add(PaperDocument.of(savedThread.getId(), paper)));
+        savedThread.getPaperList().forEach(
+            paper -> paperDocuments.add(PaperDocument.of(savedThread.getId(), paper, tagList.get(paper.getId()))));
         paperDocumentRepository.saveAll(paperDocuments);
         return CompletableFuture.completedFuture(null);
     }

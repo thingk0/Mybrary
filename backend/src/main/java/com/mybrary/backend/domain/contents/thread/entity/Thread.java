@@ -50,11 +50,11 @@ public class Thread extends BaseEntity {
     @OneToMany(mappedBy = "thread", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     private List<Paper> paperList;
 
-    public static Thread create(Mybrary mybrary) {
+    public static Thread create(Mybrary mybrary, boolean isPaperPublic, boolean isScrapEnabled) {
         return Thread.builder()
                      .mybrary(mybrary)
-                     .isScrapEnabled(true)
-                     .isPaperPublic(true)
+                     .isPaperPublic(isPaperPublic)
+                     .isScrapEnabled(isScrapEnabled)
                      .paperList(new ArrayList<>())
                      .build();
     }

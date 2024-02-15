@@ -4,7 +4,6 @@ import com.mybrary.backend.domain.contents.paper.dto.requestDto.PostPaperDto;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,8 +22,5 @@ public class ThreadPostDto {
     private List<PostPaperDto> postPaperDto;
     private boolean isPaperPublic;
     private boolean isScrapEnable;
-
-//    private boolean isPaperPublic;
-//    private boolean isScarpEnable;
 
 }

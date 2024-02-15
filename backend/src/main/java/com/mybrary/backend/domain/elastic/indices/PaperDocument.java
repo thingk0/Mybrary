@@ -49,12 +49,13 @@ public class PaperDocument {
     private String tagList;
 
 
-    public static PaperDocument of(Long threadId, Paper paper) {
+    public static PaperDocument of(Long threadId, Paper paper, String tagList) {
         return PaperDocument.builder()
                             .id(paper.getId())
                             .threadId(threadId)
                             .content1(paper.getContent1())
                             .content2(paper.getContent2())
+                            .tagList(tagList)
                             .build();
     }
 
