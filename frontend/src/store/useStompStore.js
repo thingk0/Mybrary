@@ -52,7 +52,7 @@ const showAlarm = (alarmObj) => {
       iconMsg = "💬";
       break;
     case 9:
-      msg = `회원님의 책${bookname}을 구독했습니다`;
+      msg = `회원님의 책 [${bookname}]을 구독했습니다`;
       iconMsg = "📚";
       break;
     case 10:
