@@ -1,5 +1,6 @@
 package com.mybrary.backend.domain.search.service.impl;
 
+import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import com.mybrary.backend.domain.book.dto.responseDto.BookGetDto;
 import com.mybrary.backend.domain.book.repository.BookRepository;
 import com.mybrary.backend.domain.contents.paper.repository.PaperRepository;
@@ -16,8 +17,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.elasticsearch.client.elc.NativeQuery;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.query.Criteria;
@@ -25,6 +28,7 @@ import org.springframework.data.elasticsearch.core.query.CriteriaQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Log4j2
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -45,17 +49,35 @@ public class SearchServiceImpl implements SearchService {
     public Page<SearchPaperResponseDto> searchThread(String keyword, Pageable pageable) {
 
         // 검색 쿼리 생성
-        Criteria query = new Criteria("tagList").contains(keyword)
-                                                .or(new Criteria("content1").contains(keyword))
-                                                .or(new Criteria("content2").contains(keyword));
+//        Criteria query = new Criteria("tagList").contains(keyword)
+//                                                .or(new Criteria("content1").contains(keyword))
+//                                                .or(new Criteria("content2").contains(keyword));
+
+        Query query = Query.of(qb -> qb
+            .bool(bq -> bq
+                .should(sh -> sh.match(mq -> mq.field("tagList").query(keyword)))
+                .should(sh -> sh.match(mq -> mq.field("content1").query(keyword)))
+                .should(sh -> sh.match(mq -> mq.field("content2").query(keyword)))
+            )
+        );
+
+        // NativeQuery 객체 생성
+        NativeQuery nativeQuery = NativeQuery.builder()
+                                             .withQuery(query)
+                                             .withPageable(pageable)
+                                             .build();
+
+        log.info("query = {}", query);
 
         SearchHits<PaperDocument> searchHits = elasticsearchOperations
-            .search(new CriteriaQuery(query, pageable), PaperDocument.class);
+            .search(nativeQuery, PaperDocument.class);
+        log.info("searchHits = {}", searchHits);
 
         // 검색된 PaperDocument 의 ID 추출
         List<Long> paperIds = searchHits.getSearchHits().stream()
                                         .map(hit -> hit.getContent().getId())
                                         .collect(Collectors.toList());
+        log.info("paperIds = {}", paperIds);
 
         return paperRepository.fetchPaperSearchList(paperIds, pageable);
     }
