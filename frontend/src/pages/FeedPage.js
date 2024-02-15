@@ -96,6 +96,7 @@ export default function FeedPage() {
         // setThreadList(response.data);
 
         setList([...list, ...response.data]);
+        console.log(list);
       } catch (error) {
         console.error("데이터불러오기실패");
       }
