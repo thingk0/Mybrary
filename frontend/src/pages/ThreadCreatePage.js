@@ -49,6 +49,21 @@ export default function ThreadCreatePage() {
     2221, 2231, 2321, 2331, 2332, 2333, 2322, 2232, 2311, 2131, 2441, 2442,
     2551,
   ];
+  const showToast = (string) => {
+    toast.success(`${string}`, {
+      style: {
+        border: "1px solid #713200",
+        padding: "16px",
+        color: "#713200",
+        zIndex: "100",
+      },
+      iconTheme: {
+        primary: "#713200",
+        secondary: "#FFFAEE",
+      },
+      position: "top-center",
+    });
+  };
 
   const [booklist, setBookList] = useState([]);
   const [book, setBook] = useState({}); // 책선택
@@ -94,8 +109,9 @@ export default function ThreadCreatePage() {
       scrapEnable: scrapEnable,
     };
 
-    await createThread(Thread);
-    navigate(`../mybrary/${user.memberId}/threads`);
+    const threadId = await createThread(Thread);
+    showToast("게시글을 생성했습니다 !");
+    navigate(`../feed`);
   };
   const noneImg = () => {
     toast.error("이미지를 전부 채워주세요", {

@@ -10,6 +10,7 @@ import { getMYBooks } from "../api/book/Book";
 import BookSelect2 from "../components/feed/BookSelect2";
 import BookCreate from "../components/common/BookCreate";
 import useNavStore from "../store/useNavStore";
+import toast from "react-hot-toast";
 
 export default function FeedPage() {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -36,6 +37,22 @@ export default function FeedPage() {
       setActiveIndex(activeIndex - 1);
     }
   }, [activeIndex]);
+
+  const showToast = (string) => {
+    toast.success(`${string}`, {
+      style: {
+        border: "1px solid #713200",
+        padding: "16px",
+        color: "#713200",
+        zIndex: "100",
+      },
+      iconTheme: {
+        primary: "#713200",
+        secondary: "#FFFAEE",
+      },
+      position: "top-center",
+    });
+  };
 
   // useCallback 내에서 함수 정의
   const handleNextClick = useCallback(() => {

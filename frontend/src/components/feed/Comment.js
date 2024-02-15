@@ -9,6 +9,7 @@ import {
 } from "../../api/comment/Comment";
 import useUserStore from "../../store/useUserStore";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 //commentId라고 들어오지만 이거 페이퍼아이디임
 export default function Comment({
@@ -19,7 +20,7 @@ export default function Comment({
   const [commentList, setCommentList] = useState([]);
   const [childComments, setChildComments] = useState({}); // 대댓글 목록 상태
   const user = useUserStore((state) => state.user);
-
+  const navigate = useNavigate();
   const showToast = (string) => {
     toast.success(`${string}`, {
       style: {
@@ -246,7 +247,10 @@ export default function Comment({
                     }
                   )}
                 >
-                  <div className={styles.comment_nickname}>
+                  <div
+                    className={styles.comment_nickname}
+                    onClick={() => navigate(`/mybrary/${comment.ownerId}`)}
+                  >
                     {comment.ownerNickname}
                   </div>
                   <div className={styles.comment_text}>{comment.content}</div>
@@ -302,7 +306,12 @@ export default function Comment({
                         )}
                         key={childComment.commentId}
                       >
-                        <div className={styles.comment_nickname}>
+                        <div
+                          className={styles.comment_nickname}
+                          onClick={() =>
+                            navigate(`/mybrary/${childComment.ownerId}`)
+                          }
+                        >
                           {childComment.ownerNickname}
                         </div>
                         <div className={styles.comment_text}>

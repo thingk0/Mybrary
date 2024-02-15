@@ -4,102 +4,28 @@ import { useNavigate, useParams } from "react-router-dom";
 import searchicon from "../assets/searchicon.png";
 import React, { useState, useEffect } from "react";
 import 예시이미지2 from "../assets/예시이미지2.png";
-import Thread from "../components/common/Thread";
-
+import Thread from "../components/common/Thread2";
+import { searchContents } from "../api/search/Search";
+import BigModal from "../components/common/BigModal";
+import OneThread from "../components/threads/OneThread";
 export default function SearchResultPage() {
   const navigate = useNavigate();
   const Params = useParams();
   const [searchtext, setSearchtext] = useState(Params.word);
   const [animateOut, setAnimateOut] = useState(false);
   const [recentSearches, setRecentSearches] = useState([]);
-  const threadList = [
-    {
-      threadId: 1,
-      imageUrl: 예시이미지2,
-      likeCount: 50,
-      commentCount: 20,
-      scrapCount: 10,
-    },
-    {
-      threadId: 2,
-      imageUrl: 예시이미지2,
-      likeCount: 30,
-      commentCount: 15,
-      scrapCount: 5,
-    },
-    {
-      threadId: 3,
-      imageUrl: 예시이미지2,
-      likeCount: 70,
-      commentCount: 40,
-      scrapCount: 25,
-    },
-    {
-      threadId: 4,
-      imageUrl: 예시이미지2,
-      likeCount: 45,
-      commentCount: 18,
-      scrapCount: 8,
-    },
-
-    {
-      threadId: 5,
-      imageUrl: 예시이미지2,
-      likeCount: 45,
-      commentCount: 18,
-      scrapCount: 8,
-    },
-
-    {
-      threadId: 5,
-      imageUrl: 예시이미지2,
-      likeCount: 45,
-      commentCount: 18,
-      scrapCount: 8,
-    },
-    {
-      threadId: 5,
-      imageUrl: 예시이미지2,
-      likeCount: 45,
-      commentCount: 18,
-      scrapCount: 8,
-    },
-    {
-      threadId: 5,
-      imageUrl: 예시이미지2,
-      likeCount: 45,
-      commentCount: 18,
-      scrapCount: 8,
-    },
-    {
-      threadId: 5,
-      imageUrl: 예시이미지2,
-      likeCount: 45,
-      commentCount: 18,
-      scrapCount: 8,
-    },
-    {
-      threadId: 5,
-      imageUrl: 예시이미지2,
-      likeCount: 45,
-      commentCount: 18,
-      scrapCount: 8,
-    },
-    {
-      threadId: 5,
-      imageUrl: 예시이미지2,
-      likeCount: 45,
-      commentCount: 18,
-      scrapCount: 8,
-    },
-    {
-      threadId: 5,
-      imageUrl: 예시이미지2,
-      likeCount: 45,
-      commentCount: 18,
-      scrapCount: 8,
-    },
-  ];
+  const [threadModal, setThreadModal] = useState(false);
+  const [tId, setTId] = useState(0);
+  // const threadList = [
+  //   {
+  //     threadId: 1,
+  //     imageUrl: 예시이미지2,
+  //     likeCount: 50,
+  //     commentCount: 20,
+  //     scrapCount: 10,
+  //   }
+  // ];
+  const [threadList, setThreadList] = useState([]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -151,11 +77,22 @@ export default function SearchResultPage() {
   };
   useEffect(() => {
     // 컴포넌트 마운트 시 localStorage에서 최근 검색어 불러오기
+    async function fetchThreadData() {
+      try {
+        const response = await searchContents(searchtext);
+        console.log(response.data.content);
+        setThreadList(response.data.content);
+      } catch (error) {
+        console.error("데이터를 가져오는 데 실패했습니다:", error);
+      }
+    }
     const savedSearches = JSON.parse(localStorage.getItem("recentSearches"));
     if (savedSearches) {
       setRecentSearches(savedSearches);
     }
-  }, []);
+    fetchThreadData();
+  }, [searchtext]);
+
   const handle0 = (e) => {
     e.preventDefault();
 
@@ -253,7 +190,11 @@ export default function SearchResultPage() {
               <div className={styles.오버플로우확인}>
                 <div className={styles.게시글들어갈공간}>
                   {threadList.map((thread) => (
-                    <Thread thread={thread} user="cwnsgh" />
+                    <Thread
+                      thread={thread}
+                      setThreadModal={setThreadModal}
+                      setTId={setTId}
+                    />
                   ))}
                 </div>
               </div>
@@ -261,6 +202,14 @@ export default function SearchResultPage() {
           </div>
         </div>
       </Container>
+      <BigModal
+        modalIsOpen={threadModal}
+        setModalIsOpen={setThreadModal}
+        width="1300px"
+        height="860px"
+      >
+        <OneThread threadId={tId} setThreadModal={setThreadModal} />
+      </BigModal>
     </>
   );
 }

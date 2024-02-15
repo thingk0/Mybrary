@@ -2,14 +2,15 @@ import axios from "axios";
 const BASE_URL = "https://i10b207.p.ssafy.io/api/v1/";
 
 /* 스레드 검색 */
-export async function searchThread(keyword, pagingObject) {
+export async function searchContents(keyword) {
   const params = {
     keyword,
-    ...pagingObject,
+    page: 0,
+    size: 100,
   };
 
   try {
-    const response = await axios.get(BASE_URL + "search/thread", { params });
+    const response = await axios.get(BASE_URL + "search/contents", { params });
     return response.data;
   } catch (error) {
     throw error;
