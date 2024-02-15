@@ -11,12 +11,14 @@ import {
   searchThread,
   getPopularList,
 } from "../api/search/Search";
+import useNavStore from "../store/useNavStore";
 
 export default function SearchPage() {
   const [searchtext, setSearchtext] = useState("");
   const [animateOut, setAnimateOut] = useState(false);
   const [recentSearches, setRecentSearches] = useState([]);
   const navigate = useNavigate();
+  const setNav = useNavStore((state) => state.setNav);
 
   const handleRecentSearchClick = (search) => {
     setAnimateOut(true);
@@ -68,31 +70,14 @@ export default function SearchPage() {
   };
 
   useEffect(() => {
-    // const test = async () => {
-    //   try {
-    //     const res1 = await getPopularList(); // data로 아무것도 안넘어옴
-    //     const res2 = await searchThread("키워드", {
-    //       page: 10,
-    //       size: 1,
-    //     });
-    //     const res3 = await searchBook("키워드", {
-    //       page: 10,
-    //       size: 1,
-    //     });
-    //     const res4 = await searchAccount("키워드", {
-    //       page: 10,
-    //       size: 1,
-    //     });
-    //   } catch {
-    //     navigate("/error");
-    //   }
-    // };
-    // test();
-    // 컴포넌트 마운트 시 localStorage에서 최근 검색어 불러오기
+    async function nav() {
+      await setNav(3);
+    }
     const savedSearches = JSON.parse(localStorage.getItem("recentSearches"));
     if (savedSearches) {
       setRecentSearches(savedSearches);
     }
+    nav();
   }, []);
 
   useEffect(() => {

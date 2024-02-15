@@ -44,6 +44,7 @@ import { deleteFollow, follow, followCancel } from "../api/member/Follow";
 import { getFirstChat } from "../api/chat/Chat";
 import useNotificationStore from "../store/useNotificationStore";
 import useMyStore from "../store/useMyStore";
+import useNavStore from "../store/useNavStore";
 
 export default function MybraryPage() {
   const { setNotifyEnable } = useNotificationStore();
@@ -55,6 +56,7 @@ export default function MybraryPage() {
   const setMybrary = useMybraryStore((state) => state.setMybrary);
   const setMy = useMyStore((state) => state.setMy);
   const client = useStompStore((state) => state.stompClient);
+  const setNav = useNavStore((state) => state.setNav);
 
   // 각각의 색상옵션들
   const color = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
@@ -239,6 +241,7 @@ export default function MybraryPage() {
             );
           }
           setIsLoading(false);
+          await setNav(0);
         } else {
           const response = await getMybrary(nowuser);
           setMybrary(response.data);

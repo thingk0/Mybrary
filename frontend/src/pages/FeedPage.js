@@ -9,6 +9,7 @@ import BigModal from "../components/common/BigModal";
 import { getMYBooks } from "../api/book/Book";
 import BookSelect2 from "../components/feed/BookSelect2";
 import BookCreate from "../components/common/BookCreate";
+import useNavStore from "../store/useNavStore";
 
 export default function FeedPage() {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -21,6 +22,8 @@ export default function FeedPage() {
   const [commentId, setCommentId] = useState(0);
   const [zIndex, setZIndex] = useState(-1);
   const navigate = useNavigate();
+
+  const setNav = useNavStore((state) => state.setNav);
 
   // 스로틀링을 위한 상태
   const [isThrottled, setIsThrottled] = useState(false);
@@ -94,6 +97,7 @@ export default function FeedPage() {
   useEffect(() => {
     async function fetchMainFeedData() {
       try {
+        await setNav(1);
         const response = await getThreadList(page);
         // setThreadList(response.data);
 

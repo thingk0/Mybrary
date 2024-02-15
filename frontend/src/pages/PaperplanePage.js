@@ -14,6 +14,7 @@ import Iconuser2 from "../assets/icon/Iconuser2.png";
 import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
 import { useNavigate, useLocation } from "react-router-dom";
+import useNavStore from "../store/useNavStore.js";
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -21,6 +22,8 @@ function useQuery() {
 
 export default function PaperplanePage() {
   const query = useQuery();
+
+  const setNav = useNavStore((state) => state.setNav);
   const targetUserId = query.get("chatuserid");
 
   const location = useLocation();
@@ -62,6 +65,7 @@ export default function PaperplanePage() {
   useEffect(() => {
     (async function asyncGetChatList() {
       try {
+        await setNav(2);
         const res = await getChatList();
         setChatRoomList(res.data.content);
         if (targetUserId) {

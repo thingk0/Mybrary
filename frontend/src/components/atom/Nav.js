@@ -17,10 +17,12 @@ import { login } from "../../api/member/Login";
 import toast from "react-hot-toast";
 import FeedModal2 from "../feed/FeedModal2";
 import { getNotificationList } from "../../api/notification/Notification";
+import useNavStore from "../../store/useNavStore";
 
 export default function Nav() {
   const user = useUserStore((state) => state.user);
-  const [active, setActive] = useState([true, false, false, false]);
+  const nav = useNavStore((state) => state.nav);
+  const setNav = useNavStore((state) => state.setNav);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [password, setPassword] = useState("");
 
@@ -134,14 +136,14 @@ export default function Nav() {
           <div
             className={s(
               styles.nav_section,
-              active[0] ? styles.nav_active : styles.nav_not_active
+              nav === 0 ? styles.nav_active : styles.nav_not_active
             )}
-            onClick={() => {
-              setActive([true, false, false, false]);
+            onClick={async () => {
+              await setNav(0);
               navigate(`mybrary/${user.memberId}`);
             }}
           >
-            {active[0] ? <div>마이</div> : <div></div>}
+            {nav === 0 ? <div>마이</div> : <div></div>}
             <div>
               <img src={home} alt="" />
             </div>
@@ -149,14 +151,14 @@ export default function Nav() {
           <div
             className={s(
               styles.nav_section,
-              active[1] ? styles.nav_active : styles.nav_not_active
+              nav === 1 ? styles.nav_active : styles.nav_not_active
             )}
-            onClick={() => {
-              setActive([false, true, false, false]);
+            onClick={async () => {
+              await setNav(1);
               navigate("feed");
             }}
           >
-            {active[1] ? <div>피드</div> : <div></div>}
+            {nav === 1 ? <div>피드</div> : <div></div>}
             <div>
               <img src={feed} alt="" />
             </div>
@@ -164,14 +166,14 @@ export default function Nav() {
           <div
             className={s(
               styles.nav_section,
-              active[2] ? styles.nav_active : styles.nav_not_active
+              nav === 2 ? styles.nav_active : styles.nav_not_active
             )}
-            onClick={() => {
-              setActive([false, false, true, false]);
+            onClick={async () => {
+              await setNav(2);
               navigate("paperplane");
             }}
           >
-            {active[2] ? <div>피피</div> : <div></div>}
+            {nav === 2 ? <div>피피</div> : <div></div>}
             <div>
               <img src={pp} alt="" />
             </div>
@@ -179,14 +181,14 @@ export default function Nav() {
           <div
             className={s(
               styles.nav_section,
-              active[3] ? styles.nav_active : styles.nav_not_active
+              nav === 3 ? styles.nav_active : styles.nav_not_active
             )}
-            onClick={() => {
-              setActive([false, false, false, true]);
+            onClick={async () => {
+              await setNav(3);
               navigate("search");
             }}
           >
-            {active[3] ? <div>검색</div> : <div></div>}
+            {nav === 3 ? <div>검색</div> : <div></div>}
             <div>
               <img src={search} alt="" />
             </div>
