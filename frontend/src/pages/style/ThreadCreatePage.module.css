@@ -149,3 +149,21 @@
   color: var(--main4);
   cursor: pointer;
 }
+.loadTitle {
+  text-align: center;
+  font-size: 25px;
+}
+.loadImg {
+  margin: 30px;
+  height: 100px;
+}
+.loadSub {
+  text-align: center;
+  margin: 10px;
+  color: var(--main5);
+}
+.loadSub2 {
+  text-align: center;
+  margin: 10px;
+  color: var(--gomin5);
+}
