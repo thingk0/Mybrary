@@ -64,7 +64,7 @@ public class BookRepositoryImpl implements BookRepositoryCustom {
                                         .on(book.member.id.eq(member.id))
                                         .leftJoin(image2)
                                         .on(member.profileImage.id.eq(image2.id))
-                                        .where(pickBook.category.id.eq(categoryId))
+                                        .where(pickBook.category.id.eq(categoryId).and(pickBook.isDeleted.eq(false)))
                                         .fetch());
     }
 
