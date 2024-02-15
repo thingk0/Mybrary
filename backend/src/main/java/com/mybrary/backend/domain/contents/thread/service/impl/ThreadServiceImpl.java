@@ -117,6 +117,7 @@ public class ThreadServiceImpl implements ThreadService {
             /* paper 객체 생성 */
             Paper paper = Paper.of(member, thread, dto, mentionList.toString(), threadPostDto);
             paperRepository.save(paper);
+            thread.addPaper(paper);
 
             /* Image 객체 찾기 */
             CompletableFuture<Optional<Image>> image1Async = findImageAsync(dto.getImageId1());
@@ -128,7 +129,6 @@ public class ThreadServiceImpl implements ThreadService {
             /* paperImage 객체 저장 */
             PaperImage paperImage1 = PaperImage.of(paper, image1.orElse(null), 1);
             PaperImage paperImage2 = PaperImage.of(paper, image2.orElse(null), 2);
-
             paperImageRepository.save(paperImage1);
             paperImageRepository.save(paperImage2);
 
@@ -161,8 +161,8 @@ public class ThreadServiceImpl implements ThreadService {
         processAndIndexPapersAsync(thread);
         return thread.getId();
     }
-    /* 메인 피드 thread 조회하기 */
 
+    /* 메인 피드 thread 조회하기 */
     @Transactional
     @Override
     public List<GetThreadDto> getMainAllThread(Long myId, int page) {

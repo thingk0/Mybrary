@@ -59,6 +59,10 @@ public class Thread extends BaseEntity {
                      .build();
     }
 
+    public void addPaper(Paper paper) {
+        this.paperList.add(paper);
+    }
+
     public void updateScrapEnabled(boolean enabled) {
         isScrapEnabled = enabled;
     }
