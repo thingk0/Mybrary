@@ -4,7 +4,7 @@ import styles from "./style/PaperplanePage.module.css";
 import 종이비행기 from "../assets/종이비행기.png";
 import { useEffect, useState, useRef } from "react";
 import useUserStore from "../store/useUserStore";
-import { getChatList, getMessageList } from "../api/chat/Chat.js";
+import { getChatList, getMessageList } from "../api/Chat/Chat.js";
 import ChatProfile from "../components/paperplane/ChatProfile.js";
 import Iconuser2 from "../assets/icon/Iconuser2.png";
 import SockJS from "sockjs-client";
