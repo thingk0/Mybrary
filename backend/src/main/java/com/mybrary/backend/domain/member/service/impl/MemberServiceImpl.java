@@ -89,13 +89,18 @@ public class MemberServiceImpl implements MemberService {
         memberRepository.searchByEmail(requestDto.getEmail())
                         .ifPresent(this::throwDuplicateEmailException);
 
+        /* 프로필이미지, 액자이미지 조회 */
+        Image profileImage = imageRepository.findById(requestDto.getProfileImageId()).orElseThrow(ImageNotFoundException::new);
+        Image frameImage = imageRepository.findById(requestDto.getProfileImageId()).orElseThrow(ImageNotFoundException::new);
+
         /* 회원 생성 */
-        Member member = Member.of(requestDto, passwordEncoder.encode(requestDto.getPassword()));
+        Member member = Member.of(requestDto, passwordEncoder.encode(requestDto.getPassword()), profileImage);
         memberRepository.save(member);
 
         /* 마이브러리 생성 */
         Mybrary mybrary = Mybrary.builder()
                                  .member(member)
+                                 .photoFrameImage(frameImage)
                                  .backgroundColor(1)
                                  .deskColor(1)
                                  .bookshelfColor(1)

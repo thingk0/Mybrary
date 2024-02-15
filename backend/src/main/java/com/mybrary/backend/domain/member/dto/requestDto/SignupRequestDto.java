@@ -45,4 +45,7 @@ public class SignupRequestDto {
     @Schema(description = "닉네임", example = "MyBrary_2024")
     private String nickname;
 
+    private Long profileImageId;
+    private Long frameImageId;
+
 }

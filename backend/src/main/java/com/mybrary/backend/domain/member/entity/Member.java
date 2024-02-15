@@ -79,12 +79,13 @@ public class Member extends BaseEntity {
     @Column(name = "is_notify_enabled")
     private boolean isNotifyEnabled = true;
 
-    public static Member of(SignupRequestDto requestDto, String encodedPassword) {
+    public static Member of(SignupRequestDto requestDto, String encodedPassword, Image profileImage) {
         return Member.builder()
                      .email(requestDto.getEmail())
                      .password(encodedPassword)
                      .name(requestDto.getName())
                      .nickname(requestDto.getNickname())
+                     .profileImage(profileImage)
                      .build();
     }
 
