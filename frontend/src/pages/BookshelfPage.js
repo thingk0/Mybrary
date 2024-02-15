@@ -7,17 +7,19 @@ import Bookshelf from "../components/bookshelf/Bookshelf";
 import { getCategoryList } from "../api/category/Category.js";
 import useMyStore from "../store/useMyStore";
 import { useParams } from "react-router-dom";
+import useMybraryStore from "../store/useMybraryStore.js";
 
 export default function BookshelfPage() {
   const [categoryList, setCategoryList] = useState([]);
   const { userid, bookShelfId } = useParams();
   const user = useMyStore((state) => state.my);
+  const mybrary = useMybraryStore((state) => state.mybrary);
   const [checkme, setCheckme] = useState(false); //로그인한 회원인지 체크
 
   useEffect(() => {
     async function fetchbookshelfData() {
       try {
-        const response = await getCategoryList(user.bookShelfId);
+        const response = await getCategoryList(mybrary.bookShelfId);
 
         const newCategoryList = [...response.data];
         const sortedCategoryList = newCategoryList.sort(
