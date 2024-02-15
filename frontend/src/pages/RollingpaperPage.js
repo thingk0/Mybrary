@@ -386,9 +386,9 @@ export default function RollingpaperPage() {
                 onClick={() => handleChangeLineColor(12)}
               ></div>
             </div>
-            <div className={styles.저장} onClick={handleRollingPaperSave}>
+            <button className={styles.저장} onClick={handleRollingPaperSave}>
               저장
-            </div>
+            </button>
           </div>
         </div>
       </Container>

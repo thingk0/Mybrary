@@ -129,7 +129,7 @@ export default function BookDetailPage() {
     <>
       <div className={s(styles.bookContainer)}>
         <div className={styles.header}>
-          <div className={styles.headerLeft} onClick={() => navigate(url)}>
+          <div className={styles.headerLeft} onClick={() => navigate(-1)}>
             뒤로가기
           </div>
           <div className={styles.headerMain}>
