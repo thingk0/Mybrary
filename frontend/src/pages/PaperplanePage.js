@@ -4,7 +4,11 @@ import styles from "./style/PaperplanePage.module.css";
 import 종이비행기 from "../assets/종이비행기.png";
 import { useEffect, useState, useRef } from "react";
 import useUserStore from "../store/useUserStore";
-import { getChatList, getMessageList } from "../api/chat/Chat.js";
+import {
+  deleteChatRoom,
+  getChatList,
+  getMessageList,
+} from "../api/chat/Chat.js";
 import ChatProfile from "../components/paperplane/ChatProfile.js";
 import Iconuser2 from "../assets/icon/Iconuser2.png";
 import SockJS from "sockjs-client";
@@ -139,12 +143,22 @@ export default function PaperplanePage() {
 
         // chatRoomList를 업데이트
         setChatRoomList((prev) => [
-          ...prev.slice(0, chatRoomIndex),
           updatedChatRoom,
+          ...prev.slice(0, chatRoomIndex),
           ...prev.slice(chatRoomIndex + 1),
         ]);
       } else {
         // 새로운 채팅방이 열려야 한다면
+
+        const newChatRoom = {
+          chatRoomId: sendedMessage.chatRoomId,
+          otherMemberNickname: sendedMessage.nickname, // 가정한 예시 정보
+          otherMemberProfileImageUrl: sendedMessage.profileImageUrl, // 가정한 예시 정보
+          latestMessage: sendedMessage.content,
+          latestMessageSender: sendedMessage.senderId,
+          unreadMessageCount: 1, // 새 메시지 수신으로 인한 unread 카운트 1 설정};
+        };
+        setChatRoomList((prev) => [newChatRoom, ...prev]);
       }
     }
   }, [sendedMessage]);
@@ -256,6 +270,17 @@ export default function PaperplanePage() {
       .replace("오후", "PM");
   };
 
+  const handleChatRoomLeave = async (chatRoomId) => {
+    const res = await deleteChatRoom(chatRoomId);
+    console.log(res);
+    setNowChatRoom(null);
+
+    setChatRoomList((currentChatRoomList) =>
+      currentChatRoomList.filter(
+        (chatRoom) => chatRoom.chatRoomId !== chatRoomId
+      )
+    );
+  };
   return (
     <>
       <Container backgroundColor={"#FFFAFA"}>
@@ -347,7 +372,7 @@ export default function PaperplanePage() {
                       <div
                         className={styles.채팅방나가기}
                         onClick={() => {
-                          navigate(`/mybrary/${nowChatRoom.otherMemberId}`);
+                          handleChatRoomLeave(nowChatRoom.chatRoomId);
                         }}
                       >
                         채팅방 나가기
