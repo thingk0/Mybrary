@@ -36,7 +36,8 @@ export default function PaperplanePage() {
   const [nowChatRoom, setNowChatRoom] = useState(null); // 현재 내가 보고있는 채팅방 정보
   const [stompClient, setStompClient] = useState(null);
   const [nowMessage, setNowMessage] = useState("");
-  const chatContainerRef = useRef(null); // 채팅 컨테이너에 대한 ref 스크롤 아래로 관리하기 윟마
+  const [sendedMessage, setSendedMessage] = useState("");
+  const chatContainerRef = useRef(null); // 채팅 컨테이너에 대한 ref 스크롤 아래로 관리하기 위함
   const navigate = useNavigate();
 
   //채팅페이지에 들어오면 구독 실행
@@ -66,9 +67,11 @@ export default function PaperplanePage() {
       });
 
       client.onConnect = function () {
+        console.log("연결");
         client.subscribe(`/sub/chatMemberId/${user.memberId}`, (message) => {
           const res = JSON.parse(message.body);
-          setChatMessageList((prev) => [res, ...prev]);
+
+          setSendedMessage(res);
         });
       };
 
@@ -102,6 +105,44 @@ export default function PaperplanePage() {
 
     scrollToBottom(); // 컴포넌트 마운트 시 실행
   }, [nowChatRoom]);
+
+  useEffect(() => {
+    if (sendedMessage) {
+      if (nowChatRoom && nowChatRoom.chatRoomId === sendedMessage.chatRoomId) {
+        console.log("hi");
+        setChatMessageList((prev) => [sendedMessage, ...prev]);
+      }
+
+      // 채팅방 목록도 실시간 렌더링
+      // chatRoomList를 검사하면서 아이디가 있는 걸 찾아봐야 함
+      const chatRoomIndex = chatRoomList.findIndex(
+        (chatRoom) => chatRoom.chatRoomId === sendedMessage.chatRoomId
+      );
+
+      if (chatRoomIndex !== -1) {
+        // 일치하는 채팅방이 있으면
+        const updatedChatRoom = { ...chatRoomList[chatRoomIndex] };
+
+        // 필요한 정보를 업데이트. 예를 들어, 최신 메시지 내용을 업데이트 할 수 있음
+        updatedChatRoom.latestMessage = sendedMessage.content; // 예시: res 객체의 메시지를 최신 메시지로 설정
+        if (
+          nowChatRoom &&
+          nowChatRoom.chatRoomId !== updatedChatRoom.chatRoomId
+        )
+          updatedChatRoom.unreadMessageCount++;
+        updatedChatRoom.latestMessageSender = sendedMessage.senderId;
+
+        // chatRoomList를 업데이트
+        setChatRoomList((prev) => [
+          ...prev.slice(0, chatRoomIndex),
+          updatedChatRoom,
+          ...prev.slice(chatRoomIndex + 1),
+        ]);
+      } else {
+        // 새로운 채팅방이 열려야 한다면
+      }
+    }
+  }, [sendedMessage]);
 
   useEffect(() => {
     // 채팅 메시지 컨테이너의 스크롤을 맨 아래로 이동

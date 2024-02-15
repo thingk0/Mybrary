@@ -14,7 +14,6 @@ const showAlarm = (alarmObj) => {
   const nickname = alarmObj.sender.nickname;
   const bookname = alarmObj.bookName;
   let msg = "";
-  console.log(alarmObj);
 
   if (type === 13) {
     // 현재 경로 확인
