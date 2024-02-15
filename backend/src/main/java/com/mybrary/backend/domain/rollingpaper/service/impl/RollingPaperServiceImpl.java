@@ -19,7 +19,6 @@ public class RollingPaperServiceImpl implements RollingPaperService {
 
     private final RollingPaperRepository rollingPaperRepository;
 
-    @Cacheable(value = "rollingPaper", key = "#rollingPaperId")
     @Transactional(readOnly = true)
     @Override
     public RollingPaperDto fetch(String email, Long rollingPaperId) {
