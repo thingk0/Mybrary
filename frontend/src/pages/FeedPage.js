@@ -15,6 +15,7 @@ export default function FeedPage() {
   const [list, setList] = useState([]);
   const [page, setPage] = useState(0);
   const [scrapModal, setScrapModal] = useState(false);
+  const [scr, setScr] = useState(true);
 
   const [comment, setComment] = useState(false);
   const [commentId, setCommentId] = useState(0);
@@ -54,6 +55,7 @@ export default function FeedPage() {
         }
         setIsThrottled(true);
         setTimeout(() => setIsThrottled(false), 500); // 0.5초 동안 다음 이벤트 차단
+        setScr(false);
       }
     },
     [isThrottled, handlePrevClick, handleNextClick]
@@ -201,6 +203,12 @@ export default function FeedPage() {
           />
         </div>
       </div>
+      {scr && (
+        <div className={styles.apsol}>
+          <div>아래로 스크롤</div>
+          <div className={styles.aps}>{">>>"}</div>
+        </div>
+      )}
       <div className={styles.create} onClick={() => navigate("/threadCreate")}>
         + 스레드 작성하러가기
       </div>

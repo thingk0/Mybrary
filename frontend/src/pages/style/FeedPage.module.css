@@ -131,3 +131,31 @@
   color: var(--main3);
   transform: scale(1.1);
 }
+.apsol {
+  position: fixed;
+  bottom: 30px;
+  left: 40%;
+  right: 40%;
+  width: 20%;
+  text-align: center;
+  font-size: 25px;
+  color: #999;
+  animation: ddd 2s infinite;
+  /* transition: 0.7s; */
+}
+@keyframes ddd {
+  0% {
+    transform: translateY(0) scale(0.8);
+  }
+  50% {
+    transform: translateY(20px) scale(0.6);
+  }
+  100% {
+    transform: translateY(0) scale(0.8);
+  }
+}
+
+.aps {
+  transform: rotate(90deg);
+  font-size: 20px;
+}
