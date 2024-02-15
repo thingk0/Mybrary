@@ -244,14 +244,12 @@ function SignUpForm({ setPageremote }) {
         images.append("images", blob2, "예시이미지2.png");
 
         const res = await uplodaImage(images);
-        console.log(res);
 
         const data = await signup({
           ...formData,
           profileImageId: res.imageIds[0],
           frameImageId: res.imageIds[1],
         });
-        console.log(data);
         if (data.status === "SUCCESS") {
           showToast("회원가입이 완료되었습니다.");
           setPageremote((prev) => !prev);
