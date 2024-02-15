@@ -44,6 +44,7 @@ import com.mybrary.backend.global.exception.member.EmailNotFoundException;
 import com.mybrary.backend.global.exception.member.MemberNotFoundException;
 import com.mybrary.backend.global.exception.mybrary.MybraryNotFoundException;
 import com.mybrary.backend.global.exception.paper.PaperListNotFoundException;
+import com.mybrary.backend.global.exception.scrap.ScrapNotFoundException;
 import com.mybrary.backend.global.exception.thread.MainThreadListNotFoundException;
 import com.mybrary.backend.global.exception.thread.ThreadAccessDeniedException;
 import com.mybrary.backend.global.exception.thread.ThreadIdNotFoundException;
@@ -99,8 +100,11 @@ public class ThreadServiceImpl implements ThreadService {
 
         // bookId가 null이 아닐 때
         // book의 마지막 페이지 번호
-        int paperSeq = scrapRepository.findLastPaperSeq(threadPostDto.getBookId())
-                                      .orElse(0);   // 페이퍼 순서
+        int paperSeq = 0;
+        if (threadPostDto.getBookId() != null) {
+            paperSeq = scrapRepository.findLastPaperSeq(threadPostDto.getBookId())
+                                      .orElseThrow(ScrapNotFoundException::new);
+        }
 
         /* paper 객체 하나씩 생성하고 저장 */
         List<PostPaperDto> postPaperDtoList = threadPostDto.getPostPaperDto();
