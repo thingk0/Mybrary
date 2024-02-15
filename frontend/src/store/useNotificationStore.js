@@ -8,7 +8,7 @@ const useNotificationStore = create(
 
       notifyEnable: true,
 
-      setNewNotification: (hasNew) => set({ hasNewNotification: hasNew }),
+      setHasNewNotification: (hasNew) => set({ hasNewNotification: hasNew }),
       setNotifyEnable: (enable) => set({ notifyEnable: enable }),
     }),
     {

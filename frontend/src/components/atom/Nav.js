@@ -7,7 +7,7 @@ import setting from "../../assets/icon/icon_setting.png";
 import logout from "../../assets/icon/icon_logout.png";
 import s from "classnames";
 import styles from "./atomstyle/Nav.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useNotificationStore from "../../store/useNotificationStore";
 import { useNavigate } from "react-router-dom";
 import { doLogout } from "../../api/member/Logout";
@@ -15,7 +15,8 @@ import useUserStore from "../../store/useUserStore";
 import BigModal from "../common/BigModal";
 import { login } from "../../api/member/Login";
 import toast from "react-hot-toast";
-import FeedModal from "../feed/FeedModal";
+import FeedModal2 from "../feed/FeedModal2";
+import { getNotificationList } from "../../api/notification/Notification";
 
 export default function Nav() {
   const user = useUserStore((state) => state.user);
@@ -49,20 +50,24 @@ export default function Nav() {
     }
   };
 
-  const hasNewNotification = useNotificationStore(
-    (state) => state.hasNewNotification
-  );
+  const { hasNewNotification, setHasNewNotification } = useNotificationStore();
   const navigate = useNavigate();
   const { setUser } = useUserStore();
 
-  //이부분 알림왔을때만 트루되게!!
-  const { setNewNotification } = useNotificationStore();
-
   const [alarmModal, setAlarmModal] = useState(false);
   const handleOffAlarm = () => {
-    setNewNotification(false, "");
-    setAlarmModal(true);
+    setHasNewNotification(false);
+    setAlarmModal(!alarmModal); // 현재 상태의 반대로 설정
   };
+
+  useEffect(() => {
+    if (alarmModal) {
+      (async () => {
+        const res = await getNotificationList();
+        console.log(res);
+      })();
+    }
+  }, [alarmModal]);
 
   const handleSetting = () => {
     // navigate("account");
@@ -91,7 +96,10 @@ export default function Nav() {
                   className={s(styles.nav_icon)}
                   onClick={() => handleOffAlarm()}
                 >
-                  <img src={!hasNewNotification ? bell : setting} alt="" />
+                  <img
+                    src={!hasNewNotification || alarmModal ? setting : bell}
+                    alt=""
+                  />
                 </div>
                 <div
                   className={s(styles.nav_icon)}
@@ -105,7 +113,7 @@ export default function Nav() {
                 >
                   <img src={logout} alt="" />
                 </div>
-                <FeedModal
+                <FeedModal2
                   isModalOpen={alarmModal}
                   setIsModalOpen={setAlarmModal}
                   width="400px"
@@ -117,7 +125,7 @@ export default function Nav() {
                     여기에 형이 적고싶은거 적어ㅋㅋ 폰트사이즈 알어서 적으셈
                     px로 적으셈
                   </div>
-                </FeedModal>
+                </FeedModal2>
               </div>
             </div>
           </div>

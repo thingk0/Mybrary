@@ -36,14 +36,14 @@ axios.interceptors.request.use(
 
 export default function App() {
   const { stompClient, connect } = useStompStore();
-  const { setNewNotification, notifyEnable } = useNotificationStore();
+  const { setHasNewNotification, notifyEnable } = useNotificationStore();
   const email = useUserStore((state) => state.user?.email);
 
   useEffect(() => {
     async function socketConnect() {
       try {
         if (email) {
-          await connect(email, setNewNotification);
+          await connect(email, setHasNewNotification);
         }
       } catch (e) {
         //웹소켓 연결 실패
