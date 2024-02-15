@@ -16,6 +16,7 @@ import BigModal from "../common/BigModal";
 import { login } from "../../api/member/Login";
 import toast from "react-hot-toast";
 import FeedModal2 from "../feed/FeedModal2";
+import { getNotificationList } from "../../api/notification/Notification";
 
 export default function Nav() {
   const user = useUserStore((state) => state.user);
@@ -60,7 +61,12 @@ export default function Nav() {
   };
 
   useEffect(() => {
-    console.log(alarmModal);
+    if (alarmModal) {
+      (async () => {
+        const res = await getNotificationList();
+        console.log(res);
+      })();
+    }
   }, [alarmModal]);
 
   const handleSetting = () => {
