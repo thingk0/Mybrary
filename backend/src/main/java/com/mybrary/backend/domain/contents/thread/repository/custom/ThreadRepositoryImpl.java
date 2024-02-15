@@ -16,15 +16,12 @@ import com.mybrary.backend.domain.contents.thread.entity.Thread;
 import com.mybrary.backend.domain.follow.entity.QFollow;
 import com.mybrary.backend.domain.image.entity.QImage;
 import com.querydsl.core.types.Projections;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 
 @RequiredArgsConstructor
@@ -33,47 +30,6 @@ import org.springframework.stereotype.Repository;
 public class ThreadRepositoryImpl implements ThreadRepositoryCustom {
 
     private final JPAQueryFactory query;
-
-    @Override
-    public Page<GetThreadDto> exploreThreadSearchList(List<Long> paperIdList, Pageable pageable) {
-        List<GetThreadDto> contents = query.select(
-                                               Projections.constructor(GetThreadDto.class,
-                                                                       thread.id,
-                                                                       thread.createdAt,
-                                                                       member.id,
-                                                                       member.name,
-                                                                       member.nickname,
-                                                                       image.url,
-                                                                       image.id,
-                                                                       thread.isPaperPublic,
-                                                                       thread.isScrapEnabled))
-                                           .from(thread)
-                                           .leftJoin(mybrary).on(thread.mybrary.id.eq(mybrary.id))
-                                           .leftJoin(member).on(mybrary.member.id.eq(member.id))
-                                           .leftJoin(image).on(member.profileImage.id.eq(image.id))
-                                           .leftJoin(follow).on(follow.following.id.eq(member.id))
-                                           .fetch();
-
-        JPAQuery<GetThreadDto> countQuery = query.select(
-                                                     Projections.constructor(GetThreadDto.class,
-                                                                             thread.id,
-                                                                             thread.createdAt,
-                                                                             member.id,
-                                                                             member.name,
-                                                                             member.nickname,
-                                                                             image.url,
-                                                                             image.id,
-                                                                             thread.isPaperPublic,
-                                                                             thread.isScrapEnabled))
-                                                 .from(thread)
-                                                 .leftJoin(mybrary).on(thread.mybrary.id.eq(mybrary.id))
-                                                 .leftJoin(member).on(mybrary.member.id.eq(member.id))
-                                                 .leftJoin(image).on(member.profileImage.id.eq(image.id))
-                                                 .leftJoin(follow).on(follow.following.id.eq(member.id));
-
-        return PageableExecutionUtils.getPage(contents, pageable, countQuery::fetchCount);
-
-    }
 
     @Override
     public Optional<Integer> countMyThread(Long mybraryId) {

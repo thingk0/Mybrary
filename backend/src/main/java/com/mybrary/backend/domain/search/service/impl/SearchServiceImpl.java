@@ -2,24 +2,22 @@ package com.mybrary.backend.domain.search.service.impl;
 
 import com.mybrary.backend.domain.book.dto.responseDto.BookGetDto;
 import com.mybrary.backend.domain.book.repository.BookRepository;
-import com.mybrary.backend.domain.contents.thread.dto.responseDto.ThreadSearchGetDto;
+import com.mybrary.backend.domain.contents.paper.repository.PaperRepository;
 import com.mybrary.backend.domain.contents.thread.repository.ThreadRepository;
 import com.mybrary.backend.domain.elastic.indices.PaperDocument;
 import com.mybrary.backend.domain.member.dto.responseDto.MemberGetDto;
 import com.mybrary.backend.domain.member.entity.Member;
 import com.mybrary.backend.domain.member.repository.MemberRepository;
+import com.mybrary.backend.domain.search.dto.SearchPaperResponseDto;
 import com.mybrary.backend.domain.search.service.SearchService;
 import com.mybrary.backend.global.exception.book.BookNotFoundException;
 import com.mybrary.backend.global.exception.member.MemberNotFoundException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.elasticsearch.client.elc.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.query.Criteria;
@@ -36,6 +34,7 @@ public class SearchServiceImpl implements SearchService {
     private final MemberRepository memberRepository;
     private final BookRepository bookRepository;
     private final ThreadRepository threadRepository;
+    private final PaperRepository paperRepository;
 
     @Override
     public List<String> listSuggestedTerms(String keyword) {
@@ -43,19 +42,22 @@ public class SearchServiceImpl implements SearchService {
     }
 
     @Override
-    public Page<ThreadSearchGetDto> searchThread(String keyword, Pageable page) {
+    public Page<SearchPaperResponseDto> searchThread(String keyword, Pageable pageable) {
 
         // 검색 쿼리 생성
-        SearchHits<PaperDocument> searchHits = elasticsearchOperations.search(
-            new CriteriaQuery(new Criteria("content1").contains(keyword).or(
-                new Criteria("content2").contains(keyword)), page), PaperDocument.class);
+        Criteria query = new Criteria("tagList").contains(keyword)
+                                                .or(new Criteria("content1").contains(keyword))
+                                                .or(new Criteria("content2").contains(keyword));
+
+        SearchHits<PaperDocument> searchHits = elasticsearchOperations
+            .search(new CriteriaQuery(query, pageable), PaperDocument.class);
 
         // 검색된 PaperDocument 의 ID 추출
         List<Long> paperIds = searchHits.getSearchHits().stream()
                                         .map(hit -> hit.getContent().getId())
                                         .collect(Collectors.toList());
 
-        return null;
+        return paperRepository.fetchPaperSearchList(paperIds, pageable);
     }
 
     @Override

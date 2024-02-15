@@ -17,7 +17,6 @@ import com.mybrary.backend.domain.contents.scrap.entity.Scrap;
 import com.mybrary.backend.domain.contents.scrap.repository.ScrapRepository;
 import com.mybrary.backend.domain.contents.tag.entity.Tag;
 import com.mybrary.backend.domain.contents.tag.repository.TagRepository;
-import com.mybrary.backend.domain.contents.tag.service.TagService;
 import com.mybrary.backend.domain.contents.thread.dto.requestDto.ThreadPostDto;
 import com.mybrary.backend.domain.contents.thread.dto.requestDto.ThreadUpdateDto;
 import com.mybrary.backend.domain.contents.thread.dto.responseDto.GetThreadDto;
@@ -31,7 +30,6 @@ import com.mybrary.backend.domain.follow.entity.Follow;
 import com.mybrary.backend.domain.follow.repository.FollowRepository;
 import com.mybrary.backend.domain.image.entity.Image;
 import com.mybrary.backend.domain.image.repository.ImageRepository;
-import com.mybrary.backend.domain.image.service.ImageService;
 import com.mybrary.backend.domain.member.entity.Member;
 import com.mybrary.backend.domain.member.repository.MemberRepository;
 import com.mybrary.backend.domain.mybrary.entity.Mybrary;
@@ -51,7 +49,9 @@ import com.mybrary.backend.global.exception.thread.ThreadIdNotFoundException;
 import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.StringTokenizer;
 import java.util.concurrent.CompletableFuture;
@@ -97,6 +97,7 @@ public class ThreadServiceImpl implements ThreadService {
         threadRepository.save(thread);
 
         Member member = mybrary.getMember();
+        Map<Long, String> paperTagList = new HashMap<>();
 
         // bookId가 null이 아닐 때
         // book의 마지막 페이지 번호
@@ -142,7 +143,7 @@ public class ThreadServiceImpl implements ThreadService {
 
             /* tag 목록 생성 */
             List<String> tagNameList = dto.getTagList();
-            processTagListSavesAsync(tagNameList, paper);
+            CompletableFuture<Void> tagListSavesAsync = processTagListSavesAsync(tagNameList, paperTagList, paper);
 
             /* 여기서 페이퍼에 대한 멘션 알림 보내는 로직 */
             /* 쓰레드를 생성한 멤버가 sender, 멘션된 회원이 receiver, 알람타입은 11 */
@@ -157,6 +158,7 @@ public class ThreadServiceImpl implements ThreadService {
                                        .paperId(paper.getId())
                                        .build());
             }
+            tagListSavesAsync.join();
         }
         processAndIndexPapersAsync(thread);
         return thread.getId();
@@ -521,18 +523,23 @@ public class ThreadServiceImpl implements ThreadService {
     }
 
     @Async
-    public CompletableFuture<Void> processTagListSavesAsync(List<String> tagNameList, Paper paper) {
+    public CompletableFuture<Void> processTagListSavesAsync(List<String> tagNameList, Map<Long, String> paperTagList,
+                                                            Paper paper) {
+        StringBuilder tagList = new StringBuilder();
         List<Tag> tagEntityList = new ArrayList<>();
         if (!tagNameList.isEmpty()) {
-            for (String tagNames : tagNameList) {
+            for (String tagName : tagNameList) {
                 Tag tag = Tag.builder()
-                             .tagName(tagNames)
+                             .tagName(tagName)
                              .paper(paper)
                              .build();
                 tagEntityList.add(tag);
+                tagList.append(tagName).append(' ');
             }
             tagRepository.saveAll(tagEntityList);
         }
+
+        paperTagList.put(paper.getId(), tagList.toString());
         return CompletableFuture.completedFuture(null);
     }
 

@@ -11,12 +11,23 @@ import static com.mybrary.backend.domain.member.entity.QMember.member;
 import com.mybrary.backend.domain.contents.paper.dto.responseDto.GetFollowingPaperDto;
 import com.mybrary.backend.domain.contents.paper.dto.responseDto.PaperGetDto;
 import com.mybrary.backend.domain.contents.paper.dto.responseDto.PaperInBookGetDto;
+import com.mybrary.backend.domain.contents.paper.entity.Paper;
+import com.mybrary.backend.domain.image.entity.QImage;
 import com.mybrary.backend.domain.member.dto.responseDto.MemberInfoDto;
+import com.mybrary.backend.domain.search.dto.SearchPaperResponseDto;
 import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.support.PageableExecutionUtils;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Repository;
 
 @RequiredArgsConstructor
@@ -24,6 +35,63 @@ import org.springframework.stereotype.Repository;
 public class PaperRepositoryImpl implements PaperRepositoryCustom {
 
     private final JPAQueryFactory query;
+
+    @Override
+    public Page<SearchPaperResponseDto> fetchPaperSearchList(List<Long> paperIdList, Pageable pageable) {
+        QImage profileImage = new QImage("profileImage");
+        List<SearchPaperResponseDto> fetch = query
+            .select(Projections.constructor(SearchPaperResponseDto.class,
+                                            paper.thread.id,
+                                            paper.id,
+                                            member.profileImage.url,
+                                            member.nickname,
+                                            member.name,
+                                            paper.likeCount,
+                                            paper.commentCount,
+                                            paper.scrapCount,
+                                            paperImage.image.url
+            ))
+            .from(paper)
+            .leftJoin(paperImage).on(paperImage.paper.id.eq(paper.id))
+            .leftJoin(image).on(paperImage.image.id.eq(image.id))
+            .leftJoin(member).on(paper.member.id.eq(member.id))
+            .leftJoin(profileImage).on(member.profileImage.id.eq(profileImage.id))
+            .where(paper.id.in(paperIdList))
+            .limit(pageable.getPageSize())
+            .offset(pageable.getOffset())
+            .fetch();
+
+        CompletableFuture<Map<Long, SearchPaperResponseDto>> contents = getPopularityPaperInEachThreadAsync(fetch);
+        JPAQuery<Paper> countQuery = query.selectFrom(paper)
+                                          .where(paper.id.in(paperIdList));
+        return PageableExecutionUtils.getPage((List<SearchPaperResponseDto>) contents.join().values(),
+                                              pageable,
+                                              countQuery::fetchCount);
+    }
+
+    private int popularity(SearchPaperResponseDto dto) {
+        return dto.getLikeCnt() + dto.getScrapCnt() * 5;
+    }
+
+    @Async
+    public CompletableFuture<Map<Long, SearchPaperResponseDto>> getPopularityPaperInEachThreadAsync(
+        List<SearchPaperResponseDto> fetch) {
+
+        Map<Long, SearchPaperResponseDto> contents = new HashMap<>();
+
+        if (fetch.size() == 0) {
+            return CompletableFuture.completedFuture(contents);
+        }
+
+        for (SearchPaperResponseDto curDto : fetch) {
+            SearchPaperResponseDto getDto = contents.get(curDto.getThreadId());
+            if (getDto == null || popularity(getDto) < popularity(curDto)) {
+                contents.put(curDto.getThreadId(), curDto);
+            }
+        }
+
+        return CompletableFuture.completedFuture(contents);
+    }
 
     public Optional<List<GetFollowingPaperDto>> getFollowingPaperDtoResults(Long threadId) {
 //        return query.select(
@@ -77,7 +145,8 @@ public class PaperRepositoryImpl implements PaperRepositoryCustom {
     @Override
     public Optional<MemberInfoDto> getWriter(Long paperId) {
         return Optional.ofNullable(
-            query.select(Projections.constructor(MemberInfoDto.class, member.id, member.nickname, member.intro, image.id, image.url))
+            query.select(
+                     Projections.constructor(MemberInfoDto.class, member.id, member.nickname, member.intro, image.id, image.url))
                  .from(paper)
                  .leftJoin(member).on(paper.member.id.eq(member.id))
                  .leftJoin(image).on(member.profileImage.id.eq(image.id))

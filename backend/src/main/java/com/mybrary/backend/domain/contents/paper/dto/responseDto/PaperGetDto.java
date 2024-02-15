@@ -18,7 +18,6 @@ public class PaperGetDto {
     /**
      * 내 스레드 조회에서 페이퍼 List에 포함
      */
-
     private Long paperId;
     private LocalDateTime createdAt;
     private int layoutType;

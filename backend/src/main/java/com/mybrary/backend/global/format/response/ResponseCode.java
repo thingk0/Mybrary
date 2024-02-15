@@ -89,7 +89,7 @@ public enum ResponseCode {
 
     /* 검색(Search) */
     POPULAR_KEYWORDS_FETCHED(HttpStatus.OK, "인기 검색어가 성공적으로 조회되었습니다."),
-    THREAD_SEARCHED(HttpStatus.OK, "스레드 검색 결과가 성공적으로 조회되었습니다."),
+    CONTENTS_SEARCHED(HttpStatus.OK, "컨텐츠 검색 결과가 성공적으로 조회되었습니다."),
     BOOKS_SEARCHED(HttpStatus.OK, "책 검색 결과가 성공적으로 조회되었습니다."),
     ACCOUNTS_SEARCHED(HttpStatus.OK, "계정 검색 결과가 성공적으로 조회되었습니다."),
     MENTION_ACCOUNTS_SEARCHED(HttpStatus.OK, "멘션을 위한 계정 검색 결과가 성공적으로 조회되었습니다."),

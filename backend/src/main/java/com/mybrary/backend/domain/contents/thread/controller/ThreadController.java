@@ -106,7 +106,7 @@ public class ThreadController {
         @PathVariable(name = "id") Long threadId) {
         Member me = memberService.findMember(authentication.getName());
         Long myId = me.getId();
-        return response.success(ResponseCode.THREAD_SEARCHED,
+        return response.success(ResponseCode.CONTENTS_SEARCHED,
                                 threadService.getThread(authentication.getName(), myId, threadId));
 
     }
