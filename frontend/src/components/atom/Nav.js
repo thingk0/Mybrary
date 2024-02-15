@@ -94,7 +94,7 @@ export default function Nav() {
           <div className={s(styles.nav_paper1, styles.nav_paper)}>
             <div className={s(styles.nav_paper2, styles.nav_paper)}>
               <div className={s(styles.nav_paper3, styles.nav_paper)}>
-                <div
+                {/* <div
                   className={s(styles.nav_icon)}
                   onClick={() => handleOffAlarm()}
                 >
@@ -102,7 +102,7 @@ export default function Nav() {
                     src={!hasNewNotification || alarmModal ? setting : bell}
                     alt=""
                   />
-                </div>
+                </div> */}
                 <div
                   className={s(styles.nav_icon)}
                   onClick={() => handleSetting()}
