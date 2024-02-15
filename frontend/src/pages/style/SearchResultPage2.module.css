@@ -206,6 +206,14 @@
   justify-content: space-between;
   align-items: center;
 }
+.채팅하기 {
+  cursor: pointer;
+  transition: 0.3s;
+  color: #3c2c29;
+}
+.채팅하기:hover {
+  color: #b89a96;
+}
 .노노팔로우 {
   color: blue;
 }

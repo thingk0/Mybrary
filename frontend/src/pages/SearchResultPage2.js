@@ -208,12 +208,14 @@ export default function SearchResultPage2() {
                       </div>
                       <div className={styles.유저인트로와팔로우}>
                         <span className={styles.유저인트로}>{user.intro}</span>
-                        {user.isFollowing === 1 && (
-                          <div className={styles.팔로우}>팔로우</div>
-                        )}
-                        {user.isFollowing === 0 && (
-                          <div className={styles.노노팔로우}>팔로우</div>
-                        )}
+                        <div
+                          className={styles.채팅하기}
+                          onClick={() =>
+                            navigate(`/paperplane?chatuserid=${user.memberId}`)
+                          }
+                        >
+                          채팅하기
+                        </div>
                       </div>
                     </div>
                   ))}
