@@ -12,7 +12,6 @@ import three from "../assets/three.png";
 import Modal from "../components/common/Modal";
 import BigModal from "../components/common/BigModal";
 import { deleteBook } from "../api/book/Book";
-import BookCreate from "../components/common/BookCreate";
 import BookCreateOfCategory from "../components/common/BookCreateOfCategory";
 import useUrlStore from "../store/useUrlStore";
 import BookUpdate from "../components/common/BookUpdate";
@@ -330,6 +329,7 @@ export default function BookPage() {
         background="var(--main4)"
       >
         <BookUpdate
+          categoryid={categoryid}
           book={selectedBook}
           booklist={categoryList}
           setModalIsOpen={setEditModal}

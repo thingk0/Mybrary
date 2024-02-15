@@ -8,6 +8,7 @@ import { updateBook } from "../../api/book/Book";
 import toast from "react-hot-toast";
 
 export default function BookUpdate({
+  categoryid,
   book,
   booklist,
   setModalIsOpen,
@@ -22,7 +23,7 @@ export default function BookUpdate({
     title: book.coverTitle,
     coverLayout: book.coverLayout,
     coverColorCode: book.coverColorCode,
-    categoryId: book.categoryId,
+    categoryId: categoryid,
     imageUrl: book.imageUrl,
   });
   const handleChange = (name, value) => {
@@ -65,7 +66,15 @@ export default function BookUpdate({
       title: value.title,
       coverLayout: value.coverLayout,
       coverColorCode: value.coverColorCode,
-      beforeCategoryId: book.categoryId,
+      beforeCategoryId: categoryid,
+      afterCategoryId: value.categoryId,
+    });
+    console.log({
+      bookId: book.bookId,
+      title: value.title,
+      coverLayout: value.coverLayout,
+      coverColorCode: value.coverColorCode,
+      beforeCategoryId: categoryid,
       afterCategoryId: value.categoryId,
     });
     addNewBookToCategory(value.categoryId);

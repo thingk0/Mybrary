@@ -175,6 +175,7 @@
   height: 20%;
 }
 .layImg6 {
+  position: absolute;
   top: 35%;
   left: 30%;
   width: 60%;
