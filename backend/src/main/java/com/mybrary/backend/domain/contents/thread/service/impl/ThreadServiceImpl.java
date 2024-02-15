@@ -116,6 +116,7 @@ public class ThreadServiceImpl implements ThreadService {
 
             /* paper 객체 생성 */
             Paper paper = Paper.of(member, thread, dto, mentionList.toString(), threadPostDto);
+            paperRepository.save(paper);
 
             /* Image 객체 찾기 */
             CompletableFuture<Optional<Image>> image1Async = findImageAsync(dto.getImageId1());
@@ -128,13 +129,16 @@ public class ThreadServiceImpl implements ThreadService {
             PaperImage paperImage1 = PaperImage.of(paper, image1.orElse(null), 1);
             PaperImage paperImage2 = PaperImage.of(paper, image2.orElse(null), 2);
 
+            paperImageRepository.save(paperImage1);
+            paperImageRepository.save(paperImage2);
+
             /* scrap 객체 저장 */
             Scrap scrap = Scrap.builder()
                                .paper(paper)
                                .book(book.orElse(null))
                                .paperSeq(++paperSeq)
                                .build();
-            paperRepository.save(paper);
+            scrapRepository.save(scrap);
 
             /* tag 목록 생성 */
             List<String> tagNameList = dto.getTagList();
@@ -162,41 +166,53 @@ public class ThreadServiceImpl implements ThreadService {
     @Transactional
     @Override
     public List<GetThreadDto> getMainAllThread(Long myId, int page) {
+
         /* Pageable 객체 생성 */
         Pageable pageable = PageRequest.of(page, 5);
+
         /* following중인 멤버(본인 포함) 의 쓰레드 최대 5개와 관련된 정보 dto 생성 */
-        List<GetThreadDto> threadDtoList = threadRepository.getFollowingThreadDtoResults(myId, pageable).orElseThrow(
-            MainThreadListNotFoundException::new);
+        List<GetThreadDto> threadDtoList = threadRepository.getFollowingThreadDtoResults(myId, pageable)
+                                                           .orElseThrow(MainThreadListNotFoundException::new);
+
         System.out.println("1");
         System.out.println("크기" + threadDtoList.size());
+
         for (GetThreadDto aaa : threadDtoList) {
             System.out.print(aaa.getThreadId() + " ");
         }
+
         System.out.println();
+
         /* following중이지 않은 멤버의 쓰레드 최대 10개 조회와 관련 정보 dto 생성*/
         int getRandomCount = 10 - threadDtoList.size();
         pageable = PageRequest.of(page, getRandomCount);
-        threadDtoList.addAll(
-            threadRepository.getRandomThreadDtoResults(myId, pageable)
-                            .orElseThrow(MainThreadListNotFoundException::new));
+        threadDtoList.addAll(threadRepository.getRandomThreadDtoResults(myId, pageable)
+                                             .orElseThrow(MainThreadListNotFoundException::new));
+
         System.out.println("2");
         System.out.println("크기" + threadDtoList.size());
+
         for (int i = 5; i < threadDtoList.size(); i++) {
             System.out.print(threadDtoList.get(i).getThreadId() + " ");
         }
+
         System.out.println();
+
         /* list 내에서 무작위로 순서 배정 */
         Collections.shuffle(threadDtoList);
         /* followingThreadDtos의 각 threadId에 해당하는 paper관련 정보 조회 */
         for (int i = 0; i < threadDtoList.size(); i++) {
+
             GetThreadDto threadDto = threadDtoList.get(i);
             /* threadId에 해당하는 paper 관련 정보 dto 목록 조회 */
             List<GetFollowingPaperDto> getFollowingPaperDtoList =
                 paperRepository.getFollowingPaperDtoResults(threadDto.getThreadId()).orElseThrow(PaperListNotFoundException::new);
+
             System.out.println("3");
             System.out.println("스레드번호 = " + threadDto.getThreadId());
             System.out.println("스레드순서 = " + i);
             System.out.println("페이퍼개수 = " + getFollowingPaperDtoList.size());
+
             /* 페이퍼 관련정보 처리 로직 */
             for (int j = 0; j < getFollowingPaperDtoList.size(); j++) {
                 GetFollowingPaperDto paperDto = getFollowingPaperDtoList.get(j);
