@@ -30,12 +30,14 @@ function ChatProfile({
         <div
           className={styles.imgotheruser2}
           style={{
-            background: `url("https://jingu.s3.ap-northeast-2.amazonaws.com/${otherMemberProfileImageUrl}")no-repeat center/cover`,
+            background: otherMemberProfileImageUrl
+              ? `url("https://jingu.s3.ap-northeast-2.amazonaws.com/${otherMemberProfileImageUrl}")no-repeat center/cover`
+              : `url(${Iconuser2}) no-repeat center/cover`,
           }}
         ></div>
         <div
           style={{
-            width: "65%",
+            width: "10vw",
             marginLeft: "1vw",
           }}
         >
