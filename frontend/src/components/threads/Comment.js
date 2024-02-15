@@ -100,7 +100,6 @@ export default function Comment({
       // 대댓글 목록이 없는 경우, API 호출을 통해 대댓글 목록을 가져옴
       try {
         const response = await getCommentbabyList(parentId);
-        console.log(response);
         setChildComments((prev) => ({
           ...prev,
           [parentId]: response.data.commentGetDtoList,
@@ -120,7 +119,6 @@ export default function Comment({
 
       // 답글이 아닌 경우, 전체 댓글 목록을 다시 가져옴
       if (!isChildComment) {
-        console.log("댓글 삭제 성공");
         const response = await getCommentList(commentId);
         setCommentList(response.data.commentGetDtoList); // 새로운 댓글 목록으로 상태 업데이트
         updateCommentCount2(commentId, response.data.commentGetDtoList.length); // 새로운 댓글 수로 업데이트
@@ -130,8 +128,6 @@ export default function Comment({
         const response2 = await getCommentList(commentId);
         setCommentList(response2.data.commentGetDtoList); // 새로운 댓글 목록으로 상태 업데이트
         updateCommentCount2(commentId, response2.data.commentGetDtoList.length);
-        console.log(parentId);
-        console.log("답글삭제에에에에에");
         setChildComments((prev) => ({
           ...prev,
           [parentId]: response.data.commentGetDtoList,
@@ -152,16 +148,12 @@ export default function Comment({
   };
 
   const create = async () => {
-    console.log("되긴함 ?");
     if (formData.parentCommentId == null) {
       try {
-        console.log("댓글", formData);
         const response = await createComment(formData); // 올바른 API 함수 이름으로 교체해주세요.
         showToast("댓글을 남겼습니다 !");
         const response2 = await getCommentList(commentId);
         updateCommentCount(commentId);
-        // console.log(commentId);
-        // console.log(response2.data);
         if (commentId != 0) {
           setCommentList(response2.data.commentGetDtoList);
         }
@@ -180,7 +172,6 @@ export default function Comment({
       }
     } else if (formData.parentCommentId != null) {
       try {
-        console.log("대댓글", formData);
         const response = await createComment(formData);
         showToast("답글을 달았습니다 !");
 
@@ -220,9 +211,7 @@ export default function Comment({
           parentCommentId: null,
           colorCode: 0,
         });
-      } catch (error) {
-        console.log("대댓글 생성 실패", error);
-      }
+      } catch (error) {}
     }
   };
 
@@ -230,8 +219,6 @@ export default function Comment({
     async function fetchCommentData() {
       try {
         const response = await getCommentList(commentId);
-        console.log(commentId);
-        console.log(response.data);
         if (commentId != 0) {
           setCommentList(response.data.commentGetDtoList);
         }
