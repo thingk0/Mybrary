@@ -59,7 +59,6 @@ export default function BookDetailPage() {
       const pagelist = await getBook(book.bookId);
       setPages(pagelist.data.paperList ? pagelist.data.paperList : []);
       setBookinfo(pagelist.data);
-      console.log(pagelist.data.paperList);
     }
     getbook();
   }, []);
@@ -89,10 +88,8 @@ export default function BookDetailPage() {
 
   const subscribe = async () => {
     try {
-      console.log(my);
       const lists = await getCategoryList(my.bookShelfId);
       setList(lists.data);
-      console.log(lists.data);
     } catch (error) {
       console.error("카테고리 목록 불러오기 중 오류 발생:", error);
     }
@@ -118,7 +115,6 @@ export default function BookDetailPage() {
   const handleDeletePaper = async (paperId) => {
     try {
       await deletePaper(bookinfo.bookId, paperId);
-      console.log(bookinfo.bookId, paperId);
       const updatedPages = pages.filter((page) => page.paperId !== paperId);
       setPages(updatedPages);
     } catch (error) {

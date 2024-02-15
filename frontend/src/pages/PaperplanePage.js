@@ -89,7 +89,6 @@ export default function PaperplanePage() {
       });
 
       client.onConnect = function () {
-        console.log("연결");
         client.subscribe(`/sub/chatMemberId/${user.memberId}`, (message) => {
           const res = JSON.parse(message.body);
 
@@ -290,7 +289,6 @@ export default function PaperplanePage() {
 
   const handleChatRoomLeave = async (chatRoomId) => {
     const res = await deleteChatRoom(chatRoomId);
-    console.log(res);
     setNowChatRoom(null);
 
     setChatRoomList((currentChatRoomList) =>
