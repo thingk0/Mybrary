@@ -6,8 +6,12 @@ import React, { useState, useEffect } from "react";
 import { searchAccount } from "../api/search/Search";
 import iconhome from "../assets/icon/icon_home.png";
 import gomimg from "../assets/icon/Iconuser2.png";
+import useUserStore from "../store/useUserStore";
+import { getFirstChat } from "../api/chat/Chat";
 
 export default function SearchResultPage2() {
+  const { user: nowuser } = useUserStore();
+
   const navigate = useNavigate();
   const Params = useParams();
   const [searchtext, setSearchtext] = useState(Params.word);
@@ -69,10 +73,7 @@ export default function SearchResultPage2() {
       try {
         const response = await searchAccount(searchtext);
         setUserList(response.data.accountList);
-        console.log(response.data.accountList);
-      } catch (error) {
-        console.error("불러오지못함", error);
-      }
+      } catch (error) {}
     }
     fetchData();
   }, []);
@@ -115,6 +116,15 @@ export default function SearchResultPage2() {
       setAnimateOut(false);
       navigate(`/search/${searchtext}/2`); // 페이지 전환
     }, 500);
+  };
+
+  const handleChatStart = async (memberId) => {
+    if (memberId === nowuser.memberId) {
+      navigate("/paperplane");
+    } else {
+      await getFirstChat(memberId);
+      navigate(`/paperplane?chatuserid=${memberId}`);
+    }
   };
   return (
     <>
@@ -216,9 +226,7 @@ export default function SearchResultPage2() {
                         <span className={styles.유저인트로}>{user.intro}</span>
                         <div
                           className={styles.채팅하기}
-                          onClick={() =>
-                            navigate(`/paperplane?chatuserid=${user.memberId}`)
-                          }
+                          onClick={() => handleChatStart(user.memberId)}
                         >
                           채팅하기
                         </div>
