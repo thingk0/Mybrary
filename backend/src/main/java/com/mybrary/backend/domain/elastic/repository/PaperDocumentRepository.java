@@ -8,11 +8,11 @@ import org.springframework.data.elasticsearch.repository.ElasticsearchRepository
 
 public interface PaperDocumentRepository extends ElasticsearchRepository<PaperDocument, Long> {
 
-    @Query("{\"bool\": {\"should\": [" +
-        "{\"match\": {\"tagList\": \"?0\"}}," +
-        "{\"match\": {\"content1\": \"?0\"}}," +
-        "{\"match\": {\"content2\": \"?0\"}}" +
-        "]}}")
-    Page<PaperDocument> findByKeyword(String keyword, Pageable pageable);
+    //    @Query("{\"bool\": {\"should\": [" +
+//        "{\"match\": {\"tagList\": \"?0\"}}," +
+//        "{\"match\": {\"content1\": \"?0\"}}," +
+//        "{\"match\": {\"content2\": \"?0\"}}" +
+//        "]}}")
+//    Page<PaperDocument> findByKeyword(String keyword, Pageable pageable);
 
 }
