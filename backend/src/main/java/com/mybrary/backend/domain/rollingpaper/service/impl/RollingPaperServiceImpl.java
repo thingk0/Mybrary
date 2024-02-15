@@ -28,7 +28,6 @@ public class RollingPaperServiceImpl implements RollingPaperService {
         return RollingPaperDto.from(rollingPaper);
     }
 
-    @CachePut(value = "rollingPaper", key = "#rollingPaper.getRollingPaperId()")
     @Transactional
     @Override
     public RollingPaperDto update(String email, RollingPaperDto rollingPaper) {

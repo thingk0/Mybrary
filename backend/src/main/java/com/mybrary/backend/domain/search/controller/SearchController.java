@@ -37,44 +37,21 @@ public class SearchController {
     @Operation(summary = "인기검색어 조회", description = "인기검색어 조회")
     @GetMapping("/popular")
     public ResponseEntity<?> getPopularKeyword() {
-
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Operation(summary = "스레드 검색", description = "스레드 태그 기반 검색")
     @GetMapping("/thread")
-    public ResponseEntity<?> searchByThread(@Parameter(hidden = true) Authentication authentication, @RequestParam(name = "keyword") String keyword,
+    public ResponseEntity<?> searchByThread(@RequestParam(name = "keyword") String keyword,
                                             @PageableDefault(page = 0, size = 10) Pageable page) {
 
-
-//        ThreadSimpleGetDto thread1 = new ThreadSimpleGetDto(1L, writer1, "썸네일url", 3132143, 12343, 13134);
-//        ThreadSimpleGetDto thread2 = new ThreadSimpleGetDto(2L, writer2, "썸네일url", 3443, 96354, 999);
-//        ThreadSimpleGetDto thread3 = new ThreadSimpleGetDto(3L, writer4, "썸네일url", 55225, 34534, 433);
-//        ThreadSimpleGetDto thread4 = new ThreadSimpleGetDto(4L, writer1, "썸네일url", 342434, 44554, 22);
-//        ThreadSimpleGetDto thread5 = new ThreadSimpleGetDto(5L, writer3, "썸네일url", 858, 222, 232);
-//        ThreadSimpleGetDto thread6 = new ThreadSimpleGetDto(6L, writer1, "썸네일url", 321323, 4534, 23425);
-//        ThreadSimpleGetDto thread7 = new ThreadSimpleGetDto(7L, writer2, "썸네일url", 23443, 12343, 42);
-
-
-        List<ThreadSearchGetDto> list = new ArrayList<>();
-//        list.add(thread1);
-//        list.add(thread2);
-//        list.add(thread3);
-//        list.add(thread4);
-//        list.add(thread5);
-//        list.add(thread6);
-//        list.add(thread7);
-        List<ThreadSearchGetDto> result = searchService.searchThread(authentication.getName(), keyword, page);
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("threadList", list);
-        map.put("page", page);
-
-        return response.success(ResponseCode.THREAD_SEARCHED, map);
+        return response.success(ResponseCode.THREAD_SEARCHED, searchService.searchThread(keyword, page));
     }
 
     @Operation(summary = "책 검색", description = "책 제목 기반 검색")
     @GetMapping("/book")
-    public ResponseEntity<?> searchByBook(@Parameter(hidden = true) Authentication authentication, @RequestParam(name = "keyword") String keyword,
+    public ResponseEntity<?> searchByBook(@Parameter(hidden = true) Authentication authentication,
+                                          @RequestParam(name = "keyword") String keyword,
                                           @PageableDefault(page = 0, size = 10) Pageable page) {
 
 //        MemberInfoDto writer1 = new MemberInfoDto(1L, "wnsgh", "안녕하세요 최준호입니다", "123123");
@@ -99,13 +76,13 @@ public class SearchController {
         map.put("bookList", result);
         map.put("page", page);
 
-
         return response.success(ResponseCode.BOOKS_SEARCHED, map);
     }
 
     @Operation(summary = "계정 검색", description = "계정 닉네임 or 이름 기반 검색")
     @GetMapping("/account")
-    public ResponseEntity<?> searchByAccount(@Parameter(hidden = true) Authentication authentication, @RequestParam(name = "keyword") String keyword,
+    public ResponseEntity<?> searchByAccount(@Parameter(hidden = true) Authentication authentication,
+                                             @RequestParam(name = "keyword") String keyword,
                                              @PageableDefault(page = 0, size = 10) Pageable page) {
 
 //        MemberGetDto memberdetail1 = new MemberGetDto(1L, "wndgh@ssafy.com", "최준호", "wnsgh", "안녕하세요 최준호입니다", "123123", true,

@@ -4,6 +4,7 @@ import com.mybrary.backend.domain.book.dto.responseDto.BookGetDto;
 import com.mybrary.backend.domain.book.repository.BookRepository;
 import com.mybrary.backend.domain.contents.thread.dto.responseDto.ThreadSearchGetDto;
 import com.mybrary.backend.domain.contents.thread.repository.ThreadRepository;
+import com.mybrary.backend.domain.elastic.indices.PaperDocument;
 import com.mybrary.backend.domain.member.dto.responseDto.MemberGetDto;
 import com.mybrary.backend.domain.member.entity.Member;
 import com.mybrary.backend.domain.member.repository.MemberRepository;
@@ -11,12 +12,18 @@ import com.mybrary.backend.domain.search.service.SearchService;
 import com.mybrary.backend.global.exception.book.BookNotFoundException;
 import com.mybrary.backend.global.exception.member.MemberNotFoundException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.client.elc.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.SearchHits;
+import org.springframework.data.elasticsearch.core.query.Criteria;
+import org.springframework.data.elasticsearch.core.query.CriteriaQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,14 +43,17 @@ public class SearchServiceImpl implements SearchService {
     }
 
     @Override
-    public List<ThreadSearchGetDto> searchThread(String email, String keyword, Pageable page) {
-        Member me = memberRepository.searchByEmail(email).orElseThrow(MemberNotFoundException::new);
-        // 1. keyword가 포함되어있는 태그 리스트 조회 (페이퍼Id가 중복되면 하나만 가져오기)
-        Optional<List<ThreadSearchGetDto>> threadList = threadRepository.searchThreadByKeyword(me.getId(), keyword, page);
-        // 2. 태그가 포함된 페이퍼가 포함되어있는 스레드 리스트 조회 (스레드Id가 중복되면 하나만 가져오기)
-        //    근데 이때 (좋아요수+스크랩수*5)가 제일 큰 페이퍼Id를 갖고 있어야함
+    public Page<ThreadSearchGetDto> searchThread(String keyword, Pageable page) {
 
-        // 3. (좋아요수+스크랩수*5) 순으로 정렬해서 페이징
+        // 검색 쿼리 생성
+        SearchHits<PaperDocument> searchHits = elasticsearchOperations.search(
+            new CriteriaQuery(new Criteria("content1").contains(keyword).or(
+                new Criteria("content2").contains(keyword)), page), PaperDocument.class);
+
+        // 검색된 PaperDocument 의 ID 추출
+        List<Long> paperIds = searchHits.getSearchHits().stream()
+                                        .map(hit -> hit.getContent().getId())
+                                        .collect(Collectors.toList());
 
         return null;
     }

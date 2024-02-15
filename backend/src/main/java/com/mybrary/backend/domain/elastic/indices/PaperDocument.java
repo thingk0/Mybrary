@@ -41,6 +41,13 @@ public class PaperDocument {
                 })
     private String content2;
 
+    @MultiField(mainField = @Field(type = FieldType.Text, analyzer = "nori"),
+                otherFields = {
+                    @InnerField(suffix = "exact", type = FieldType.Keyword),
+                    @InnerField(suffix = "autocomplete", type = FieldType.Text, analyzer = "autocomplete_analyzer")
+                })
+    private String tagList;
+
 
     public static PaperDocument of(Long threadId, Paper paper) {
         return PaperDocument.builder()

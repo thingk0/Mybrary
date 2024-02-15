@@ -7,9 +7,12 @@ import com.mybrary.backend.domain.contents.thread.dto.responseDto.ThreadShareGet
 import com.mybrary.backend.domain.contents.thread.entity.Thread;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface ThreadRepositoryCustom {
+
+    Page<GetThreadDto> exploreThreadSearchList(List<Long> paperIdList, Pageable pageable);
 
     Optional<Integer> countMyThread(Long myId);
 
