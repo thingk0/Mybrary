@@ -37,7 +37,7 @@ function ChatProfile({
         ></div>
         <div
           style={{
-            width: "10vw",
+            width: "63%",
             marginLeft: "1vw",
           }}
         >
