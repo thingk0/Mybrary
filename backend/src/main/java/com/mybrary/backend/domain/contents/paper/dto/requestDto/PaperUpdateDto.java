@@ -23,10 +23,10 @@ public class PaperUpdateDto {
     private int layoutType;
     private String content1;
     private String content2;
-    private Long bookId;
-    private Long imageId1;
-    private Long imageId2;
+//    private Long bookId;
+//    private Long imageId1;
+//    private Long imageId2;
     private List<String> tagList;
-    private List<Long> mentionList;
+//    private List<Long> mentionList;
 
 }

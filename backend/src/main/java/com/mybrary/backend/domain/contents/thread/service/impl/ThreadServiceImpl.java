@@ -427,42 +427,44 @@ public class ThreadServiceImpl implements ThreadService {
             Paper paper = paperRepository.findById(paperDto.getPaperId())
                                          .orElseThrow(NullPointerException::new);
             /* scrap을 하지 않았을수도 있기때문에 이 밑의 두개는 null일수도 있음 */
-            Scrap getScrap = scrapRepository.findByPaperId(paperDto.getPaperId()).orElse(null);
-            Book updateBook = bookRepository.findById(paperDto.getBookId()).orElse(null);
-            Long updateBookId = paperDto.getBookId();
+//            Scrap getScrap = scrapRepository.findByPaperId(paperDto.getPaperId()).orElse(null);
+//            Book updateBook = bookRepository.findById(paperDto.getBookId()).orElse(null);
+//            Long updateBookId = paperDto.getBookId();
+
             /* 스크랩 수정 주의! */
-            if (getScrap == null) {
-                /* 이전에 책선택을 하지 않았을경우 */
-                if (updateBookId != null) {
-                    /*이전에 책스크랩을 하지 않았으면서 이번에 책에 스크랩하는경우*/
-                    Integer lastSeq = scrapRepository.findLastPaperSeq(updateBookId)
-                                                     .orElseThrow(
-                                                         BookNotFoundException::new);
-                    Scrap newScrap = Scrap.builder()
-                                          .book(updateBook)
-                                          .paper(paper)
-                                          .paperSeq(lastSeq + 1)
-                                          .build();
-                    scrapRepository.save(newScrap);
-                    /*이전에 책스크랩을 하지 않았으면서 이번에도 책에 스크랩하지 않으려는경우는 아무일도없음 */
-                }
-            } else {
-                /* 이전에 책선택을 했을 경우*/
-                if (updateBookId != null) {
-                    /*이전에 책스크랩을 했으면서 이번에도 (다른)책에 스크랩하는경우*/
-                    Integer lastSeq = scrapRepository.findLastPaperSeq(updateBookId)
-                                                     .orElseThrow(BookNotFoundException::new);
-                    getScrap.updateBook(updateBook);
-                } else {
-                    /*이전에 책스크랩을 했는데 이번에는 스크랩을 하지 않으려는 경우 */
-                    scrapRepository.delete(getScrap);
-                }
-            }
+//            if (getScrap == null) {
+//                /* 이전에 책선택을 하지 않았을경우 */
+//                if (updateBookId != null) {
+//                    /*이전에 책스크랩을 하지 않았으면서 이번에 책에 스크랩하는경우*/
+//                    Integer lastSeq = scrapRepository.findLastPaperSeq(updateBookId)
+//                                                     .orElseThrow(
+//                                                         BookNotFoundException::new);
+//                    Scrap newScrap = Scrap.builder()
+//                                          .book(updateBook)
+//                                          .paper(paper)
+//                                          .paperSeq(lastSeq + 1)
+//                                          .build();
+//                    scrapRepository.save(newScrap);
+//                    /*이전에 책스크랩을 하지 않았으면서 이번에도 책에 스크랩하지 않으려는경우는 아무일도없음 */
+//                }
+//            } else {
+//                /* 이전에 책선택을 했을 경우*/
+//                if (updateBookId != null) {
+//                    /*이전에 책스크랩을 했으면서 이번에도 (다른)책에 스크랩하는경우*/
+//                    Integer lastSeq = scrapRepository.findLastPaperSeq(updateBookId)
+//                                                     .orElseThrow(BookNotFoundException::new);
+//                    getScrap.updateBook(updateBook);
+//                } else {
+//                    /*이전에 책스크랩을 했는데 이번에는 스크랩을 하지 않으려는 경우 */
+//                    scrapRepository.delete(getScrap);
+//                }
+//            }
             paper.updateLayoutType(paperDto.getLayoutType());
             paper.updateContent1(paperDto.getContent1());
             paper.updateContent2(paperDto.getContent2());
             paper.updatePaperPublic(threadUpdateDto.isPaperPublic());
             paper.updateScrapEnabled(threadUpdateDto.isScrapEnable());
+
             /* 기존 태그들 삭제 */
             List<String> tagNameList = paperDto.getTagList();
             tagRepository.deleteAllByPaperId(paper.getId());
@@ -477,6 +479,7 @@ public class ThreadServiceImpl implements ThreadService {
             }
             tagRepository.saveAll(tagEntityList);
         } //paperDto for문 끝
+
         return thread.getId();
     }
 
