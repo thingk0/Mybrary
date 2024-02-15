@@ -3,30 +3,35 @@ import HTMLFlipBook from "react-pageflip";
 import styles from "./style/BookDetailPage.module.css";
 import s from "classnames";
 import FeedModal from "../components/feed/FeedModal";
-import useUserStore from "../store/useUserStore";
 import useBookStore from "../store/useBookStore";
-import { getBook } from "../api/book/Book";
+import {
+  deleteBook,
+  getBook,
+  subscribeBook,
+  unsubsribeBook,
+} from "../api/book/Book";
 import ContentItem2 from "../components/book/ContentItem2";
 import useUrlStore from "../store/useUrlStore";
 import { useNavigate } from "react-router-dom";
+import BigModal from "../components/common/BigModal";
+import { getCategoryList } from "../api/category/Category";
+import useMyStore from "../store/useMyStore";
 
 export default function BookDetailPage() {
   const navigate = useNavigate();
-  const userId = useUserStore((state) => state.user.memberId);
-  const writerId2 = useBookStore((state) => state.book?.memberId);
-  const writerId = useBookStore((state) => state.book?.writer?.memberId);
   const book = useBookStore((state) => state.book);
   const url = useUrlStore((state) => state.url.url);
 
+  const my = useMyStore((state) => state.my);
   const bookRef = useRef();
   const [curPage, setCurPage] = useState();
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [listModal1, setListModal1] = useState(false);
   const [listModal2, setListModal2] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [subscribeModal, setSubscribeModal] = useState(false);
+  const [unSubscribeModal, setUnSubscribeModal] = useState(false);
 
   const onPrev = (hasFlip = "N") => {
-    const pageIndex = bookRef.current.pageFlip().getCurrentPageIndex();
-    console.log("pageIndex", pageIndex);
     if (hasFlip === "Y") {
       bookRef.current.pageFlip().flipPrev("bottom");
     } else {
@@ -34,10 +39,6 @@ export default function BookDetailPage() {
     }
   };
   const onNext = (hasFlip = "N") => {
-    const pageIndex = bookRef.current.pageFlip().getCurrentPageIndex();
-    console.log("pageIndex", pageIndex);
-    // 마지막 페이지에 도달했을 때
-    if (pageIndex === 7) return;
     if (hasFlip === "Y") {
       bookRef.current.pageFlip().flipNext();
     } else {
@@ -47,20 +48,61 @@ export default function BookDetailPage() {
   const onFlip = (e) => {
     const curPage = e.data;
     setCurPage(curPage);
-    console.log("flip", e);
   };
 
   const [pages, setPages] = useState([]);
+  const [bookinfo, setBookinfo] = useState([]);
   useEffect(() => {
     async function getbook() {
       const pagelist = await getBook(book.bookId);
       setPages(pagelist.data.paperList ? pagelist.data.paperList : []);
-      console.log(pagelist.data);
+      setBookinfo(pagelist.data);
     }
-    console.log(writerId, userId);
     getbook();
   }, []);
 
+  const handleDelete = async () => {
+    try {
+      await deleteBook(bookinfo.bookId);
+      navigate(url);
+    } catch (error) {
+      console.error("책 삭제 중 오류 발생:", error);
+    }
+  };
+
+  const [list, setList] = useState([]);
+  const [cate, setCate] = useState(0);
+  const handleSubscribe = async () => {
+    try {
+      await subscribeBook({
+        bookId: bookinfo.bookId,
+        categoryId: cate,
+      });
+      navigate(`/mybrary/${my.memberId}/${my.bookShelfId}/${cate}`);
+    } catch (error) {
+      console.error("책 구독 중 오류 발생:", error);
+    }
+  };
+
+  const subscribe = async () => {
+    try {
+      console.log(my);
+      const lists = await getCategoryList(my.bookShelfId);
+      setList(lists.data);
+      console.log(lists.data);
+    } catch (error) {
+      console.error("카테고리 목록 불러오기 중 오류 발생:", error);
+    }
+    setSubscribeModal(true);
+  };
+  const handleUnSubscribe = async () => {
+    try {
+      await unsubsribeBook(bookinfo.bookId);
+      setUnSubscribeModal(false);
+    } catch (error) {
+      console.error("책 구독취소 중 오류 발생:", error);
+    }
+  };
   return (
     <>
       <div className={s(styles.bookContainer)}>
@@ -71,28 +113,22 @@ export default function BookDetailPage() {
           <div className={styles.headerMain}>
             {book.coverTitle || book.bookTitle}
           </div>
-          <div
-            onClick={() => {
-              setIsModalOpen(true);
-            }}
-            className={styles.headerRight}
-          >
-            옵션
+          <div className={styles.headerRight}>
+            {bookinfo.owner && (
+              <div className={styles.red} onClick={() => setDeleteModal(true)}>
+                책 삭제
+              </div>
+            )}
+            {!bookinfo.owner && !bookinfo.picked && (
+              <div onClick={() => subscribe()}>내 책장에 담기</div>
+            )}
+            {!bookinfo.owner && bookinfo.picked && (
+              <div onClick={() => setUnSubscribeModal(true)}>
+                책 구독취소하기
+              </div>
+            )}
           </div>
         </div>
-        <FeedModal
-          width="150px"
-          setIsModalOpen={setIsModalOpen}
-          isModalOpen={isModalOpen}
-          right="25px"
-          top="-20px"
-        >
-          <div className={styles.option}>
-            {(writerId || writerId2) !== userId && <div>내 책장에 담기</div>}
-            {(writerId || writerId2) === userId && <div>책 삭제</div>}
-            {(writerId || writerId2) !== userId && <div>책 구독취소</div>}
-          </div>
-        </FeedModal>
         {pages.length ? (
           <>
             <div
@@ -145,14 +181,8 @@ export default function BookDetailPage() {
                             >
                               <div className={styles.option}>
                                 <div>해당 스레드 보러가기</div>
-                                {(writerId || writerId2) === userId && (
+                                {bookinfo.owner && (
                                   <div>책에서 페이퍼 제거</div>
-                                )}
-                                {page.writer.memberId === userId && (
-                                  <>
-                                    <div>페이퍼 수정</div>
-                                    <div>페이퍼 삭제</div>
-                                  </>
                                 )}
                               </div>
                             </FeedModal>
@@ -176,14 +206,8 @@ export default function BookDetailPage() {
                             >
                               <div className={styles.option}>
                                 <div>해당 스레드 보러가기</div>
-                                {(writerId || writerId2) === userId && (
+                                {bookinfo.owner && (
                                   <div>책에서 페이퍼 제거</div>
-                                )}
-                                {page.writer.memberId === userId && (
-                                  <>
-                                    <div>페이퍼 수정</div>
-                                    <div>페이퍼 삭제</div>
-                                  </>
                                 )}
                               </div>
                             </FeedModal>
@@ -215,6 +239,81 @@ export default function BookDetailPage() {
           <div className={styles.none}> 책에 페이지가 하나도 없습니다</div>
         )}
       </div>
+      <BigModal
+        modalIsOpen={subscribeModal}
+        setModalIsOpen={setSubscribeModal}
+        width="800px"
+        height="500px"
+      >
+        <div className={styles.deleteTitle}>
+          {book.coverTitle || book.bookTitle} 책 을 내 책장에 담으시겠습니까?
+        </div>
+        <div className={styles.container}>
+          <div className={styles.categoryHeader}>카테고리 선택</div>
+          <div className={styles.categorys}>
+            {list.map((category) => (
+              <div
+                key={category.categoryId}
+                className={s(
+                  styles.category,
+                  category.categoryId === cate && styles.select
+                )}
+                onClick={() => setCate(category.categoryId)}
+              >
+                <div>{category.name}</div>
+                <div>{category.bookCount}귄 있음</div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className={styles.fff}>
+          <div className={styles.del} onClick={() => setSubscribeModal(false)}>
+            취소
+          </div>
+          <div className={styles.can} onClick={() => handleSubscribe()}>
+            담기
+          </div>
+        </div>
+      </BigModal>
+      <BigModal
+        modalIsOpen={unSubscribeModal}
+        setModalIsOpen={setUnSubscribeModal}
+        width="400px"
+        height="160px"
+      >
+        <div className={styles.deleteTitle}>
+          {book.coverTitle || book.bookTitle} 책 을 내 책장에서 빼시겠습니까?
+        </div>
+        <div className={styles.fff}>
+          <div
+            className={styles.can}
+            onClick={() => setUnSubscribeModal(false)}
+          >
+            취소
+          </div>
+          <div className={styles.del} onClick={() => handleUnSubscribe()}>
+            빼기
+          </div>
+        </div>
+      </BigModal>
+      <BigModal
+        modalIsOpen={deleteModal}
+        setModalIsOpen={setDeleteModal}
+        width="400px"
+        height="160px"
+      >
+        <div className={styles.deleteTitle}>
+          {book.coverTitle || book.bookTitle} 책 을 삭제 하시겠습니까?
+        </div>
+        <div className={styles.fff}>
+          <div className={styles.can} onClick={() => setDeleteModal(false)}>
+            취소
+          </div>
+          <div className={styles.del} onClick={() => handleDelete()}>
+            삭제
+          </div>
+        </div>
+      </BigModal>
     </>
   );
 }

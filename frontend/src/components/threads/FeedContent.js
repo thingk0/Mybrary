@@ -21,6 +21,7 @@ import useBookStore from "../../store/useBookStore";
 import FeedModal2 from "./FeedModal2";
 import useUrlStore from "../../store/useUrlStore";
 import { deleteThread } from "../../api/thread/Thread";
+import 곰탱이 from "../../assets/icon/Iconuser2.png";
 
 export default function FeedContent({
   thread,
@@ -141,11 +142,16 @@ export default function FeedContent({
               className={styles.user_profile}
               onClick={() => navigate(`/mybrary/${thread.memberId}`)}
             >
-              <img
-                src={`https://jingu.s3.ap-northeast-2.amazonaws.com/${thread.profileUrl}`}
-                alt=""
-                className={styles.user_img}
-              />
+              {thread.profileUrl != null ? (
+                <div
+                  className={styles.user_img}
+                  style={{
+                    background: `url("https://jingu.s3.ap-northeast-2.amazonaws.com/${thread.profileUrl}")no-repeat center/cover`,
+                  }}
+                ></div>
+              ) : (
+                <img src={곰탱이} alt="" className={styles.user_img} />
+              )}
               <div className={styles.user_nickdate}>
                 <div className={styles.user_nickname}>{thread.nickname}</div>
                 <div className={styles.user_date}>
@@ -221,11 +227,22 @@ export default function FeedContent({
                     >
                       <div>
                         <span className={styles.푸터}>
-                          <img
-                            className={styles.유저이미지}
-                            src={`https://jingu.s3.ap-northeast-2.amazonaws.com/${book.profileImageUrl}`}
-                          />
-                          {book.bookTitle}
+                          {book.coverImageUrl != null ? (
+                            <div
+                              className={styles.유저이미지}
+                              style={{
+                                background: `url("https://jingu.s3.ap-northeast-2.amazonaws.com/${book.coverImageUrl}")no-repeat center/cover`,
+                              }}
+                            ></div>
+                          ) : (
+                            <div
+                              className={styles.유저이미지}
+                              style={{
+                                background: `url("${곰탱이}")no-repeat center/cover`,
+                              }}
+                            ></div>
+                          )}
+                          {book.coverTitle}
                         </span>
                       </div>
                     </div>

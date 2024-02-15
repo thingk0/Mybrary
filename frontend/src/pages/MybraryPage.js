@@ -40,8 +40,9 @@ import FollowerList from "../components/mybrary/FollowerList";
 import FileInput from "../components/common/FileInput";
 import { uplodaImage } from "../api/image/Image";
 import { deleteFollow, follow, followCancel } from "../api/member/Follow";
-import { getFirstChat } from "../api/chat/Chat";
+import { getFirstChat } from "../api/Chat/Chat";
 import useNotificationStore from "../store/useNotificationStore";
+import useMyStore from "../store/useMyStore";
 
 export default function MybraryPage() {
   const { setNotifyEnable } = useNotificationStore();
@@ -51,6 +52,7 @@ export default function MybraryPage() {
   const nowuser = Params.userid;
   const user = useUserStore((state) => state.user);
   const setMybrary = useMybraryStore((state) => state.setMybrary);
+  const setMy = useMyStore((state) => state.setMy);
   const client = useStompStore((state) => state.stompClient);
 
   // 각각의 색상옵션들
@@ -218,7 +220,8 @@ export default function MybraryPage() {
           const response = await getMyMybrary();
           setNotifyEnable(response.data.notifyEnable);
           setCheckme(true);
-          setMybrary(response.data);
+          await setMy(response.data);
+          await setMybrary(response.data);
           setUserInfo(response.data);
           setBgColor(response.data.backgroundColor);
           setEsColor(easelImgs[response.data.easelColor - 1]);

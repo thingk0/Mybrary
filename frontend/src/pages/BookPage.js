@@ -19,7 +19,6 @@ import useUrlStore from "../store/useUrlStore";
 export default function BookPage() {
   const { userid, bookShelfId, categoryid } = useParams();
   const memberId = useUserStore((state) => state.user.memberId);
-  const carouselRef = useRef(null);
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);

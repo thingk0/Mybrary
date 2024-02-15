@@ -13,10 +13,7 @@
 .headerLeft {
   font-size: 20px;
   width: 150px;
-  color: var(--gomin5);
-}
-.headerRight > div {
-  font-size: 16px;
+  cursor: pointer;
 }
 .headerRight {
   font-size: 20px;
@@ -27,6 +24,9 @@
 }
 .headerMain {
   font-size: 25px;
+}
+.red {
+  color: var(--gomin5);
 }
 
 .page1 {
@@ -131,6 +131,37 @@
   color: var(--main3);
 }
 
+.fff {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  align-items: center;
+}
+.delete {
+  color: var(--gomin5);
+}
+
+.deleteTitle {
+  font-size: 20px;
+  text-align: center;
+  margin: 30px 0;
+}
+
+.can {
+  padding: 10px 40px;
+  background-color: var(--main3);
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.del {
+  padding: 10px 40px;
+  background-color: #f08d8d;
+  color: #b25757;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
 .color1 {
   background-color: #a77171;
 }
@@ -163,4 +194,38 @@
 }
 .color11 {
   background-color: #4c4c4c;
+}
+
+.container {
+  width: 90%;
+  margin: 50px auto;
+  height: 300px;
+  overflow-y: auto;
+  background: var(--blur2);
+  border-radius: 5px;
+  box-shadow: 0 0 15px 0 var(--main3);
+}
+
+.categoryHeader {
+  font-size: 20px;
+  margin: 20px;
+}
+.categorys {
+  margin: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.category {
+  display: flex;
+  width: 190px;
+  justify-content: space-between;
+  padding: 10px;
+  background-color: var(--main3);
+  transition: 0.3s;
+  border-radius: 5px;
+}
+
+.select {
+  background-color: var(--main4);
 }

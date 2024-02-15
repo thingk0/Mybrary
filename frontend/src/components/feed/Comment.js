@@ -121,13 +121,13 @@ export default function Comment({
       if (!isChildComment) {
         const response = await getCommentList(commentId);
         setCommentList(response.data.commentGetDtoList); // 새로운 댓글 목록으로 상태 업데이트
-        updateCommentCount2(commentId, response.data.commentGetDtoList.length); // 새로운 댓글 수로 업데이트
+        updateCommentCount2(commentId); // 새로운 댓글 수로 업데이트
       } else {
         // 답글인 경우, 해당 댓글의 답글 목록을 다시 가져옴
         const response = await getCommentbabyList(parentId);
         const response2 = await getCommentList(commentId);
         setCommentList(response2.data.commentGetDtoList); // 새로운 댓글 목록으로 상태 업데이트
-        updateCommentCount2(commentId, response2.data.commentGetDtoList.length);
+        updateCommentCount2(commentId);
         setChildComments((prev) => ({
           ...prev,
           [parentId]: response.data.commentGetDtoList,

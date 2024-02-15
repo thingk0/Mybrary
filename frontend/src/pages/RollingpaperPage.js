@@ -7,7 +7,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
 import useMybraryStore from "../store/useMybraryStore";
-import useUserStore from "../store/useUserStore";
+import useMyStore from "../store/useMyStore";
 import {
   getRollingPaper,
   saveRollingPaper,
@@ -26,7 +26,7 @@ export default function RollingpaperPage() {
   const mybrary = useMybraryStore((state) => state.mybrary);
 
   //이 둘이 같으면 나, 다르면 딴사람
-  const isMe = +Params.userid === useUserStore((state) => state.user.memberId);
+  const isMe = +Params.userid === useMyStore((state) => state.my.memberId);
 
   /* 여기서부터 그림 그리는 코드 */
   const drawLine = (originalX, originalY, newX, newY, color) => {
