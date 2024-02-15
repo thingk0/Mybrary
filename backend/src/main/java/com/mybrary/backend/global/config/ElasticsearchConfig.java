@@ -1,5 +1,6 @@
 package com.mybrary.backend.global.config;
 
+import java.time.Duration;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.elasticsearch.client.ClientConfiguration;
@@ -25,6 +26,8 @@ public class ElasticsearchConfig extends ElasticsearchConfiguration {
         return ClientConfiguration.builder()
                                   .connectedTo(url)
                                   .withBasicAuth(username, password)
+                                  .withConnectTimeout(Duration.ofSeconds(5))
+                                  .withSocketTimeout(Duration.ofSeconds(3))
                                   .build();
     }
 }

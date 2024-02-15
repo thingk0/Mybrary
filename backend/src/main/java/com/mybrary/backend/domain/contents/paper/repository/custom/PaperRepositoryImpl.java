@@ -18,6 +18,7 @@ import com.mybrary.backend.domain.search.dto.SearchPaperResponseDto;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,7 +65,7 @@ public class PaperRepositoryImpl implements PaperRepositoryCustom {
         CompletableFuture<Map<Long, SearchPaperResponseDto>> contents = getPopularityPaperInEachThreadAsync(fetch);
         JPAQuery<Paper> countQuery = query.selectFrom(paper)
                                           .where(paper.id.in(paperIdList));
-        return PageableExecutionUtils.getPage((List<SearchPaperResponseDto>) contents.join().values(),
+        return PageableExecutionUtils.getPage(new ArrayList<>(contents.join().values()),
                                               pageable,
                                               countQuery::fetchCount);
     }

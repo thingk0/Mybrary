@@ -50,7 +50,6 @@ public class SearchServiceImpl implements SearchService {
     @Override
     public Page<SearchPaperResponseDto> searchThread(String keyword, Pageable pageable) {
 
-        // 검색 쿼리 생성
         Query query = Query.of(qb -> qb
             .bool(bq -> bq
                 .should(sh -> sh.match(mq -> mq.field("tagList").query(keyword)))
@@ -59,23 +58,16 @@ public class SearchServiceImpl implements SearchService {
             )
         );
 
-        // NativeQuery 객체 생성
         NativeQuery nativeQuery = NativeQuery.builder()
                                              .withQuery(query)
                                              .withPageable(pageable)
                                              .build();
 
-        log.info("query = {}", query);
+        SearchHits<PaperDocument> searchHits = elasticsearchOperations.search(nativeQuery, PaperDocument.class);
 
-        SearchHits<PaperDocument> searchHits = elasticsearchOperations
-            .search(nativeQuery, PaperDocument.class);
-        log.info("searchHits = {}", searchHits);
-
-        // 검색된 PaperDocument 의 ID 추출
         List<Long> paperIds = searchHits.getSearchHits().stream()
                                         .map(hit -> hit.getContent().getId())
                                         .collect(Collectors.toList());
-        log.info("paperIds = {}", paperIds);
 
         return paperRepository.fetchPaperSearchList(paperIds, pageable);
     }
