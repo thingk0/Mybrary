@@ -11,7 +11,6 @@ import useMybraryStore from "../store/useMybraryStore";
 import BigModal from "../components/common/BigModal";
 import OneThread from "../components/threads/OneThread";
 import useMyStore from "../store/useMyStore";
-
 export default function ThreadsPage() {
   const Params = useParams();
   const nowuser = Params.userid;
@@ -60,14 +59,16 @@ export default function ThreadsPage() {
         <div className={title.title}>
           <div
             className={title.left_title}
-            onClick={() => navigate(`../rollingpaper/${my.rollingPaperId}`)}
+            onClick={() =>
+              navigate(`../rollingpaper/${mybrary.rollingPaperId}`)
+            }
           >
             &lt; 롤링페이퍼
           </div>
-          <div className={title.main_title}>{my.nickname}'s thread</div>
+          <div className={title.main_title}>{mybrary.nickname}'s thread</div>
           <div
             className={title.right_title}
-            onClick={() => navigate(`../${my.bookShelfId}`)}
+            onClick={() => navigate(`../${mybrary.bookShelfId}`)}
           >
             {" "}
             책장 &gt;
@@ -88,7 +89,7 @@ export default function ThreadsPage() {
                 {groupedData.get(yearMonth).map((thread) => (
                   <Thread
                     thread={thread}
-                    user={my}
+                    user={mybrary}
                     setThreadModal={setThreadModal}
                     setTId={setTId}
                   />
