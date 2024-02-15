@@ -91,7 +91,7 @@ public class MemberServiceImpl implements MemberService {
 
         /* 프로필이미지, 액자이미지 조회 */
         Image profileImage = imageRepository.findById(requestDto.getProfileImageId()).orElseThrow(ImageNotFoundException::new);
-        Image frameImage = imageRepository.findById(requestDto.getProfileImageId()).orElseThrow(ImageNotFoundException::new);
+        Image frameImage = imageRepository.findById(requestDto.getFrameImageId()).orElseThrow(ImageNotFoundException::new);
 
         /* 회원 생성 */
         Member member = Member.of(requestDto, passwordEncoder.encode(requestDto.getPassword()), profileImage);
