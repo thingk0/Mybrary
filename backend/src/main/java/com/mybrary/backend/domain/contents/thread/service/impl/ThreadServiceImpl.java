@@ -82,8 +82,6 @@ public class ThreadServiceImpl implements ThreadService {
     private final FollowRepository followRepository;
     private final PaperDocumentRepository paperDocumentRepository;
 
-    /* 예외 처리 상황별로 추후 추가할예정 */
-
     @Transactional
     @Override
     public Long createThread(String email, ThreadPostDto threadPostDto) {
@@ -95,6 +93,8 @@ public class ThreadServiceImpl implements ThreadService {
         Mybrary mybrary = mybraryAsync.join();
 
         Thread thread = Thread.create(mybrary);
+        threadRepository.save(thread);
+
         Member member = mybrary.getMember();
 
         // bookId가 null이 아닐 때
@@ -130,6 +130,7 @@ public class ThreadServiceImpl implements ThreadService {
                                .book(book.orElse(null))
                                .paperSeq(++paperSeq)
                                .build();
+            paperRepository.save(paper);
 
             /* tag 목록 생성 */
             List<String> tagNameList = dto.getTagList();
@@ -149,9 +150,8 @@ public class ThreadServiceImpl implements ThreadService {
                                        .build());
             }
         }
-        Thread savedThread = threadRepository.save(thread);
-        processAndIndexPapersAsync(savedThread);
-        return savedThread.getId();
+        processAndIndexPapersAsync(thread);
+        return thread.getId();
     }
     /* 메인 피드 thread 조회하기 */
 
