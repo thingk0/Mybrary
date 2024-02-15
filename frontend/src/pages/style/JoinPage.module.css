@@ -1,132 +1,110 @@
-.joinmain {
-  margin-top: 100px;
-  background-color: #57423f;
-  border: 5px solid #ba667e;
-  height: 74vh;
+.logo {
+  padding: 40px;
   display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.backpage1 {
-  width: 96%;
-  height: 98%;
-  background-color: #fff6f0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: solid 3px black;
-}
-.backpage2 {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 97%;
-  height: 100%;
-  border: solid 3px black;
-  background-color: #fff6f0;
-}
-.backpage3 {
-  width: 97%;
-  height: 100%;
-  border: solid 3px black;
-  background-color: #fff6f0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.midleft,
-.midright {
-  width: 48.5%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.midrightmain {
-  width: 90%;
-  height: 90%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-}
-.책읽는곰 {
-  width: 73%;
-  height: 55%;
-}
-.rightheader {
-  padding-top: 40px;
-  padding-left: 40px;
   gap: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-.로고이미지 {
-  width: 65%;
-}
-.midmid {
-  width: 1.4%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  border: #57423f solid 2px;
-  align-items: center;
-}
-.고리 {
-  width: 250%;
-  height: 14px;
-  background-color: #57423f;
-  border: solid 2px black;
-  border-radius: 10px;
-}
-.로그인하기 {
-  font-size: 18px;
-  color: #8ea565;
+  align-items: flex-end;
+  justify-content: space-between;
 }
 
-.쇼셜 img {
-  width: 32px;
+.logoImg {
+  text-align: center;
+  font-size: 70px;
+  margin-bottom: 30px;
+  background: linear-gradient(135deg, #7f5d4d 0%, #de6363 50%, #6e5041 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% 100%;
+  animation: gradientBG 3s ease infinite;
 }
-.쇼셜 {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
+
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
-.소셜모음 {
-  display: flex;
-  width: 60%;
-  height: 100%;
-  justify-content: space-between;
+
+.logoText {
+  font-size: 30px;
+  text-align: center;
 }
-.로그인회원가입 {
-  align-items: center;
-  justify-content: center;
+
+.title {
+  font-size: 25px;
+  text-align: center;
+  transition: 0.5s;
+  padding: 120px 20px 30px;
+}
+.left {
+  transform: translateX(-25%) translateY(210px);
+}
+.right {
+  transform: translateX(25%);
+}
+.main {
   width: 100%;
-  font-size: 15px;
-  gap: 22px;
-  display: flex;
+  overflow: hidden;
 }
-.회원가입하기 {
-  font-size: 18px;
-  color: #9b6a8e;
-}
-.토글 {
-  width: 100%;
-  height: 30%;
-  display: flex;
-  flex-direction: column;
+.main_in {
   align-items: center;
-  gap: 40px;
+  display: flex;
+  width: 1800px;
+  transition: 0.5s;
+}
+.leftMain {
+  transform: translateX(0px);
+}
+.rightMian {
+  transform: translateX(-600px);
+}
+.main_img {
+  width: 580px;
+  padding: 20px;
+  margin: 10px;
+}
+
+.main_right,
+.main_left {
+  width: 580px;
+  padding: 20px;
+  margin: 10px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px 0 var(--main3);
+  position: relative;
+}
+.main_left {
+  background-color: var(--blur2);
+  height: 370px;
+}
+.main_right {
+  background-color: var(--blur1);
+  height: 780px;
 }
 .footer {
+  position: absolute;
+  bottom: 30px;
+  left: 20px;
+  right: 20px;
+}
+.footer_in {
   display: flex;
-  width: 80%;
-  height: 70%;
-  gap: 12px;
-  flex-direction: column;
+  gap: 20px;
+  font-size: 18px;
   justify-content: center;
-  align-items: center;
+}
+
+.button {
+  color: var(--gomin3);
+  cursor: pointer;
+  transition: 0.5s;
+}
+.button:hover {
+  transform: scale(1.2);
+  color: var(--gomin4);
 }

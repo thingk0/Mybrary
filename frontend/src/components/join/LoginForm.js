@@ -5,7 +5,7 @@ import useUserStore from "../../store/useUserStore";
 import useStompStore from "../../store/useStompStore";
 import useNotificationStore from "../../store/useNotificationStore";
 import styles from "./LoginForm.module.css";
-import toast, { useToaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
 function LoginForm() {
   /* 로그인하고 바로 stompClient 초기화. */
@@ -15,7 +15,6 @@ function LoginForm() {
   const navigate = useNavigate();
 
   // 유저상태 전역 관리를 위한 코드
-  //const setUser = useUserStore((state) => state.setUser);
   const { user, setUser } = useUserStore();
 
   /* 상태 */
@@ -30,11 +29,9 @@ function LoginForm() {
     if (name === "email" && value.length > 50) {
       return;
     }
-
     if (name === "password" && value.length > 20) {
       return;
     }
-
     setFormData((prevFormData) => ({
       ...prevFormData,
       [name]: value,
@@ -42,10 +39,7 @@ function LoginForm() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
     try {
-      // 로그인 요청 보내기
-
       const res = await login(formData);
       if (res.status === "SUCCESS") {
         // useStore에 data안에 들어있는 기본 정보들을 저장해라
@@ -100,49 +94,33 @@ function LoginForm() {
   };
 
   return (
-    <>
-      <div className={styles.로그인메인}>
-        <div className={styles.로그인사이즈조정}>
-          <form onSubmit={handleSubmit}>
-            <div>
-              <label>email</label>
-              <div className={styles.각각의폼디브} style={{ marginTop: "3px" }}>
-                <input
-                  className={styles.인풋창}
-                  type="text"
-                  name="email"
-                  placeholder="이메일을 입력하세요"
-                  value={formData.email}
-                  onChange={handleChange}
-                />
-              </div>
-            </div>
-            <div>
-              <label>비밀번호</label>
-              <div className={styles.각각의폼디브} style={{ marginTop: "3px" }}>
-                <input
-                  className={styles.인풋창}
-                  type="password"
-                  name="password"
-                  placeholder="비밀번호를 입력하세요"
-                  value={formData.password}
-                  onChange={handleChange}
-                />
-              </div>
-            </div>
-            <div className={styles.버튼디브}>
-              <button className={styles.로그인버튼} type="submit">
-                로그인
-              </button>
-            </div>
-          </form>
-        </div>
+    <form>
+      <div className={styles.inputContainer}>
+        <label className={styles.label}>email</label>
+        <input
+          className={styles.input}
+          type="text"
+          name="email"
+          placeholder="이메일을 입력하세요"
+          value={formData.email}
+          onChange={handleChange}
+        />
       </div>
-      {/* <> */}
-      {/* {isLoading && <Loading />} */}
-      {/* 로그인 폼 및 기타 컴포넌트 */}
-      {/* </> */}
-    </>
+      <div className={styles.inputContainer}>
+        <label className={styles.label}>비밀번호</label>
+        <input
+          className={styles.input}
+          type="password"
+          name="password"
+          placeholder="비밀번호를 입력하세요"
+          value={formData.password}
+          onChange={handleChange}
+        />
+      </div>
+      <div className={styles.button} onClick={() => handleSubmit()}>
+        로그인
+      </div>
+    </form>
   );
 }
 

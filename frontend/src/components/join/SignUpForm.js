@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./SignUpForm.module.css";
+import s from "classnames";
 import toast from "react-hot-toast";
 import Iconuser2 from "../../assets/icon/Iconuser2.png";
 import 예시이미지2 from "../../assets/예시이미지2.png";
@@ -137,6 +138,7 @@ function SignUpForm({ setPageremote }) {
     }
   };
 
+  const [ok, setOk] = useState(false);
   const handleVerifyCode = async (e) => {
     e.preventDefault();
     setFormErrors((prevFormErrors) => {
@@ -158,6 +160,7 @@ function SignUpForm({ setPageremote }) {
 
         setIsEmailVerifying(false);
         setIsEmailVerified(true);
+        setOk(true);
       } else {
         setFormErrors((prevFormErrors) => ({
           ...prevFormErrors,
@@ -225,8 +228,6 @@ function SignUpForm({ setPageremote }) {
 
   // 폼 검사
   const handleSubmit = async (e) => {
-    e.preventDefault(); // 원래 form 안에서 button 이 가지는 기본 기능을 막음
-
     const errors = validate(formData);
     if (Object.keys(errors).length === 0) {
       // 여기에 폼 제출 로직을 추가하세요.
@@ -315,177 +316,141 @@ function SignUpForm({ setPageremote }) {
   };
 
   return (
-    <>
-      <div className={styles.회원가입폼전체}>
-        <form onSubmit={handleSubmit}>
-          <div className={styles.폼내부}>
-            <div className={styles.폼1}>
-              <label>email</label>
-              <div
-                className={`${styles.각각의폼디브} ${
-                  formErrors.email ? styles.shakeAnimation : ""
-                }`}
-                style={{ marginTop: "3px" }}
-              >
-                <input
-                  className={styles.인풋창}
-                  type="text"
-                  name="email"
-                  value={formData.email}
-                  placeholder="이메일을 입력해주세요"
-                  onChange={handleChange}
-                  disabled={isEmailVerifying || isEmailVerified}
-                />
-                {!isEmailVerified && (
-                  <button
-                    onClick={(e) => handleVerifyEmail(e, formData.email)}
-                    disabled={isEmailVerified}
-                    style={{ padding: "0 4px" }}
-                  >
-                    이메일 인증
-                  </button>
-                )}
-              </div>
-              {formErrors.email && (
-                <span className={styles.에러메시지}>{formErrors.email}</span>
-              )}
-            </div>
-            {isEmailVerifying && (
-              <div>
-                <label>인증번호입력:</label>
-                <div
-                  className={`${styles.각각의폼디브} ${
-                    formErrors.code ? styles.shakeAnimation : ""
-                  }`}
-                  style={{ marginTop: "3px" }}
-                >
-                  <input
-                    className={styles.인풋창}
-                    type="text"
-                    name="code"
-                    placeholder="인증번호를 입력하세요"
-                    value={code}
-                    onChange={handleCodeChange}
-                  ></input>
-                  <button
-                    onClick={(e) => handleVerifyCode(e)}
-                    style={{ padding: "0 4px" }}
-                  >
-                    인증번호 확인
-                  </button>
-                </div>
-              </div>
-            )}
-            {formErrors.code && (
-              <span className={styles.에러메시지}>{formErrors.code}</span>
-            )}
-
-            <div className={styles.폼1}>
-              <label>비밀번호</label>
-              <div
-                className={`${styles.각각의폼디브} ${
-                  formErrors.password ? styles.shakeAnimation : ""
-                }`}
-                style={{ marginTop: "3px" }}
-              >
-                <input
-                  className={styles.인풋창}
-                  type="password"
-                  name="password"
-                  placeholder="비밀번호를 입력하세요"
-                  value={formData.password}
-                  onChange={handleChange}
-                />
-              </div>
-              {formErrors.password && (
-                <span className={styles.에러메시지}>{formErrors.password}</span>
-              )}
-            </div>
-
-            <div className={styles.폼1}>
-              <label>비밀번호 확인</label>
-              <div
-                className={`${styles.각각의폼디브} ${
-                  formErrors.passwordConfirm ? styles.shakeAnimation : ""
-                }`}
-                style={{ marginTop: "3px" }}
-              >
-                <input
-                  className={styles.인풋창}
-                  type="password"
-                  name="passwordConfirm"
-                  placeholder="비밀번호 확인"
-                  value={formData.passwordConfirm}
-                  onChange={handleChange}
-                />
-              </div>
-              {formErrors.passwordConfirm && (
-                <span className={styles.에러메시지}>
-                  {formErrors.passwordConfirm}
-                </span>
-              )}
-            </div>
-
-            <div>
-              <label>이름</label>
-              <div
-                className={`${styles.각각의폼디브} ${
-                  formErrors.name ? styles.shakeAnimation : ""
-                }`}
-                style={{ marginTop: "3px" }}
-              >
-                <input
-                  className={styles.인풋창}
-                  type="text"
-                  name="name"
-                  placeholder="이름을 입력하세요"
-                  value={formData.name}
-                  onChange={handleChange}
-                />
-              </div>
-              {formErrors.name && (
-                <span className={styles.에러메시지}>{formErrors.name}</span>
-              )}
-            </div>
-
-            <div>
-              <label>닉네임</label>
-              <div
-                className={`${styles.각각의폼디브} ${
-                  formErrors.nickname ? styles.shakeAnimation : ""
-                }`}
-                style={{ marginTop: "3px" }}
-              >
-                <input
-                  className={styles.인풋창}
-                  type="text"
-                  name="nickname"
-                  placeholder="닉네임을 입력하세요"
-                  value={formData.nickname}
-                  onChange={handleNickNameChange}
-                />
-
-                <button
-                  onClick={(e) => handleCheckNickName(e, formData.nickname)}
-                  style={{ padding: "0 4px" }}
-                >
-                  닉네임 중복 검사
-                </button>
-              </div>
-
-              {formErrors.nickname && (
-                <span className={styles.에러메시지}>{formErrors.nickname}</span>
-              )}
-            </div>
-            <div className={styles.버튼디브}>
-              <button className={styles.가입버튼} type="submit">
-                회원가입
-              </button>
-            </div>
+    <form onSubmit={handleSubmit}>
+      <div className={styles.inputContainer}>
+        <label className={styles.label}>email</label>
+        <input
+          className={s(styles.input, formErrors.email && styles.shakeAnimation)}
+          type="email"
+          name="email"
+          value={formData.email}
+          placeholder="이메일을 입력해주세요"
+          onChange={handleChange}
+          disabled={isEmailVerifying || isEmailVerified}
+        />
+        {formErrors.email && (
+          <div className={styles.error}>{formErrors.email}</div>
+        )}
+        {!isEmailVerified && (
+          <div
+            className={styles.btn}
+            onClick={(e) => handleVerifyEmail(e, formData.email)}
+            disabled={isEmailVerified}
+          >
+            이메일 인증
           </div>
-        </form>
+        )}
       </div>
-    </>
+
+      {isEmailVerifying && (
+        <div className={styles.inputContainer}>
+          <label className={styles.label}>인증번호입력:</label>
+
+          <input
+            className={s(
+              styles.input,
+              formErrors.code && styles.shakeAnimation
+            )}
+            type="text"
+            name="code"
+            placeholder="인증번호를 입력하세요"
+            value={code}
+            onChange={handleCodeChange}
+          />
+          {formErrors.code && (
+            <div className={styles.error}>{formErrors.code}</div>
+          )}
+          <div className={styles.btn} onClick={(e) => handleVerifyCode(e)}>
+            인증번호 확인
+          </div>
+        </div>
+      )}
+
+      {ok && (
+        <>
+          <div className={styles.inputContainer}>
+            <label className={styles.label}>비밀번호</label>
+            <input
+              className={s(
+                styles.input,
+                formErrors.password && styles.shakeAnimation
+              )}
+              type="password"
+              name="password"
+              placeholder="비밀번호를 입력하세요"
+              value={formData.password}
+              onChange={handleChange}
+            />
+            {formErrors.password && (
+              <div className={styles.error}>{formErrors.password}</div>
+            )}
+          </div>
+
+          <div className={styles.inputContainer}>
+            <label className={styles.label}>비밀번호 확인</label>
+            <input
+              className={s(
+                styles.input,
+                formErrors.passwordConfirm && styles.shakeAnimation
+              )}
+              type="password"
+              name="passwordConfirm"
+              placeholder="비밀번호 확인"
+              value={formData.passwordConfirm}
+              onChange={handleChange}
+            />
+            {formErrors.passwordConfirm && (
+              <div className={styles.error}>{formErrors.passwordConfirm}</div>
+            )}
+          </div>
+
+          <div className={styles.inputContainer}>
+            <label className={styles.label}>이름</label>
+            <input
+              className={s(
+                styles.input,
+                formErrors.name && styles.shakeAnimation
+              )}
+              type="text"
+              name="name"
+              placeholder="이름을 입력하세요"
+              value={formData.name}
+              onChange={handleChange}
+            />
+            {formErrors.name && (
+              <div className={styles.error}>{formErrors.name}</div>
+            )}
+          </div>
+
+          <div className={styles.inputContainer}>
+            <label className={styles.label}>닉네임</label>
+            <input
+              className={s(
+                styles.input,
+                formErrors.nickname && styles.shakeAnimation
+              )}
+              type="text"
+              name="nickname"
+              placeholder="닉네임을 입력하세요"
+              value={formData.nickname}
+              onChange={handleNickNameChange}
+            />
+            <div
+              className={styles.btn}
+              onClick={(e) => handleCheckNickName(e, formData.nickname)}
+            >
+              닉네임 중복 검사
+            </div>
+            {formErrors.nickname && (
+              <div className={styles.error}>{formErrors.nickname}</div>
+            )}
+          </div>
+          <div className={styles.button} onClick={() => handleSubmit()}>
+            회원가입
+          </div>
+        </>
+      )}
+    </form>
   );
 }
 

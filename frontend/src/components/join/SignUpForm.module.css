@@ -1,74 +1,89 @@
-.인풋창 {
-  background-color: #fff9f6;
-  border: 0px;
-  border-radius: 8px;
-  padding: 5px 2px 5px 2px;
-  max-width: 60%;
+:root {
+  --main1: #f5998f;
+  --main2: #57423f;
+  --main3: #bfa6a2;
+  --main4: #fff9f6;
+  --main5: #9b8683;
+  --main6: #f5998f;
+  --gomin1: #2f4858;
+  --gomin2: #455371;
+  --gomin3: #6a5b82;
+  --gomin4: #946087;
+  --gomin5: #ba667e;
+  --blur1: #fff9f680;
+  /* 1번이 모달컬러 */
+  --blur2: #ddccc380;
+  /* 책장뒷편 쓰는색 */
+  --deletecolor: linear-gradient(
+    135deg,
+    rgba(116, 91, 127, 1) 0%,
+    rgba(245, 153, 143, 1) 100%
+  );
+  --followcolor: linear-gradient(
+    135deg,
+    rgba(148, 96, 135, 1) 0%,
+    rgba(69, 83, 113, 1) 100%
+  );
+  --papercolor: linear-gradient(
+    150deg,
+    rgba(255, 250, 247, 1) 0%,
+    rgba(239, 239, 239, 1) 100%
+  );
 }
-.인풋창:focus {
+
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  margin: 0 auto;
+  padding: 10px;
+  position: relative;
+}
+
+.input {
+  margin-top: 10px;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-size: 20px;
   outline: none;
-  border: 0px;
+  background: var(--blur1);
+  border: solid 2px var(--main2);
+  transition: 0.3s;
+  box-shadow: 0 0 10px -4px var(--main2);
 }
-.폼내부 {
-  display: flex;
-  flex-direction: column;
-  max-width: 100%;
-  gap: 6px;
+.input:focus {
+  border: solid 2px var(--main3);
+  background-color: var(--main4);
 }
-.폼1 {
-  display: flex;
-  flex-direction: column;
-  max-width: 100%;
+.input::placeholder {
+  color: var(--main3);
+  font-size: 20px;
 }
-.에러메시지 {
-  font-size: 13px;
-  max-width: 80%;
-  color: rgb(254, 139, 139);
-}
-.각각의폼디브 {
-  background-color: #fff9f6;
-  border: 2px solid black;
-  border-radius: 8px;
-  display: flex;
-  justify-content: space-between;
-  padding: 1px 2px 1px 2px;
-  margin-bottom: 9px;
-}
-.각각의폼디브 button {
-  background-color: #57423f;
-  border-radius: 5px;
-  font-weight: 100;
-  color: rgb(248, 255, 255);
-  font-size: 13px;
-}
-.회원가입폼전체 {
-  padding-top: 20px;
+.label {
+  font-size: 18px;
   padding-left: 10px;
-  padding-bottom: 20px;
-  padding-right: 40px;
-  overflow-y: auto;
-  max-height: 43vh;
-  max-width: 18vw;
-  min-width: 18vw;
 }
-.버튼디브 {
-  padding-top: 15px;
-  padding-bottom: 15px;
-  width: 100%;
-  display: flex;
-  justify-content: center;
+.button {
+  width: 380px;
+  text-align: center;
+  margin: 0 auto;
+  padding: 10px;
+  font-size: 20px;
+  background-color: var(--main3);
+  border-radius: 10px;
+  margin-top: 30px;
+  box-shadow: 0 0 15px var(--main3);
+  transition: 0.3s;
 }
-.가입버튼 {
-  background-color: #57423f;
-  border-radius: 5px;
-  font-weight: 100;
-  color: rgb(248, 255, 255);
-  font-size: 13px;
-  margin-left: 25px;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  padding-right: 10px;
-  padding-left: 10px;
+
+.button:hover {
+  background-color: var(--main2);
+  color: var(--main5);
+  transform: scale(1.03) translateY(-3px);
+}
+
+.shakeAnimation {
+  animation: gentleShake 0.5s ease-in-out;
 }
 
 @keyframes gentleShake {
@@ -95,6 +110,20 @@
   }
 }
 
-.shakeAnimation {
-  animation: gentleShake 0.5s ease-in-out;
+.error {
+  color: var(--gomin5);
+  padding: 15px 10px 0px;
+  font-size: 14px;
+}
+.btn {
+  position: absolute;
+  right: 18px;
+  top: 46.5px;
+  padding: 10px;
+  background-color: var(--blur2);
+  border-radius: 5px;
+  transition: 0.3s;
+}
+.btn:hover {
+  background-color: #938882af;
 }

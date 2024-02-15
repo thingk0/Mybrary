@@ -1,58 +1,49 @@
-.로그인메인 {
-  width: 100%;
-  height: 38%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.로그인사이즈조정 {
-  width: 82%;
-  height: 80%;
+.inputContainer {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-}
-.에러메시지 {
-  font-size: 13px;
-  max-width: 80%;
-  color: rgb(254, 139, 139);
+  width: 400px;
+  margin: 0 auto;
+  padding: 10px;
 }
 
-.각각의폼디브 {
-  background-color: #fff9f6;
-  border: 2px solid black;
-  border-radius: 8px;
-  display: flex;
-  justify-content: space-between;
-  padding: 1px 2px 1px 2px;
-  margin-bottom: 20px;
-}
-.인풋창 {
-  background-color: #fff9f6;
-  border: 0px;
-  border-radius: 8px;
-  padding: 7px 2px 7px 2px;
-  max-width: 60%;
-}
-.인풋창:focus {
+.input {
+  margin-top: 10px;
+  padding: 15px 20px;
+  border-radius: 10px;
+  font-size: 20px;
   outline: none;
-  border: 0px;
+  background: var(--blur1);
+  border: solid 2px var(--main2);
+  transition: 0.3s;
+  box-shadow: 0 0 10px -4px var(--main2);
 }
-.버튼디브 {
-  padding-top: 15px;
-  padding-bottom: 15px;
-  width: 100%;
-  display: flex;
-  justify-content: center;
+.input:focus {
+  border: solid 2px var(--main3);
+  background-color: var(--main4);
 }
-.로그인버튼 {
-  background-color: #57423f;
-  border-radius: 5px;
-  font-weight: 100;
-  color: rgb(248, 255, 255);
-  font-size: 13px;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  padding-right: 10px;
+.input::placeholder {
+  color: var(--main3);
+  font-size: 20px;
+}
+.label {
+  font-size: 18px;
   padding-left: 10px;
+}
+.button {
+  width: 380px;
+  text-align: center;
+  margin: 0 auto;
+  padding: 10px;
+  font-size: 20px;
+  background-color: var(--main3);
+  border-radius: 10px;
+  margin-top: 30px;
+  box-shadow: 0 0 15px var(--main3);
+  transition: 0.3s;
+}
+
+.button:hover {
+  background-color: var(--main2);
+  color: var(--main5);
+  transform: scale(1.03) translateY(-3px);
 }
