@@ -76,6 +76,7 @@
   padding: 10px 15px 5px 15px;
   background-color: #bfa6a2;
   border-radius: 20px;
+  cursor: pointer;
 }
 .최근검색어박스 {
   margin-left: 30px;

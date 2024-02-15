@@ -279,6 +279,7 @@
   padding: 10px 15px 5px 15px;
   background-color: #bfa6a2;
   border-radius: 20px;
+  cursor: pointer;
 }
 .최근검색어박스 {
   margin-left: 30px;
@@ -347,10 +348,11 @@
   width: 20%;
   height: 35px;
   font-size: 16px;
-  background-color: antiquewhite;
+  background-color: rgb(235, 202, 190);
   color: #57423f;
   border: none;
   border-radius: 4px;
+  cursor: pointer;
 }
 .오버플로우확인 {
   height: 100%;
