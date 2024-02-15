@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import {
   searchBook,
   searchAccount,
-  searchThread,
+  searchContents,
   getPopularList,
 } from "../api/search/Search";
 import useNavStore from "../store/useNavStore";

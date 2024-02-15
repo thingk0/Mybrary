@@ -175,7 +175,11 @@ export default function SearchResultPage1() {
               <div className={styles.오버플로우확인}>
                 <div className={styles.게시글들어갈공간}>
                   {bookList.map((book, index) => (
-                    <div key={index} className={styles.main_left}>
+                    <div
+                      key={index}
+                      className={styles.main_left}
+                      onClick={() => navigate(`/book/${book.bookId}`)}
+                    >
                       <div
                         className={s(
                           styles.cover,
