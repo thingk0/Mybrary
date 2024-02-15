@@ -64,7 +64,7 @@ public class ChatRoomRepositoryImpl implements ChatRoomRepositoryCustom {
             .select(subChatJoin.chatRoom.id)
             .from(subChatJoin)
             .innerJoin(subChatJoin.joinMember, member)
-            .where(member.email.eq(email));
+            .where(member.email.eq(email).and(subChatJoin.isExited.eq(false)));
 
         JPQLQuery<Long> latestMessageSubQuery = JPAExpressions
             .select(subChatMessage.id.max())
