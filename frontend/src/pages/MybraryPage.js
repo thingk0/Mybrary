@@ -40,7 +40,7 @@ import FollowerList from "../components/mybrary/FollowerList";
 import FileInput from "../components/common/FileInput";
 import { uplodaImage } from "../api/image/Image";
 import { deleteFollow, follow, followCancel } from "../api/member/Follow";
-import { getFirstChat } from "../api/Chat/Chat";
+import { getFirstChat } from "../api/chat/Chat";
 import useNotificationStore from "../store/useNotificationStore";
 import useMyStore from "../store/useMyStore";
 

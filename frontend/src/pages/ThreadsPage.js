@@ -7,19 +7,18 @@ import 왼쪽 from "../assets/왼쪽.png";
 import Thread from "../components/common/Thread";
 import { getDeskThread } from "../api/thread/Thread";
 import { useNavigate, useParams } from "react-router-dom";
-import useUserStore from "../store/useUserStore";
 import useMybraryStore from "../store/useMybraryStore";
 import BigModal from "../components/common/BigModal";
 import OneThread from "../components/threads/OneThread";
+import useMyStore from "../store/useMyStore";
 
 export default function ThreadsPage() {
   const Params = useParams();
   const nowuser = Params.userid;
-  const me = useUserStore((state) => state.user);
   const navigate = useNavigate();
   const [groupedData, setGroupedData] = useState(new Map());
-  const [trueme, setTrueme] = useState(false);
   const mybrary = useMybraryStore((state) => state.mybrary);
+  const my = useMyStore((state) => state.my);
 
   const [threadModal, setThreadModal] = useState(false);
   const [tId, setTId] = useState(0);
@@ -45,13 +44,10 @@ export default function ThreadsPage() {
         });
 
         setGroupedData(grouped);
-        if (me.memberId == nowuser) {
-          setTrueme(true);
-        }
       } catch (error) {}
     }
     fetchmyData();
-  }, [threadModal]);
+  }, [threadModal, nowuser]);
 
   return (
     <>
@@ -102,6 +98,21 @@ export default function ThreadsPage() {
               </div>
             </div>
           ))}
+          {[...groupedData.keys()].length === 0 && (
+            <div className={styles.noneTr}>
+              <div className={styles.noneTrTitle}>
+                스레드가 하나도 존재하지 않습니다.
+              </div>
+              {my.memberId === mybrary.memberId && (
+                <div
+                  className={styles.noneTrBtn}
+                  onClick={() => navigate("/threadCreate")}
+                >
+                  새 스레드 작성하기
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </Container>
       <BigModal
