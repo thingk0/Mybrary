@@ -219,3 +219,35 @@
   color: #fff1ef;
   border-radius: 5px;
 }
+.delete {
+  color: var(--gomin5);
+}
+
+.deleteTitle {
+  font-size: 20px;
+  text-align: center;
+  margin: 30px 0;
+}
+
+.can {
+  padding: 10px 40px;
+  background-color: var(--main3);
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.del {
+  padding: 10px 40px;
+  background-color: #f08d8d;
+  color: #b25757;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.fff {
+  width: 300px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  align-items: center;
+}

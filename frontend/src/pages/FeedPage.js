@@ -4,13 +4,12 @@ import s from "classnames";
 import { useNavigate } from "react-router-dom";
 import Comment from "../components/feed/Comment";
 import FeedContent from "../components/feed/FeedContent";
-import { getThreadList } from "../api/thread/Thread";
+import { getThreadList, deleteThread } from "../api/thread/Thread";
 import BigModal from "../components/common/BigModal";
 import { getMYBooks } from "../api/book/Book";
 import BookSelect2 from "../components/feed/BookSelect2";
 import BookCreate from "../components/common/BookCreate";
 import useNavStore from "../store/useNavStore";
-import toast from "react-hot-toast";
 
 export default function FeedPage() {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -23,6 +22,9 @@ export default function FeedPage() {
   const [commentId, setCommentId] = useState(0);
   const [zIndex, setZIndex] = useState(-1);
   const navigate = useNavigate();
+
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [id, setId] = useState(0);
 
   const setNav = useNavStore((state) => state.setNav);
 
@@ -37,22 +39,6 @@ export default function FeedPage() {
       setActiveIndex(activeIndex - 1);
     }
   }, [activeIndex]);
-
-  const showToast = (string) => {
-    toast.success(`${string}`, {
-      style: {
-        border: "1px solid #713200",
-        padding: "16px",
-        color: "#713200",
-        zIndex: "100",
-      },
-      iconTheme: {
-        primary: "#713200",
-        secondary: "#FFFAEE",
-      },
-      position: "top-center",
-    });
-  };
 
   // useCallback 내에서 함수 정의
   const handleNextClick = useCallback(() => {
@@ -90,6 +76,14 @@ export default function FeedPage() {
     const booklists = await getMYBooks();
     setBookList(booklists.data);
     setScrapModal(true);
+  };
+  const handleDeleteThread = (threadId) => {
+    const updatedThreadList = list.filter(
+      (thread) => thread.threadId !== threadId
+    );
+    deleteThread(threadId);
+    setList(updatedThreadList);
+    setDeleteModal(false);
   };
 
   useEffect(() => {
@@ -204,6 +198,8 @@ export default function FeedPage() {
                 setScrapModal={setScrapModal}
                 setPapers={setPapers}
                 handleOpenBookList={handleOpenBookList}
+                setDeleteModal={setDeleteModal}
+                setId={setId}
               />
             </div>
           ))}
@@ -266,6 +262,22 @@ export default function FeedPage() {
           booklist={booklist}
           setModalIsOpen={setModalIsOpen}
         />
+      </BigModal>
+      <BigModal
+        modalIsOpen={deleteModal}
+        setModalIsOpen={setDeleteModal}
+        width="400px"
+        height="160px"
+      >
+        <div className={styles.deleteTitle}>스레드를 삭제 하시겠습니까?</div>
+        <div className={styles.fff}>
+          <div className={styles.can} onClick={() => setDeleteModal(false)}>
+            취소
+          </div>
+          <div className={styles.del} onClick={() => handleDeleteThread(id)}>
+            삭제
+          </div>
+        </div>
       </BigModal>
     </>
   );

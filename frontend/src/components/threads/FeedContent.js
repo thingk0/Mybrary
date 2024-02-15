@@ -5,7 +5,6 @@ import icon_book from "../../assets/icon/icon_book.png";
 import icon_like from "../../assets/icon/icon_like.png";
 import icon_nolike from "../../assets/icon/icon_nolike.png";
 import icon_scrap from "../../assets/icon/icon_scrap.png";
-import icon_share from "../../assets/icon/icon_share.png";
 import next from "../../assets/next.png";
 import prev from "../../assets/prev.png";
 import styles from "./FeedContent.module.css";
@@ -23,6 +22,7 @@ import useUrlStore from "../../store/useUrlStore";
 import { deleteThread } from "../../api/thread/Thread";
 import 곰탱이 from "../../assets/icon/Iconuser2.png";
 import useThreadStore from "../../store/useThreadStore";
+import BigModal from "../common/BigModal";
 
 export default function FeedContent({
   thread,
@@ -63,6 +63,8 @@ export default function FeedContent({
   };
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpen2, setIsModalOpen2] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [id, setId] = useState(0);
   const [booklist, setBooklist] = useState([]);
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -133,202 +135,223 @@ export default function FeedContent({
     setThreadModal(false);
   };
   return (
-    <div className={styles.content}>
-      {thread.paperList.map((paper, index) => (
-        <div className={s(styles.aa, styles[`a${x}`])} key={index}>
-          <div className={styles.user_info}>
-            <div
-              className={styles.user_profile}
-              onClick={() => navigate(`/mybrary/${thread.memberId}`)}
-            >
-              {thread.profileUrl != null ? (
-                <div
-                  className={styles.user_img}
-                  style={{
-                    background: `url("https://jingu.s3.ap-northeast-2.amazonaws.com/${thread.profileUrl}")no-repeat center/cover`,
-                  }}
-                ></div>
-              ) : (
-                <img src={곰탱이} alt="" className={styles.user_img} />
-              )}
-              <div className={styles.user_nickdate}>
-                <div className={styles.user_nickname}>{thread.nickname}</div>
-                <div className={styles.user_date}>
-                  {formatDate(thread.threadCreatedAt)}
+    <>
+      <div className={styles.content}>
+        {thread.paperList.map((paper, index) => (
+          <div className={s(styles.aa, styles[`a${x}`])} key={index}>
+            <div className={styles.user_info}>
+              <div
+                className={styles.user_profile}
+                onClick={() => navigate(`/mybrary/${thread.memberId}`)}
+              >
+                {thread.profileUrl != null ? (
+                  <div
+                    className={styles.user_img}
+                    style={{
+                      background: `url("https://jingu.s3.ap-northeast-2.amazonaws.com/${thread.profileUrl}")no-repeat center/cover`,
+                    }}
+                  ></div>
+                ) : (
+                  <img src={곰탱이} alt="" className={styles.user_img} />
+                )}
+                <div className={styles.user_nickdate}>
+                  <div className={styles.user_nickname}>{thread.nickname}</div>
+                  <div className={styles.user_date}>
+                    {formatDate(thread.threadCreatedAt)}
+                  </div>
                 </div>
               </div>
+              {user.memberId != thread.memberId ? (
+                <div
+                  onClick={() => navigate(`/mybrary/${thread.memberId}`)}
+                  className={styles.user_follow}
+                >
+                  {thread.followed ? "마이브러리방문" : "팔로우하러가기"}
+                </div>
+              ) : (
+                <div>
+                  <span
+                    className={styles.수정글자}
+                    onClick={async () => {
+                      await setThread(thread);
+                      navigate("/threadUpdate");
+                    }}
+                  >
+                    수정
+                  </span>{" "}
+                  <span className={styles.중간바}> | </span>{" "}
+                  <span
+                    className={styles.삭제글자}
+                    onClick={() => {
+                      setDeleteModal(true);
+                      setId(thread.threadId);
+                    }}
+                  >
+                    삭제
+                  </span>
+                </div>
+              )}
             </div>
-            {user.memberId != thread.memberId ? (
-              <div
-                onClick={() => navigate(`/mybrary/${thread.memberId}`)}
-                className={styles.user_follow}
-              >
-                {thread.followed ? "마이브러리방문" : "팔로우하러가기"}
-              </div>
-            ) : (
-              <div>
-                <span
-                  className={styles.수정글자}
-                  onClick={async () => {
-                    await setThread(thread);
-                    navigate("/threadUpdate");
+            <div className={styles.icon_container}>
+              <div className={styles.icon_left}>
+                <img
+                  src={paper.liked ? icon_like : icon_nolike}
+                  alt=""
+                  onClick={() => toggleLike(paper.id, paper.liked)}
+                />
+                <div>{paper.likesCount}</div>
+                <img
+                  src={icon_comment}
+                  alt=""
+                  onClick={() => openComment(paper.id)}
+                />
+                <div>{paper.commentCount}</div>
+                {thread.scrapEnable && (
+                  <>
+                    <img
+                      src={icon_scrap}
+                      alt=""
+                      onClick={() => {
+                        handleOpenBookList(thread.paperList);
+                      }}
+                    />
+                    <div>{paper.scrapCount}</div>
+                  </>
+                )}
+                <img
+                  src={icon_book}
+                  alt=""
+                  onClick={() => {
+                    setIsModalOpen(true);
+                    handelFeedModal(paper.id);
                   }}
+                />
+                <FeedModal2
+                  setIsModalOpen={setIsModalOpen}
+                  isModalOpen={isModalOpen}
+                  width="300px"
+                  left="-7.4vi"
+                  top="1.2vi"
+                  header="이 페이퍼를 포함한 작성자의 책"
+                  paperId={paper.id}
                 >
-                  수정
-                </span>{" "}
-                <span className={styles.중간바}> | </span>{" "}
-                <span
-                  className={styles.삭제글자}
-                  onClick={() => handleDeleteThread(thread.threadId)}
-                >
-                  삭제
-                </span>
+                  <div className={styles.책모음}>
+                    {booklist.map((book) => (
+                      <div
+                        className={styles.책한권}
+                        key={book.bookId}
+                        onClick={() => handelBookNavi(book)}
+                      >
+                        <div>
+                          <span className={styles.푸터}>
+                            {book.coverImageUrl != null ? (
+                              <div
+                                className={styles.유저이미지}
+                                style={{
+                                  background: `url("https://jingu.s3.ap-northeast-2.amazonaws.com/${book.coverImageUrl}")no-repeat center/cover`,
+                                }}
+                              ></div>
+                            ) : (
+                              <div
+                                className={styles.유저이미지}
+                                style={{
+                                  background: `url("${곰탱이}")no-repeat center/cover`,
+                                }}
+                              ></div>
+                            )}
+                            {book.coverTitle}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </FeedModal2>
+              </div>
+
+              {/* <img src={icon_share} alt="" className={styles.icon_right} /> */}
+            </div>
+            <div className={styles.main_content}>
+              {/* 레이아웃번호, 글1, 글2, 사진1, 사진2 */}
+              <ContentItem paper={paper} />
+            </div>
+            {paper.tagList.length != 0 && (
+              <div
+                onClick={() => setIsModalOpen2(true)}
+                className={styles.tag_hash}
+              >
+                #
               </div>
             )}
-          </div>
-          <div className={styles.icon_container}>
-            <div className={styles.icon_left}>
-              <img
-                src={paper.liked ? icon_like : icon_nolike}
-                alt=""
-                onClick={() => toggleLike(paper.id, paper.liked)}
-              />
-              <div>{paper.likesCount}</div>
-              <img
-                src={icon_comment}
-                alt=""
-                onClick={() => openComment(paper.id)}
-              />
-              <div>{paper.commentCount}</div>
-              {thread.scrapEnable && (
-                <>
-                  <img
-                    src={icon_scrap}
-                    alt=""
-                    onClick={() => {
-                      handleOpenBookList(thread.paperList);
-                    }}
-                  />
-                  <div>{paper.scrapCount}</div>
-                </>
-              )}
-              <img
-                src={icon_book}
-                alt=""
-                onClick={() => {
-                  setIsModalOpen(true);
-                  handelFeedModal(paper.id);
-                }}
-              />
-              <FeedModal2
-                setIsModalOpen={setIsModalOpen}
-                isModalOpen={isModalOpen}
-                width="300px"
-                left="-7.4vi"
-                top="1.2vi"
-                header="이 페이퍼를 포함한 작성자의 책"
-                paperId={paper.id}
-              >
-                <div className={styles.책모음}>
-                  {booklist.map((book) => (
-                    <div
-                      className={styles.책한권}
-                      key={book.bookId}
-                      onClick={() => handelBookNavi(book)}
-                    >
-                      <div>
-                        <span className={styles.푸터}>
-                          {book.coverImageUrl != null ? (
-                            <div
-                              className={styles.유저이미지}
-                              style={{
-                                background: `url("https://jingu.s3.ap-northeast-2.amazonaws.com/${book.coverImageUrl}")no-repeat center/cover`,
-                              }}
-                            ></div>
-                          ) : (
-                            <div
-                              className={styles.유저이미지}
-                              style={{
-                                background: `url("${곰탱이}")no-repeat center/cover`,
-                              }}
-                            ></div>
-                          )}
-                          {book.coverTitle}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </FeedModal2>
-            </div>
-
-            {/* <img src={icon_share} alt="" className={styles.icon_right} /> */}
-          </div>
-          <div className={styles.main_content}>
-            {/* 레이아웃번호, 글1, 글2, 사진1, 사진2 */}
-            <ContentItem paper={paper} />
-          </div>
-          {paper.tagList.length != 0 && (
-            <div
-              onClick={() => setIsModalOpen2(true)}
-              className={styles.tag_hash}
+            <FeedModal2
+              setIsModalOpen={setIsModalOpen2}
+              isModalOpen={isModalOpen2}
+              width="17vw"
+              left="15vw"
+              bottom="4vw"
+              header="태그"
+              paperId={paper.id}
             >
-              #
+              <div className={styles.태그모음}>
+                {paper.tagList.map((tag) => (
+                  <>
+                    <span
+                      onClick={() => navigate(`/search/${tag}`)}
+                      className={styles.태그한줄}
+                    >
+                      # {tag}
+                    </span>
+                  </>
+                ))}
+              </div>
+            </FeedModal2>
+          </div>
+        ))}
+        <div className={styles.page}>
+          {x} / {thread.paperList.length}
+        </div>
+        <div className={styles.navigate}>
+          {thread.paperList.length > x && (
+            <div
+              onClick={() => {
+                setX(x + 1);
+                setComment(false);
+                setZIndex(-1);
+              }}
+              className={styles.next}
+            >
+              <img src={next} alt="" className={styles.next_icon} />
             </div>
           )}
-          <FeedModal2
-            setIsModalOpen={setIsModalOpen2}
-            isModalOpen={isModalOpen2}
-            width="17vw"
-            left="15vw"
-            bottom="4vw"
-            header="태그"
-            paperId={paper.id}
-          >
-            <div className={styles.태그모음}>
-              {paper.tagList.map((tag) => (
-                <>
-                  <span
-                    onClick={() => navigate(`/search/${tag}`)}
-                    className={styles.태그한줄}
-                  >
-                    # {tag}
-                  </span>
-                </>
-              ))}
+          {x !== 1 && (
+            <div
+              onClick={() => {
+                setX(x - 1);
+                setComment(false);
+                setZIndex(-1);
+              }}
+              className={styles.prev}
+            >
+              <img src={prev} alt="" className={styles.prev_icon} />
             </div>
-          </FeedModal2>
+          )}
         </div>
-      ))}
-      <div className={styles.page}>
-        {x} / {thread.paperList.length}
       </div>
-      <div className={styles.navigate}>
-        {thread.paperList.length > x && (
-          <div
-            onClick={() => {
-              setX(x + 1);
-              setComment(false);
-              setZIndex(-1);
-            }}
-            className={styles.next}
-          >
-            <img src={next} alt="" className={styles.next_icon} />
+      <BigModal
+        modalIsOpen={deleteModal}
+        setModalIsOpen={setDeleteModal}
+        width="400px"
+        height="160px"
+      >
+        <div className={styles.deleteTitle}>스레드를 삭제 하시겠습니까?</div>
+        <div className={styles.fff}>
+          <div className={styles.can} onClick={() => setDeleteModal(false)}>
+            취소
           </div>
-        )}
-        {x !== 1 && (
-          <div
-            onClick={() => {
-              setX(x - 1);
-              setComment(false);
-              setZIndex(-1);
-            }}
-            className={styles.prev}
-          >
-            <img src={prev} alt="" className={styles.prev_icon} />
+          <div className={styles.del} onClick={() => handleDeleteThread(id)}>
+            삭제
           </div>
-        )}
-      </div>
-    </div>
+        </div>
+      </BigModal>
+    </>
   );
 }
