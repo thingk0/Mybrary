@@ -52,7 +52,7 @@ const showAlarm = (alarmObj) => {
       iconMsg = "💬";
       break;
     case 9:
-      msg = `회원님의 책 [${bookname}]을 구독했습니다`;
+      msg = `회원님의 책 ${bookname}을 구독했습니다`;
       iconMsg = "📚";
       break;
     case 10:
@@ -80,7 +80,7 @@ const useStompStore = create((set) => ({
   stompClient: null,
   setStompClient: (client) => set({ stompClient: client }),
 
-  connect: (email, setNewNotification) => {
+  connect: (email, setHasNewNotification) => {
     const token = localStorage.getItem("accessToken");
     const client = new Client({
       webSocketFactory: () => new SockJS("https://i10b207.p.ssafy.io/ws"),
@@ -91,7 +91,7 @@ const useStompStore = create((set) => ({
 
     client.onConnect = function () {
       client.subscribe(`/sub/notification/${email}`, (msg) => {
-        setNewNotification(true);
+        setHasNewNotification(true);
         const alarmObj = JSON.parse(msg.body);
         showAlarm(alarmObj);
       });
