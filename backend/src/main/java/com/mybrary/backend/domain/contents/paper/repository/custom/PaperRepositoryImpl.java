@@ -136,7 +136,7 @@ public class PaperRepositoryImpl implements PaperRepositoryCustom {
                                         .from(paper)
                                         .leftJoin(scrap).on(scrap.paper.id.eq(paper.id))
                                         .leftJoin(book).on(scrap.book.id.eq(book.id))
-                                        .where(book.id.eq(bookId))
+                                        .where(book.id.eq(bookId).and(scrap.isDeleted.eq(false)))
                                         .orderBy(scrap.paperSeq.asc())
                                         .fetch()
         );
