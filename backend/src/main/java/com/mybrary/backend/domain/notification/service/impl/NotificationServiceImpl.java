@@ -85,6 +85,11 @@ public class NotificationServiceImpl implements NotificationService {
         Member sender = memberRepository.findById(notification.getSenderId()).get();
         Member receiver = memberRepository.findById(notification.getReceiverId()).get();
 
+        // 보낸이와 받는이가 같으면 알림 보내지 않고 바로 메서드 종료
+        if(sender.getId().equals(receiver.getId())){
+            return;
+        }
+
         // 알림 엔티티 생성
         Notification newNotification = Notification.builder()
                                                    .sender(sender).receiver(receiver)
