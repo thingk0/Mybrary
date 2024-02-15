@@ -51,15 +51,11 @@ public class SearchServiceImpl implements SearchService {
     public Page<SearchPaperResponseDto> searchThread(String keyword, Pageable pageable) {
 
         // 검색 쿼리 생성
-//        Criteria query = new Criteria("tagList").contains(keyword)
-//                                                .or(new Criteria("content1").contains(keyword))
-//                                                .or(new Criteria("content2").contains(keyword));
-
         Query query = Query.of(qb -> qb
             .bool(bq -> bq
                 .should(sh -> sh.match(mq -> mq.field("tagList").query(keyword)))
-//                .should(sh -> sh.match(mq -> mq.field("content1").query(keyword)))
-//                .should(sh -> sh.match(mq -> mq.field("content2").query(keyword)))
+                .should(sh -> sh.match(mq -> mq.field("content1").query(keyword)))
+                .should(sh -> sh.match(mq -> mq.field("content2").query(keyword)))
             )
         );
 
@@ -75,12 +71,7 @@ public class SearchServiceImpl implements SearchService {
             .search(nativeQuery, PaperDocument.class);
         log.info("searchHits = {}", searchHits);
 
-//        Page<PaperDocument> byKeyword = paperDocumentRepository.findByKeyword(keyword, pageable);
-//        List<Long> paperIds = byKeyword.getContent().stream()
-//                                       .map(paper -> paper.getId())
-//                                       .collect(Collectors.toList());
-
-//         검색된 PaperDocument 의 ID 추출
+        // 검색된 PaperDocument 의 ID 추출
         List<Long> paperIds = searchHits.getSearchHits().stream()
                                         .map(hit -> hit.getContent().getId())
                                         .collect(Collectors.toList());
