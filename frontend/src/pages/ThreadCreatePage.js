@@ -95,7 +95,7 @@ export default function ThreadCreatePage() {
     };
 
     const threadId = await createThread(Thread);
-    navigate(`../mybrary/${user.memberId}/threads`);
+    navigate(`../feed`);
   };
   const noneImg = () => {
     toast.error("이미지를 전부 채워주세요", {
