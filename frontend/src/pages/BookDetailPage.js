@@ -102,6 +102,7 @@ export default function BookDetailPage() {
     try {
       await unsubsribeBook(bookinfo.bookId);
       setUnSubscribeModal(false);
+      navigate(-1);
     } catch (error) {
       console.error("책 구독취소 중 오류 발생:", error);
     }
