@@ -382,7 +382,7 @@
   font-size: 20px;
   max-height: 295px;
   overflow: hidden;
-  z-index: 100;
+  /* z-index: 100; */
   box-shadow: 0 0 15 0 var(--main3);
 }
 .hr {
