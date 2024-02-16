@@ -261,8 +261,8 @@
 }
 .absolute {
   position: absolute;
-  top: 60px;
-  left: 60px;
+  top: 0px;
+  left: -270px;
   background-color: var(--main3);
   padding: 20px;
   border-radius: 5px;

@@ -16,6 +16,7 @@ export default function SearchResultPage2() {
   const Params = useParams();
   const [searchtext, setSearchtext] = useState(Params.word);
   const [animateOut, setAnimateOut] = useState(false);
+  const [fo, setFo] = useState(false);
   const [recentSearches, setRecentSearches] = useState([]);
   const [userList, setUserList] = useState([]);
 
@@ -102,7 +103,7 @@ export default function SearchResultPage2() {
       } catch (error) {}
     }
     fetchData();
-  }, []);
+  }, [searchtext]);
 
   useEffect(() => {
     const savedSearches = JSON.parse(localStorage.getItem("recentSearches"));
