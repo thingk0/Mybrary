@@ -1,0 +1,105 @@
+.main {
+  width: 100%;
+  height: 100%;
+  /* background-color: rgb(255, 222, 222); */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.설정 {
+  display: flex;
+  width: 90%;
+  padding-top: 7%;
+  height: 16%;
+  font-size: 30px;
+  /* background-color: cornflowerblue; */
+}
+.미드첫째 {
+  padding-left: 100px;
+  width: 100%;
+  height: 50%;
+  /* background-color: rgb(196, 196, 255); */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 50px;
+}
+.설정친구들 {
+  width: 75%;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+.설정옆이미지 {
+  height: 17px;
+  width: 80%;
+}
+.설정과이미지 {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  font-size: 24px;
+}
+.설정한줄크기 {
+  display: flex;
+  width: 90%;
+  justify-content: space-between;
+  align-items: center;
+}
+.고정크기 {
+  width: 160px;
+  font-size: 18px;
+}
+.중간크기조정 {
+  display: flex;
+  width: 600px;
+  height: 35px;
+  gap: 20px;
+}
+.공개비공개버튼 {
+  display: flex;
+  gap: 15px;
+}
+.중복체크 {
+  border: 0px;
+  border-radius: 10px;
+  width: 100px;
+  height: 35px;
+  background-color: #bfa6a2;
+}
+.확인버튼 {
+  border: 0px;
+  font-weight: 200;
+  width: 85px;
+  height: 35px;
+  border-radius: 10px;
+  background-color: #57423f;
+  color: rgb(255, 250, 244);
+}
+.input {
+  background-color: #efe3df;
+  border: 0px;
+}
+.input2 {
+  width: 400px;
+  background-color: #efe3df;
+  border: 0px;
+}
+.버튼1 {
+  background-color: #57423f;
+  border: 0px;
+  color: rgb(255, 250, 244);
+  height: 35px;
+  border-radius: 10px;
+  font-weight: 200;
+  width: 80px;
+}
+.버튼2 {
+  background-color: #bfa6a2;
+  border: 0px;
+  color: rgb(255, 250, 244);
+  height: 35px;
+  border-radius: 10px;
+  font-weight: 200;
+  width: 80px;
+}

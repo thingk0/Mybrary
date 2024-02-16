@@ -1,0 +1,94 @@
+.head {
+  display: flex;
+  justify-content: space-between;
+}
+.초기화 {
+  width: 90%;
+  margin: 20px auto;
+  font-size: 20px;
+  text-align: end;
+  cursor: pointer;
+}
+.main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+.롤링페이퍼 {
+  width: 110%;
+  height: 700px;
+  background-color: var(--papercolor);
+  border: solid 0.5px rgb(190, 190, 190);
+  border-radius: 8px;
+  box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(25px);
+}
+.flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
+}
+.색변경 {
+  display: flex;
+  justify-content: space-around;
+  gap: 20px;
+}
+.저장 {
+  font-size: 20px;
+  background-color: var(--main3);
+  padding: 10px 50px;
+  border-radius: 5px;
+  box-shadow: 0 0 15px 0 var(--main3);
+  transition: 0.3s;
+  cursor: pointer;
+}
+.저장:hover {
+  transform: scale(1.1);
+  background-color: var(--main2);
+  color: var(--main3);
+}
+.color {
+  width: 40px;
+  height: 40px;
+  border-radius: 9999px;
+  border: 1px solid black;
+}
+.color1 {
+  background-color: #fffafa;
+}
+.color2 {
+  background-color: #ffb8b8;
+}
+.color3 {
+  background-color: #ffe3b8;
+}
+.color4 {
+  background-color: #feffb8;
+}
+.color5 {
+  background-color: #c6ffb8;
+}
+.color6 {
+  background-color: #b8ffee;
+}
+.color7 {
+  background-color: #b8e1ff;
+}
+.color8 {
+  background-color: #b8bbff;
+}
+.color9 {
+  background-color: #f1b8ff;
+}
+.color10 {
+  background-color: #909090;
+}
+.color11 {
+  background-color: #616161;
+}
+.color12 {
+  background-color: #4b4b4b;
+}

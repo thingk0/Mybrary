@@ -1,0 +1,39 @@
+.main {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 4vw;
+}
+
+.이미지공간 {
+  width: 50%;
+  height: 50%;
+}
+.문구모음 {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+}
+.앗 {
+  color: rgb(79, 218, 37);
+  font-size: 45px;
+}
+.잘못된 {
+  color: rgb(255, 84, 49);
+  font-size: 29px;
+}
+.로그인페이지이동 {
+  cursor: pointer;
+  background-color: rgb(255, 242, 223);
+  padding: 1vw 1.3vw;
+  border: 0px;
+  border-radius: 10px;
+  font-size: 25px;
+}
+.로그인페이지이동:hover {
+  background-color: rgb(244, 209, 163);
+}

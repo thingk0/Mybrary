@@ -1,0 +1,169 @@
+.container {
+  margin: 0 auto;
+  width: 82vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1vw;
+  height: 100vh;
+}
+.header {
+  width: 5vw;
+  height: 46vw;
+}
+.main {
+  width: 55vw;
+  height: 46vw;
+  display: flex;
+  gap: 1vw;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.main_left,
+.main_right {
+  width: 18.8vw;
+  height: 100%;
+  position: relative;
+  flex-shrink: 0;
+  transition: transform 0.5s ease;
+}
+
+.main_center {
+  width: 35.2vw;
+  display: flex;
+  align-items: flex-end;
+  flex-shrink: 0;
+  transition: transform 0.5s ease;
+}
+
+.showLeftCenter .main_left {
+  transform: translateX(9.8vw);
+}
+.showLeftCenter .main_center {
+  transform: translateX(9.4vw);
+}
+.showLeftCenter .main_right {
+  transform: translateX(30vw);
+}
+
+.showCenterRight .main_left {
+  transform: translateX(-30vw);
+}
+.showCenterRight .main_center {
+  transform: translateX(-9.4vw);
+}
+.showCenterRight .main_right {
+  transform: translateX(-9.8vw);
+}
+
+.setting {
+  width: 20vw;
+  height: 46vw;
+}
+
+.prevButton,
+.nextButton {
+  font-size: 1.2vw;
+  width: 16.8vw;
+  height: 2vw;
+  background-color: rgb(44, 54, 102);
+  color: var(--main4);
+  border-radius: 5px;
+  border: 0px;
+  cursor: pointer;
+  margin: 1vw;
+  transition: 0.3s;
+}
+.nextButton:hover {
+  background-color: rgb(91, 144, 182);
+}
+.prevButton:hover {
+  background-color: rgb(91, 144, 182);
+}
+
+.title {
+  padding: 1vw 1vw 0 1vw;
+  height: 2vw;
+  font-size: 1.2vw;
+}
+.subtitle {
+  padding-left: 1vw;
+  font-size: 0.8vw;
+  color: var(--main5);
+}
+.settingButtons {
+  display: flex;
+  justify-content: flex-end;
+  margin: 1vw 1vw 3vw;
+}
+.select,
+.button {
+  text-align: center;
+  padding: 10px 15px;
+  border-radius: 5px;
+  margin-left: 10px;
+  transition: 0.3s;
+}
+.button {
+  background-color: var(--main3);
+  cursor: pointer;
+}
+.select {
+  background-color: var(--main2);
+  color: var(--main4);
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: var(--main2);
+  color: var(--main4);
+}
+
+.postButtons {
+  height: 14vw;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  margin: 5vw auto;
+}
+
+.postButton {
+  font-size: 1.2vw;
+  width: 16.8vw;
+  padding: 10px;
+  background-color: var(--main2);
+  color: var(--main3);
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+}
+.책선택버튼 {
+  text-align: center;
+  padding: 10px 15px;
+  border-radius: 5px;
+  border: 0px;
+  margin-left: 10px;
+  background-color: var(--main2);
+  transition: 0.3s;
+  color: var(--main4);
+  cursor: pointer;
+}
+.loadTitle {
+  text-align: center;
+  font-size: 25px;
+}
+.loadImg {
+  margin: 30px;
+  height: 100px;
+}
+.loadSub {
+  text-align: center;
+  margin: 10px;
+  color: var(--main5);
+}
+.loadSub2 {
+  text-align: center;
+  margin: 10px;
+  color: var(--gomin5);
+}

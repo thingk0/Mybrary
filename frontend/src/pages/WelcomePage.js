@@ -1,21 +1,55 @@
-import Container from "../components/frame/Container";
-import Nav from "../components/atom/Nav";
+import { useNavigate } from "react-router-dom";
 import styles from "./style/WelcomePage.module.css";
+import line1 from "../assets/line1.png";
+import line3 from "../assets/line3.png";
+import top from "../assets/top.png";
+import left from "../assets/left.png";
+import right from "../assets/right.png";
+import useUserStore from "../store/useUserStore";
 
 export default function WelcomePage() {
+  const navigate = useNavigate();
+  const token = localStorage.getItem("accessToken");
+  const tokenTimestamp = localStorage.getItem("tokenTimestamp");
+  const user = useUserStore((state) => state.user);
+  const handleStart = () => {
+    if (token && user.memberId && (Date.now() - tokenTimestamp) / 1000 < 800) {
+      navigate(`/mybrary/${user.memberId}`);
+    } else {
+      localStorage.clear();
+      navigate("/join");
+    }
+  };
+
   return (
     <>
-      <Container
-        width={"1000px"}
-        height={"100px"}
-        backgroundColor={"var(--accent-100)"}
-      >
-        <div className={styles.div1}>
+      <div className={styles.container}>
+        <div className={styles.문구}>
           <div>
-            <div></div>
+            <img src={line1} alt="" width="2px" className={styles.line1} />
+          </div>
+          <div className={styles.title}>MYBRARY</div>
+          <div className={styles.text}>
+            당신의 추억이 한 페이지가 될 수 있도록
+          </div>
+          <div>
+            <img src={line3} alt="" width="2px" />
+          </div>
+          <div onClick={() => handleStart()} className={styles.button}>
+            입장하기
+          </div>
+          <div>
+            <img src={line3} alt="" width="2px" />
           </div>
         </div>
-      </Container>
+        <div className={styles.zero}>
+          <img src={top} alt="" className={styles.top} />
+          <img src={left} alt="" className={styles.left} />
+          <img src={right} alt="" className={styles.right} />
+          <div className={styles.cover1}></div>
+          <div className={styles.cover2}></div>
+        </div>
+      </div>
     </>
   );
 }

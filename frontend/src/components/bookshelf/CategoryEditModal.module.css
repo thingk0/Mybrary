@@ -1,0 +1,21 @@
+.main {
+  padding: 20px 10px 20px 10px;
+}
+.푸터입니다 {
+  padding-top: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 19px;
+}
+.인풋창입니다 {
+  background-color: rgb(255, 250, 246);
+  border: 0px solid black;
+  padding: 7px;
+  border-radius: 5px;
+}
+.추가버튼입니다 {
+  border: 0px solid black;
+  background-color: rgb(255, 250, 244);
+  padding: 4px;
+  border-radius: 5px;
+}

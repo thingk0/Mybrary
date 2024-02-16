@@ -2,7 +2,10 @@ spring:
   profiles:
     active: dev
     include:
-      - db
+      - jwt
+      - mail
+      - filter
+      - aws
 
   jpa:
     open-in-view: false
@@ -10,7 +13,6 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
-        dialect: org.hibernate.dialect.MySQL8Dialect
 
 logging:
   level:

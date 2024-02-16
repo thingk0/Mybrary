@@ -1,0 +1,37 @@
+.middle {
+  width: 90%;
+  margin: 0 auto;
+  font-size: 20px;
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* 책장 */
+.bookshelf_container {
+  margin: 0 auto;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  background-color: #75605d;
+  border-radius: 10px;
+}
+.bookshelf_line {
+  display: flex;
+  gap: 20px;
+}
+.leftCategoryName {
+  right: 10px;
+}
+.rightCategoryName {
+  left: 10px;
+}
+.leftBooks {
+  justify-content: flex-start;
+}
+.rightBooks {
+  justify-content: flex-end;
+}

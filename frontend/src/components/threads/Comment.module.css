@@ -1,0 +1,191 @@
+.comment_container {
+  height: 100%;
+  overflow-y: auto;
+}
+.comment_none {
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  font-size: 2vw;
+  text-shadow: 0 0 5px var(--main3);
+}
+/* 댓글목록공간 */
+.comment_item {
+  width: 88%;
+  border-radius: 5px;
+  /* background-color: #f8c3d2; */
+  padding: 0.7vw;
+  box-shadow: 0 0 15px -5px var(--main2);
+  margin: 1vw;
+  position: relative;
+}
+.대댓글박스 {
+  width: 97.3%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.comment_item2 {
+  width: 76%;
+  border-radius: 5px;
+  /* background-color: #f8c3d2; */
+  padding: 0.7vw;
+  box-shadow: 0 0 15px -5px var(--main2);
+  margin: 0.2vw;
+  position: relative;
+}
+.comment_nickname {
+  font-size: 0.8vw;
+  margin-bottom: 0.3vw;
+  color: #3e2825;
+}
+.comment_text {
+  font-size: 1vw;
+  margin-bottom: 0.3vw;
+  color: #2a2525;
+  padding-top: 5px;
+  padding-bottom: 2px;
+}
+.수정글자 {
+  font-size: 0.8vw;
+  color: #3bb8d4;
+}
+.삭제글자 {
+  cursor: pointer;
+  font-size: 0.8vw;
+  color: #e2567e;
+}
+.답글달기글자 {
+  cursor: pointer;
+  font-size: 0.8vw;
+}
+.대댓글수 {
+  font-size: 0.8vw;
+  cursor: pointer;
+}
+.중간막대기 {
+  font-size: 0.8vw;
+  color: #bfa6a2;
+}
+.삭제글자 {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.comment_left,
+.comment_right,
+.comment_info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.3vw;
+  font-size: 1vw;
+}
+
+/* 댓글작성공간 */
+.comment_create {
+  background-color: var(--main3);
+  border-radius: 5px;
+  width: 89%;
+  margin: 1vw;
+  padding: 0.7vw;
+}
+.user_img {
+  width: 2.5vw;
+  height: 2.5vw;
+  cursor: pointer;
+  border-radius: 100px;
+}
+
+.comment_create_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.comment_create_left {
+  display: flex;
+  align-items: center;
+  gap: 0.4vw;
+}
+.user_nickname {
+  font-size: 1vw;
+}
+.comment_colors {
+  display: flex;
+  gap: 0.2vw;
+}
+.comment_colors > div {
+  width: 2vw;
+  height: 2vw;
+  border-radius: 1.5vw;
+  border: solid 1.5px rgb(65, 65, 65);
+  cursor: pointer;
+}
+.color_0 {
+  background-color: #e5cabc;
+  transition: 0.3s;
+}
+.selected {
+  border: 2.4px solid rgb(99, 59, 38);
+}
+.color_1 {
+  background-color: #ffd6d6;
+  transition: 0.3s;
+}
+.color_2 {
+  background-color: #fce0c6;
+  transition: 0.3s;
+}
+.color_3 {
+  background-color: #c5e3ff;
+  transition: 0.3s;
+}
+.color_4 {
+  background-color: #cfb8ea;
+  transition: 0.3s;
+}
+
+.comment_input {
+  margin-top: 1vw;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.버튼 {
+  cursor: pointer;
+  border: 0px;
+  width: 8%;
+  height: 2vw;
+  border-radius: 0.5vw;
+  background-color: #fffffe;
+  transition: 0.3s;
+}
+.버튼:hover {
+  background-color: #606060;
+  color: #ffffff;
+}
+.cancelReplyButton {
+  cursor: pointer;
+  border: 0px;
+  background-color: #b7aaaa;
+  padding: 0.4vw;
+  border-radius: 0.5vw;
+  transition: 0.3s;
+}
+.cancelReplyButton:hover {
+  background-color: #a4978d;
+}
+
+.comment_input > input {
+  width: 87%;
+  height: 2vw;
+  padding: 0 0.5vw;
+  border-radius: 0.5vw;
+  font-size: 1vw;
+  outline: none;
+  border: none;
+}

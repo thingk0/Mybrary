@@ -4,9 +4,10 @@
   box-shadow: 0 0 15px 0 var(--main2);
   border-radius: 0 0 10px 0;
   width: 80px;
-  height: 500px;
+  height: 700px;
   top: 0;
   left: -50px;
+  z-index: 10;
   transition: 0.3s;
 }
 .nav_container_active {
@@ -21,7 +22,7 @@
   background-color: var(--main4);
   box-shadow: 0 0 5px 0 var(--main2);
   border-radius: 0 0 10px 0;
-  height: 485px;
+  height: 685px;
 }
 
 .nav_paper0 {
@@ -34,44 +35,128 @@
   width: 61px;
 }
 .nav_paper3 {
-  height: 455px;
+  height: 655px;
   width: 59px;
   display: flex;
   flex-direction: column;
-  justify-content: end;
+  justify-content: flex-end;
   align-items: center;
   gap: 10px;
   padding-bottom: 30px;
 }
 
-/* --- */
 .nav_section_container {
   position: absolute;
   top: 50px;
   left: 0;
   display: flex;
   flex-direction: column;
-  align-items: end;
+  align-items: flex-end;
   gap: 20px;
 }
 
 .nav_section {
-  height: 40px;
+  height: 50px;
   border-radius: 0 5px 5px 0;
   display: flex;
   align-items: center;
   padding-left: 10px;
+  justify-content: space-between;
+  padding: 5px 15px;
+  cursor: pointer;
 }
 
 .nav_not_active {
   width: 40px;
   background-color: var(--main3);
-  box-shadow: inset 3px 0 1px 0 var(--main2);
-  /* transition: 0.3s; */
+  box-shadow: inset 7px 0 10px -5px var(--main2);
   overflow: hidden;
+  transition: 0.3s;
 }
 
 .nav_active {
   width: 100px;
   background-color: var(--main1);
+  box-shadow: 0 0 5px 1px var(--main2);
+}
+
+.modal {
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.log,
+.header {
+  margin-top: 20px;
+  font-size: 30px;
+  margin-bottom: 40px;
+}
+
+.header2 {
+  font-size: 20px;
+}
+.subheader {
+  color: var(--main5);
+  margin-bottom: 10px;
+}
+.modalI {
+  width: 90%;
+  margin: 0 auto;
+}
+
+.modalInput {
+  width: 300px;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #eee3dd; /* 배경색 변경 */
+  outline: none; /* 포커스 시 나타나는 아웃라인 제거 */
+  margin-bottom: 40px;
+}
+
+.modalButton {
+  width: 150px;
+  padding: 10px 40px;
+  background-color: var(--main3);
+  border-radius: 5px;
+  transition: 0.3s;
+  margin: 0 auto;
+  cursor: pointer;
+}
+
+.modalButton:hover {
+  background-color: var(--main2);
+  color: var(--main3);
+}
+.flex {
+  margin: 40px auto;
+  width: 80%;
+  margin-top: 40px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.ok,
+.no {
+  padding: 10px 60px;
+  border-radius: 5px;
+  transition: 0.3s;
+  color: var(--main4);
+  cursor: pointer;
+}
+.ok {
+  background-color: var(--gomin5);
+}
+.no {
+  background-color: var(--main3);
+}
+
+.ok:hover {
+  background-color: firebrick;
+  transform: scale(0.9);
+}
+.no:hover {
+  background-color: var(--main2);
+  transform: scale(1.1);
 }
