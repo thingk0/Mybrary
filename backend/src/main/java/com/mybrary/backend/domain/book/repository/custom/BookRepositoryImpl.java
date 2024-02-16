@@ -32,13 +32,13 @@ public class BookRepositoryImpl implements BookRepositoryCustom {
 
     @Override
     public Optional<Integer> countMyBook(Long bookShelfId) {
-        return Optional.ofNullable(query.select(book.count().intValue())
+        return Optional.ofNullable(query.select(pickBook.count().intValue())
                                         .from(book)
                                         .leftJoin(pickBook)
                                         .on(pickBook.book.id.eq(book.id))
                                         .leftJoin(category)
                                         .on(pickBook.category.id.eq(category.id))
-                                        .where(category.bookshelf.id.eq(bookShelfId))
+                                        .where(category.bookshelf.id.eq(bookShelfId).and(pickBook.isDeleted.eq(false)))
                                         .fetchOne()
         );
     }
