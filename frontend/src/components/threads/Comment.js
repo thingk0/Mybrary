@@ -152,11 +152,11 @@ export default function Comment({
   const create = async () => {
     if (formData.parentCommentId == null) {
       try {
-        const response = await createComment(formData); // 올바른 API 함수 이름으로 교체해주세요.
+        await createComment(formData);
         showToast("댓글을 남겼습니다 !");
         const response2 = await getCommentList(commentId);
         updateCommentCount(commentId);
-        if (commentId != 0) {
+        if (+commentId !== 0) {
           setCommentList(response2.data.commentGetDtoList);
         }
         //const newComment = response.data; // response.data가 새로 생성된 댓글 데이터를 포함하고 있다고 가정
@@ -172,7 +172,7 @@ export default function Comment({
       } catch (error) {
         console.error("댓글 생성 실패:", error);
       }
-    } else if (formData.parentCommentId != null) {
+    } else if (formData.parentCommentId !== null) {
       try {
         const response = await createComment(formData);
         showToast("답글을 달았습니다 !");
@@ -221,7 +221,7 @@ export default function Comment({
     async function fetchCommentData() {
       try {
         const response = await getCommentList(commentId);
-        if (commentId != 0) {
+        if (+commentId !== 0) {
           setCommentList(response.data.commentGetDtoList);
         }
       } catch (error) {
@@ -258,7 +258,7 @@ export default function Comment({
                   <div className={styles.comment_info}>
                     <div className={styles.comment_left}>
                       {user.memberId === comment.ownerId &&
-                        comment.childCommentCount == 0 && (
+                        +comment.childCommentCount === 0 && (
                           <>
                             <div
                               onClick={() =>
