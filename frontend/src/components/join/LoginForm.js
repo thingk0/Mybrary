@@ -15,7 +15,7 @@ function LoginForm() {
   const navigate = useNavigate();
 
   // 유저상태 전역 관리를 위한 코드
-  const { user, setUser } = useUserStore();
+  const { setUser } = useUserStore();
 
   /* 상태 */
   const [formData, setFormData] = useState({

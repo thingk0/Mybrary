@@ -1,5 +1,4 @@
 import Container from "../components/frame/Container";
-import SharedPaper from "../components/paperplane/SharedPaper";
 import styles from "./style/PaperplanePage.module.css";
 import 종이비행기 from "../assets/종이비행기.png";
 import { useEffect, useState, useRef } from "react";
@@ -294,7 +293,7 @@ export default function PaperplanePage() {
   };
 
   const handleChatRoomLeave = async (chatRoomId) => {
-    const res = await deleteChatRoom(chatRoomId);
+    await deleteChatRoom(chatRoomId);
     setNowChatRoom(null);
 
     setChatRoomList((currentChatRoomList) =>

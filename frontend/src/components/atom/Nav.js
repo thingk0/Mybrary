@@ -2,15 +2,14 @@ import home from "../../assets/icon/icon_home.png";
 import pp from "../../assets/icon/icon_pp.png";
 import feed from "../../assets/icon/icon_feed.png";
 import search from "../../assets/icon/icon_search.png";
-import bell from "../../assets/icon/icon_bell.png";
+// import bell from "../../assets/icon/icon_bell.png";
 import setting from "../../assets/icon/icon_setting.png";
 import logout from "../../assets/icon/icon_logout.png";
 import s from "classnames";
 import styles from "./atomstyle/Nav.module.css";
 import { useEffect, useState } from "react";
-import useNotificationStore from "../../store/useNotificationStore";
+// import useNotificationStore from "../../store/useNotificationStore";
 import { useNavigate } from "react-router-dom";
-import { doLogout } from "../../api/member/Logout";
 import useUserStore from "../../store/useUserStore";
 import BigModal from "../common/BigModal";
 import { login } from "../../api/member/Login";
@@ -55,15 +54,15 @@ export default function Nav() {
     }
   };
 
-  const { hasNewNotification, setHasNewNotification } = useNotificationStore();
+  // const { hasNewNotification, setHasNewNotification } = useNotificationStore();
   const navigate = useNavigate();
-  const { setUser } = useUserStore();
+  // const { setUser } = useUserStore();
 
   const [alarmModal, setAlarmModal] = useState(false);
-  const handleOffAlarm = () => {
-    setHasNewNotification(false);
-    setAlarmModal(!alarmModal); // 현재 상태의 반대로 설정
-  };
+  // const handleOffAlarm = () => {
+  //   setHasNewNotification(false);
+  //   setAlarmModal(!alarmModal); // 현재 상태의 반대로 설정
+  // };
 
   useEffect(() => {
     if (alarmModal) {

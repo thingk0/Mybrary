@@ -17,8 +17,8 @@ export default function LoadModal({
         style={{
           content: { width: width, height: height, background: background },
         }}
-        className={styles.modal} // 커스텀 모달 클래스 적용
-        overlayClassName={styles.modalOverlay} // 커스텀 오버레이 클래스 적용
+        className={styles.modal}
+        overlayClassName={styles.modalOverlay}
       >
         {children}
       </Modal>

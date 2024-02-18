@@ -34,6 +34,7 @@
   width: 3vw;
   height: 3vw;
   border-radius: 100px;
+  cursor: pointer;
 }
 .이름정보들 {
   cursor: pointer;

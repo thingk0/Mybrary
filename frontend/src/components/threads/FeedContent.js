@@ -82,7 +82,7 @@ export default function FeedContent({
   };
   const toggleLike = async (paperId, liked) => {
     try {
-      const response = await like(paperId);
+      await like(paperId);
       if (!liked) {
         showToast("좋아요 !");
       } else {
@@ -130,7 +130,7 @@ export default function FeedContent({
     const updatedThreadList = list.filter(
       (thread) => thread.threadId !== threadId
     );
-    const a = await deleteThread(threadId);
+    await deleteThread(threadId);
     setList(updatedThreadList);
     setThreadModal(false);
   };
@@ -161,7 +161,7 @@ export default function FeedContent({
                   </div>
                 </div>
               </div>
-              {user.memberId != thread.memberId ? (
+              {user.memberId !== thread.memberId ? (
                 <div
                   onClick={() => navigate(`/mybrary/${thread.memberId}`)}
                   className={styles.user_follow}
@@ -274,7 +274,7 @@ export default function FeedContent({
               {/* 레이아웃번호, 글1, 글2, 사진1, 사진2 */}
               <ContentItem paper={paper} />
             </div>
-            {paper.tagList.length != 0 && (
+            {paper.tagList.length !== 0 && (
               <div
                 onClick={() => setIsModalOpen2(true)}
                 className={styles.tag_hash}

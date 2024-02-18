@@ -61,7 +61,7 @@ export default function BookDetailPage() {
       setBookinfo(pagelist.data);
     }
     getbook();
-  }, []);
+  }, [book]);
 
   const handleDelete = async () => {
     try {

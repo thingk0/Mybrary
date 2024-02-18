@@ -3,7 +3,7 @@ import styles from "./Tag.module.css";
 
 export default function Tag({ children, papers, setPapers, currentPage }) {
   const [addtext, setAddtext] = useState("");
-  const [addfriend, setAddfriend] = useState("");
+  // const [addfriend, setAddfriend] = useState("");
 
   const handleSubmitTag = (e) => {
     e.preventDefault();
@@ -16,17 +16,17 @@ export default function Tag({ children, papers, setPapers, currentPage }) {
     });
     setAddtext("");
   };
-  const handleSubmitFriendTag = (e) => {
-    e.preventDefault();
-    setPapers((prevPapers) => {
-      const updatedPapers = [...prevPapers];
-      if (!updatedPapers[currentPage].mentionList.includes(addfriend)) {
-        updatedPapers[currentPage].mentionList.push(addfriend);
-      }
-      return updatedPapers;
-    });
-    setAddfriend("");
-  };
+  // const handleSubmitFriendTag = (e) => {
+  //   e.preventDefault();
+  //   setPapers((prevPapers) => {
+  //     const updatedPapers = [...prevPapers];
+  //     if (!updatedPapers[currentPage].mentionList.includes(addfriend)) {
+  //       updatedPapers[currentPage].mentionList.push(addfriend);
+  //     }
+  //     return updatedPapers;
+  //   });
+  //   setAddfriend("");
+  // };
   const handleRemoveTag = (indexToRemove) => {
     setPapers((prevPapers) => {
       return prevPapers.map((paper, index) => {
@@ -42,21 +42,21 @@ export default function Tag({ children, papers, setPapers, currentPage }) {
       });
     });
   };
-  const handleRemoveFriendTag = (indexToRemove) => {
-    setPapers((prevPapers) => {
-      return prevPapers.map((paper, index) => {
-        if (index === currentPage) {
-          return {
-            ...paper,
-            mentionIdList: paper.mentionList.filter(
-              (_, index) => index !== indexToRemove
-            ),
-          };
-        }
-        return paper;
-      });
-    });
-  };
+  // const handleRemoveFriendTag = (indexToRemove) => {
+  //   setPapers((prevPapers) => {
+  //     return prevPapers.map((paper, index) => {
+  //       if (index === currentPage) {
+  //         return {
+  //           ...paper,
+  //           mentionIdList: paper.mentionList.filter(
+  //             (_, index) => index !== indexToRemove
+  //           ),
+  //         };
+  //       }
+  //       return paper;
+  //     });
+  //   });
+  // };
 
   return (
     <div className={styles.오른쪽크기조정}>

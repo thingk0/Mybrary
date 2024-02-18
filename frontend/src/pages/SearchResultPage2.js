@@ -42,6 +42,25 @@ export default function SearchResultPage2() {
     }, 200);
     setAnimateOut(false);
   };
+
+  const handleContainerClick = (e) => {
+    // 클릭된 요소가 검색어나 검색 버튼과 관련된 요소가 아닌 경우에만 추천 검색어 창을 사라지도록 처리
+    const isSearchInput = e.target.closest(`.${styles.searchInput}`);
+    const isSearchButton = e.target.closest(`.${styles.searchButton}`);
+    const isRecentSearchBox = e.target.closest(`.${styles.최근검색어박스}`);
+    const isRecommendedSearch = e.target.closest(`.${styles.key}`);
+
+    if (
+      !isSearchInput &&
+      !isSearchButton &&
+      !isRecentSearchBox &&
+      !isRecommendedSearch
+    ) {
+      // 클릭된 요소가 검색어, 검색 버튼, 추천 검색어, 최근 검색어 창과 관련이 없는 경우에만 추천 검색어 창 숨김
+      setList([]);
+    }
+  };
+
   const handleRecentSearchClick = (search) => {
     setAnimateOut(true);
     if (search.trim()) {
@@ -130,7 +149,7 @@ export default function SearchResultPage2() {
   return (
     <>
       <Container>
-        <div className={styles.main}>
+        <div className={styles.main} onClick={handleContainerClick}>
           <div className={styles.header}>
             <span className={styles.검색글자}>검색</span>
             <div className={styles.relative}>
@@ -152,6 +171,7 @@ export default function SearchResultPage2() {
                       value={searchtext}
                       className={styles.searchInput}
                       onChange={(e) => setSearchtext(e.target.value)}
+                      autoComplete="off"
                     />
                   </div>
                 </form>
@@ -159,7 +179,7 @@ export default function SearchResultPage2() {
                   <div className={styles.absolute}>
                     <div className={styles.title}>추천검색어</div>
                     {list?.map((key) => (
-                      <>
+                      <div key={key}>
                         <div
                           className={styles.key}
                           onClick={() => handleRecentSearchClick(key)}
@@ -167,7 +187,7 @@ export default function SearchResultPage2() {
                           {key}
                         </div>
                         <hr className={styles.hr}></hr>
-                      </>
+                      </div>
                     ))}
                   </div>
                 )}

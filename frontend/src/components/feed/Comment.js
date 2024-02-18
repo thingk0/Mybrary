@@ -10,10 +10,12 @@ import {
 import useUserStore from "../../store/useUserStore";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import cmticon from "../../assets/icon/대댓글아이콘.png";
 
 //commentId라고 들어오지만 이거 페이퍼아이디임
 export default function Comment({
   commentId,
+  setComment,
   updateCommentCount,
   updateCommentCount2,
 }) {
@@ -151,11 +153,11 @@ export default function Comment({
   const create = async () => {
     if (formData.parentCommentId == null) {
       try {
-        const response = await createComment(formData); // 올바른 API 함수 이름으로 교체해주세요.
+        await createComment(formData);
         showToast("댓글을 남겼습니다 !");
         const response2 = await getCommentList(commentId);
         updateCommentCount(commentId);
-        if (commentId != 0) {
+        if (+commentId !== 0) {
           setCommentList(response2.data.commentGetDtoList);
         }
         //const newComment = response.data; // response.data가 새로 생성된 댓글 데이터를 포함하고 있다고 가정
@@ -233,11 +235,15 @@ export default function Comment({
   return (
     <>
       <div className={styles.comment_container}>
+        <span className={styles.닫기버튼} onClick={() => setComment(false)}>
+          닫기
+        </span>
         {commentList.length !== 0 ? (
           <>
             {commentList.map((comment) => (
               <>
                 <div
+                  key={comment.commentId}
                   className={s(
                     styles.comment_item,
                     styles[`color_${comment.colorCode}`], // 수정된 부분
@@ -257,7 +263,7 @@ export default function Comment({
                   <div className={styles.comment_info}>
                     <div className={styles.comment_left}>
                       {user.memberId === comment.ownerId &&
-                        comment.childCommentCount == 0 && (
+                        +comment.childCommentCount === 0 && (
                           <>
                             <div
                               onClick={() =>
@@ -275,6 +281,11 @@ export default function Comment({
                         className={styles.대댓글수}
                         onClick={() => check(comment.commentId)}
                       >
+                        <img
+                          className={styles.대댓글아이콘}
+                          src={cmticon}
+                          alt="없음"
+                        />
                         {comment.childCommentCount}
                       </div>
                       <span className={styles.중간막대기}> | </span>

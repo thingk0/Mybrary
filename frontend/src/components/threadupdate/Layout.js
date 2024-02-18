@@ -1,8 +1,6 @@
 import lo from "./Layouts.module.css";
 import styles from "./Layout.module.css";
 import s from "classnames";
-import { useEffect, useState } from "react";
-
 export default function Layout({
   papers,
   setPapers,
@@ -10,12 +8,8 @@ export default function Layout({
   layouts,
   children,
 }) {
-  const [filter, setFilter] = useState(0); // 필터 상태 추가
-  useEffect(() => {
-    setFilter(
-      Math.floor(papers[currentPage].layoutType / 1000) === 1 ? "1CUT" : "2CUT"
-    );
-  });
+  const filter =
+    Math.floor(papers[currentPage].layoutType / 1000) === 1 ? "1CUT" : "2CUT";
 
   const persent = ["", "9:16", "3:4", "1:1", "4:3", "16:9"];
 

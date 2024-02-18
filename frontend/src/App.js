@@ -7,8 +7,8 @@ import useStompStore from "./store/useStompStore";
 import useUserStore from "./store/useUserStore";
 import useNotificationStore from "./store/useNotificationStore";
 import { Toaster } from "react-hot-toast";
-import { isTokenExpired, renewToken } from "./api/common/Token";
-import toast from "react-hot-toast";
+// import { isTokenExpired, renewToken } from "./api/common/Token";
+// import toast from "react-hot-toast";
 
 axios.defaults.withCredentials = true;
 
@@ -53,7 +53,7 @@ export default function App() {
     }
     // 있으면 재연결 하지마
     if (!stompClient) socketConnect();
-  }, []);
+  }, [stompClient, email, setHasNewNotification, connect]);
 
   const location = useLocation(); // 현재 위치 정보를 가져옵니다.
 

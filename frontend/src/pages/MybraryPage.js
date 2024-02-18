@@ -26,7 +26,6 @@ import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
 import useUserStore from "../store/useUserStore";
 import useMybraryStore from "../store/useMybraryStore";
-import useStompStore from "../store/useStompStore";
 import {
   getMyMybrary,
   getMybrary,
@@ -55,7 +54,6 @@ export default function MybraryPage() {
   const user = useUserStore((state) => state.user);
   const setMybrary = useMybraryStore((state) => state.setMybrary);
   const setMy = useMyStore((state) => state.setMy);
-  const client = useStompStore((state) => state.stompClient);
   const setNav = useNavStore((state) => state.setNav);
 
   // 각각의 색상옵션들
@@ -145,7 +143,7 @@ export default function MybraryPage() {
 
       try {
         // updateMybrary 함수를 호출하여 데이터 업데이트
-        const response = await updateMybrary(updateData);
+        await updateMybrary(updateData);
 
         toast.success("변경이 완료 되었습니다.", {
           style: {
@@ -174,10 +172,9 @@ export default function MybraryPage() {
         bookshelfColor: value.bookshelfColor,
         easelColor: value.easelColor,
       };
-      console.log(updateData);
       try {
         // updateMybrary 함수를 호출하여 데이터 업데이트
-        const response = await updateMybrary(updateData);
+        await updateMybrary(updateData);
 
         toast.success("변경이 완료 되었습니다.", {
           style: {
@@ -223,7 +220,6 @@ export default function MybraryPage() {
         const memberId = user.memberId;
         if (memberId === +nowuser) {
           const response = await getMyMybrary();
-          // console.log(response.data);
           setNotifyEnable(response.data.notifyEnable);
           setCheckme(true);
           await setMy(response.data);
@@ -248,7 +244,6 @@ export default function MybraryPage() {
         } else {
           const response = await getMybrary(nowuser);
           setMybrary(response.data);
-          console.log(response.data);
           setCheckme(false);
           setFollowStatus(response.data.followStatus);
           setUserInfo(response.data);
@@ -566,11 +561,11 @@ export default function MybraryPage() {
                 </div>
                 <div className={styles.프로필박스}>
                   <div>{userInfo.bookCount}</div>
-                  <div>앨범</div>
+                  <div>책</div>
                 </div>
                 <div className={styles.프로필박스}>
                   <div>{userInfo.threadCount}</div>
-                  <div>게시글</div>
+                  <div>스레드</div>
                 </div>
                 <div
                   className={styles.프로필박스3}

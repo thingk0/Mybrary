@@ -1,7 +1,5 @@
 //모달창을 당담합니다.
 import styles from "./FeedModal.module.css";
-import { useRef } from "react";
-import useOnClickOutside from "../common/useOnClickOutside";
 
 export default function FeedModal2({
   isModalOpen,
@@ -15,9 +13,6 @@ export default function FeedModal2({
   bottom,
   header,
 }) {
-  // const ref = useRef();
-  // useOnClickOutside(ref, () => setIsModalOpen(false));
-
   return (
     <div className={styles.modalContainer}>
       {isModalOpen && (

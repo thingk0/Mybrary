@@ -41,7 +41,7 @@ export default function CategoryList({
     return () => {
       categorySortable.destroy();
     };
-  }, [setCategoryList, categoryList]);
+  }, [setCategoryList, categoryList, bookShelfId]);
 
   const [editingCategoryId, setEditingCategoryId] = useState(null);
   const [updatedCategoryName, setUpdatedCategoryName] = useState("");

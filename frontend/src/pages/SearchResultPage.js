@@ -47,10 +47,8 @@ export default function SearchResultPage() {
         if (updatedSearches.includes(search)) {
           updatedSearches.splice(updatedSearches.indexOf(search), 1);
         }
-        updatedSearches.unshift(search); // 클릭된 단어를 앞에 추가
-        const newSearches = updatedSearches.slice(0, 5); // 최대 5개의 검색어만 유지
-
-        // localStorage에 저장
+        updatedSearches.unshift(search);
+        const newSearches = updatedSearches.slice(0, 5);
         localStorage.setItem("recentSearches", JSON.stringify(newSearches));
 
         return newSearches;
@@ -59,8 +57,28 @@ export default function SearchResultPage() {
     setTimeout(() => {
       setSearchtext(search);
       setAnimateOut(false);
-      navigate(`/search/${search}`); // 페이지 전환
+      navigate(`/search/${search}`);
     }, 200);
+
+    // 페이지 이동 시 추천 검색어 목록 초기화
+    setList([]);
+  };
+  const handleContainerClick = (e) => {
+    // 클릭된 요소가 검색어나 검색 버튼과 관련된 요소가 아닌 경우에만 추천 검색어 창을 사라지도록 처리
+    const isSearchInput = e.target.closest(`.${styles.searchInput}`);
+    const isSearchButton = e.target.closest(`.${styles.searchButton}`);
+    const isRecentSearchBox = e.target.closest(`.${styles.최근검색어박스}`);
+    const isRecommendedSearch = e.target.closest(`.${styles.key}`);
+
+    if (
+      !isSearchInput &&
+      !isSearchButton &&
+      !isRecentSearchBox &&
+      !isRecommendedSearch
+    ) {
+      // 클릭된 요소가 검색어, 검색 버튼, 추천 검색어, 최근 검색어 창과 관련이 없는 경우에만 추천 검색어 창 숨김
+      setList([]);
+    }
   };
 
   const [list, setList] = useState([]);
@@ -121,7 +139,7 @@ export default function SearchResultPage() {
   return (
     <>
       <Container>
-        <div className={styles.main}>
+        <div className={styles.main} onClick={handleContainerClick}>
           <div className={styles.header}>
             <span className={styles.검색글자}>검색</span>
             <div className={styles.relative}>
@@ -143,6 +161,7 @@ export default function SearchResultPage() {
                       value={searchtext}
                       className={styles.searchInput}
                       onChange={(e) => setSearchtext(e.target.value)}
+                      autoComplete="off"
                     />
                   </div>
                 </form>
@@ -150,7 +169,7 @@ export default function SearchResultPage() {
                   <div className={styles.absolute}>
                     <div className={styles.title}>추천검색어</div>
                     {list?.map((key) => (
-                      <>
+                      <div key={key}>
                         <div
                           className={styles.key}
                           onClick={() => handleRecentSearchClick(key)}
@@ -158,7 +177,7 @@ export default function SearchResultPage() {
                           {key}
                         </div>
                         <hr className={styles.hr}></hr>
-                      </>
+                      </div>
                     ))}
                   </div>
                 )}
@@ -204,6 +223,7 @@ export default function SearchResultPage() {
                 <div className={styles.게시글들어갈공간}>
                   {threadList.map((thread) => (
                     <Thread
+                      key={thread.threadId}
                       thread={thread}
                       setThreadModal={setThreadModal}
                       setTId={setTId}

@@ -7,6 +7,11 @@
   right: 20px;
   font-size: 25px;
   color: var(--gomin5);
+  cursor: pointer;
+  transition: 0.2s;
+}
+.close:hover {
+  color: var(--gomin4);
 }
 /* 콘텐츠들 */
 .StackCarousel_contents {

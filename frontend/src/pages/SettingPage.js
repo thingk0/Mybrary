@@ -4,8 +4,6 @@ import Container from "../components/frame/Container";
 import styles from "./style/SettingPage.module.css";
 import 설정옆이미지 from "../assets/설정옆이미지.png";
 import Iconuser2 from "../assets/icon/Iconuser2.png";
-//현재유저를 가져오기위해
-import useUserStore from "../store/useUserStore";
 //현재유저를통해 정보를가져오기위해
 import { getMyMybrary } from "../api/mybrary/Mybrary";
 import { checkNickName } from "../api/member/SignUp";
@@ -22,7 +20,6 @@ export default function SettingPage() {
   const [name, setName] = useState("");
   const [nickname, setNickname] = useState("");
   const [intro, setIntro] = useState("");
-  const [profileImageId, setProfileImageId] = useState("");
   const [profileImageUrl, setProfileImageUrl] = useState("");
   const [profilePublic, setProfilePublic] = useState(true);
   const [notifyEnable, setNotifyEnable] = useState(true);

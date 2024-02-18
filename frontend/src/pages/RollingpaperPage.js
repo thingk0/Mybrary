@@ -8,10 +8,7 @@ import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
 import useMybraryStore from "../store/useMybraryStore";
 import useMyStore from "../store/useMyStore";
-import {
-  getRollingPaper,
-  saveRollingPaper,
-} from "../api/rollingpaper/RollingPaper";
+import { getRollingPaper } from "../api/rollingpaper/RollingPaper";
 
 export default function RollingpaperPage() {
   const navigate = useNavigate();
@@ -148,20 +145,6 @@ export default function RollingpaperPage() {
     sendImageData();
   };
 
-  const colors2 = {
-    1: "#fffafa", // color1
-    2: "#FF2525", // color2
-    3: "#FF7E07", // color3
-    4: "#FFE70B", // color4
-    5: "#2FDB35", // color5
-    6: "#41EDC4", // color6
-    7: "#41CEED", // color7
-    8: "#356CD6", // color8
-    9: "#E543FF", // color9
-    10: "#909090", // color10
-    11: "#616161", // color11
-    12: "#242424", // color12
-  };
   const colors = [
     "",
     "#fffafa",

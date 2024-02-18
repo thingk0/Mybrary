@@ -183,7 +183,12 @@
   background-color: #8e8e8e;
 }
 .color11 {
-  background-color: #4c4c4c;
+  background: linear-gradient(
+    135deg,
+    rgba(105, 200, 255, 1) 0%,
+    rgba(255, 119, 119, 1) 50%,
+    rgba(198, 119, 255, 1) 100%
+  );
 }
 .backcolor1 {
   background-color: #804d4d;
@@ -216,7 +221,12 @@
   background-color: #5a5a5a;
 }
 .backcolor11 {
-  background-color: #232323;
+  background: linear-gradient(
+    135deg,
+    rgb(74, 154, 200) 0%,
+    rgb(210, 85, 85) 50%,
+    rgb(123, 63, 166) 100%
+  );
 }
 
 .text {
@@ -250,6 +260,10 @@
   border-radius: 20px; /* 둥근 테두리 설정 */
   font-size: 16px; /* 글꼴 크기 설정 */
   width: 200px; /* 원하는 너비 설정 */
+}
+.searchInput:focus {
+  outline: none;
+  border: 2px solid #eda99e;
 }
 
 .searchContainer {
@@ -373,16 +387,16 @@
 }
 .absolute {
   position: absolute;
-  top: 0px;
-  left: -270px;
-  background-color: var(--main3);
+  top: 45px;
+  left: 60px;
+  background-color: #e0c2bc;
   padding: 20px;
   border-radius: 5px;
   width: 200px;
   font-size: 20px;
-  max-height: 295px;
+  max-height: 700px;
   overflow: hidden;
-  /* z-index: 100; */
+  z-index: 100;
   box-shadow: 0 0 15 0 var(--main3);
 }
 .hr {

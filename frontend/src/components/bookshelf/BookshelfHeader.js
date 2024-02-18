@@ -20,7 +20,7 @@ export default function BookshelfHeader() {
     }
 
     fetchMyData();
-  }, []);
+  }, [userid]);
 
   return (
     <div>
