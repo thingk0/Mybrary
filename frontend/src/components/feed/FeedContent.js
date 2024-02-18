@@ -124,8 +124,8 @@ export default function FeedContent({
 
   return (
     <div className={styles.content}>
-      {thread.paperList.map((paper, index) => (
-        <div className={s(styles.aa, styles[`a${x}`])} key={index}>
+      {thread.paperList.map((paper) => (
+        <div className={s(styles.aa, styles[`a${x}`])} key={paper.id}>
           <div className={styles.user_info}>
             <div
               className={styles.user_profile}
@@ -283,15 +283,14 @@ export default function FeedContent({
             paperId={paper.id}
           >
             <div className={styles.태그모음}>
-              {paper.tagList.map((tag) => (
-                <>
-                  <span
-                    onClick={() => navigate(`/search/${tag}`)}
-                    className={styles.태그한줄}
-                  >
-                    # {tag}
-                  </span>
-                </>
+              {paper.tagList.map((tag, index) => (
+                <span
+                  key={index}
+                  onClick={() => navigate(`/search/${tag}`)}
+                  className={styles.태그한줄}
+                >
+                  # {tag}
+                </span>
               ))}
             </div>
           </FeedModal2>

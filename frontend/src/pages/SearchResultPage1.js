@@ -181,7 +181,7 @@ export default function SearchResultPage1() {
                   <div className={styles.absolute}>
                     <div className={styles.title}>추천검색어</div>
                     {list?.map((key) => (
-                      <>
+                      <div key={key}>
                         <div
                           className={styles.key}
                           onClick={() => handleRecentSearchClick(key)}
@@ -189,7 +189,7 @@ export default function SearchResultPage1() {
                           {key}
                         </div>
                         <hr className={styles.hr}></hr>
-                      </>
+                      </div>
                     ))}
                   </div>
                 )}

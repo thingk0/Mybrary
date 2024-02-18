@@ -113,6 +113,7 @@ export default function BookPage() {
               <div className={styles.nameContainer}>
                 {categoryList.map((category) => (
                   <div
+                    key={category.categoryId}
                     className={s(
                       selectCategory === category.name
                         ? styles.selectName

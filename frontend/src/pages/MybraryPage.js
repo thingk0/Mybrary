@@ -172,7 +172,6 @@ export default function MybraryPage() {
         bookshelfColor: value.bookshelfColor,
         easelColor: value.easelColor,
       };
-      console.log(updateData);
       try {
         // updateMybrary 함수를 호출하여 데이터 업데이트
         await updateMybrary(updateData);
@@ -221,7 +220,6 @@ export default function MybraryPage() {
         const memberId = user.memberId;
         if (memberId === +nowuser) {
           const response = await getMyMybrary();
-          // console.log(response.data);
           setNotifyEnable(response.data.notifyEnable);
           setCheckme(true);
           await setMy(response.data);
@@ -246,7 +244,6 @@ export default function MybraryPage() {
         } else {
           const response = await getMybrary(nowuser);
           setMybrary(response.data);
-          console.log(response.data);
           setCheckme(false);
           setFollowStatus(response.data.followStatus);
           setUserInfo(response.data);

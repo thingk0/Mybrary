@@ -243,6 +243,7 @@ export default function Comment({
             {commentList.map((comment) => (
               <>
                 <div
+                  key={comment.commentId}
                   className={s(
                     styles.comment_item,
                     styles[`color_${comment.colorCode}`], // 수정된 부분

@@ -169,7 +169,7 @@ export default function SearchResultPage() {
                   <div className={styles.absolute}>
                     <div className={styles.title}>추천검색어</div>
                     {list?.map((key) => (
-                      <>
+                      <div key={key}>
                         <div
                           className={styles.key}
                           onClick={() => handleRecentSearchClick(key)}
@@ -177,7 +177,7 @@ export default function SearchResultPage() {
                           {key}
                         </div>
                         <hr className={styles.hr}></hr>
-                      </>
+                      </div>
                     ))}
                   </div>
                 )}
@@ -223,6 +223,7 @@ export default function SearchResultPage() {
                 <div className={styles.게시글들어갈공간}>
                   {threadList.map((thread) => (
                     <Thread
+                      key={thread.threadId}
                       thread={thread}
                       setThreadModal={setThreadModal}
                       setTId={setTId}
