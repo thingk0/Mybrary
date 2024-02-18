@@ -416,29 +416,15 @@ public class ThreadServiceImpl implements ThreadService {
     @Override
     public Long updateThread(String email, ThreadUpdateDto threadUpdateDto) {
         Thread thread = getThreadById(threadUpdateDto.getThreadId());
-
-        List<CompletableFuture<Void>> paperFutures =
-            threadUpdateDto.getPaperList().stream()
-                           .map(paperUpdateDto ->
-                                    CompletableFuture.supplyAsync(
-                                                         () -> getPaperById(paperUpdateDto.getPaperId()))
-                                                     .thenCompose(
-                                                         paper -> asyncUpdatePaper(paper, paperUpdateDto, threadUpdateDto))
-                                                     .thenCompose(
-                                                         paper -> asyncDeleteAllTagByPaperId(paper.getId())
-                                                             .thenCompose(aVoid -> asyncSaveAllTag(
-                                                                 paperUpdateDto.getTagList(), paper))
-                                                             .thenCompose(aVoid -> asyncUpdatePaperDocument(
-                                                                 paperUpdateDto.getPaperId(),
-                                                                 paperUpdateDto))
-                                                     )
-                                                     .exceptionally(ex -> {
-                                                         log.error("An error occurred: {}", ex.getMessage(), ex);
-                                                         return null;
-                                                     })
-                           ).collect(Collectors.toList());
-
-        CompletableFuture.allOf(paperFutures.toArray(new CompletableFuture[0])).join();
+        for (PaperUpdateDto paperUpdateDto : threadUpdateDto.getPaperList()) {
+            Paper paper = getPaperById(paperUpdateDto.getPaperId());
+            paper.update(paperUpdateDto, threadUpdateDto);
+            tagRepository.deleteAllByPaperId(paper.getId());
+            tagRepository.saveAll(paperUpdateDto.getTagList().stream()
+                                                .map(tagName -> Tag.builder().tagName(tagName).paper(paper).build())
+                                                .collect(Collectors.toList()));
+            asyncUpdatePaperDocument(paperUpdateDto);
+        }
         return thread.getId();
     }
 
@@ -479,16 +465,16 @@ public class ThreadServiceImpl implements ThreadService {
     }
 
     @Async
-    public CompletableFuture<Void> asyncUpdatePaperDocument(Long paperId, PaperUpdateDto updateDto) {
+    public CompletableFuture<Void> asyncUpdatePaperDocument(PaperUpdateDto updateDto) {
         try {
-            PaperDocument paperDocument = paperDocumentRepository.findById(paperId)
+            PaperDocument paperDocument = paperDocumentRepository.findById(updateDto.getPaperId())
                                                                  .orElseThrow(() -> new IllegalArgumentException(
-                                                                     "PaperDocument not found for id: " + paperId));
+                                                                     "PaperDocument not found for id: " + updateDto.getPaperId()));
 
             paperDocument.update(updateDto);
             paperDocumentRepository.save(paperDocument);
         } catch (Exception ex) {
-            log.error("Error updating paper document for paperId {}: {}", paperId, ex.getMessage(), ex);
+            log.error("Error updating paper document for paperId {}: {}", updateDto.getPaperId(), ex.getMessage(), ex);
         }
         return CompletableFuture.completedFuture(null);
     }
@@ -506,11 +492,7 @@ public class ThreadServiceImpl implements ThreadService {
 
     @Async
     public CompletableFuture<Void> asyncDeleteAllPaperDocumentByThreadId(Long threadId) {
-        try {
-            paperDocumentRepository.deleteAll(searchService.getPaperDocumentListByThreadId(threadId));
-        } catch (Exception ex) {
-            log.error("Error deleting paper documents for threadId {}: {}", threadId, ex.getMessage(), ex);
-        }
+        paperDocumentRepository.deleteAll(searchService.getPaperDocumentListByThreadId(threadId));
         return CompletableFuture.completedFuture(null);
     }
 
