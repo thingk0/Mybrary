@@ -6,6 +6,10 @@ import com.mybrary.backend.domain.bookshelf.entity.Bookshelf;
 import com.mybrary.backend.domain.bookshelf.repository.BookShelfRepository;
 import com.mybrary.backend.domain.category.entity.Category;
 import com.mybrary.backend.domain.category.repository.CategoryRepository;
+import com.mybrary.backend.domain.contents.paper.entity.Paper;
+import com.mybrary.backend.domain.contents.paper.repository.PaperRepository;
+import com.mybrary.backend.domain.contents.scrap.entity.Scrap;
+import com.mybrary.backend.domain.contents.scrap.repository.ScrapRepository;
 import com.mybrary.backend.domain.follow.entity.Follow;
 import com.mybrary.backend.domain.follow.repository.FollowRepository;
 import com.mybrary.backend.domain.image.entity.Image;
@@ -30,6 +34,8 @@ import com.mybrary.backend.domain.notification.dto.NotificationPostDto;
 import com.mybrary.backend.domain.notification.entity.Notification;
 import com.mybrary.backend.domain.notification.repository.NotificationRepository;
 import com.mybrary.backend.domain.notification.service.NotificationService;
+import com.mybrary.backend.domain.pickbook.entity.PickBook;
+import com.mybrary.backend.domain.pickbook.repository.PickBookRepository;
 import com.mybrary.backend.domain.rollingpaper.entity.RollingPaper;
 import com.mybrary.backend.domain.rollingpaper.repository.RollingPaperRepository;
 import com.mybrary.backend.global.exception.image.ImageNotFoundException;
@@ -42,6 +48,7 @@ import com.mybrary.backend.global.exception.member.InvalidLoginAttemptException;
 import com.mybrary.backend.global.exception.member.MemberNotFoundException;
 import com.mybrary.backend.global.exception.member.PasswordMismatchException;
 import com.mybrary.backend.global.exception.member.ProfileUpdateException;
+import com.mybrary.backend.global.exception.paper.PaperListNotFoundException;
 import com.mybrary.backend.global.jwt.TokenInfo;
 import com.mybrary.backend.global.jwt.provider.TokenProvider;
 import com.mybrary.backend.global.jwt.repository.RefreshTokenRepository;
@@ -76,6 +83,9 @@ public class MemberServiceImpl implements MemberService {
     private final NotificationService notificationService;
     private final ImageRepository imageRepository;
     private final BookRepository bookRepository;
+    private final PickBookRepository pickBookRepository;
+    private final ScrapRepository scrapRepository;
+    private final PaperRepository paperRepository;
 
 
     @Transactional
@@ -89,9 +99,11 @@ public class MemberServiceImpl implements MemberService {
         memberRepository.searchByEmail(requestDto.getEmail())
                         .ifPresent(this::throwDuplicateEmailException);
 
-        /* 프로필이미지, 액자이미지 조회 */
+        /* 프로필이미지, 액자이미지, 책커거이미지 조회 */
         Image profileImage = imageRepository.findById(requestDto.getProfileImageId()).orElseThrow(ImageNotFoundException::new);
         Image frameImage = imageRepository.findById(requestDto.getFrameImageId()).orElseThrow(ImageNotFoundException::new);
+        Image bookCoverImage = imageRepository.findById(requestDto.getBookCoverImageId())
+                                              .orElseThrow(ImageNotFoundException::new);
 
         /* 회원 생성 */
         Member member = Member.of(requestDto, passwordEncoder.encode(requestDto.getPassword()), profileImage);
@@ -116,23 +128,51 @@ public class MemberServiceImpl implements MemberService {
         bookShelfRepository.save(bookshelf);
 
         /* 기본 카테고리 3개 생성 */
+        // 기본1 카테고리 따로 저장
+        Category category1 = null;
         for (int i = 1; i <= 3; i++) {
             Category category = Category.builder()
                                         .bookshelf(bookshelf)
                                         .categoryName("기본" + i)
                                         .categorySeq(i)
                                         .build();
+            if (i == 1) {
+                category1 = category;
+            }
             categoryRepository.save(category);
         }
 
         /* 기본 책 1개 생성 */
         Book book = Book.builder()
                         .member(member)
-                        .coverTitle("Mybrary 사용 법")
+                        .coverImage(bookCoverImage)
+                        .coverTitle("Mybrary 튜토리얼")
                         .coverLayout(1)
                         .coverColor(1)
                         .build();
         bookRepository.save(book);
+
+        /* 기본책을 기본1 카테고리에 넣기 */
+        PickBook pickBook = PickBook.builder()
+                                    .category(category1)
+                                    .book(book)
+                                    .build();
+        pickBookRepository.save(pickBook);
+
+        /* 튜토리얼 페이퍼 스크랩하기 */
+        int seq = 1;
+        for (int i = 263; i <= 267; i++) {
+            if (i == 265) {
+                continue;
+            }
+            Paper paper = paperRepository.findById((long) i).orElseThrow(PaperListNotFoundException::new);
+            Scrap scrap = Scrap.builder()
+                               .book(book)
+                               .paper(paper)
+                               .paperSeq(seq++)
+                               .build();
+            scrapRepository.save(scrap);
+        }
 
         /* 롤링페이퍼 생성 */
         RollingPaper rollingPaper = RollingPaper.builder()

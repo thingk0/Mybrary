@@ -47,5 +47,6 @@ public class SignupRequestDto {
 
     private Long profileImageId;
     private Long frameImageId;
+    private Long bookCoverImageId;
 
 }
