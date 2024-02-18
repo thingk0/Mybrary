@@ -20,19 +20,17 @@ axios.interceptors.request.use(
       return config;
     }
 
-    // if (isTokenExpired) {
-    //   const res = renewToken(accessToken);
-    //   localStorage.setItem("accessToken", res.data);
-    //   localStorage.setItem("tokenTimestamp", Date.now());
-    // }
+    if (isTokenExpired) {
+      const res = await renewToken(accessToken);
+      localStorage.setItem("accessToken", res);
+      localStorage.setItem("tokenTimestamp", Date.now());
+    }
 
     config.headers["Authorization"] = `Bearer ${accessToken}`;
     return config;
   },
   (error) => {
-    const { disconnect } = useStompStore();
     localStorage.clear();
-    disconnect();
     window.location.href = "/join";
     //return Promise.reject(error);
   }
