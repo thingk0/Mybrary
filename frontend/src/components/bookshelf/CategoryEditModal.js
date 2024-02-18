@@ -26,7 +26,7 @@ export default function CategoryEditModal({
     };
     const id = await createCategory(category);
     const newCategory = {
-      categoryId: id,
+      categoryId: id.data,
       name: newCategoryName,
       seq: categoryList.length + 1,
       bookCount: 0,
