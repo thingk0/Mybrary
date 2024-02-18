@@ -313,14 +313,14 @@ export default function RollingpaperPage() {
             &lt; 책장
           </div>
           <div className={title.main_title}>
-            {mybrary.nickname}'s rollingpaper
+            {mybrary.nickname}'s 롤링페이퍼
           </div>
           <div
             className={title.right_title}
             onClick={() => navigate("../threads")}
           >
             {" "}
-            게시물 &gt;
+            스레드 &gt;
           </div>
         </div>
 

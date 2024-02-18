@@ -34,9 +34,9 @@ export default function BookshelfHeader() {
           className={title.left_title}
           onClick={() => navigate("../threads")}
         >
-          &lt; 게시물
+          &lt; 스레드
         </div>
-        <div className={title.main_title}>{user.nickname}'s bookshelf</div>
+        <div className={title.main_title}>{user.nickname}'s 책장</div>
         <div
           className={title.right_title}
           onClick={() => navigate(`../rollingpaper/${mybrary.rollingPaperId}`)}

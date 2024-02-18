@@ -65,7 +65,7 @@ export default function ThreadsPage() {
           >
             &lt; 롤링페이퍼
           </div>
-          <div className={title.main_title}>{mybrary.nickname}'s thread</div>
+          <div className={title.main_title}>{mybrary.nickname}'s 스레드</div>
           <div
             className={title.right_title}
             onClick={() => navigate(`../${mybrary.bookShelfId}`)}

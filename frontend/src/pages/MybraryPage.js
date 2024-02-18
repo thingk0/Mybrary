@@ -408,7 +408,7 @@ export default function MybraryPage() {
             />
             {show.table && !edit && (
               <span className={styles.테이블가자}>
-                {userInfo.nickname}님의 쓰레드
+                {userInfo.nickname}님의 스레드
               </span>
             )}
             <img
