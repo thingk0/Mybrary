@@ -261,6 +261,10 @@
   font-size: 16px; /* 글꼴 크기 설정 */
   width: 200px; /* 원하는 너비 설정 */
 }
+.searchInput:focus {
+  outline: none;
+  border: 2px solid #eda99e;
+}
 
 .searchContainer {
   display: flex;
@@ -383,16 +387,16 @@
 }
 .absolute {
   position: absolute;
-  top: 0px;
-  left: -270px;
-  background-color: var(--main3);
+  top: 45px;
+  left: 60px;
+  background-color: #e0c2bc;
   padding: 20px;
   border-radius: 5px;
   width: 200px;
   font-size: 20px;
-  max-height: 295px;
+  max-height: 700px;
   overflow: hidden;
-  /* z-index: 100; */
+  z-index: 100;
   box-shadow: 0 0 15 0 var(--main3);
 }
 .hr {
