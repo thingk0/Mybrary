@@ -172,16 +172,17 @@
 }
 .next {
   position: absolute;
-  right: 0.5vw;
+  right: -1vw;
   top: 45%;
   cursor: pointer;
+  z-index: 10;
 }
 .next_icon {
   width: 4vw;
 }
 .prev {
   position: absolute;
-  left: 0.5vw;
+  left: -1vw;
   top: 45%;
   cursor: pointer;
 }

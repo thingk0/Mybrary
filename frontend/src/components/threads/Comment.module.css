@@ -11,6 +11,15 @@
   font-size: 2vw;
   text-shadow: 0 0 5px var(--main3);
 }
+.닫기버튼 {
+  color: var(--gomin4);
+  margin-left: 1vw;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.닫기버튼:hover {
+  color: var(--gomin5);
+}
 /* 댓글목록공간 */
 .comment_item {
   width: 88%;
@@ -65,6 +74,16 @@
 .대댓글수 {
   font-size: 0.8vw;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.4vw;
+}
+.대댓글아이콘 {
+  width: 1vw;
+  height: 1vw;
+  margin: 0px;
+  padding: 0px;
 }
 .중간막대기 {
   font-size: 0.8vw;

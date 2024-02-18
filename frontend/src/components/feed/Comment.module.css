@@ -58,13 +58,27 @@
   margin: 1vw;
   position: relative;
 }
+.닫기버튼 {
+  color: var(--gomin4);
+  margin-left: 1vw;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.닫기버튼:hover {
+  color: var(--gomin5);
+}
 .대댓글박스 {
   width: 97.3%;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
 }
-
+.대댓글아이콘 {
+  width: 1vw;
+  height: 1vw;
+  margin: 0px;
+  padding: 0px;
+}
 .comment_item2 {
   width: 76%;
   border-radius: 5px;
@@ -103,6 +117,10 @@
 .대댓글수 {
   font-size: 0.8vw;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.4vw;
 }
 .중간막대기 {
   font-size: 0.8vw;
