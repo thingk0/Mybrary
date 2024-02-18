@@ -48,9 +48,9 @@ public class ThreadController {
 
     @Operation(summary = "메인홈 쓰레드 조회", description = "메인홈에서의 쓰레드 목록 조회")
     @GetMapping("/home")
-    public ResponseEntity<?> getMainAllThread(
-        @Parameter(hidden = true) Authentication authentication,
-        @RequestParam(name = "page") int page) {
+    public ResponseEntity<?> getMainAllThread(@Parameter(hidden = true) Authentication authentication,
+                                              @RequestParam(name = "page") int page) {
+
         Member me = memberService.findMember(authentication.getName());
         Long myId = me.getId();
         return response.success(ResponseCode.MAIN_THREAD_LIST_FETCHED,
@@ -59,9 +59,9 @@ public class ThreadController {
 
     @Operation(summary = "나의 쓰레드 조회", description = "나의 마이브러리 책상에서의 쓰레드 목록 조회")
     @GetMapping("/desk")
-    public ResponseEntity<?> getMyAllThread(
-        @Parameter(hidden = true) Authentication authentication,
-        @PageableDefault(page = 0, size = 10) Pageable page) {
+    public ResponseEntity<?> getMyAllThread(@Parameter(hidden = true) Authentication authentication,
+                                            @PageableDefault(page = 0, size = 10) Pageable page) {
+
         Member me = memberService.findMember(authentication.getName());
         Long myId = me.getId();
         return response.success(ResponseCode.MY_THREAD_LIST_FETCHED,
@@ -70,12 +70,13 @@ public class ThreadController {
 
     @Operation(summary = "특정 회원의 쓰레드 조회", description = "특정 회원의 마이브러리 책상에서의 쓰레드 목록 조회")
     @GetMapping("/{id}/desk")
-    public ResponseEntity<?> getOtherAllThread(
-        @Parameter(hidden = true) Authentication authentication,
-        @PathVariable(name = "id") Long memberId,
-        @PageableDefault(page = 0, size = 10) Pageable page) {
+    public ResponseEntity<?> getOtherAllThread(@Parameter(hidden = true) Authentication authentication,
+                                               @PathVariable(name = "id") Long memberId,
+                                               @PageableDefault(page = 0, size = 10) Pageable page) {
+
         Member me = memberService.findMember(authentication.getName());
         Long myId = me.getId();
+
         return response.success(ResponseCode.OTHER_MEMBER_THREAD_LIST_FETCHED,
                                 threadService.getOtherAllThread(authentication.getName(), memberId, page));
     }
@@ -84,9 +85,9 @@ public class ThreadController {
     @PutMapping
     public ResponseEntity<?> updateThread(@Parameter(hidden = true) Authentication authentication,
                                           @RequestBody ThreadUpdateDto threadUpdateDto) {
-        Member me = memberService.findMember(authentication.getName());
-        Long myId = me.getId();
-        return response.success(ResponseCode.THREAD_UPDATED, threadService.updateThread(myId, threadUpdateDto));
+
+        return response.success(ResponseCode.THREAD_UPDATED,
+                                threadService.updateThread(authentication.getName(), threadUpdateDto));
     }
 
     @Operation(summary = "쓰레드 삭제", description = "쓰레드 아이디를 통한 쓰레드 삭제")
@@ -95,17 +96,19 @@ public class ThreadController {
                                           @PathVariable(name = "id") Long threadId) {
         Member me = memberService.findMember(authentication.getName());
         Long myId = me.getId();
+
         return response.success(ResponseCode.THREAD_DELETED,
                                 threadService.deleteThread(myId, threadId));
     }
 
     @Operation(summary = "쓰레드 단건 조회", description = "쓰레드 아이디를 통한 쓰레드 조회")
     @GetMapping("/{id}")
-    public ResponseEntity<?> getThread(
-        @Parameter(hidden = true) Authentication authentication,
-        @PathVariable(name = "id") Long threadId) {
+    public ResponseEntity<?> getThread(@Parameter(hidden = true) Authentication authentication,
+                                       @PathVariable(name = "id") Long threadId) {
+
         Member me = memberService.findMember(authentication.getName());
         Long myId = me.getId();
+
         return response.success(ResponseCode.CONTENTS_SEARCHED,
                                 threadService.getThread(authentication.getName(), myId, threadId));
 
