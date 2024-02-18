@@ -1,7 +1,7 @@
 import Container from "../components/frame/Container";
 import styles from "./style/BookPage.module.css";
 import title from "../components/atom/atomstyle/Title.module.css";
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { getBookList, getCategoryList } from "../api/category/Category";
@@ -71,11 +71,11 @@ export default function BookPage() {
       }
     }
     fetchbookshelfData();
-  }, [categoryid]);
+  }, [categoryid, bookShelfId]);
 
   const handleDelete = async () => {
     try {
-      const a = await deleteBook(selectedBook.bookId);
+      await deleteBook(selectedBook.bookId);
       const updatedBookList = bookList.filter(
         (book) => book.bookId !== selectedBook.bookId
       );

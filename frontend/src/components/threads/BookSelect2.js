@@ -1,5 +1,4 @@
 import styles from "../threadcreate/BookSelect.module.css";
-import line from "../../assets/오른쪽.png";
 import s from "classnames";
 import { scrap } from "../../api/paper/Paper";
 import { useState } from "react";
@@ -25,7 +24,7 @@ export default function BookSelect2({
         paperIdList: paperIdList,
       };
       incrementScrapCount(paperIdList[0]);
-      const a = await scrap(object);
+      await scrap(object);
       setModalIsOpen2(false);
     }
   };

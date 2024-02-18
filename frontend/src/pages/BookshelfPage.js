@@ -34,12 +34,12 @@ export default function BookshelfPage() {
         console.error("데이터를 가져오는 데 실패했습니다:", error);
       }
     }
-    if (userid == user.memberId) {
+    if (+userid === user.memberId) {
       setCheckme(true);
     }
 
     fetchbookshelfData();
-  }, []); // bookshelfId를 의존성 배열에 추가
+  }, [user, mybrary, userid]); // bookshelfId를 의존성 배열에 추가
 
   return (
     <>

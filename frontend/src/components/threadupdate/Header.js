@@ -11,7 +11,7 @@ export default function Header({
     const updatedPapers = papers.filter((_, index) => index !== pageIndex);
     setPapers(updatedPapers);
 
-    if (currentPage === pageIndex || currentPage == updatedPapers.length - 1) {
+    if (currentPage === pageIndex || currentPage === updatedPapers.length - 1) {
       setCurrentPage(Math.max(0, currentPage - 1));
     } else {
       setCurrentPage(Math.max(0, currentPage));

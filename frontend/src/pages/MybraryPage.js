@@ -26,7 +26,6 @@ import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
 import useUserStore from "../store/useUserStore";
 import useMybraryStore from "../store/useMybraryStore";
-import useStompStore from "../store/useStompStore";
 import {
   getMyMybrary,
   getMybrary,
@@ -55,7 +54,6 @@ export default function MybraryPage() {
   const user = useUserStore((state) => state.user);
   const setMybrary = useMybraryStore((state) => state.setMybrary);
   const setMy = useMyStore((state) => state.setMy);
-  const client = useStompStore((state) => state.stompClient);
   const setNav = useNavStore((state) => state.setNav);
 
   // 각각의 색상옵션들
@@ -145,7 +143,7 @@ export default function MybraryPage() {
 
       try {
         // updateMybrary 함수를 호출하여 데이터 업데이트
-        const response = await updateMybrary(updateData);
+        await updateMybrary(updateData);
 
         toast.success("변경이 완료 되었습니다.", {
           style: {
@@ -177,7 +175,7 @@ export default function MybraryPage() {
       console.log(updateData);
       try {
         // updateMybrary 함수를 호출하여 데이터 업데이트
-        const response = await updateMybrary(updateData);
+        await updateMybrary(updateData);
 
         toast.success("변경이 완료 되었습니다.", {
           style: {

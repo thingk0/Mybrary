@@ -5,7 +5,7 @@ import s from "classnames";
 import { Editor } from "react-draft-wysiwyg";
 
 export default function Edit({ currentPage, papers, setPapers }) {
-  const persent = ["", "9:16", "3:4", "1:1", "4:3", "16:9"];
+  // const persent = ["", "9:16", "3:4", "1:1", "4:3", "16:9"];
 
   const [toolbarZIndex, setToolbarZIndex] = useState(1);
   const [toolbarZIndex2, setToolbarZIndex2] = useState(1);

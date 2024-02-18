@@ -39,7 +39,7 @@ export default function OneThread({ threadId, setThreadModal }) {
       }
     }
     fetchMainFeedData();
-  }, []);
+  }, [threadId]);
 
   const incrementCommentCount = (paperId) => {
     setList((currentList) =>

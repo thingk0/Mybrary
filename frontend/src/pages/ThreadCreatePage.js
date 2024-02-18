@@ -16,7 +16,6 @@ import { uplodaImage } from "../api/image/Image";
 import toast from "react-hot-toast";
 import { createThread } from "../api/thread/Thread";
 import { useNavigate } from "react-router-dom";
-import useUserStore from "../store/useUserStore";
 import LoadModal from "../components/common/LoadModal";
 import LottieAnimation from "../components/common/LottieAnimation";
 import animationData from "../assets/lottie/loading.json";
@@ -33,7 +32,6 @@ const initialPaper = () => ({
 });
 export default function ThreadCreatePage() {
   const navigate = useNavigate();
-  const user = useUserStore((state) => state.user);
   const [papers, setPapers] = useState([initialPaper()]);
   const [paperPublic, setPaperPublic] = useState(true);
   const [scrapEnable, setScrapEnable] = useState(true);
