@@ -129,6 +129,7 @@ export default function OneThread({ threadId, setThreadModal }) {
         >
           <Comment
             commentId={commentId}
+            setComment={setComment}
             updateCommentCount={incrementCommentCount}
             updateCommentCount2={decreaseCommentCount}
           />

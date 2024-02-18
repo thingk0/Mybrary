@@ -214,6 +214,7 @@ export default function FeedPage() {
         >
           <Comment
             commentId={commentId}
+            setComment={setComment}
             updateCommentCount={incrementCommentCount}
             updateCommentCount2={decreaseCommentCount}
           />

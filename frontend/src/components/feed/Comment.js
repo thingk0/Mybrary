@@ -10,10 +10,12 @@ import {
 import useUserStore from "../../store/useUserStore";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import cmticon from "../../assets/icon/대댓글아이콘.png";
 
 //commentId라고 들어오지만 이거 페이퍼아이디임
 export default function Comment({
   commentId,
+  setComment,
   updateCommentCount,
   updateCommentCount2,
 }) {
@@ -233,6 +235,9 @@ export default function Comment({
   return (
     <>
       <div className={styles.comment_container}>
+        <span className={styles.닫기버튼} onClick={() => setComment(false)}>
+          닫기
+        </span>
         {commentList.length !== 0 ? (
           <>
             {commentList.map((comment) => (
@@ -275,6 +280,11 @@ export default function Comment({
                         className={styles.대댓글수}
                         onClick={() => check(comment.commentId)}
                       >
+                        <img
+                          className={styles.대댓글아이콘}
+                          src={cmticon}
+                          alt="없음"
+                        />
                         {comment.childCommentCount}
                       </div>
                       <span className={styles.중간막대기}> | </span>
