@@ -1,5 +1,4 @@
 import styles from "./BookSelect.module.css";
-import line from "../../assets/오른쪽.png";
 import s from "classnames";
 
 export default function BookSelect({

@@ -13,7 +13,7 @@ export default function LottieAnimation({ animationPath }) {
       animationData: animationPath,
     });
 
-    return () => anim.destroy(); // 컴포넌트 언마운트 시 애니메이션 제거
+    return () => anim.destroy();
   }, [animationPath]);
 
   return <div ref={animationContainer}></div>;

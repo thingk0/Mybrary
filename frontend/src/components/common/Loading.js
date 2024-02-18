@@ -8,9 +8,9 @@ export default function Loading() {
     <>
       <Container>
         <div className={styles.modalContainer}>
-          {/* <div className={styles.modal}>
+          <div className={styles.modal}>
             <LottieAnimation animationPath={animationData} />
-          </div> */}
+          </div>
         </div>
       </Container>
     </>

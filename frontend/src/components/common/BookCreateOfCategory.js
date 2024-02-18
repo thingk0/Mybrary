@@ -1,8 +1,7 @@
 import styles from "./BookCreate.module.css";
-import three from "../../assets/three.png";
 import s from "classnames";
 import FileInput from "../common/FileInput";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Modal from "./Modal";
 import { getBookList } from "../../api/category/Category";
 import { uplodaImage } from "../../api/image/Image";
@@ -18,7 +17,9 @@ export default function BookCreateOfCategory({
   const navigate = useNavigate();
   const layouts = [1, 2, 3, 4, 5, 6];
   const colors = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
-  const [categorys, setCategorys] = useState([]);
+  const categorys = booklist.map((category) => {
+    return { categoryId: category.categoryId, name: category.name };
+  });
   const [open, setOpen] = useState(false);
 
   const [value, setValue] = useState({
@@ -38,18 +39,6 @@ export default function BookCreateOfCategory({
     const { name, value } = e.target;
     handleChange(name, value);
   };
-
-  const loadCategory = async () => {
-    // const list = await getCategoryList(user.memberId);
-    const categoryList = booklist.map((category) => {
-      return { categoryId: category.categoryId, name: category.name };
-    });
-    setCategorys(categoryList);
-  };
-
-  useEffect(() => {
-    loadCategory();
-  }, []);
 
   const [title, setTitle] = useState("선택되지 않음");
   const handleCategory = (category) => {
