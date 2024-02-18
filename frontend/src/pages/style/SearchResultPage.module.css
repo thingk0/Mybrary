@@ -265,8 +265,8 @@
 }
 .absolute {
   position: absolute;
-  top: 45px;
-  left: 60px;
+  top: 0px;
+  left: -270px;
   background-color: #e0c2bc;
   padding: 20px;
   border-radius: 5px;
