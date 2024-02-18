@@ -193,7 +193,12 @@
   background-color: #8e8e8e;
 }
 .color11 {
-  background-color: #4c4c4c;
+  background: linear-gradient(
+    135deg,
+    rgba(105, 200, 255, 1) 0%,
+    rgba(255, 119, 119, 1) 50%,
+    rgba(198, 119, 255, 1) 100%
+  );
 }
 
 .container {

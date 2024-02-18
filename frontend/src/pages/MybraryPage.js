@@ -566,11 +566,11 @@ export default function MybraryPage() {
                 </div>
                 <div className={styles.프로필박스}>
                   <div>{userInfo.bookCount}</div>
-                  <div>앨범</div>
+                  <div>책</div>
                 </div>
                 <div className={styles.프로필박스}>
                   <div>{userInfo.threadCount}</div>
-                  <div>게시글</div>
+                  <div>스레드</div>
                 </div>
                 <div
                   className={styles.프로필박스3}
