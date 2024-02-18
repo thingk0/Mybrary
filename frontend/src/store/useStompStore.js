@@ -91,8 +91,8 @@ const useStompStore = create((set) => ({
     });
 
     client.onConnect = function () {
-      console.log("재연결");
       client.subscribe(`/sub/notification/${email}`, (msg) => {
+        console.log(typeof setHasNewNotification);
         setHasNewNotification(true);
         const alarmObj = JSON.parse(msg.body);
         showAlarm(alarmObj);
@@ -110,12 +110,9 @@ const useStompStore = create((set) => ({
         .getState()
         .stompClient.deactivate()
         .then(() => {
-          console.log("웹소켓 연결이 종료되었습니다.");
           set({ stompClient: null });
         })
-        .catch((error) => {
-          console.error("웹소켓 연결 종료 중 오류 발생:", error);
-        });
+        .catch((error) => {});
     }
   },
 }));

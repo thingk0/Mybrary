@@ -10,7 +10,7 @@ import toast from "react-hot-toast";
 function LoginForm() {
   /* 로그인하고 바로 stompClient 초기화. */
   const { connect } = useStompStore();
-  const { setNewNotification } = useNotificationStore();
+  const { setHasNewNotification } = useNotificationStore();
   /* 오류페이지 이동 */
   const navigate = useNavigate();
 
@@ -48,7 +48,7 @@ function LoginForm() {
 
         async function socketConnect() {
           try {
-            await connect(res.data.memberInfo.email, setNewNotification);
+            await connect(res.data.memberInfo.email, setHasNewNotification);
           } catch (e) {
             //웹소켓 연결 실패
           } finally {
