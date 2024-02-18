@@ -11,7 +11,7 @@ public interface ThreadService {
 
     Long createThread(String email, ThreadPostDto threadPostDto);
 
-    Long updateThread(Long myId, ThreadUpdateDto threadUpdateDto);
+    Long updateThread(String email, ThreadUpdateDto threadUpdateDto);
 
     int deleteThread(Long myId, Long threadId);
 

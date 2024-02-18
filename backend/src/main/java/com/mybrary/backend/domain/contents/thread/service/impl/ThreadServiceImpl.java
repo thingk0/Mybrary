@@ -41,6 +41,7 @@ import com.mybrary.backend.global.exception.image.ImageNotFoundException;
 import com.mybrary.backend.global.exception.member.MemberNotFoundException;
 import com.mybrary.backend.global.exception.mybrary.MybraryNotFoundException;
 import com.mybrary.backend.global.exception.paper.PaperListNotFoundException;
+import com.mybrary.backend.global.exception.paper.PaperUpdateTypeMismatchException;
 import com.mybrary.backend.global.exception.thread.MainThreadListNotFoundException;
 import com.mybrary.backend.global.exception.thread.ThreadAccessDeniedException;
 import com.mybrary.backend.global.exception.thread.ThreadIdNotFoundException;
@@ -52,6 +53,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.StringTokenizer;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.PageRequest;
@@ -412,38 +414,31 @@ public class ThreadServiceImpl implements ThreadService {
     }
 
     @Override
-    public Long updateThread(Long myId, ThreadUpdateDto threadUpdateDto) {
-
+    public Long updateThread(String email, ThreadUpdateDto threadUpdateDto) {
         Thread thread = getThreadById(threadUpdateDto.getThreadId());
 
-//        for (PaperUpdateDto paperUpdateDto : threadUpdateDto.getPaperList()) {
-//            paper.update(paperUpdateDto, threadUpdateDto);
-//
-//            /* 기존 태그들 삭제 */
-//            tagRepository.deleteAllByPaperId(paper.getId());
-//
-//            List<Tag> tagList = new ArrayList<>();
-//            for (String tagNames : paperUpdateDto.getTagList()) {
-//                tagList.add(Tag.builder()
-//                               .tagName(tagNames)
-//                               .paper(paper)
-//                               .build());
-//            }
-//
-//            tagRepository.saveAll(tagList);
-//            updatePaperContentAsync(paper.getId(), paperUpdateDto);
-//            }
-//        }
+        List<CompletableFuture<Void>> paperFutures =
+            threadUpdateDto.getPaperList().stream()
+                           .map(paperUpdateDto ->
+                                    CompletableFuture.supplyAsync(
+                                                         () -> getPaperById(paperUpdateDto.getPaperId()))
+                                                     .thenCompose(
+                                                         paper -> asyncUpdatePaper(paper, paperUpdateDto, threadUpdateDto))
+                                                     .thenCompose(
+                                                         paper -> asyncDeleteAllTagByPaperId(paper.getId())
+                                                             .thenCompose(aVoid -> asyncSaveAllTag(
+                                                                 paperUpdateDto.getTagList(), paper))
+                                                             .thenCompose(aVoid -> asyncUpdatePaperDocument(
+                                                                 paperUpdateDto.getPaperId(),
+                                                                 paperUpdateDto))
+                                                     )
+                                                     .exceptionally(ex -> {
+                                                         log.error("An error occurred: {}", ex.getMessage(), ex);
+                                                         return null;
+                                                     })
+                           ).collect(Collectors.toList());
 
-        List<CompletableFuture<Void>> futures = new ArrayList<>();
-        for (PaperUpdateDto paperUpdateDto : threadUpdateDto.getPaperList()) {
-            Paper paper = getPaperById(paperUpdateDto.getPaperId());
-            futures.add(asyncDeleteAllTagByPaperId(paper.getId()));
-            futures.add(asyncSaveAllTag(paperUpdateDto.getTagList(), paper));
-            futures.add(asyncUpdatePaperDocument(paperUpdateDto.getPaperId(), paperUpdateDto));
-        }
-
-        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+        CompletableFuture.allOf(paperFutures.toArray(new CompletableFuture[0])).join();
         return thread.getId();
     }
 
@@ -461,37 +456,61 @@ public class ThreadServiceImpl implements ThreadService {
 
     @Async
     public CompletableFuture<Void> asyncDeleteAllTagByPaperId(Long paperId) {
-        tagRepository.deleteAllByPaperId(paperId);
+        try {
+            tagRepository.deleteAllByPaperId(paperId);
+        } catch (Exception ex) {
+            log.error("Error deleting tags for paperId {}: {}", paperId, ex.getMessage(), ex);
+        }
         return CompletableFuture.completedFuture(null);
     }
 
     @Async
     public CompletableFuture<Void> asyncSaveAllTag(List<String> tagNames, Paper paper) {
-        List<Tag> tagList = new ArrayList<>();
-        for (String tag : tagNames) {
-            tagList.add(Tag.builder()
-                           .tagName(tag)
-                           .paper(paper)
-                           .build());
-        }
+        try {
+            List<Tag> tagList = tagNames.stream()
+                                        .map(tagName -> Tag.builder().tagName(tagName).paper(paper).build())
+                                        .collect(Collectors.toList());
 
-        tagRepository.saveAll(tagList);
+            tagRepository.saveAll(tagList);
+        } catch (Exception ex) {
+            log.error("Error saving tags for paper {}: {}", paper.getId(), ex.getMessage(), ex);
+        }
         return CompletableFuture.completedFuture(null);
     }
 
     @Async
     public CompletableFuture<Void> asyncUpdatePaperDocument(Long paperId, PaperUpdateDto updateDto) {
-        PaperDocument paperDocument = paperDocumentRepository.findById(paperId)
-                                                             .orElseThrow(NullPointerException::new);
+        try {
+            PaperDocument paperDocument = paperDocumentRepository.findById(paperId)
+                                                                 .orElseThrow(() -> new IllegalArgumentException(
+                                                                     "PaperDocument not found for id: " + paperId));
 
-        paperDocument.update(updateDto);
-        paperDocumentRepository.save(paperDocument);
+            paperDocument.update(updateDto);
+            paperDocumentRepository.save(paperDocument);
+        } catch (Exception ex) {
+            log.error("Error updating paper document for paperId {}: {}", paperId, ex.getMessage(), ex);
+        }
         return CompletableFuture.completedFuture(null);
     }
 
     @Async
+    public CompletableFuture<Paper> asyncUpdatePaper(Paper paper, PaperUpdateDto paperUpdateDto, ThreadUpdateDto threadUpdateDto) {
+        try {
+            paper.update(paperUpdateDto, threadUpdateDto);
+        } catch (PaperUpdateTypeMismatchException ex) {
+            log.error("Type mismatch error updating paper {}: {}", paper.getId(), ex.getMessage(), ex);
+            throw ex;
+        }
+        return CompletableFuture.completedFuture(paper);
+    }
+
+    @Async
     public CompletableFuture<Void> asyncDeleteAllPaperDocumentByThreadId(Long threadId) {
-        paperDocumentRepository.deleteAll(searchService.getPaperDocumentListByThreadId(threadId));
+        try {
+            paperDocumentRepository.deleteAll(searchService.getPaperDocumentListByThreadId(threadId));
+        } catch (Exception ex) {
+            log.error("Error deleting paper documents for threadId {}: {}", threadId, ex.getMessage(), ex);
+        }
         return CompletableFuture.completedFuture(null);
     }
 
