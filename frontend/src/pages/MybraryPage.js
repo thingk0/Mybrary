@@ -120,11 +120,13 @@ export default function MybraryPage() {
       easelColor: userInfo.easelColor,
     });
   };
+
   const handleImg = () => {
     setModalIsOpen(false);
     const nextPreview = URL.createObjectURL(value.frameImage);
     setFrameimgurl(nextPreview);
   };
+
   //완료버튼을 눌렀을때 실행하는 함수
   const handleSelect = async () => {
     if (value.frameImage !== null) {
@@ -172,7 +174,7 @@ export default function MybraryPage() {
         bookshelfColor: value.bookshelfColor,
         easelColor: value.easelColor,
       };
-
+      console.log(updateData);
       try {
         // updateMybrary 함수를 호출하여 데이터 업데이트
         const response = await updateMybrary(updateData);
@@ -221,6 +223,7 @@ export default function MybraryPage() {
         const memberId = user.memberId;
         if (memberId === +nowuser) {
           const response = await getMyMybrary();
+          // console.log(response.data);
           setNotifyEnable(response.data.notifyEnable);
           setCheckme(true);
           await setMy(response.data);
@@ -459,7 +462,7 @@ export default function MybraryPage() {
               src={postbox}
               alt=""
               className={s(styles.postbox, !edit && styles.img)}
-              onClick={() => handlePostboxClick()}
+              onClick={() => !edit && handlePostboxClick()}
               onMouseEnter={() => handleShow("postbox", true)}
               onMouseLeave={() => handleShow("postbox", false)}
             />
@@ -490,7 +493,7 @@ export default function MybraryPage() {
                   color={tbColor}
                   setColor={setTbColor}
                   Colors={tableImgs}
-                  name={"tableColor"}
+                  name={"deskColor"}
                 />
               </div>
               <div className={s(styles.edit, styles.bookshelfColor)}>

@@ -284,3 +284,8 @@
   transform: scale(1.04);
   color: var(--gomin5);
 }
+
+.noneKeyword {
+  margin: 30px auto;
+  font-size: 25px;
+}

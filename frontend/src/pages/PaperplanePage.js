@@ -53,7 +53,7 @@ export default function PaperplanePage() {
     e.preventDefault();
 
     if (searchQuery.trim() !== "") {
-      navigate(`/search/${encodeURIComponent(searchQuery)}/2`);
+      navigate(`/search/2/${encodeURIComponent(searchQuery)}`);
     }
   };
 

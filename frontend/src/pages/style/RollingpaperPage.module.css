@@ -9,6 +9,7 @@
   text-align: end;
   cursor: pointer;
 }
+
 .main {
   display: flex;
   flex-direction: column;
@@ -91,4 +92,12 @@
 }
 .color12 {
   background-color: #4b4b4b;
+}
+.select {
+  width: 20px;
+  height: 20px;
+  margin: 8.5px auto;
+  background-color: black;
+  border-radius: 15px;
+  border: solid 1px white;
 }

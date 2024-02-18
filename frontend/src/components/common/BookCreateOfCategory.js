@@ -8,12 +8,14 @@ import { getBookList } from "../../api/category/Category";
 import { uplodaImage } from "../../api/image/Image";
 import { createBook } from "../../api/book/Book";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 export default function BookCreateOfCategory({
   booklist,
   setModalIsOpen,
   setList,
 }) {
+  const navigate = useNavigate();
   const layouts = [1, 2, 3, 4, 5, 6];
   const colors = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
   const [categorys, setCategorys] = useState([]);
@@ -74,6 +76,7 @@ export default function BookCreateOfCategory({
     });
     addNewBookToCategory(value.categoryId);
     setModalIsOpen(false);
+    navigate(`../${value.categoryId}`);
   };
   const [t, setT] = useState(false);
   const noneImg = () => {

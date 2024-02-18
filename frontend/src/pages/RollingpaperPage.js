@@ -21,9 +21,10 @@ export default function RollingpaperPage() {
   const isPainting = useRef(false);
   const startPoint = useRef({ x: 0, y: 0 });
   const [imageData, setImageData] = useState(null);
-  const [lineColor, setLineColor] = useState("black");
+  const [lineColor, setLineColor] = useState(12);
   const stompClient = useRef(null);
   const mybrary = useMybraryStore((state) => state.mybrary);
+  const panColors = Array.from({ length: 12 }, (_, i) => i + 1);
 
   //이 둘이 같으면 나, 다르면 딴사람
   const isMe = +Params.userid === useMyStore((state) => state.my.memberId);
@@ -59,7 +60,7 @@ export default function RollingpaperPage() {
             startPoint.current.y,
             newPoint.x,
             newPoint.y,
-            lineColor
+            colors[lineColor]
           );
           startPoint.current = newPoint;
         }
@@ -99,7 +100,7 @@ export default function RollingpaperPage() {
             startPoint.current.y,
             newPoint.x,
             newPoint.y,
-            lineColor
+            colors[lineColor]
           );
           startPoint.current = newPoint;
         }
@@ -138,7 +139,6 @@ export default function RollingpaperPage() {
       y: event.clientY - rect.top,
     };
   };
-  /* 그림그리는 코드 끝 */
 
   /* 초기화 코드 */
   const handleResetImage = () => {
@@ -148,7 +148,7 @@ export default function RollingpaperPage() {
     sendImageData();
   };
 
-  const colors = {
+  const colors2 = {
     1: "#fffafa", // color1
     2: "#FF2525", // color2
     3: "#FF7E07", // color3
@@ -162,9 +162,24 @@ export default function RollingpaperPage() {
     11: "#616161", // color11
     12: "#242424", // color12
   };
+  const colors = [
+    "",
+    "#fffafa",
+    "#FF2525",
+    "#FF7E07",
+    "#FFE70B",
+    "#2FDB35",
+    "#41EDC4",
+    "#41CEED",
+    "#356CD6",
+    "#E543FF",
+    "#909090",
+    "#616161",
+    "#242424",
+  ];
 
   const handleChangeLineColor = (num) => {
-    setLineColor(colors[num]);
+    setLineColor(num);
   };
 
   useEffect(() => {
@@ -286,18 +301,19 @@ export default function RollingpaperPage() {
     }
   };
 
-  const handleRollingPaperSave = async (e) => {
-    e.preventDefault();
-    const imageData = canvasRef.current.toDataURL("image/png");
-    if (imageData) {
-      const rollingObj = {
-        rollingPaperId: rollingpaperId,
-        rollingPaperString: imageData,
-      };
+  // const handleRollingPaperSave = async (e) => {
+  //   e.preventDefault();
+  //   const imageData = canvasRef.current.toDataURL("image/png");
+  //   if (imageData) {
+  //     const rollingObj = {
+  //       rollingPaperId: rollingpaperId,
+  //       rollingPaperString: imageData,
+  //     };
 
-      const res = await saveRollingPaper(rollingObj);
-    }
-  };
+  //     const res = await saveRollingPaper(rollingObj);
+  //   }
+  // };
+
   return (
     <>
       <Container>
@@ -332,63 +348,17 @@ export default function RollingpaperPage() {
         )}
         <div className={styles.main}>
           <div className={styles.롤링페이퍼}>
-            {" "}
             <canvas ref={canvasRef}></canvas>
           </div>
-          <div className={styles.flex}>
-            <div className={styles.색변경}>
+          <div className={styles.색변경}>
+            {panColors.map((num) => (
               <div
-                className={s(styles.color1, styles.color)}
-                onClick={() => handleChangeLineColor(1)}
-              ></div>
-              <div
-                className={s(styles.color2, styles.color)}
-                onClick={() => handleChangeLineColor(2)}
-              ></div>
-              <div
-                className={s(styles.color3, styles.color)}
-                onClick={() => handleChangeLineColor(3)}
-              ></div>
-              <div
-                className={s(styles.color4, styles.color)}
-                onClick={() => handleChangeLineColor(4)}
-              ></div>
-              <div
-                className={s(styles.color5, styles.color)}
-                onClick={() => handleChangeLineColor(5)}
-              ></div>
-              <div
-                className={s(styles.color6, styles.color)}
-                onClick={() => handleChangeLineColor(6)}
-              ></div>
-              <div
-                className={s(styles.color7, styles.color)}
-                onClick={() => handleChangeLineColor(7)}
-              ></div>
-              <div
-                className={s(styles.color8, styles.color)}
-                onClick={() => handleChangeLineColor(8)}
-              ></div>
-              <div
-                className={s(styles.color9, styles.color)}
-                onClick={() => handleChangeLineColor(9)}
-              ></div>
-              <div
-                className={s(styles.color10, styles.color)}
-                onClick={() => handleChangeLineColor(10)}
-              ></div>
-              <div
-                className={s(styles.color11, styles.color)}
-                onClick={() => handleChangeLineColor(11)}
-              ></div>
-              <div
-                className={s(styles.color12, styles.color)}
-                onClick={() => handleChangeLineColor(12)}
-              ></div>
-            </div>
-            <button className={styles.저장} onClick={handleRollingPaperSave}>
-              저장
-            </button>
+                className={s(styles[`color${num}`], styles.color)}
+                onClick={() => handleChangeLineColor(num)}
+              >
+                {num === lineColor && <div className={styles.select}></div>}
+              </div>
+            ))}
           </div>
         </div>
       </Container>

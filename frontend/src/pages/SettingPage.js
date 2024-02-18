@@ -109,8 +109,8 @@ export default function SettingPage() {
       }
     }
   };
-  const [password, setPassword] = useState("1234");
-  const [checkpassword, setCheckpassword] = useState("1234");
+  const [password, setPassword] = useState("");
+  const [checkpassword, setCheckpassword] = useState("");
   //
   useEffect(() => {
     async function fetchData() {
@@ -417,7 +417,7 @@ export default function SettingPage() {
                   <input
                     type="password"
                     id="search"
-                    placeholder={password}
+                    placeholder="새로운비밀번호입력"
                     value={password}
                     className={styles.input}
                     onChange={(e) => setPassword(e.target.value)}
@@ -425,7 +425,7 @@ export default function SettingPage() {
                   <input
                     type="password"
                     id="search"
-                    placeholder={password}
+                    placeholder="새로운비밀번호확인"
                     value={checkpassword}
                     className={styles.input}
                     onChange={(e) => setCheckpassword(e.target.value)}

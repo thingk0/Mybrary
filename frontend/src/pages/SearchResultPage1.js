@@ -52,29 +52,9 @@ export default function SearchResultPage1() {
       setAnimateOut(false);
       navigate(`/search/1/${searchtext}`);
     }, 200);
+    setAnimateOut(false);
   };
-  const handleSubmit2 = (e) => {
-    if (searchtext.trim()) {
-      setRecentSearches((prevSearches) => {
-        const updatedSearches = [...prevSearches];
-        if (updatedSearches.includes(searchtext)) {
-          updatedSearches.splice(updatedSearches.indexOf(searchtext), 1);
-        }
-        updatedSearches.unshift(searchtext); // 새 검색어를 앞에 추가
-        const newSearches = updatedSearches.slice(0, 5); // 최대 5개의 검색어만 유지
 
-        // localStorage에 저장
-        localStorage.setItem("recentSearches", JSON.stringify(newSearches));
-
-        return newSearches;
-      });
-    }
-    setAnimateOut(true);
-    setTimeout(() => {
-      setAnimateOut(false);
-      navigate(`/search/1/${searchtext}`);
-    }, 200);
-  };
   const handleRecentSearchClick = (search) => {
     setAnimateOut(true);
     if (search.trim()) {
@@ -95,7 +75,7 @@ export default function SearchResultPage1() {
     setTimeout(() => {
       setSearchtext(search);
       setAnimateOut(false);
-      navigate(`/search/${search}`); // 페이지 전환
+      navigate(`/search/1/${search}`); // 페이지 전환
     }, 200);
   };
   const [list, setList] = useState([]);
@@ -186,7 +166,7 @@ export default function SearchResultPage1() {
                       <>
                         <div
                           className={styles.key}
-                          onClick={() => handleSubmit2()}
+                          onClick={() => handleRecentSearchClick(key)}
                         >
                           {key}
                         </div>
@@ -221,13 +201,18 @@ export default function SearchResultPage1() {
               }`}
             >
               <div className={styles.mid검색결과}>
-                <span>'{Params.word}' 앨범 검색결과</span>
+                <span>'{searchtext}' 책 검색결과</span>
               </div>
               <div className={styles.mid버튼}>
-                <button onClick={handle0}>게시글</button>
-                <button onClick={handle1}>앨범</button>
+                <button onClick={handle0}>스레드</button>
+                <button onClick={handle1}>책</button>
                 <button onClick={handle2}>계정</button>
               </div>
+              {bookList.length === 0 && (
+                <div className={styles.noneKeyword}>
+                  {searchtext}의 책 검색결과가 없습니다!
+                </div>
+              )}
               <div className={styles.오버플로우확인}>
                 <div className={styles.게시글들어갈공간}>
                   {bookList.map((book, index) => (

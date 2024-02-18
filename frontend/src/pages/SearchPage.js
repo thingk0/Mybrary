@@ -23,10 +23,8 @@ export default function SearchPage() {
         if (updatedSearches.includes(search)) {
           updatedSearches.splice(updatedSearches.indexOf(search), 1);
         }
-        updatedSearches.unshift(search); // 클릭된 단어를 앞에 추가
-        const newSearches = updatedSearches.slice(0, 5); // 최대 5개의 검색어만 유지
-
-        // localStorage에 저장
+        updatedSearches.unshift(search);
+        const newSearches = updatedSearches.slice(0, 5);
         localStorage.setItem("recentSearches", JSON.stringify(newSearches));
 
         return newSearches;
@@ -35,7 +33,7 @@ export default function SearchPage() {
     setTimeout(() => {
       setSearchtext(search);
       setAnimateOut(false);
-      navigate(`/search/${search}`); // 페이지 전환
+      navigate(`/search/${search}`);
     }, 200);
   };
 
@@ -47,43 +45,16 @@ export default function SearchPage() {
         if (updatedSearches.includes(searchtext)) {
           updatedSearches.splice(updatedSearches.indexOf(searchtext), 1);
         }
-        updatedSearches.unshift(searchtext); // 새 검색어를 앞에 추가
-        const newSearches = updatedSearches.slice(0, 5); // 최대 5개의 검색어만 유지
-
-        // localStorage에 저장
+        updatedSearches.unshift(searchtext);
+        const newSearches = updatedSearches.slice(0, 5);
         localStorage.setItem("recentSearches", JSON.stringify(newSearches));
 
         return newSearches;
       });
     }
-    // 검색 결과 페이지로 이동 navigate(`/search/${d.text}`)
-    setAnimateOut(true); // fadeOut 애니메이션 시작
-    // 애니메이션이 끝난 후 페이지 전환
+    setAnimateOut(true);
     setTimeout(() => {
-      navigate(`/search/${searchtext}`); // 페이지 전환
-    }, 200);
-  };
-  const handleSubmit2 = (e) => {
-    if (searchtext.trim()) {
-      setRecentSearches((prevSearches) => {
-        const updatedSearches = [...prevSearches];
-        if (updatedSearches.includes(searchtext)) {
-          updatedSearches.splice(updatedSearches.indexOf(searchtext), 1);
-        }
-        updatedSearches.unshift(searchtext); // 새 검색어를 앞에 추가
-        const newSearches = updatedSearches.slice(0, 5); // 최대 5개의 검색어만 유지
-
-        // localStorage에 저장
-        localStorage.setItem("recentSearches", JSON.stringify(newSearches));
-
-        return newSearches;
-      });
-    }
-    // 검색 결과 페이지로 이동 navigate(`/search/${d.text}`)
-    setAnimateOut(true); // fadeOut 애니메이션 시작
-    // 애니메이션이 끝난 후 페이지 전환
-    setTimeout(() => {
-      navigate(`/search/${searchtext}`); // 페이지 전환
+      navigate(`/search/${searchtext}`);
     }, 200);
   };
 
@@ -308,7 +279,7 @@ export default function SearchPage() {
                       <>
                         <div
                           className={styles.key}
-                          onClick={() => handleSubmit2()}
+                          onClick={() => handleRecentSearchClick(key)}
                         >
                           {key}
                         </div>

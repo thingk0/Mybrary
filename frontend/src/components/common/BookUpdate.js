@@ -6,6 +6,7 @@ import Modal from "./Modal";
 import { getBookList } from "../../api/category/Category";
 import { updateBook } from "../../api/book/Book";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 export default function BookUpdate({
   categoryid,
@@ -14,6 +15,7 @@ export default function BookUpdate({
   setModalIsOpen,
   setList,
 }) {
+  const navigate = useNavigate();
   const layouts = [1, 2, 3, 4, 5, 6];
   const colors = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
   const [categorys, setCategorys] = useState([]);
@@ -69,16 +71,9 @@ export default function BookUpdate({
       beforeCategoryId: categoryid,
       afterCategoryId: value.categoryId,
     });
-    console.log({
-      bookId: book.bookId,
-      title: value.title,
-      coverLayout: value.coverLayout,
-      coverColorCode: value.coverColorCode,
-      beforeCategoryId: categoryid,
-      afterCategoryId: value.categoryId,
-    });
     addNewBookToCategory(value.categoryId);
     setModalIsOpen(false);
+    navigate(`../${value.categoryId}`);
   };
   const [t, setT] = useState(false);
   const nonecate = () => {
