@@ -18,6 +18,7 @@ import toast from "react-hot-toast";
 import FeedModal2 from "../feed/FeedModal2";
 import { getNotificationList } from "../../api/notification/Notification";
 import useNavStore from "../../store/useNavStore";
+import useStompStore from "../../store/useStompStore";
 
 export default function Nav() {
   const user = useUserStore((state) => state.user);
@@ -26,6 +27,7 @@ export default function Nav() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [modalIsOpen2, setModalIsOpen2] = useState(false);
   const [password, setPassword] = useState("");
+  const { disconnect } = useStompStore();
 
   const handleChange = (e) => {
     setPassword(e.target.value);
@@ -80,11 +82,12 @@ export default function Nav() {
   const handleLogOut = async () => {
     try {
       //await doLogout(setUser);
-
       navigate("/join");
+      disconnect();
       localStorage.clear();
     } catch (e) {
       navigate("/join");
+      disconnect();
       localStorage.clear();
     }
   };

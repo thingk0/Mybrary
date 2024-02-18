@@ -87,9 +87,11 @@ const useStompStore = create((set) => ({
       connectHeaders: {
         Authorization: `Bearer ${token}`,
       },
+      reconnectDelay: 5000,
     });
 
     client.onConnect = function () {
+      console.log("재연결");
       client.subscribe(`/sub/notification/${email}`, (msg) => {
         setHasNewNotification(true);
         const alarmObj = JSON.parse(msg.body);
@@ -100,6 +102,21 @@ const useStompStore = create((set) => ({
     };
 
     client.activate();
+  },
+
+  disconnect: () => {
+    if (useStompStore.getState().stompClient) {
+      useStompStore
+        .getState()
+        .stompClient.deactivate()
+        .then(() => {
+          console.log("웹소켓 연결이 종료되었습니다.");
+          set({ stompClient: null });
+        })
+        .catch((error) => {
+          console.error("웹소켓 연결 종료 중 오류 발생:", error);
+        });
+    }
   },
 }));
 
