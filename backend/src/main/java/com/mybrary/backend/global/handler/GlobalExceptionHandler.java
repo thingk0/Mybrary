@@ -35,6 +35,7 @@ import com.mybrary.backend.global.exception.mybrary.NotMybraryException;
 import com.mybrary.backend.global.exception.paper.PaperAccessDeniedException;
 import com.mybrary.backend.global.exception.paper.PaperDeleteException;
 import com.mybrary.backend.global.exception.paper.PaperListNotFoundException;
+import com.mybrary.backend.global.exception.paper.PaperUpdateTypeMismatchException;
 import com.mybrary.backend.global.exception.pickbook.PickBookNotFoundException;
 import com.mybrary.backend.global.exception.scrap.ScrapNotFoundException;
 import com.mybrary.backend.global.exception.tag.TagNotFoundException;
@@ -300,6 +301,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(AccessTokenNotFoundException.class)
     protected ResponseEntity<?> handle(AccessTokenNotFoundException e) {
         log.error("AccessTokenNotFoundException = {}", e.getErrorCode().getMessage());
+        return response.error(e.getErrorCode());
+    }
+
+    @ExceptionHandler(PaperUpdateTypeMismatchException.class)
+    protected ResponseEntity<?> handle(PaperUpdateTypeMismatchException e) {
+        log.error("PaperUpdateTypeMismatchException = {}", e.getErrorCode().getMessage());
         return response.error(e.getErrorCode());
     }
 
