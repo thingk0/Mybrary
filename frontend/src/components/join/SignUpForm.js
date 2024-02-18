@@ -5,6 +5,7 @@ import s from "classnames";
 import toast from "react-hot-toast";
 import Iconuser2 from "../../assets/icon/Iconuser2.png";
 import 예시이미지2 from "../../assets/예시이미지2.png";
+import 기본책표지 from "../../assets/기본책표지.png";
 
 import {
   checkNickName,
@@ -240,16 +241,22 @@ function SignUpForm({ setPageremote }) {
         const res2 = await fetch(예시이미지2);
         const blob2 = await res2.blob();
 
+        const res3 = await fetch(기본책표지);
+        const blob3 = await res3.blob();
+
         const images = new FormData();
         images.append("images", blob1, "Iconuser2.png");
         images.append("images", blob2, "예시이미지2.png");
+        images.append("images", blob3, "기본책표지.png");
 
         const res = await uplodaImage(images);
+        console.log(res);
 
         const data = await signup({
           ...formData,
           profileImageId: res.imageIds[0],
           frameImageId: res.imageIds[1],
+          bookCoverImageId: res.imageIds[2],
         });
         console.log(data);
 

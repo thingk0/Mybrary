@@ -30,7 +30,11 @@ axios.interceptors.request.use(
     return config;
   },
   (error) => {
-    return Promise.reject(error);
+    const { disconnect } = useStompStore();
+    localStorage.clear();
+    disconnect();
+    window.location.href = "/join";
+    //return Promise.reject(error);
   }
 );
 
