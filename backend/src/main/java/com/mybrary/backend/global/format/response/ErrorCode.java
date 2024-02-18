@@ -85,6 +85,7 @@ public enum ErrorCode {
     // 페이퍼 예외 처리
     PAPERLIST_NOT_FOUND(HttpStatus.NOT_FOUND, "페이퍼리스트를 찾을 수 없습니다."),
     PAPER_ACCESS_DENIED(HttpStatus.BAD_REQUEST, "페이퍼에 접근할 수 없습니다."),
+    PAPER_UPDATE_TYPE_MISMATCH(HttpStatus.BAD_REQUEST, "잘못된 입력값으로 페이퍼를 업데이트 할 수 없습니다."),
 
     // 스크랩 예외 처리
     SCRAP_NOT_FOUND(HttpStatus.NOT_FOUND, "스크랩을 찾을 수 없습니다."),
