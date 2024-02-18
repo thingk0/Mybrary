@@ -128,6 +128,7 @@ export default function FollowerList({
               <div className={styles.userimg}>
                 <div
                   className={styles.img}
+                  onClick={() => navigate(`/mybrary/${follow.memberId}`)}
                   style={{
                     background: `url("https://jingu.s3.ap-northeast-2.amazonaws.com/${follow.profileImageUrl}")no-repeat center/cover`,
                   }}
