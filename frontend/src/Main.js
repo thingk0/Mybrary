@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ScrollToTop from "./components/common/ScrollToTop";
 import App from "./App";
 import BookPage from "./pages/BookPage";

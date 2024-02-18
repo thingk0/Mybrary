@@ -55,7 +55,7 @@ export default function App() {
     }
     // 있으면 재연결 하지마
     if (!stompClient) socketConnect();
-  }, []);
+  }, [stompClient, email, setHasNewNotification, connect]);
 
   const location = useLocation(); // 현재 위치 정보를 가져옵니다.
 
