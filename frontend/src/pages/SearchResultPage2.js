@@ -175,7 +175,7 @@ export default function SearchResultPage2() {
                     />
                   </div>
                 </form>
-                {list.length !== 0 && (
+                {list.length > 1 && (
                   <div className={styles.absolute}>
                     <div className={styles.title}>추천검색어</div>
                     {list?.map((key) => (
