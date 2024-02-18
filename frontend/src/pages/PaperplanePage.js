@@ -212,18 +212,24 @@ export default function PaperplanePage() {
       };
       setChatMessageList((prev) => [message, ...prev]);
 
+      // 채팅방 목록 업데이트 로직
       setChatRoomList((prevChatRoomList) => {
-        const updatedList = prevChatRoomList.map((chatRoom) => {
-          if (chatRoom.chatRoomId === nowChatRoom.chatRoomId) {
-            // 현재 채팅방에 메시지를 보냈으므로, 최신 메시지 정보를 업데이트
-            return {
-              ...chatRoom,
-              latestMessage: message.content,
-              latestMessageSender: user.memberId,
-            };
-          }
-          return chatRoom;
-        });
+        // 현재 채팅방을 찾아 가장 상단으로 이동
+        const updatedList = prevChatRoomList.filter(
+          (chatRoom) => chatRoom.chatRoomId !== nowChatRoom.chatRoomId
+        );
+        const currentChatRoom = prevChatRoomList.find(
+          (chatRoom) => chatRoom.chatRoomId === nowChatRoom.chatRoomId
+        );
+
+        if (currentChatRoom) {
+          // 최신 메시지 정보 업데이트
+          currentChatRoom.latestMessage = message.content;
+          currentChatRoom.latestMessageSender = user.memberId;
+          // 현재 채팅방을 배열의 첫 번째 요소로 추가
+          updatedList.unshift(currentChatRoom);
+        }
+
         return updatedList;
       });
 
