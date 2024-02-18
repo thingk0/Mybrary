@@ -134,9 +134,12 @@ public class SearchServiceImpl implements SearchService {
     public List<BookGetDto> searchBook(String email, String keyword, Pageable page) {
 
         Member me = memberRepository.searchByEmail(email).orElseThrow(MemberNotFoundException::new);
-
-        List<BookGetDto> bookList = bookRepository.searchBookByKeyword(me.getId(), keyword, page).orElseThrow(
-            BookNotFoundException::new);
+        List<BookGetDto> bookList = new ArrayList<>();
+        keyword = extractCompletedKorean(keyword);
+        if(!keyword.equals("")) {
+            bookList = bookRepository.searchBookByKeyword(me.getId(), keyword, page).orElseThrow(
+                BookNotFoundException::new);
+        }
 
         return bookList;
     }
@@ -150,16 +153,19 @@ public class SearchServiceImpl implements SearchService {
         if (isKorean(keyword)) {
             System.out.println("한글입니다.");
             keyword = extractCompletedKorean(keyword);
-            accountList = memberRepository.searchAcoountByKo(me.getId(), keyword, page).orElseThrow(MemberNotFoundException::new);
-            for (int i = 0; i < accountList.size(); i++) {
-                MemberGetDto member = accountList.get(i);
+            if(!keyword.equals("")){
+                accountList = memberRepository.searchAcoountByKo(me.getId(), keyword, page)
+                                              .orElseThrow(MemberNotFoundException::new);
+                for (int i = 0; i < accountList.size(); i++) {
+                    MemberGetDto member = accountList.get(i);
 
-                if (memberRepository.isFollowed(me.getId(), member.getMemberId()).orElse(null) != null) {
-                    accountList.get(i).setFollowStatus(3);
-                } else if (memberRepository.isRequested(me.getId(), member.getMemberId()).orElse(null) != null) {
-                    accountList.get(i).setFollowStatus(2);
-                } else {
-                    accountList.get(i).setFollowStatus(1);
+                    if (memberRepository.isFollowed(me.getId(), member.getMemberId()).orElse(null) != null) {
+                        accountList.get(i).setFollowStatus(3);
+                    } else if (memberRepository.isRequested(me.getId(), member.getMemberId()).orElse(null) != null) {
+                        accountList.get(i).setFollowStatus(2);
+                    } else {
+                        accountList.get(i).setFollowStatus(1);
+                    }
                 }
             }
         } else if (isEnglish(keyword)) {
@@ -179,7 +185,6 @@ public class SearchServiceImpl implements SearchService {
         } else {
             System.out.println("한글도 영어도 아닙니다.");
         }
-
         return accountList;
     }
 
