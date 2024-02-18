@@ -210,7 +210,12 @@ export default function SearchResultPage() {
                 <span>'{searchtext}' 스레드 검색결과</span>
               </div>
               <div className={styles.mid버튼}>
-                <button onClick={handle0}>스레드</button>
+                <button
+                  onClick={handle0}
+                  style={{ backgroundColor: "var(--main5)" }}
+                >
+                  스레드
+                </button>
                 <button onClick={handle1}>책</button>
                 <button onClick={handle2}>계정</button>
               </div>
