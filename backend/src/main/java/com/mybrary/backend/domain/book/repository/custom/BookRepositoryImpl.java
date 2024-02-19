@@ -82,7 +82,7 @@ public class BookRepositoryImpl implements BookRepositoryCustom {
                  .from(book)
                  .leftJoin(pickBook).on(pickBook.book.id.eq(book.id).and(pickBook.book.member.id.eq(memberId)))
                  .leftJoin(scrap).on(book.id.eq(scrap.book.id))
-                 .where(pickBook.category.id.eq(categoryId).and(pickBook.isDeleted.eq(false)))
+                 .where(pickBook.category.id.eq(categoryId).and(pickBook.isDeleted.eq(false)).and(scrap.isDeleted.eq(false)))
                  .groupBy(book.id)
                  .fetch());
     }
