@@ -16,7 +16,7 @@ public interface BookRepositoryCustom {
 
     Optional<List<BookGetDto>> getAllBookByCategoryId(Long categoryId);
 
-    Optional<List<MyBookGetDto>> getAllMyBookList(Long memeberId, Long categoryId);
+    List<MyBookGetDto> getAllMyBookList(Long categoryId);
 
     Optional<List<BookListGetFromPaperDto>> getBookListFromPaper(Long paperId);
 

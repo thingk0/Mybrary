@@ -69,8 +69,19 @@ public class BookRepositoryImpl implements BookRepositoryCustom {
     }
 
     @Override
-    public Optional<List<MyBookGetDto>> getAllMyBookList(Long memberId, Long categoryId) {
-        return Optional.ofNullable(
+    public List<MyBookGetDto> getAllMyBookList(Long categoryId) {
+        return query.select(Projections.constructor(MyBookGetDto.class,
+                                                    pickBook.book.id,
+                                                    pickBook.book.coverTitle,
+                                                    scrap.count()))
+                    .from(category)
+                    .leftJoin(pickBook.category, category)
+                    .leftJoin(pickBook.book, book)
+                    .leftJoin(scrap.book, book)
+                    .where(category.id.eq(categoryId))
+                    .groupBy(book.id, book.coverTitle)
+                    .fetch();
+
 //            query.select(Projections.constructor(MyBookGetDto.class, book.id, book.coverTitle, scrap.count()))
 //                 .from(book)
 //                 .leftJoin(scrap).on(scrap.book.id.eq(book.id))
@@ -78,13 +89,13 @@ public class BookRepositoryImpl implements BookRepositoryCustom {
 //                 .where(book.member.id.eq(memberId).and(pickBook.category.id.eq(categoryId)))
 //                 .groupBy(book.id)
 //                 .fetch());
-            query.select(Projections.constructor(MyBookGetDto.class, pickBook.book.id, pickBook.book.coverTitle, scrap.count()))
-                 .from(book)
-                 .leftJoin(pickBook).on(pickBook.book.id.eq(book.id).and(pickBook.book.member.id.eq(memberId)))
-                 .leftJoin(scrap).on(book.id.eq(scrap.book.id))
-                 .where(pickBook.category.id.eq(categoryId).and(pickBook.isDeleted.eq(false)).and(scrap.isDeleted.eq(false)))
-                 .groupBy(book.id)
-                 .fetch());
+//            query.select(Projections.constructor(MyBookGetDto.class, pickBook.book.id, pickBook.book.coverTitle, scrap.count()))
+//                 .from(book)
+//                 .leftJoin(pickBook).on(pickBook.book.id.eq(book.id).and(pickBook.book.member.id.eq(memberId)))
+//                 .leftJoin(scrap).on(book.id.eq(scrap.book.id))
+//                 .where(pickBook.category.id.eq(categoryId).and(pickBook.isDeleted.eq(false)).and(scrap.isDeleted.eq(false)))
+//                 .groupBy(book.id)
+//                 .fetch());
     }
 
     /* 책의 스크랩된 페이퍼들중 책 멤버아이디와 페이퍼 아이디가 같은 페이퍼들, 즉 원작자 페이퍼와 일치하는 페이퍼의 책 목록 찾기  */
@@ -95,7 +106,7 @@ public class BookRepositoryImpl implements BookRepositoryCustom {
         QImage coverImage = new QImage("coverImage");
 
         return Optional.ofNullable(query.select(Projections.constructor(BookListGetFromPaperDto.class,
-                                            book.id, book.coverTitle, member.id, coverImage.url ))
+                                                                        book.id, book.coverTitle, member.id, coverImage.url))
                                         .from(paper)
                                         .leftJoin(scrap).on(scrap.paper.id.eq(paper.id))
                                         .leftJoin(book).on(scrap.book.id.eq(book.id))
