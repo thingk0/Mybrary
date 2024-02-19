@@ -71,13 +71,13 @@ public class BookRepositoryImpl implements BookRepositoryCustom {
     @Override
     public List<MyBookGetDto> getAllMyBookList(Long categoryId) {
         return query.select(Projections.constructor(MyBookGetDto.class,
-                                                    pickBook.book.id,
-                                                    pickBook.book.coverTitle,
+                                                    book.id,
+                                                    book.coverTitle,
                                                     scrap.count()))
                     .from(category)
-                    .leftJoin(pickBook.category, category)
-                    .leftJoin(pickBook.book, book)
-                    .leftJoin(scrap.book, book)
+                    .leftJoin(pickBook).on(pickBook.category.id.eq(category.id))
+                    .leftJoin(book).on(book.id.eq(pickBook.book.id))
+                    .leftJoin(scrap).on(scrap.book.id.eq(book.id))
                     .where(category.id.eq(categoryId))
                     .groupBy(book.id, book.coverTitle)
                     .fetch();
