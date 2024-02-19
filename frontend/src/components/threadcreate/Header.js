@@ -14,7 +14,7 @@ export default function Header({
   const addPaper = () => {
     setPapers([...papers, initialPaper()]);
     setCurrentPage(papers.length);
-    if (bookId !== -1) {
+    if (bookId !== null) {
       toast("책선택이 초기화되었습니다", {
         icon: "🤔",
         style: {
