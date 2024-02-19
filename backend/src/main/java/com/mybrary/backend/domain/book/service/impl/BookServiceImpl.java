@@ -6,7 +6,6 @@ import com.mybrary.backend.domain.book.dto.requestDto.BookUpdateDto;
 import com.mybrary.backend.domain.book.dto.responseDto.BookGetDto;
 import com.mybrary.backend.domain.book.dto.responseDto.BookListGetFromPaperDto;
 import com.mybrary.backend.domain.book.dto.responseDto.BookPaperGetDto;
-import com.mybrary.backend.domain.book.dto.responseDto.MyBookGetDto;
 import com.mybrary.backend.domain.book.entity.Book;
 import com.mybrary.backend.domain.book.repository.BookRepository;
 import com.mybrary.backend.domain.book.service.BookService;
@@ -85,10 +84,7 @@ public class BookServiceImpl implements BookService {
         if (!myCategoryGetDtoList.isEmpty()) {
             for (MyCategoryGetDto myCategoryGetDto : myCategoryGetDtoList) {
                 /* MyBookGetDto */
-                List<MyBookGetDto> myBookGetDtoList = bookRepository.getAllMyBookList(memberId, myCategoryGetDto.getCategoryId())
-                                                                    .orElse(new ArrayList<>());
-                myCategoryGetDto.setBookList(myBookGetDtoList);
-
+                myCategoryGetDto.setBookList(bookRepository.getAllMyBookList(myCategoryGetDto.getCategoryId()));
             }
         }
 
