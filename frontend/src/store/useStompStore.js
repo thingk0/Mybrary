@@ -87,7 +87,7 @@ const useStompStore = create((set) => ({
       connectHeaders: {
         Authorization: `Bearer ${token}`,
       },
-      reconnectDelay: 5000,
+      // reconnectDelay: 5000,
     });
 
     client.onConnect = function () {
