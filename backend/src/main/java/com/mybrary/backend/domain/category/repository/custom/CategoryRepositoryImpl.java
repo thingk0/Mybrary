@@ -21,19 +21,22 @@ public class CategoryRepositoryImpl implements CategoryRepositoryCustom {
 
 
     @Override
-    public Optional<List<CategoryGetDto>> getAllCategory(Long bookshelfId) {
-
-        return Optional.ofNullable(query.select(
-                        Projections.constructor(CategoryGetDto.class, category.id, category.categoryName,
-                                                category.categorySeq, pickBook.count().intValue())
+    public List<CategoryGetDto> fetchCategoriesByBookshelfId(Long bookshelfId) {
+        return query.select(
+                        Projections.constructor(CategoryGetDto.class,
+                                                category.id,
+                                                category.categoryName,
+                                                category.categorySeq,
+                                                pickBook.count().intValue())
                     )
                     .from(category)
-                    .leftJoin(pickBook).on(pickBook.category.id.eq(category.id).and(pickBook.isDeleted.eq(false)))
-                    .where(category.bookshelf.id.eq(bookshelfId))
-                    .groupBy(category.id)
+                    .leftJoin(pickBook).on(pickBook.category.id.eq(category.id)
+                                                               .and(pickBook.isDeleted.eq(false)))
+                    .where(category.bookshelf.id.eq(bookshelfId)
+                                                .and(category.isDeleted.eq(false)))
+                    .groupBy(category.id, category.categoryName, category.categorySeq)
                     .orderBy(category.categorySeq.asc())
-                    .fetch());
-
+                    .fetch();
     }
 
     @Override
@@ -64,12 +67,12 @@ public class CategoryRepositoryImpl implements CategoryRepositoryCustom {
     @Override
     public Optional<Long> findCategoryOwnerId(Long categoryId) {
         return Optional.ofNullable(query.select(member.id)
-                                       .from(category)
-                                       .leftJoin(bookshelf).on(category.bookshelf.id.eq(bookshelf.id))
-                                       .leftJoin(mybrary).on(bookshelf.mybrary.id.eq(mybrary.id))
-                                       .leftJoin(member).on(mybrary.member.id.eq(member.id))
-                                       .where(category.id.eq(categoryId))
-                                       .fetchOne()
+                                        .from(category)
+                                        .leftJoin(bookshelf).on(category.bookshelf.id.eq(bookshelf.id))
+                                        .leftJoin(mybrary).on(bookshelf.mybrary.id.eq(mybrary.id))
+                                        .leftJoin(member).on(mybrary.member.id.eq(member.id))
+                                        .where(category.id.eq(categoryId))
+                                        .fetchOne()
         );
     }
 
