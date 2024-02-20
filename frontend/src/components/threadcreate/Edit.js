@@ -5,12 +5,7 @@ import s from "classnames";
 import { Editor } from "react-draft-wysiwyg";
 import FileInput from "../common/FileInput";
 
-export default function Edit({
-  currentPage,
-  papers,
-  setPapers,
-  setPostPossible,
-}) {
+export default function Edit({ currentPage, papers, setPapers }) {
   // const inputRef = useRef(null);
   // const persent = ["", "9:16", "3:4", "1:1", "4:3", "16:9"];
   const [toolbarZIndex, setToolbarZIndex] = useState(1);
@@ -44,20 +39,6 @@ export default function Edit({
     updatedPapers[currentPage].editorState2 = editorState2;
     setPapers(updatedPapers);
   };
-
-  useEffect(() => {
-    if (Math.floor(papers[currentPage].layoutType / 1000) === 1) {
-      papers[currentPage].image1 === null
-        ? setPostPossible(false)
-        : setPostPossible(true);
-    } else {
-      papers[currentPage].image1 === null
-        ? setPostPossible(false)
-        : papers[currentPage].image2 === null
-        ? setPostPossible(false)
-        : setPostPossible(true);
-    }
-  });
 
   return (
     <div className={s(styles.미드중앙사이즈조정, item.position)}>
