@@ -67,11 +67,11 @@ public class MybraryServiceImpl implements MybraryService {
         mybrary.setBookCount(bookRepository.countMyBook(mybrary.getBookShelfId()).orElse(0));
         mybrary.setFollowerCount(followRepository.countMyFollower(memberId).orElse(0));
         mybrary.setFollowingCount(followRepository.countMyFollowing(memberId).orElse(0));
-        if(memberRepository.isFollowed(myId, memberId).orElse(null)!=null){
+        if (memberRepository.isFollowed(myId, memberId).orElse(null) != null) {
             mybrary.setFollowStatus(3);
-        } else if(memberRepository.isRequested(myId, memberId).orElse(null)!=null){
+        } else if (memberRepository.isRequested(myId, memberId).orElse(null) != null) {
             mybrary.setFollowStatus(2);
-        } else{
+        } else {
             mybrary.setFollowStatus(1);
         }
         return mybrary;
