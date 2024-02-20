@@ -108,39 +108,34 @@ public class ThreadServiceImpl implements ThreadService {
     public Long createThread(String email, ThreadPostDto threadPostDto) {
 
         CompletableFuture<Optional<Mybrary>> asyncMybrary = asyncFetchMybraryByEmail(email);
-        CompletableFuture<Optional<Book>> asyncBook = null;
-        CompletableFuture<Integer> asyncFindLastPaperSeq = null;
+        Optional<Book> book = null;
+        int paperSeq = 0;
+
         Long bookId = threadPostDto.getBookId();
         if (bookId != null) {
-            asyncBook = asyncFetchBookById(threadPostDto.getBookId());
-            asyncFindLastPaperSeq = asyncFindLastPaperSeq(threadPostDto.getBookId());
+            book = bookRepository.findById(bookId);
+            paperSeq = scrapRepository.findLastPaperSeq(bookId)
+                                      .orElse(0);
         }
 
         Mybrary mybrary = asyncMybrary.join().orElseThrow(MybraryNotFoundException::new);
         Member member = mybrary.getMember();
 
         Thread thread = Thread.create(mybrary, threadPostDto.isPaperPublic(), threadPostDto.isScrapEnable());
-        CompletableFuture.runAsync(() -> {
-            getTransactionTemplate(false).execute(status -> {
-                threadRepository.save(thread);
-                return null;
-            });
-        });
+        threadRepository.save(thread);
 
         Map<Long, String> paperTagList = new HashMap<>();
 
         // bookId가 null 이 아닐 때
-        Optional<Book> book = asyncBook.join();
         // book 의 마지막 페이지 번호
-        int paperSeq = asyncFindLastPaperSeq == null ? 0 : asyncFindLastPaperSeq.join();
         /* paper 객체 하나씩 생성하고 저장 */
 
         List<PostPaperDto> postPaperDtoList = threadPostDto.getPostPaperDto();
         for (PostPaperDto dto : postPaperDtoList) {
 
             /* Image 객체 찾기 */
-            CompletableFuture<Optional<Image>> image1Async = asyncFetchImageById(dto.getImageId1());
-            CompletableFuture<Optional<Image>> image2Async = asyncFetchImageById(dto.getImageId2());
+//            CompletableFuture<Optional<Image>> image1Async = asyncFetchImageById(dto.getImageId1());
+//            CompletableFuture<Optional<Image>> image2Async = asyncFetchImageById(dto.getImageId2());
 
             StringBuilder mentionList = new StringBuilder();
             dto.getMentionList().forEach(id -> {
@@ -153,8 +148,9 @@ public class ThreadServiceImpl implements ThreadService {
             thread.addPaper(paper);
 
             /* paperImage 객체 저장 */
-            paperImageRepository.saveAll(List.of(PaperImage.of(paper, image1Async.join().orElse(null), 1),
-                                                 PaperImage.of(paper, image2Async.join().orElse(null), 2)));
+            paperImageRepository.saveAll(
+                List.of(PaperImage.of(paper, imageRepository.findById(dto.getImageId1()).orElse(null), 1),
+                        PaperImage.of(paper, imageRepository.findById(dto.getImageId2()).orElse(null), 2)));
 
             /* scrap 객체 저장 */
             if (book.isPresent()) {
@@ -168,7 +164,21 @@ public class ThreadServiceImpl implements ThreadService {
 
             /* tag 목록 생성 */
             List<String> tagNameList = dto.getTagList();
-            CompletableFuture<Void> tagListSavesAsync = asyncProcessAndSaveAllTag(tagNameList, paperTagList, paper);
+
+            StringBuilder tags = new StringBuilder();
+            List<Tag> tagList = new ArrayList<>();
+            if (!tagNameList.isEmpty()) {
+                for (String tagName : tagNameList) {
+                    tagList.add(Tag.builder()
+                                   .tagName(tagName)
+                                   .paper(paper)
+                                   .build());
+                    tags.append(tagName).append(' ');
+                }
+                tagRepository.saveAll(tagList);
+            }
+
+            paperTagList.put(paper.getId(), tags.toString());
 
             /* 여기서 페이퍼에 대한 멘션 알림 보내는 로직 */
             /* 쓰레드를 생성한 멤버가 sender, 멘션된 회원이 receiver, 알람타입은 11 */
@@ -183,7 +193,6 @@ public class ThreadServiceImpl implements ThreadService {
                                        .paperId(paper.getId())
                                        .build());
             }
-            tagListSavesAsync.join();
         }
         asyncProcessAndSaveAllPaperDocument(thread, paperTagList);
         return thread.getId();
