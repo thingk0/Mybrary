@@ -37,6 +37,7 @@ public class CategoryServiceImpl implements CategoryService {
     private final PlatformTransactionManager transactionManager;
 
     @Override
+    @Transactional(readOnly = true)
     public List<CategoryGetDto> getAllCategory(String email, Long bookshelfId) {
 
         /* 카테고리 접근 권한 판단 */
