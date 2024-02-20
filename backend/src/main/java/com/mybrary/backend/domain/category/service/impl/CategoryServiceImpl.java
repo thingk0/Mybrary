@@ -92,19 +92,21 @@ public class CategoryServiceImpl implements CategoryService {
         categoryRepository.delete(category);
     }
 
-    private CompletableFuture<Mybrary> fetchMybraryOwnerAsync(Long bookshelfId) {
-        return CompletableFuture.supplyAsync(() -> getTransactionTemplateReadOnly().execute(status -> {
+    @Transactional(readOnly = true)
+    public CompletableFuture<Mybrary> fetchMybraryOwnerAsync(Long bookshelfId) {
+        return CompletableFuture.supplyAsync(() -> {
             Mybrary mybrary = mybraryRepository.fetchMybraryByBookshelfId(bookshelfId);
             return mybrary;
-        }));
+        });
     }
 
 
-    private CompletableFuture<Long> fetchMemberIdAsync(String email) {
-        return CompletableFuture.supplyAsync(() -> getTransactionTemplateReadOnly().execute(status -> {
+    @Transactional(readOnly = true)
+    public CompletableFuture<Long> fetchMemberIdAsync(String email) {
+        return CompletableFuture.supplyAsync(() -> {
             Member member = memberRepository.searchByEmail(email).orElseThrow(MemberNotFoundException::new);
             return member.getId();
-        }));
+        });
     }
 
     private TransactionTemplate getTransactionTemplateReadOnly() {
@@ -112,4 +114,5 @@ public class CategoryServiceImpl implements CategoryService {
         transactionTemplate.setReadOnly(true);
         return transactionTemplate;
     }
+
 }
