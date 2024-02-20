@@ -141,8 +141,8 @@ public class ThreadServiceImpl implements ThreadService {
             thread.addPaper(paper);
 
             /* Image 객체 찾기 */
-            Optional<Image> image1 = null;
-            Optional<Image> image2 = null;
+            Optional<Image> image1 = Optional.empty();
+            Optional<Image> image2 = Optional.empty();
 
             if (dto.getImageId1() != null) {
                 image1 = imageRepository.findById(dto.getImageId1());
@@ -152,9 +152,10 @@ public class ThreadServiceImpl implements ThreadService {
                 image2 = imageRepository.findById(dto.getImageId2());
             }
 
-            /* paperImage 객체 저장 */
+            // paperImage 객체 저장
             PaperImage paperImage1 = PaperImage.of(paper, image1.orElse(null), 1);
             PaperImage paperImage2 = PaperImage.of(paper, image2.orElse(null), 2);
+
             paperImageRepository.save(paperImage1);
             paperImageRepository.save(paperImage2);
 
