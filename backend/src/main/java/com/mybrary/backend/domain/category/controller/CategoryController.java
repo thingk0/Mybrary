@@ -37,12 +37,11 @@ public class CategoryController {
 
     @Operation(summary = "카테고리 조회", description = "책장 아이디를 통한 카테고리 목록 조회")
     @GetMapping
-    public ResponseEntity<?> getAllCategoryById(
-        @Parameter(hidden = true) Authentication authentication,
-        @RequestParam(name = "bookshelfId") Long bookshelfId) {
+    public ResponseEntity<?> getAllCategoryById(@Parameter(hidden = true) Authentication authentication,
+                                                @RequestParam(name = "bookshelfId") Long bookshelfId) {
 
-        List<CategoryGetDto> result = categoryService.getAllCategory(authentication.getName(), bookshelfId);
-        return response.success(ResponseCode.CATEGORIES_FETCHED, result);
+        return response.success(ResponseCode.CATEGORIES_FETCHED,
+                                categoryService.getAllCategory(authentication.getName(), bookshelfId));
     }
 
     @Operation(summary = "카테고리 책 리스트 조회", description = "카테고리 아이디를 통한 책 목록 조회")
