@@ -40,11 +40,8 @@ public class CategoryServiceImpl implements CategoryService {
     public List<CategoryGetDto> getAllCategory(String email, Long bookshelfId) {
 
         /* 카테고리 접근 권한 판단 */
-        CompletableFuture<Long> memberIdFuture = fetchMemberIdAsync(email);
-        CompletableFuture<Mybrary> mybraryOwnerFuture = fetchMybraryOwnerAsync(bookshelfId);
-
-        Long requesterId = memberIdFuture.join();
-        Member owner = mybraryOwnerFuture.join().getMember();
+        Long requesterId = memberRepository.searchByEmail(email).orElseThrow(MemberNotFoundException::new).getId();
+        Member owner = mybraryRepository.fetchMybraryByBookshelfId(bookshelfId).getMember();
 
         /**
          * 마이브러리의 주인이 아니고,
