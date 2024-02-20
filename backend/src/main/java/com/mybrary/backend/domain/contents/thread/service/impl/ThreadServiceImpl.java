@@ -107,7 +107,7 @@ public class ThreadServiceImpl implements ThreadService {
     @Override
     public Long createThread(String email, ThreadPostDto threadPostDto) {
 
-        Optional<Book> book = null;
+        Optional<Book> book = Optional.empty();
         if (threadPostDto.getBookId() != null) {
             book = bookRepository.findById(threadPostDto.getBookId());
         }
@@ -155,13 +155,12 @@ public class ThreadServiceImpl implements ThreadService {
             // paperImage 객체 저장
             PaperImage paperImage1 = PaperImage.of(paper, image1.orElse(null), 1);
             PaperImage paperImage2 = PaperImage.of(paper, image2.orElse(null), 2);
-
             paperImageRepository.save(paperImage1);
             paperImageRepository.save(paperImage2);
 
 
             /* scrap 객체 저장 */
-            if (!book.isEmpty()) {
+            if (book != null && !book.isEmpty()) {
                 Scrap scrap = Scrap.builder()
                                    .paper(paper)
                                    .book(book.orElse(null))
