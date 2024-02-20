@@ -113,7 +113,7 @@ public class ThreadServiceImpl implements ThreadService {
         }
 
         Mybrary mybrary = mybraryRepository.findMybraryByEmail(email).orElseThrow(MemberNotFoundException::new);
-        Thread thread = Thread.create(mybrary, threadPostDto.isPaperPublic(), threadPostDto.isScrapEnable());\
+        Thread thread = Thread.create(mybrary, threadPostDto.isPaperPublic(), threadPostDto.isScrapEnable());
         threadRepository.save(thread);
 
         Member member = mybrary.getMember();
