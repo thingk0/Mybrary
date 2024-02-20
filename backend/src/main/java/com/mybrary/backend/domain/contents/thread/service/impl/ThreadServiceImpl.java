@@ -45,6 +45,7 @@ import com.mybrary.backend.global.exception.paper.PaperUpdateTypeMismatchExcepti
 import com.mybrary.backend.global.exception.thread.MainThreadListNotFoundException;
 import com.mybrary.backend.global.exception.thread.ThreadAccessDeniedException;
 import com.mybrary.backend.global.exception.thread.ThreadIdNotFoundException;
+import jakarta.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -60,7 +61,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 
 @Log4j2
 @Service
@@ -85,34 +88,60 @@ public class ThreadServiceImpl implements ThreadService {
 
     private final PaperDocumentRepository paperDocumentRepository;
     private final SearchService searchService;
+    private final PlatformTransactionManager transactionManager;
 
+    @Async
+    public CompletableFuture<Integer> asyncFindLastPaperSeq(Long bookId) {
+        return CompletableFuture.completedFuture(scrapRepository.findLastPaperSeq(bookId)
+                                                                .orElse(0));
+    }
+
+    private TransactionTemplate getTransactionTemplate(@Nullable Boolean readOnly) {
+        TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager);
+        if (readOnly) {
+            transactionTemplate.setReadOnly(readOnly);
+        }
+        return transactionTemplate;
+    }
 
     @Override
     public Long createThread(String email, ThreadPostDto threadPostDto) {
 
-        CompletableFuture<Optional<Book>> bookAsync = asyncFetchBookById(threadPostDto.getBookId());
-        CompletableFuture<Mybrary> mybraryAsync = asyncFetchMybraryByEmail(email);
-
-        Optional<Book> book = bookAsync.join();
-        Mybrary mybrary = mybraryAsync.join();
-
-        Thread thread = Thread.create(mybrary, threadPostDto.isPaperPublic(), threadPostDto.isScrapEnable());
-        threadRepository.save(thread);
-
-        Member member = mybrary.getMember();
-        Map<Long, String> paperTagList = new HashMap<>();
-
-        // bookId가 null이 아닐 때
-        // book의 마지막 페이지 번호
-        int paperSeq = 0;
-        if (threadPostDto.getBookId() != null) {
-            paperSeq = scrapRepository.findLastPaperSeq(threadPostDto.getBookId())
-                                      .orElse(0);
+        CompletableFuture<Optional<Mybrary>> asyncMybrary = asyncFetchMybraryByEmail(email);
+        CompletableFuture<Optional<Book>> asyncBook = null;
+        CompletableFuture<Integer> asyncFindLastPaperSeq = null;
+        Long bookId = threadPostDto.getBookId();
+        if (bookId != null) {
+            asyncBook = asyncFetchBookById(threadPostDto.getBookId());
+            asyncFindLastPaperSeq = asyncFindLastPaperSeq(threadPostDto.getBookId());
         }
 
+        Mybrary mybrary = asyncMybrary.join().orElseThrow(MybraryNotFoundException::new);
+        Member member = mybrary.getMember();
+
+        Thread thread = Thread.create(mybrary, threadPostDto.isPaperPublic(), threadPostDto.isScrapEnable());
+        CompletableFuture.runAsync(() -> {
+            getTransactionTemplate(false).execute(status -> {
+                threadRepository.save(thread);
+                return null;
+            });
+        });
+
+        Map<Long, String> paperTagList = new HashMap<>();
+
+        // bookId가 null 이 아닐 때
+        Optional<Book> book = asyncBook.join();
+        // book 의 마지막 페이지 번호
+        int paperSeq = asyncFindLastPaperSeq == null ? 0 : asyncFindLastPaperSeq.join();
         /* paper 객체 하나씩 생성하고 저장 */
+
         List<PostPaperDto> postPaperDtoList = threadPostDto.getPostPaperDto();
         for (PostPaperDto dto : postPaperDtoList) {
+
+            /* Image 객체 찾기 */
+            CompletableFuture<Optional<Image>> image1Async = asyncFetchImageById(dto.getImageId1());
+            CompletableFuture<Optional<Image>> image2Async = asyncFetchImageById(dto.getImageId2());
+
             StringBuilder mentionList = new StringBuilder();
             dto.getMentionList().forEach(id -> {
                 mentionList.append(id).append(' ');
@@ -123,26 +152,19 @@ public class ThreadServiceImpl implements ThreadService {
             paperRepository.save(paper);
             thread.addPaper(paper);
 
-            /* Image 객체 찾기 */
-            CompletableFuture<Optional<Image>> image1Async = asyncFetchImageById(dto.getImageId1());
-            CompletableFuture<Optional<Image>> image2Async = asyncFetchImageById(dto.getImageId2());
-
-            Optional<Image> image1 = image1Async.join();
-            Optional<Image> image2 = image2Async.join();
-
             /* paperImage 객체 저장 */
-            PaperImage paperImage1 = PaperImage.of(paper, image1.orElse(null), 1);
-            PaperImage paperImage2 = PaperImage.of(paper, image2.orElse(null), 2);
-            paperImageRepository.save(paperImage1);
-            paperImageRepository.save(paperImage2);
+            paperImageRepository.saveAll(List.of(PaperImage.of(paper, image1Async.join().orElse(null), 1),
+                                                 PaperImage.of(paper, image2Async.join().orElse(null), 2)));
 
             /* scrap 객체 저장 */
-            Scrap scrap = Scrap.builder()
-                               .paper(paper)
-                               .book(book.orElse(null))
-                               .paperSeq(++paperSeq)
-                               .build();
-            scrapRepository.save(scrap);
+            if (book.isPresent()) {
+                Scrap scrap = Scrap.builder()
+                                   .paper(paper)
+                                   .book(book.get())
+                                   .paperSeq(++paperSeq)
+                                   .build();
+                scrapRepository.save(scrap);
+            }
 
             /* tag 목록 생성 */
             List<String> tagNameList = dto.getTagList();
@@ -469,7 +491,8 @@ public class ThreadServiceImpl implements ThreadService {
         try {
             PaperDocument paperDocument = paperDocumentRepository.findById(updateDto.getPaperId())
                                                                  .orElseThrow(() -> new IllegalArgumentException(
-                                                                     "PaperDocument not found for id: " + updateDto.getPaperId()));
+                                                                     "PaperDocument not found for id: "
+                                                                         + updateDto.getPaperId()));
 
             paperDocument.update(updateDto);
             paperDocumentRepository.save(paperDocument);
@@ -480,7 +503,8 @@ public class ThreadServiceImpl implements ThreadService {
     }
 
     @Async
-    public CompletableFuture<Paper> asyncUpdatePaper(Paper paper, PaperUpdateDto paperUpdateDto, ThreadUpdateDto threadUpdateDto) {
+    public CompletableFuture<Paper> asyncUpdatePaper(Paper paper, PaperUpdateDto paperUpdateDto,
+                                                     ThreadUpdateDto threadUpdateDto) {
         try {
             paper.update(paperUpdateDto, threadUpdateDto);
         } catch (PaperUpdateTypeMismatchException ex) {
@@ -506,18 +530,12 @@ public class ThreadServiceImpl implements ThreadService {
 
     @Async
     public CompletableFuture<Optional<Book>> asyncFetchBookById(Long bookId) {
-        if (bookId == null) {
-            return CompletableFuture.completedFuture(Optional.empty());
-        }
         return CompletableFuture.completedFuture(bookRepository.findById(bookId));
     }
 
     @Async
-    public CompletableFuture<Mybrary> asyncFetchMybraryByEmail(String email) {
-        return CompletableFuture.completedFuture(
-            mybraryRepository.findMybraryByEmail(email)
-                             .orElseThrow(MybraryNotFoundException::new)
-        );
+    public CompletableFuture<Optional<Mybrary>> asyncFetchMybraryByEmail(String email) {
+        return CompletableFuture.completedFuture(mybraryRepository.findMybraryByEmail(email));
     }
 
     @Async
@@ -536,6 +554,7 @@ public class ThreadServiceImpl implements ThreadService {
             }
             tagRepository.saveAll(tagList);
         }
+
         paperTagList.put(paper.getId(), tags.toString());
         return CompletableFuture.completedFuture(null);
     }
