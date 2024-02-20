@@ -107,14 +107,15 @@ public class ThreadServiceImpl implements ThreadService {
     @Override
     public Long createThread(String email, ThreadPostDto threadPostDto) {
 
-        CompletableFuture<Optional<Book>> bookAsync = asyncFetchBookById(threadPostDto.getBookId());
-        CompletableFuture<Optional<Mybrary>> mybraryAsync = asyncFetchMybraryByEmail(email);
+        Optional<Book> book = null;
+        if (threadPostDto.getBookId() != null) {
+            book = bookRepository.findById(threadPostDto.getBookId());
+        }
 
-        Optional<Book> book = bookAsync.join();
-        Mybrary mybrary = mybraryAsync.join().orElseThrow(MybraryNotFoundException::new);
-
-        Thread thread = Thread.create(mybrary, threadPostDto.isPaperPublic(), threadPostDto.isScrapEnable());
+        Mybrary mybrary = mybraryRepository.findMybraryByEmail(email).orElseThrow(MemberNotFoundException::new);
+        Thread thread = Thread.create(mybrary, threadPostDto.isPaperPublic(), threadPostDto.isScrapEnable());\
         threadRepository.save(thread);
+
         Member member = mybrary.getMember();
         Map<Long, String> paperTagList = new HashMap<>();
 
