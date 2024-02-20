@@ -2,8 +2,6 @@ package com.mybrary.backend.domain.follow.repository.custom;
 
 import com.mybrary.backend.domain.follow.entity.Follow;
 import java.util.Optional;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 public interface FollowRepositoryCustom {
 
@@ -11,5 +9,5 @@ public interface FollowRepositoryCustom {
 
     Optional<Integer> countMyFollowing(Long myId);
 
-    Optional<Follow> findFollow(Long myId, Long memberId);
+    Optional<Follow> findFollow(Long requesterId, Long targetId);
 }

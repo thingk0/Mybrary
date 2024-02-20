@@ -15,26 +15,27 @@ public class FollowRepositoryImpl implements FollowRepositoryCustom {
     @Override
     public Optional<Integer> countMyFollower(Long myId) {
         return Optional.ofNullable(query.select(follow.count().intValue())
-                                       .from(follow)
-                                       .where(follow.following.id.eq(myId))
-                                       .fetchOne()
+                                        .from(follow)
+                                        .where(follow.following.id.eq(myId))
+                                        .fetchOne()
         );
     }
 
     @Override
     public Optional<Integer> countMyFollowing(Long myId) {
         return Optional.ofNullable(query.select(follow.count().intValue())
-                                         .from(follow)
-                                         .where(follow.follower.id.eq(myId))
-                                         .fetchOne()
+                                        .from(follow)
+                                        .where(follow.follower.id.eq(myId))
+                                        .fetchOne()
         );
     }
 
     @Override
-    public Optional<Follow> findFollow(Long myId, Long memberId) {
+    public Optional<Follow> findFollow(Long requesterId, Long targetId) {
         return Optional.ofNullable(query.select(follow)
-                                       .from(follow)
-                                       .where(follow.follower.id.eq(myId).and(follow.following.id.eq(memberId)))
-                                       .fetchOne());
+                                        .from(follow)
+                                        .where(follow.follower.id.eq(requesterId)
+                                                                 .and(follow.following.id.eq(targetId)))
+                                        .fetchOne());
     }
 }
