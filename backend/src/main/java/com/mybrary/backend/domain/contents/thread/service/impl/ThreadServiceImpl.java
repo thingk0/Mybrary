@@ -107,36 +107,28 @@ public class ThreadServiceImpl implements ThreadService {
     @Override
     public Long createThread(String email, ThreadPostDto threadPostDto) {
 
-        CompletableFuture<Optional<Mybrary>> asyncMybrary = asyncFetchMybraryByEmail(email);
-        Optional<Book> book = null;
-        int paperSeq = 0;
+        CompletableFuture<Optional<Book>> bookAsync = asyncFetchBookById(threadPostDto.getBookId());
+        CompletableFuture<Optional<Mybrary>> mybraryAsync = asyncFetchMybraryByEmail(email);
 
-        Long bookId = threadPostDto.getBookId();
-        if (bookId != null) {
-            book = bookRepository.findById(bookId);
-            paperSeq = scrapRepository.findLastPaperSeq(bookId)
-                                      .orElse(0);
-        }
-
-        Mybrary mybrary = asyncMybrary.join().orElseThrow(MybraryNotFoundException::new);
-        Member member = mybrary.getMember();
+        Optional<Book> book = bookAsync.join();
+        Mybrary mybrary = mybraryAsync.join().orElseThrow(MybraryNotFoundException::new);
 
         Thread thread = Thread.create(mybrary, threadPostDto.isPaperPublic(), threadPostDto.isScrapEnable());
         threadRepository.save(thread);
-
+        Member member = mybrary.getMember();
         Map<Long, String> paperTagList = new HashMap<>();
 
-        // bookId가 null 이 아닐 때
-        // book 의 마지막 페이지 번호
-        /* paper 객체 하나씩 생성하고 저장 */
+        // bookId가 null이 아닐 때
+        // book의 마지막 페이지 번호
+        int paperSeq = 0;
+        if (threadPostDto.getBookId() != null) {
+            paperSeq = scrapRepository.findLastPaperSeq(threadPostDto.getBookId())
+                                      .orElse(0);
+        }
 
+        /* paper 객체 하나씩 생성하고 저장 */
         List<PostPaperDto> postPaperDtoList = threadPostDto.getPostPaperDto();
         for (PostPaperDto dto : postPaperDtoList) {
-
-            /* Image 객체 찾기 */
-//            CompletableFuture<Optional<Image>> image1Async = asyncFetchImageById(dto.getImageId1());
-//            CompletableFuture<Optional<Image>> image2Async = asyncFetchImageById(dto.getImageId2());
-
             StringBuilder mentionList = new StringBuilder();
             dto.getMentionList().forEach(id -> {
                 mentionList.append(id).append(' ');
@@ -147,16 +139,30 @@ public class ThreadServiceImpl implements ThreadService {
             paperRepository.save(paper);
             thread.addPaper(paper);
 
+            /* Image 객체 찾기 */
+            Optional<Image> image1 = null;
+            Optional<Image> image2 = null;
+
+            if (dto.getImageId1() != null) {
+                image1 = imageRepository.findById(dto.getImageId1());
+            }
+
+            if (dto.getImageId2() != null) {
+                image2 = imageRepository.findById(dto.getImageId2());
+            }
+
             /* paperImage 객체 저장 */
-            paperImageRepository.saveAll(
-                List.of(PaperImage.of(paper, imageRepository.findById(dto.getImageId1()).orElse(null), 1),
-                        PaperImage.of(paper, imageRepository.findById(dto.getImageId2()).orElse(null), 2)));
+            PaperImage paperImage1 = PaperImage.of(paper, image1.orElse(null), 1);
+            PaperImage paperImage2 = PaperImage.of(paper, image2.orElse(null), 2);
+            paperImageRepository.save(paperImage1);
+            paperImageRepository.save(paperImage2);
+
 
             /* scrap 객체 저장 */
-            if (book.isPresent()) {
+            if (!book.isEmpty()) {
                 Scrap scrap = Scrap.builder()
                                    .paper(paper)
-                                   .book(book.get())
+                                   .book(book.orElse(null))
                                    .paperSeq(++paperSeq)
                                    .build();
                 scrapRepository.save(scrap);
@@ -164,22 +170,7 @@ public class ThreadServiceImpl implements ThreadService {
 
             /* tag 목록 생성 */
             List<String> tagNameList = dto.getTagList();
-
-            StringBuilder tags = new StringBuilder();
-            List<Tag> tagList = new ArrayList<>();
-            if (!tagNameList.isEmpty()) {
-                for (String tagName : tagNameList) {
-                    tagList.add(Tag.builder()
-                                   .tagName(tagName)
-                                   .paper(paper)
-                                   .build());
-                    tags.append(tagName).append(' ');
-                }
-                tagRepository.saveAll(tagList);
-            }
-
-            paperTagList.put(paper.getId(), tags.toString());
-
+            CompletableFuture<Void> tagListSavesAsync = asyncProcessAndSaveAllTag(tagNameList, paperTagList, paper);
             /* 여기서 페이퍼에 대한 멘션 알림 보내는 로직 */
             /* 쓰레드를 생성한 멤버가 sender, 멘션된 회원이 receiver, 알람타입은 11 */
             List<Long> mentionIdList = dto.getMentionList();
@@ -193,10 +184,12 @@ public class ThreadServiceImpl implements ThreadService {
                                        .paperId(paper.getId())
                                        .build());
             }
+            tagListSavesAsync.join();
         }
         asyncProcessAndSaveAllPaperDocument(thread, paperTagList);
         return thread.getId();
     }
+
 
     /* 메인 피드 thread 조회하기 */
     @Override
