@@ -28,7 +28,8 @@ public class MybraryRepositoryImpl implements MybraryRepositoryCustom {
         return Optional.ofNullable(query.select(
                                             Projections.constructor(MybraryGetDto.class, mybrary.id, frameImgae.id, frameImgae.url,
                                                                     mybrary.backgroundColor, mybrary.deskColor, mybrary.bookshelfColor, mybrary.easelColor,
-                                                                    member.id, member.email, member.name, member.nickname, member.intro, profileImgae.id, profileImgae.url,
+                                                                    member.id, member.email, member.name, member.nickname, member.intro, profileImgae.id,
+                                                                    profileImgae.url,
                                                                     member.isNotifyEnabled,
                                                                     member.isProfilePublic, bookshelf.id, rollingPaper.id
                                             )
@@ -51,7 +52,8 @@ public class MybraryRepositoryImpl implements MybraryRepositoryCustom {
         return Optional.ofNullable(query.select(
                                             Projections.constructor(MybraryOtherGetDto.class, mybrary.id, frameImgae.id, frameImgae.url,
                                                                     mybrary.backgroundColor, mybrary.deskColor, mybrary.bookshelfColor, mybrary.easelColor,
-                                                                    member.id, member.email, member.name, member.nickname, member.intro, profileImgae.id, profileImgae.url,
+                                                                    member.id, member.email, member.name, member.nickname, member.intro, profileImgae.id,
+                                                                    profileImgae.url,
                                                                     member.isNotifyEnabled,
                                                                     member.isProfilePublic, bookshelf.id, rollingPaper.id
                                             )
@@ -69,17 +71,19 @@ public class MybraryRepositoryImpl implements MybraryRepositoryCustom {
     @Override
     public Optional<Mybrary> findMybraryByEmail(String email) {
         return Optional.ofNullable(query
-                                       .select(mybrary)
-                                       .from(mybrary)
-                                       .innerJoin(mybrary.member, member).fetchJoin()
+                                       .selectFrom(mybrary)
+                                       .innerJoin(member).on(member.id.eq(mybrary.member.id)).fetchJoin()
                                        .where(member.email.eq(email))
                                        .fetchFirst());
     }
 
     @Override
-    public Mybrary findByMybraryId(Long mybraryId) {
-        return query.selectFrom(mybrary)
-                    .where(mybrary.id.eq(mybraryId))
+    public Mybrary fetchMybraryByBookshelfId(Long bookshelfId) {
+        return query.select(mybrary)
+                    .from(bookshelf)
+                    .leftJoin(mybrary).on(bookshelf.mybrary.id.eq(mybrary.id)).fetchJoin()
+                    .leftJoin(member).on(mybrary.member.id.eq(member.id)).fetchJoin()
+                    .where(bookshelf.id.eq(bookshelfId))
                     .fetchFirst();
     }
 }
