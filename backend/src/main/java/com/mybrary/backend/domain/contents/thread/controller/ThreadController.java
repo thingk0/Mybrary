@@ -10,12 +10,14 @@ import com.mybrary.backend.global.format.response.ResponseCode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,7 +42,12 @@ public class ThreadController {
     @Operation(summary = "쓰레드 생성", description = "쓰레드 생성")
     @PostMapping
     public ResponseEntity<?> createThread(@Parameter(hidden = true) Authentication authentication,
-                                          @RequestBody ThreadPostDto threadPostDto) {
+                                          @Valid @RequestBody ThreadPostDto threadPostDto,
+                                          BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            response.fail(bindingResult);
+        }
 
         return response.success(ResponseCode.THREAD_CREATED,
                                 threadService.createThread(authentication.getName(), threadPostDto));
