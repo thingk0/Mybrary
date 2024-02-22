@@ -1,0 +1,119 @@
+:root {
+  --main1: #f5998f;
+  --main2: #57423f;
+  --main3: #bfa6a2;
+  --main4: #fff9f6;
+  --main5: #9b8683;
+  --main6: #f5998f;
+  --gomin1: #2f4858;
+  --gomin2: #455371;
+  --gomin3: #6a5b82;
+  --gomin4: #946087;
+  --gomin5: #ba667e;
+  --blur1: #fff9f680;
+  /* 1번이 모달컬러 */
+  --blur2: #ddccc380;
+  /* 책장뒷편 쓰는색 */
+  --deletecolor: linear-gradient(
+    135deg,
+    rgba(116, 91, 127, 1) 0%,
+    rgba(245, 153, 143, 1) 100%
+  );
+  --followcolor: linear-gradient(
+    135deg,
+    rgba(148, 96, 135, 1) 0%,
+    rgba(69, 83, 113, 1) 100%
+  );
+  --papercolor: linear-gradient(
+    150deg,
+    rgba(255, 250, 247, 1) 0%,
+    rgba(239, 239, 239, 1) 100%
+  );
+}
+
+.오른쪽크기조정 {
+  height: 100%;
+  background-color: var(--blur2);
+  border-radius: 5px;
+}
+.title {
+  padding: 1vw;
+  height: 2vw;
+  font-size: 1.2vw;
+}
+.tagInputContainer {
+  height: 17vw;
+  position: relative;
+}
+.searchButton {
+  position: absolute;
+  bottom: 14.4vw;
+  right: 1.5vw;
+}
+
+.tagInput {
+  font-size: 1vw;
+  padding: 0.2vw 0.6vw;
+  width: 15.6vw;
+  height: 1.7vw;
+  border-radius: 5px;
+  border: 0px;
+  cursor: pointer;
+  margin: 1vw;
+  background-color: var(--main5);
+  color: var(--main4);
+}
+.tagInput::placeholder {
+  color: var(--main4);
+}
+
+.x버튼 {
+  margin-left: 4px;
+  border: 0px;
+  font-size: 12px;
+  padding-bottom: 2px;
+  padding-right: 7px;
+  padding-left: 7px;
+  display: flex;
+  align-items: center;
+}
+.추가된태그들 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 10px; /* 필요에 따라 조절 */
+  overflow-y: auto;
+  /* height: 90%; 제거하거나 조정 */
+  align-items: flex-start; /* 아이템들을 컨테이너의 위쪽에 정렬 */
+}
+
+.글자태그 {
+  display: flex;
+  width: auto;
+  align-items: center;
+  background-color: #bfa6a2;
+  margin-top: 5px; /* 상단 마진 조정 */
+  margin-bottom: 5px; /* 하단 마진 조정 */
+  padding-left: 7px;
+  padding-right: 3px;
+  padding-top: 3px;
+  padding-bottom: 2px;
+  /* padding: 2px 4px 0px 4px; 패딩을 간소화 */
+  height: 20px;
+  border-radius: 10px;
+}
+.친구태그 {
+  display: flex;
+  width: auto;
+  align-items: center;
+  background-color: #f5998f;
+  margin-top: 5px; /* 상단 마진 조정 */
+  margin-bottom: 5px; /* 하단 마진 조정 */
+  padding-top: 3px;
+  padding-bottom: 2px;
+  padding-right: 3px;
+  padding-left: 5px;
+  /* padding: 2px 4px 0px 4px; 패딩을 간소화 */
+  height: 20px;
+  border-radius: 10px;
+}

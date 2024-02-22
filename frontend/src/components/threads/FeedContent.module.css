@@ -1,0 +1,253 @@
+.content {
+  background: var(--papercolor);
+  border-radius: 5px;
+  display: flex;
+  overflow: hidden;
+  position: relative;
+}
+.aa {
+  padding: 1vw;
+  transition: transform 0.3s;
+}
+.a1 {
+  transform: translateX(0vw);
+}
+.a2 {
+  transform: translateX(-37.3vw);
+}
+.a3 {
+  transform: translateX(-74.6vw);
+}
+.a4 {
+  transform: translateX(-111.9vw);
+}
+.a5 {
+  transform: translateX(-149.2vw);
+}
+.user_info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.user_profile {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.6vw;
+}
+.user_img {
+  width: 2.5vw;
+  height: 2.5vw;
+  cursor: pointer;
+  border-radius: 100px;
+}
+.user_nickname {
+  font-size: 1vw;
+}
+.user_date {
+  font-size: 0.6vw;
+  color: var(--main3);
+  margin-top: 0.1vw;
+}
+
+.user_follow {
+  font-size: 1vw;
+  background: var(--followcolor);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  cursor: pointer;
+}
+
+/* ---- */
+.icon_container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0.7vw 0.3vw;
+}
+.icon_left {
+  display: flex;
+  align-items: center;
+}
+
+.icon_left > div {
+  margin-left: 0.2vw;
+  margin-right: 0.7vw;
+  color: var(--main5);
+  font-size: 0.8vw;
+}
+.icon_left > img {
+  width: 1.5vw;
+  height: 1.5vw;
+  cursor: pointer;
+}
+.icon_right {
+  width: 1.3vw;
+  height: 1.3vw;
+  cursor: pointer;
+}
+
+.수정글자 {
+  cursor: pointer;
+  color: #234795;
+  transition: 0.3s;
+}
+.수정글자:hover {
+  color: #8198ca;
+}
+.삭제글자 {
+  cursor: pointer;
+  color: #a1455f;
+  transition: 0.3s;
+}
+.삭제글자:hover {
+  color: #fc8aaa;
+}
+
+/* ----- */
+
+.main_content {
+  margin: 0 auto;
+  border: solid 1px var(--main2);
+  border-radius: 5px;
+  width: 35.2vw; /* 11*3.2 */
+  height: 41.6vw; /* 13*3.2 */
+}
+
+/* --- */
+
+.tag_hash {
+  position: absolute;
+  right: 1.5vw;
+  bottom: 3.3vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--blur2);
+  width: 2.7vw;
+  height: 2.5vw;
+  font-size: 1.7vw;
+  border-radius: 1vw;
+  color: var(--main5);
+  padding-top: 0.2vw;
+  cursor: pointer;
+}
+.page {
+  position: absolute;
+  bottom: 1.5vw;
+  left: 47%;
+}
+.next {
+  position: absolute;
+  right: 0.5vw;
+  top: 45%;
+  cursor: pointer;
+}
+.next_icon {
+  width: 4vw;
+}
+.prev {
+  position: absolute;
+  left: 0.5vw;
+  top: 45%;
+  cursor: pointer;
+}
+.prev_icon {
+  width: 4vw;
+}
+.navwgate {
+  opacity: 0;
+  transition: 0.3s;
+}
+.content:hover .navwgate {
+  opacity: 1;
+}
+
+.flex {
+  width: 95%;
+  display: flex;
+  justify-content: space-between;
+}
+.헤더 {
+  font-size: 1.3vw;
+}
+.modalClose {
+  color: var(--gomin5);
+  font-size: 1.3vw;
+}
+.책모음 {
+  width: 95%;
+  height: 95%;
+  /* background-color: rgb(238, 221, 255); */
+  display: flex;
+  flex-direction: column;
+  gap: 0.5vw;
+}
+.책한권 {
+  padding-top: 1vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10000;
+}
+.푸터 {
+  display: flex;
+  align-items: center;
+  gap: 0.4vw;
+  font-size: 1vw;
+}
+.유저이미지 {
+  height: 3vw;
+  width: 3vw;
+  border-radius: 100px;
+}
+/*  */
+.태그모음 {
+  max-width: 17vw;
+  margin-top: 1vw;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7vw;
+}
+.태그한줄 {
+  cursor: pointer;
+  padding: 0.5vw;
+  background-color: #80625c;
+  color: #fff1ef;
+  border-radius: 5px;
+}
+.delete {
+  color: var(--gomin5);
+}
+
+.deleteTitle {
+  font-size: 20px;
+  text-align: center;
+  margin: 30px 0;
+}
+
+.can {
+  padding: 10px 40px;
+  background-color: var(--main3);
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.del {
+  padding: 10px 40px;
+  background-color: #f08d8d;
+  color: #b25757;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.fff {
+  width: 300px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  align-items: center;
+}

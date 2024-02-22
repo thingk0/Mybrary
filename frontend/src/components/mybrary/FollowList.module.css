@@ -1,0 +1,93 @@
+.mainbox {
+  width: 22vw;
+  height: 80vh;
+  border-radius: 10px;
+  background-color: var(--blur1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  gap: 20px;
+  backdrop-filter: blur(12.5px);
+}
+.팔로우리스트 {
+  width: 95%;
+  background-color: #ddccc3b8;
+  display: flex;
+  border-radius: 10px;
+  align-items: center;
+  padding: 10px 0px 10px 0px;
+  box-shadow: 0 0 5px 0 #00000036;
+}
+
+.팔로우목록글자 {
+  font-size: 20px;
+  font-weight: 100;
+}
+.userimg {
+  width: 15%;
+  display: flex;
+  align-items: center;
+  padding: 0px 10px 0px 10px;
+}
+.img {
+  width: 3vw;
+  height: 3vw;
+  border-radius: 100px;
+  cursor: pointer;
+}
+.이름정보들 {
+  cursor: pointer;
+  padding-top: 5px;
+  width: 63%;
+  display: flex;
+  gap: 4px;
+  flex-direction: column;
+}
+.사용자이름 {
+  color: #998481;
+  font-size: 14px;
+}
+.닫기버튼 {
+  cursor: pointer;
+  color: rgb(255, 124, 124);
+}
+.header {
+  width: 95%;
+  padding-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  padding-left: 5px;
+}
+.followbox {
+  width: 97%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-left: 5px;
+  overflow-y: auto;
+  height: 100%;
+}
+.팔로잉박스 {
+  width: 7.2vw;
+}
+.팔로잉글자 {
+  color: rgb(48, 154, 200);
+  cursor: pointer;
+  font-size: 0.8vw;
+  transition: 0.3s;
+  padding-left: 1vw;
+}
+.팔로잉글자:hover {
+  color: rgb(215, 83, 74);
+}
+.팔로잉글자2 {
+  color: rgb(42, 147, 26);
+  cursor: pointer;
+  font-size: 0.72vw;
+  transition: 0.3s;
+  padding-right: 1vw;
+}
+.팔로잉글자2:hover {
+  color: rgb(65, 231, 101);
+}

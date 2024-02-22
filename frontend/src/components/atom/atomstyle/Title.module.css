@@ -1,0 +1,30 @@
+.back {
+  padding-top: 50px;
+  font-size: 19px;
+  cursor: pointer;
+}
+.title {
+  margin: 0 auto;
+  width: 90%;
+  height: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.left_title,
+.right_title {
+  width: 180px;
+  font-size: 23px;
+  background: linear-gradient(106deg, #745b7f 39.8%, #f5998f 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  cursor: pointer;
+}
+.right_title {
+  display: flex;
+  justify-content: flex-end;
+}
+.main_title {
+  font-size: 33px;
+}

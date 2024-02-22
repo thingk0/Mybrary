@@ -1,0 +1,84 @@
+:root {
+  --main1: #f5998f;
+  --main2: #57423f;
+  --main3: #bfa6a2;
+  --main4: #fff9f6;
+  --main5: #9b8683;
+  --main6: #f5998f;
+  --gomin1: #2f4858;
+  --gomin2: #455371;
+  --gomin3: #6a5b82;
+  --gomin4: #946087;
+  --gomin5: #ba667e;
+  --blur1: #fff9f680;
+  /* 1번이 모달컬러 */
+  --blur2: #ddccc380;
+  /* 책장뒷편 쓰는색 */
+  --deletecolor: linear-gradient(
+    135deg,
+    rgba(116, 91, 127, 1) 0%,
+    rgba(245, 153, 143, 1) 100%
+  );
+  --followcolor: linear-gradient(
+    135deg,
+    rgba(148, 96, 135, 1) 0%,
+    rgba(69, 83, 113, 1) 100%
+  );
+  --papercolor: linear-gradient(
+    150deg,
+    rgba(255, 250, 247, 1) 0%,
+    rgba(239, 239, 239, 1) 100%
+  );
+}
+
+.미드왼쪽사이즈조정 {
+  height: 100%;
+  background-color: var(--blur2);
+  border-radius: 5px;
+}
+
+.왼쪽헤더 {
+  padding: 1vw;
+  height: 2vw;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.레이아웃글자 {
+  font-size: 1.2vw;
+}
+.레이아웃버튼 {
+  display: flex;
+  gap: 0.5vw;
+}
+.cutButton {
+  padding: 10px;
+  background-color: #ffeee6;
+  transition: 0.3s;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.cutButton:hover {
+  background-color: var(--main3);
+}
+.selectCutButton {
+  background-color: var(--main3);
+}
+
+.왼쪽미드레이아웃 {
+  padding: 1vw 0;
+  height: 36vw;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1vw;
+  overflow-y: auto;
+}
+.왼쪽미드레이아웃 > div {
+  cursor: pointer;
+}
+.레이아웃이미지 {
+  height: 130px;
+  width: 110px;
+  margin-top: 14px;
+}

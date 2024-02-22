@@ -30,3 +30,59 @@
     rgba(239, 239, 239, 1) 100%
   );
 }
+@font-face {
+  font-family: "SEBANG_Gothic_Bold";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2104@1.0/SEBANG_Gothic_Bold.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+:root {
+  --gmarket-sans: "SEBANG_Gothic_Bold";
+  --noto-sans: -apple-system, "Noto Sans KR", sans-serif;
+}
+
+html {
+  font-family: var(--noto-sans);
+  font-size: 16px;
+  font-weight: 400;
+}
+
+textarea,
+input,
+div,
+p,
+a,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+button {
+  font-family: var(--gmarket-sans);
+  font-weight: 400;
+  margin: 0;
+  padding: 0;
+  color: var(--main2);
+}
+
+h1 {
+  font-size: 2.4vi;
+}
+h2 {
+  font-size: 2vi;
+}
+h3 {
+  font-size: 1.8vi;
+}
+h4 {
+  font-size: 1.6vi;
+}
+h5 {
+  font-size: 1.3vi;
+}
+h6 {
+  font-size: 1vi;
+}

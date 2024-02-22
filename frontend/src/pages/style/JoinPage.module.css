@@ -1,0 +1,110 @@
+.logo {
+  padding: 40px;
+  display: flex;
+  gap: 20px;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.logoImg {
+  text-align: center;
+  font-size: 70px;
+  margin-bottom: 30px;
+  background: linear-gradient(135deg, #7f5d4d 0%, #de6363 50%, #6e5041 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% 100%;
+  animation: gradientBG 3s ease infinite;
+}
+
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.logoText {
+  font-size: 30px;
+  text-align: center;
+}
+
+.title {
+  font-size: 25px;
+  text-align: center;
+  transition: 0.5s;
+  padding: 40px 20px 30px;
+}
+.left {
+  transform: translateX(-25%) translateY(210px);
+}
+.right {
+  transform: translateX(25%);
+}
+.main {
+  width: 100%;
+  overflow: hidden;
+}
+.main_in {
+  align-items: center;
+  display: flex;
+  width: 1800px;
+  transition: 0.5s;
+}
+.leftMain {
+  transform: translateX(0px);
+}
+.rightMian {
+  transform: translateX(-600px);
+}
+.main_img {
+  width: 580px;
+  padding: 20px;
+  margin: 10px;
+}
+
+.main_right,
+.main_left {
+  width: 580px;
+  padding: 20px;
+  margin: 10px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px 0 var(--main3);
+  position: relative;
+}
+.main_left {
+  background-color: var(--blur2);
+  height: 370px;
+}
+.main_right {
+  background-color: var(--blur1);
+  height: 780px;
+}
+.footer {
+  position: absolute;
+  bottom: 30px;
+  left: 20px;
+  right: 20px;
+}
+.footer_in {
+  display: flex;
+  gap: 20px;
+  font-size: 18px;
+  justify-content: center;
+}
+
+.button {
+  color: var(--gomin3);
+  cursor: pointer;
+  transition: 0.5s;
+}
+.button:hover {
+  transform: scale(1.2);
+  color: var(--gomin4);
+}
