@@ -77,7 +77,7 @@ Node.js&logoColor=white"/>
 ## ✅ 산출물
 
 ### ERD
-![공통_B207팀_ERD](/uploads/4cb6f51b0494818fae94e9627908ca15/공통_B207팀_ERD.png)
+![ERD](/uploads/f4ff0371fc4458595574fc44723c94a3/ERD.png)
 
 ### 와이어프레임
 
