@@ -1,3 +1,23 @@
 spring:
+  profiles:
+    active: dev
+    include:
+      - jwt
+      - mail
+      - filter
+      - aws
+
   jpa:
     open-in-view: false
+
+logging:
+  level:
+    org:
+      springframework:
+        boot:
+          autoconfigure:
+            security: ERROR
+        data:
+          repository:
+            config:
+              RepositoryConfigurationExtensionSupport: ERROR
