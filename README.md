@@ -2,6 +2,7 @@
 
 ### 🏆삼성 청년 SW아카데미(SSAFY) 10th 공통 프로젝트 최우수상(1위)🏆
 
+
 ## ✅ 프로젝트 진행 기간
 
 ### 2024.01.08 ~ 2024.02.16(6주)
@@ -117,6 +118,307 @@ Node.js&logoColor=white"/>
     </tr>
 </table>
 
+## ✅ 프로젝트 구조
+
+### Back-end
+```
+├── main
+└──
+   ├── java
+   │   └── com
+   │       └── mybrary
+   │           └── backend
+   │               ├── BackendApplication.java
+   │               ├── domain
+   │               │   ├── base
+   │               │   │   └── BaseEntity.java
+   │               │   ├── book
+   │               │   │   ├── controller
+   │               │   │   ├── dto
+   │               │   │   ├── entity
+   │               │   │   ├── repository
+   │               │   │   └── service
+   │               │   ├── bookmarker
+   │               │   │   ├── dto
+   │               │   │   └── entity
+   │               │   ├── bookshelf
+   │               │   │   ├── entity
+   │               │   │   └── repository
+   │               │   ├── category
+   │               │   │   ├── controller
+   │               │   │   ├── dto
+   │               │   │   ├── entity
+   │               │   │   ├── repository
+   │               │   │   └── service
+   │               │   ├── chat
+   │               │   │   ├── controller
+   │               │   │   ├── dto
+   │               │   │   ├── entity
+   │               │   │   ├── repository
+   │               │   │   └── service
+   │               │   ├── comment
+   │               │   │   ├── controller
+   │               │   │   ├── dto
+   │               │   │   ├── entity
+   │               │   │   ├── repository
+   │               │   │   └── service
+   │               │   ├── contents
+   │               │   │   ├── like
+   │               │   │   │   ├── entity
+   │               │   │   │   ├── repository
+   │               │   │   │   └── service
+   │               │   │   ├── paper
+   │               │   │   │   ├── controller
+   │               │   │   │   ├── dto
+   │               │   │   │   ├── entity
+   │               │   │   │   ├── repository
+   │               │   │   │   └── service
+   │               │   │   ├── paper_image
+   │               │   │   │   ├── entity
+   │               │   │   │   └── repository
+   │               │   │   ├── scrap
+   │               │   │   │   ├── entity
+   │               │   │   │   └── repository
+   │               │   │   ├── tag
+   │               │   │   │   ├── entity
+   │               │   │   │   ├── repository
+   │               │   │   │   └── service
+   │               │   │   └── thread
+   │               │   │       ├── controller
+   │               │   │       ├── dto
+   │               │   │       ├── entity
+   │               │   │       ├── repository
+   │               │   │       └── service
+   │               │   ├── elastic
+   │               │   │   ├── indices
+   │               │   │   └── repository
+   │               │   ├── follow
+   │               │   │   ├── entity
+   │               │   │   └── repository
+   │               │   ├── image
+   │               │   │   ├── controller
+   │               │   │   ├── dto
+   │               │   │   ├── entity
+   │               │   │   ├── repository
+   │               │   │   └── service
+   │               │   ├── member
+   │               │   │   ├── controller
+   │               │   │   ├── dto
+   │               │   │   ├── entity
+   │               │   │   ├── repository
+   │               │   │   └── service
+   │               │   ├── mybrary
+   │               │   │   ├── controller
+   │               │   │   ├── dto
+   │               │   │   ├── entity
+   │               │   │   ├── repository
+   │               │   │   └── service
+   │               │   ├── notification
+   │               │   │   ├── controller
+   │               │   │   ├── dto
+   │               │   │   ├── entity
+   │               │   │   ├── repository
+   │               │   │   └── service
+   │               │   ├── pickbook
+   │               │   │   ├── entity
+   │               │   │   └── repository
+   │               │   ├── rollingpaper
+   │               │   │   ├── controller
+   │               │   │   ├── dto
+   │               │   │   ├── entity
+   │               │   │   ├── repository
+   │               │   │   └── service
+   │               │   └── search
+   │               │       ├── controller
+   │               │       ├── dto
+   │               │       └── service
+   │               └── global
+   │                   ├── annotation
+   │                   │   ├── AccessToken.java
+   │                   │   └── Nickname.java
+   │                   ├── config
+   │                   │   ├── ElasticsearchConfig.java
+   │                   │   ├── MailConfig.java
+   │                   │   ├── QuerydslConfig.java
+   │                   │   ├── RedisConfig.java
+   │                   │   ├── S3Config.java
+   │                   │   ├── SecurityConfig.java
+   │                   │   ├── SwaggerConfig.java
+   │                   │   ├── WebConfig.java
+   │                   │   └── WebSocketConfig.java
+   │                   ├── entrypoint
+   │                   │   └── JwtAuthenticationEntryPoint.java
+   │                   ├── exception
+   │                   │   ├── book
+   │                   │   ├── bookshelf
+   │                   │   ├── category
+   │                   │   ├── chat
+   │                   │   ├── email
+   │                   │   ├── image
+   │                   │   ├── jwt
+   │                   │   │   ├── AccessTokenNotFoundException.java
+   │                   │   │   ├── RefreshTokenNotFoundException.java
+   │                   │   │   └── UnauthorizedAccessException.java
+   │                   │   ├── member
+   │                   │   ├── mybrary
+   │                   │   ├── paper
+   │                   │   ├── pickbook
+   │                   │   ├── scrap
+   │                   │   ├── tag
+   │                   │   └── thread
+   │                   ├── filter
+   │                   │   ├── EmailVerificationFilter.java
+   │                   │   ├── JwtAuthenticationFilter.java
+   │                   │   ├── TokenExceptionFilter.java
+   │                   │   └── TokenRefreshRequestFilter.java
+   │                   ├── format
+   │                   │   ├── code
+   │                   │   │   ├── ApiResponse.java
+   │                   │   │   └── FilterResponse.java
+   │                   │   └── response
+   │                   │       ├── ErrorCode.java
+   │                   │       └── ResponseCode.java
+   │                   ├── handler
+   │                   │   ├── ChatErrorHandler.java
+   │                   │   └── GlobalExceptionHandler.java
+   │                   ├── initializer
+   │                   │   └── RedisInitializer.java
+   │                   ├── interceptor
+   │                   │   ├── ChatStompInterceptor.java
+   │                   │   └── NicknameValidInterceptor.java
+   │                   ├── jwt
+   │                   │   ├── RefreshToken.java
+   │                   │   ├── TokenInfo.java
+   │                   │   ├── provider
+   │                   │   │   └── TokenProvider.java
+   │                   │   ├── repository
+   │                   │   │   └── RefreshTokenRepository.java
+   │                   │   └── service
+   │                   │       └── TokenService.java
+   │                   ├── resolver
+   │                   │   ├── AccessTokenArgumentResolver.java
+   │                   │   └── NicknameValidArgumentResolver.java
+   │                   └── util
+   │                       ├── CookieUtil.java
+   │                       ├── FilterUtil.java
+   │                       ├── RedisUtil.java
+   │                       └── cookie
+   │                           ├── DevCookieUtil.java
+   │                           └── ProdCookieUtil.java
+   └── resources
+       ├── application.yml
+       └── log4j2.xml
+```
+
+### Front-end
+```
+├── package-lock.json
+├── package.json
+├── public
+│   ├── favicon.ico
+│   └── index.html
+└── src
+    ├── App.css
+    ├── App.js
+    ├── Main.js
+    ├── api
+    │   ├── book
+    │   │   └── Book.js
+    │   ├── category
+    │   │   └── Category.js
+    │   ├── chat
+    │   │   └── Chat.js
+    │   ├── comment
+    │   │   └── Comment.js
+    │   ├── common
+    │   │   └── Token.js
+    │   ├── image
+    │   │   └── Image.js
+    │   ├── member
+    │   │   ├── Account.js
+    │   │   ├── Follow.js
+    │   │   ├── Login.js
+    │   │   ├── Logout.js
+    │   │   └── SignUp.js
+    │   ├── mybrary
+    │   │   └── Mybrary.js
+    │   ├── notification
+    │   │   └── Notification.js
+    │   ├── paper
+    │   │   └── Paper.js
+    │   ├── rollingpaper
+    │   │   └── RollingPaper.js
+    │   ├── search
+    │   │   └── Search.js
+    │   └── thread
+    │       └── Thread.js
+    ├── assets
+    │   ├── 1x
+    │   │   ├── left.png
+    │   │   └── right.png
+    │   │   └── ...
+    │   ├── icon
+    │   │   └── ...
+    │   ├── lottie
+    │   │   ├── image.json
+    │   │   └── loading.json
+    │   │   └── ...
+    ├── components
+    │   ├── atom
+    │   │   ├── Nav.js
+    │   │   └── atomstyle
+    │   │       ├── Nav.module.css
+    │   │       └── Title.module.css
+    │   ├── book
+    │   │   ├── ContentItem2.js
+    │   │   └── ContentItem2.module.css
+    │   ├── bookshelf
+    │   │   ├── BookAlbum.js
+    │   │   └── ...
+    │   ├── common
+    │   │   ├── BigModal.js
+    │   │   └── ...
+    │   ├── feed
+    │   │   ├── BookSelect2.js
+    │   │   └── ...
+    │   ├── frame
+    │   │   ├── Container.js
+    │   │   └── framestyle
+    │   │       └── Container.module.css
+    │   ├── join
+    │   │   ├── LoginForm.js
+    │   │   └── ...
+    │   ├── mybrary
+    │   │   ├── FollowList.js
+    │   │   └── ...
+    │   ├── paperplane
+    │   │   ├── ChatProfile.js
+    │   │   └── SharedPaper.js
+    │   ├── threadcreate
+    │   │   ├── BookSelect.js
+    │   │   └── ...
+    │   ├── threads
+    │   │   ├── BookSelect2.js
+    │   │   └── ...
+    │   └── threadupdate
+    │       ├── Edit.js
+    │       └── ...
+    ├── index.css
+    ├── index.js
+    ├── pages
+    │   ├── BookDetailPage.js
+    │   ├── ...
+    │   └── style
+    │       ├── BookDetailPage.module.css
+    │       └── ...
+    └── store
+        ├── useBookStore.js
+        └── ...
+
+```
+
+
+
 ## ✅ 산출물
 
 ### ERD
@@ -125,7 +427,41 @@ Node.js&logoColor=white"/>
 ### 와이어프레임
 
 ### 시스템 아키텍처
-![image](/uploads/64d1f9583ed71889f582db7bb792560b/image.png)
+
+<img src="/uploads/5c19ba9d754016c4091d66f80d52973b/시스템아키텍처최종.png" style="border: 2px solid grey">
+
+## ✅ 기술 스택 세부 명세
+
+### JPA (Java Persistence API)
+
+- **배경**: 싸피(SSAFY) 과정에서 myBatis를 학습했으나, 제한된 개발 기간과 개발 편의성을 고려하여 JPA를 선택.
+- **선택 이유**: JPA는 높은 러닝커브에도 불구하고, 관계형 데이터베이스에 대한 기본적인 이해가 있어 학습과 동시에 프로젝트에 적용 가능했음. 초기 ERD 설계 시 JPA 엔티티 설계를 고려하여, 데이터베이스 모델에 대한 빠른 이해와 후반부 최적화에 크게 기여함.
+- **효과**: JPA의 도입은 개발 효율성을 크게 향상시켰으며, 프로젝트에 큰 도움이 되었음.
+
+### Redis
+
+- **도입 배경**: 인증/인가 과정에서 리프레시 토큰의 유효시간 관리를 위해 레디스 도입. 관계형 데이터베이스에 비해 데이터 변경 없이 빠른 접근성을 제공함.
+- **적용 사례**: RestAPI에서 매 통신마다 사용자 검증을 위해 빠른 데이터 조회가 필요. 레디스를 사용하여 JWT의 유효시간을 관리하고, 이메일 인증 시스템에도 적용하여 인증번호와 TTL을 설정, 회원가입의 유효성을 확보함.
+- **결과**: 사용자 인증인가 과정의 속도 향상과 회원가입 과정의 유효성 관리에 큰 이점을 가져옴.
+
+### ELK (Elasticsearch, Logstash, Kibana)
+
+- **목적**: 스프링 로그 정보의 효율적 관리와 빠른 파악을 위해 ELK 스택 도입.
+- **구현**: Log4j2를 통한 로그 파일 생성, Logstash를 사용한 로그 수집 및 Elasticsearch 인덱싱을 통해 로그 관리 효율화.
+- **활용**: 주요 콘텐츠 검색 최적화를 위해 HTML 형태의 컨텐츠를 관계형 데이터베이스와 엘라스틱서치에 동시에 저장, 빠른 색인 및 검색을 가능하게 함.
+
+### Nginx
+
+- **사용 목적**: HTTPS 도입을 위한 Nginx 사용. 액세스 토큰과 리프레시 토큰의 안전한 관리를 위해 HTTPS 적용 필요성 인지.
+- **구현**: certbot을 통한 SSL 문서 발급과 Nginx를 사용한 HTTP to HTTPS 리다이렉션, 리버스 프록시 기능 활용.
+
+### Node.js - 이미지 서버
+
+- **배경**: 프로젝트의 이미지 업로드 요구 사항에 대응하기 위해 별도의 이미지 처리 서버 구축.
+- **구현**: 이미지 업로드 시 서버 부하 최소화를 위해 노드 서버에서 이미지 압축 알고리즘을 적용, 저장 공간 절약 및 조회 속도 향상 기대.
+
+
+
 
 ## ✅ 기능 소개
 
@@ -328,19 +664,11 @@ Node.js&logoColor=white"/>
 
 ### 서만기
 
-＂마이브러리＂는 진정한 개발자 마음으로 들여다볼 수 있는 프로젝트였습니다. 처음 보는 팀원과 함께 길다면 긴 7주간의 프로젝트를 진행해야 했고, 그래서 더욱 긴장하며 진행했습니다. 어렵고 막막하다는 마음을 뒤로하고, 좋은 팀원들을 만난 만큼 작은 과제이더라도 온 힘을 다해서 좋은 결과물을 내려고 노력했던 것 같습니다.
-
-프로젝트 목업을 설계하면서, 저는 프로젝트의 핵심이 눈에 보이는 화면이라는 것을 깨달았습니다. 그래서 디자인과 UI에 많은 노력을 기울였습니다. 프로젝트를 성공적으로 마쳤을 때, 주변에서 ＇UI 1등＇이라는 말을 듣게 되었을 때 그동안의 노력이 헛되지 않았다는 생각이 들었습니다.
-
-프로젝트 이전에는 깃과 게릿에 대해 무지하고 어려웠습니다. 그러나 특히 협업하는 과정에서 문제없이 진행하기 위해 깃을 학습했고, 그 과정에서 코치님들의 도움을 받으며 이해에 힘을 썼습니다. 그 결과, 팀원이 깃에 대해 어려운 부분이 있을 때마다 직접 나서서 도와줄 수 있었고 큰 성취감도 뒤따라 왔습니다.
-
-마지막으로 서로 믿고 의지해준 팀원들에게 진심으로 감사의 마음을 표현하고 싶습니다. 항상 서로에 대해 칭찬을 아끼지 않았던 우리 팀 “치악산 복숭아”.  함께해주셔서 정말 고마워요.
+＂마이브러리＂는 진정한 개발자 마음으로 들여다볼 수 있는 프로젝트였습니다. 처음 보는 팀원과 함께 길다면 긴 7주간의 프로젝트를 진행해야 했고, 그래서 더욱 긴장하며 진행했습니다. 어렵고 막막하다는 마음을 뒤로하고, 좋은 팀원들을 만난 만큼 작은 과제이더라도 온 힘을 다해서 좋은 결과물을 내려고 노력했던 것 같습니다. 프로젝트 목업을 설계하면서, 저는 프로젝트의 핵심이 눈에 보이는 화면이라는 것을 깨달았습니다. 그래서 디자인과 UI에 많은 노력을 기울였습니다. 프로젝트를 성공적으로 마쳤을 때, 주변에서 ＇UI 1등＇이라는 말을 듣게 되었을 때 그동안의 노력이 헛되지 않았다는 생각이 들었습니다. 프로젝트 이전에는 깃과 게릿에 대해 무지하고 어려웠습니다. 그러나 특히 협업하는 과정에서 문제없이 진행하기 위해 깃을 학습했고, 그 과정에서 코치님들의 도움을 받으며 이해에 힘을 썼습니다. 그 결과, 팀원이 깃에 대해 어려운 부분이 있을 때마다 직접 나서서 도와줄 수 있었고 큰 성취감도 뒤따라 왔습니다. 마지막으로 서로 믿고 의지해준 팀원들에게 진심으로 감사의 마음을 표현하고 싶습니다. 항상 서로에 대해 칭찬을 아끼지 않았던 우리 팀 “치악산 복숭아”. 함께해주셔서 정말 고마워요.
 
 ### 최준호
 
-완성도 높은 프로젝트를 해낼 수 있어서 뿌듯한 프로젝트였습니다.  기획부터 설계, 개발까지 모든 팀원과 함께 노력하며 즐거웠던것 같습니다. 이번 프로젝트를 통해 협업툴, 명세서를 배울 수 있었으며 코드의 컴포넌트화, 리팩토링에 대한 중요도와 방법을 더 알아갔던것 같습니다.
-
-즐겁게 개발해서 즐거웠습니다. 팀원 모두에게 고맙습니다.
+완성도 높은 프로젝트를 해낼 수 있어서 뿌듯한 프로젝트였습니다.  기획부터 설계, 개발까지 모든 팀원과 함께 노력하며 즐거웠던것 같습니다. 이번 프로젝트를 통해 협업툴, 명세서를 배울 수 있었으며 코드의 컴포넌트화, 리팩토링에 대한 중요도와 방법을 더 알아갔던것 같습니다. 즐겁게 개발해서 즐거웠습니다. 팀원 모두에게 고맙습니다.
 
 ### 최소영
 
