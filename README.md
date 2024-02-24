@@ -63,7 +63,7 @@ Mybrary는 사용자들이 더욱 만족할 수 있는 SNS 경험을 제공하�
 
 ![팀원소개](/uploads/157b13d2b7c730939b477521626cd91f/팀원소개.PNG)
 
-
+<!--
 ## ✅ 기술스택
 
 <table>
@@ -117,6 +117,7 @@ Node.js&logoColor=white"/>
     </td>
     </tr>
 </table>
+-->
 
 ## ✅ 프로젝트 구조
 
@@ -423,8 +424,6 @@ Node.js&logoColor=white"/>
 
 ### ERD
 ![ERD](/uploads/f4ff0371fc4458595574fc44723c94a3/ERD.png)
-
-### 와이어프레임
 
 ### 시스템 아키텍처
 
