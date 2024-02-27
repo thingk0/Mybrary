@@ -61,7 +61,7 @@ Mybrary는 사용자들이 더욱 만족할 수 있는 SNS 경험을 제공하�
 
 ## ✅ 멤버소개
 
-![팀원소개](/uploads/157b13d2b7c730939b477521626cd91f/팀원소개.PNG)
+![팀원소개](etc/팀원소개.PNG)
 
 <!--
 ## ✅ 기술스택
@@ -423,11 +423,11 @@ Node.js&logoColor=white"/>
 ## ✅ 산출물
 
 ### ERD
-![ERD](/uploads/f4ff0371fc4458595574fc44723c94a3/ERD.png)
+![ERD](etc/ERD.png)
 
 ### 시스템 아키텍처
 
-<img src="/uploads/5c19ba9d754016c4091d66f80d52973b/시스템아키텍처최종.png" style="border: 2px solid grey">
+![시스템아키텍처](etc/시스템아키텍처최종.png)
 
 ## ✅ 기술 스택 세부 명세
 
